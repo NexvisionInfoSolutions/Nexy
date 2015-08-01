@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    public class User
+    public class User : BaseData
     {
         [Key]
         public int UserID { get; set; }
@@ -19,7 +19,7 @@ namespace LoanManagementSystem.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        
+
         public int UserGroupID { get; set; }
         [ForeignKey("UserGroupID")]
         public virtual UserGroup UserGroup { get; set; }
