@@ -11,3 +11,11 @@ namespace Data.Models
         public enum UserGroupStatus { Inactive = 0, Active = 1 }
     }
 }
+
+namespace Data.Models.Common
+{
+    enum CompanyStatus
+    {
+        Inactive = 0, Active
+    }
+}
