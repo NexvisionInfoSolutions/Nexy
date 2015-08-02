@@ -7,6 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
+    [System.ComponentModel.DataAnnotations.Schema.Table("UserGroup")]
     public class sdtoUserGroup : sdtoBaseData
     {
         [Key]

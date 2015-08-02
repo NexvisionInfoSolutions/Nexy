@@ -8,6 +8,7 @@ using Data.Models.Common;
 
 namespace LoanManagementSystem.Models
 {
+    [System.ComponentModel.DataAnnotations.Schema.Table("Company")]
     public class sdtoCompany : sdtoBaseData
     {
         [Key]

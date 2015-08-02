@@ -7,6 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
+    [System.ComponentModel.DataAnnotations.Schema.Table("Contact")]
     public class sdtoContact : sdtoBaseData
     {
         [Key]
