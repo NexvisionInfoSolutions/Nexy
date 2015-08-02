@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagementSystem", "Loa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Models", "Data.Models\Data.Models.csproj", "{D48CBC89-6579-4680-8F73-FD132323F87C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{CE534C09-64BB-4B7C-A06C-681E572F829B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D48CBC89-6579-4680-8F73-FD132323F87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D48CBC89-6579-4680-8F73-FD132323F87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D48CBC89-6579-4680-8F73-FD132323F87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE534C09-64BB-4B7C-A06C-681E572F829B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE534C09-64BB-4B7C-A06C-681E572F829B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE534C09-64BB-4B7C-A06C-681E572F829B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE534C09-64BB-4B7C-A06C-681E572F829B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
