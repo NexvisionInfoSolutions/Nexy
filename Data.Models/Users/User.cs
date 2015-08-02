@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
+using System.Web; 
 
 namespace LoanManagementSystem.Models
 {
@@ -21,7 +21,7 @@ namespace LoanManagementSystem.Models
         public string Description { get; set; }
 
 
-        public int UserGroupID { get; set; }
+        public long UserGroupID { get; set; }
         [ForeignKey("UserGroupID")]
         public virtual sdtoUserGroup UserGroup { get; set; }
 
