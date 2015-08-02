@@ -1,4 +1,4 @@
-﻿@model LoanManagementSystem.Models.UserGroup
+﻿@model LoanManagementSystem.Models.sdtoUserGroup
 
 @{
     ViewBag.Title = "Edit";
@@ -15,7 +15,7 @@
         <h4>UserGroup</h4>
         <hr />
         @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.UserGroupId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })

@@ -1,4 +1,4 @@
-﻿@model LoanManagementSystem.Models.UserGroup
+﻿@model LoanManagementSystem.Models.sdtoUserGroup
 
 @{
     ViewBag.Title = "Details";
@@ -29,6 +29,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UserGroupId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

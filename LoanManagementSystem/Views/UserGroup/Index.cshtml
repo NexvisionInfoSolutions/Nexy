@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LoanManagementSystem.Models.UserGroup>
+﻿@model IEnumerable<LoanManagementSystem.Models.sdtoUserGroup>
 
 @{
     ViewBag.Title = "Index";
@@ -29,9 +29,9 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.UserGroupId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.UserGroupId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.UserGroupId })
         </td>
     </tr>
 }
