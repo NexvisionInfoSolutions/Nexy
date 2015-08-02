@@ -14,7 +14,7 @@ namespace Data.Models
 
 namespace Data.Models.Common
 {
-    enum CompanyStatus
+    public enum CompanyStatus
     {
         Inactive = 0, Active
     }
