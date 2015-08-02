@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using LoanManagementSystem.Models;
+using LoanManagementSystem.Models; 
 
 namespace LoanManagementSystem.Controllers
 {
@@ -28,7 +28,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.User.Find(id);
+            sdtoUser user = db.User.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -48,7 +48,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="UserID,Code,Name,Description,UserGroupID,IsActive")] User user)
+        public ActionResult Create([Bind(Include="UserID,Code,Name,Description,UserGroupID,IsActive")] sdtoUser user)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.User.Find(id);
+            sdtoUser user = db.User.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -82,7 +82,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="UserID,Code,Name,Description,UserGroupID,IsActive")] User user)
+        public ActionResult Edit([Bind(Include="UserID,Code,Name,Description,UserGroupID,IsActive")] sdtoUser user)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.User.Find(id);
+            sdtoUser user = db.User.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -114,7 +114,7 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = db.User.Find(id);
+            sdtoUser user = db.User.Find(id);
             db.User.Remove(user);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -27,7 +27,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserGroup usergroup = db.Usergroup.Find(id);
+            sdtoUserGroup usergroup = db.Usergroup.Find(id);
             if (usergroup == null)
             {
                 return HttpNotFound();
@@ -46,7 +46,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ID,Code,Description")] UserGroup usergroup)
+        public ActionResult Create([Bind(Include="ID,Code,Description")] sdtoUserGroup usergroup)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserGroup usergroup = db.Usergroup.Find(id);
+            sdtoUserGroup usergroup = db.Usergroup.Find(id);
             if (usergroup == null)
             {
                 return HttpNotFound();
@@ -78,7 +78,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ID,Code,Description")] UserGroup usergroup)
+        public ActionResult Edit([Bind(Include="ID,Code,Description")] sdtoUserGroup usergroup)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserGroup usergroup = db.Usergroup.Find(id);
+            sdtoUserGroup usergroup = db.Usergroup.Find(id);
             if (usergroup == null)
             {
                 return HttpNotFound();
@@ -109,7 +109,7 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            UserGroup usergroup = db.Usergroup.Find(id);
+            sdtoUserGroup usergroup = db.Usergroup.Find(id);
             db.Usergroup.Remove(usergroup);
             db.SaveChanges();
             return RedirectToAction("Index");
