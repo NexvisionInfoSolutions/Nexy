@@ -14,8 +14,8 @@ namespace LoanManagementSystem.Models
 
         }
 
-        public DbSet<UserGroup> Usergroup { get; set; }
-        public DbSet<User> User { get; set; }
+        public DbSet<sdtoUserGroup> Usergroup { get; set; }
+        public DbSet<sdtoUser> User { get; set; }
 
 
 
