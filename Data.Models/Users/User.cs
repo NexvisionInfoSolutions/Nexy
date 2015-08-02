@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    public class User : BaseData
+    public class sdtoUser : sdtoBaseData
     {
         [Key]
         public int UserID { get; set; }
@@ -22,7 +22,7 @@ namespace LoanManagementSystem.Models
 
         public int UserGroupID { get; set; }
         [ForeignKey("UserGroupID")]
-        public virtual UserGroup UserGroup { get; set; }
+        public virtual sdtoUserGroup UserGroup { get; set; }
 
         public bool IsActive { get; set; }
 

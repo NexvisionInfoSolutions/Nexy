@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    public class UserGroup : BaseData
+    public class sdtoUserGroup : sdtoBaseData
     {
         [Key]
         public long UserGroupId { get; set; }

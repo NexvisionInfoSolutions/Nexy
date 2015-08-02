@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    public class Contact : BaseData
+    public class sdtoContact : sdtoBaseData
     {
         [Key]
         public long ContactId { get; set; }

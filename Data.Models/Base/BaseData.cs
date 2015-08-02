@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    public class BaseData
+    public class sdtoBaseData
     {
         
     }

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    public class Address : BaseData
+    public class sdtoAddress : sdtoBaseData
     {
         [Key]
         public long AddressId { get; set; }
