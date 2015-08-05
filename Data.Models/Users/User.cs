@@ -21,8 +21,8 @@ namespace LoanManagementSystem.Models
         public string Description { get; set; }
 
 
-        public long UserGroupID { get; set; }
-        [ForeignKey("UserGroupID")]
+        public long UserGroupId { get; set; }
+        [ForeignKey("UserGroupId")]
         public virtual sdtoUserGroup UserGroup { get; set; }
 
         public bool IsActive { get; set; }
