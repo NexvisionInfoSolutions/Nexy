@@ -1,5 +1,7 @@
-﻿using System;
+﻿using LoanManagementSystem.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -11,13 +13,22 @@ namespace LoanManagementSystem
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        protected void Application_Start()
+
+        protected void Application_Start(object sender, EventArgs e)
         {
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //using(var db=new LoanDBContext())
+            //{
+            //    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<LoanDBContext>());
+            //    db.Database.Initialize(true);
+            //}
         }
+
+       
     }
 }
