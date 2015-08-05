@@ -39,7 +39,7 @@ namespace LoanManagementSystem.Controllers
         // GET: /User/Create
         public ActionResult Create()
         {
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "ID", "Code");
+            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code");
             return View();
         }
 
@@ -48,7 +48,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="UserID,Code,Name,Description,UserGroupID,IsActive")] sdtoUser user)
+        public ActionResult Create([Bind(Include = "UserID,Code,Name,Description,UserGroupId,IsActive")] sdtoUser user)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace LoanManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "ID", "Code", user.UserGroupID);
+            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
             return View(user);
         }
 
@@ -73,7 +73,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "ID", "Code", user.UserGroupID);
+            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
             return View(user);
         }
 
@@ -82,7 +82,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="UserID,Code,Name,Description,UserGroupID,IsActive")] sdtoUser user)
+        public ActionResult Edit([Bind(Include = "UserID,Code,Name,Description,UserGroupId,IsActive")] sdtoUser user)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace LoanManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "ID", "Code", user.UserGroupID);
+            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
             return View(user);
         }
 
