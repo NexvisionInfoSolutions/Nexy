@@ -10,6 +10,12 @@ namespace LoanManagementSystem.Models
     [System.ComponentModel.DataAnnotations.Schema.Table("UserGroup")]
     public class sdtoUserGroup : sdtoBaseData
     {
+        public sdtoUserGroup()
+        {
+            CreatedOn = DateTime.Now;
+            ModifiedOn = DateTime.Now;
+        }
+
         [Key]
         public long UserGroupId { get; set; }
 
