@@ -169,12 +169,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Settings\AccountBooksController.cs" />
     <Compile Include="Controllers\Settings\AccountHeadsController.cs" />
     <Compile Include="Controllers\Settings\AccountTypesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Settings\ScheduleSettingsController.cs" />
     <Compile Include="Controllers\Settings\AccountBookTypesController.cs" />
+    <Compile Include="Controllers\Settings\SettingsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\Settings\UserGroupController.cs" />
     <Compile Include="Global.asax.cs">
@@ -294,6 +296,16 @@
     <Content Include="Views\AccountBookTypes\Details.cshtml" />
     <Content Include="Views\AccountBookTypes\Edit.cshtml" />
     <Content Include="Views\AccountBookTypes\Index.cshtml" />
+    <Content Include="Views\Settings\Create.cshtml" />
+    <Content Include="Views\Settings\Delete.cshtml" />
+    <Content Include="Views\Settings\Details.cshtml" />
+    <Content Include="Views\Settings\Edit.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\AccountBooks\Create.cshtml" />
+    <Content Include="Views\AccountBooks\Delete.cshtml" />
+    <Content Include="Views\AccountBooks\Details.cshtml" />
+    <Content Include="Views\AccountBooks\Edit.cshtml" />
+    <Content Include="Views\AccountBooks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

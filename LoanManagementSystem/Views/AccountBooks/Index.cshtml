@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Data.Models.Accounts.sdtoAccountBook>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountBookType.AccountBookType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountHead.AccountCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BookCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BookName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BookDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BankInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BankCharges)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReceiptVoucherPrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReceiptVoucherSuffix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentVoucherPrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentVoucherSuffix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountBookType.AccountBookType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountHead.AccountCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BookCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BookName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BookDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankInterest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankCharges)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceiptVoucherPrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceiptVoucherSuffix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentVoucherPrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentVoucherSuffix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AccountBookId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AccountBookId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AccountBookId })
+        </td>
+    </tr>
+}
+
+</table>

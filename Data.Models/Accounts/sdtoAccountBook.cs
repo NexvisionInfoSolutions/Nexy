@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("AccountType")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccountBook")]
     public class sdtoAccountBook
     {
         [Key]

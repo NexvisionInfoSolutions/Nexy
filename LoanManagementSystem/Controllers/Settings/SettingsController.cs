@@ -11,107 +11,110 @@ using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Controllers.Settings
 {
-    public class AccountBookTypesController : Controller
+    public class SettingsController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
 
-        // GET: AccountBookTypes
+        // GET: Settings
         public ActionResult Index()
         {
-            return View(db.AccountBookTypes.ToList());
+            return View(db.GeneralSettings.ToList());
         }
 
-        // GET: AccountBookTypes/Details/5
+        // GET: Settings/Details/5
         public ActionResult Details(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountBookType sdtoAccountBookType = db.AccountBookTypes.Find(id);
-            if (sdtoAccountBookType == null)
+            sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
+            if (sdtoSettings == null)
             {
                 return HttpNotFound();
             }
-            return View(sdtoAccountBookType);
+            return View(sdtoSettings);
         }
 
-        // GET: AccountBookTypes/Create
+        // GET: Settings/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AccountBookTypes/Create
+        // POST: Settings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AccountBookTypeId,AccountBookType,Status")] sdtoAccountBookType sdtoAccountBookType)
+        public ActionResult Create([Bind(Include = "SettingsId,CompanyId,BankInterest,BankCharges")] sdtoSettings Settings)
         {
             if (ModelState.IsValid)
             {
-                db.AccountBookTypes.Add(sdtoAccountBookType);
+                Settings.CreatedOn = DateTime.Now;
+                Settings.ModifiedOn = Settings.CreatedOn;
+
+                db.GeneralSettings.Add(Settings);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(sdtoAccountBookType);
+            return View(Settings);
         }
 
-        // GET: AccountBookTypes/Edit/5
+        // GET: Settings/Edit/5
         public ActionResult Edit(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountBookType sdtoAccountBookType = db.AccountBookTypes.Find(id);
-            if (sdtoAccountBookType == null)
+            sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
+            if (sdtoSettings == null)
             {
                 return HttpNotFound();
             }
-            return View(sdtoAccountBookType);
+            return View(sdtoSettings);
         }
 
-        // POST: AccountBookTypes/Edit/5
+        // POST: Settings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "AccountBookTypeId,AccountBookType,Status")] sdtoAccountBookType sdtoAccountBookType)
+        public ActionResult Edit([Bind(Include = "SettingsId,CompanyId,BankInterest,BankCharges,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")] sdtoSettings sdtoSettings)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sdtoAccountBookType).State = EntityState.Modified;
+                db.Entry(sdtoSettings).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(sdtoAccountBookType);
+            return View(sdtoSettings);
         }
 
-        // GET: AccountBookTypes/Delete/5
+        // GET: Settings/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountBookType sdtoAccountBookType = db.AccountBookTypes.Find(id);
-            if (sdtoAccountBookType == null)
+            sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
+            if (sdtoSettings == null)
             {
                 return HttpNotFound();
             }
-            return View(sdtoAccountBookType);
+            return View(sdtoSettings);
         }
 
-        // POST: AccountBookTypes/Delete/5
+        // POST: Settings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            sdtoAccountBookType sdtoAccountBookType = db.AccountBookTypes.Find(id);
-            db.AccountBookTypes.Remove(sdtoAccountBookType);
+            sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
+            db.GeneralSettings.Remove(sdtoSettings);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

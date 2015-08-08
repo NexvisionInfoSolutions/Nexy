@@ -48,6 +48,7 @@
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
     <Compile Include="Base\BaseData.cs" />
+    <Compile Include="Settings\sdtoSettings.cs" />
     <Compile Include="SysBase\Tree\Tree.cs" />
     <Compile Include="SysBase\Tree\TreeNode.cs" />
     <Compile Include="Common\Enumerations.cs" />
