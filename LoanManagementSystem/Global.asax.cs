@@ -22,11 +22,11 @@ namespace LoanManagementSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //using(var db=new LoanDBContext())
-            //{
-            //    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<LoanDBContext>());
-            //    db.Database.Initialize(true);
-            //}
+            using (var db = new LoanDBContext())
+            {
+                Database.SetInitializer(new DropCreateDatabaseIfModelChanges<LoanDBContext>());
+                db.Database.Initialize(true);
+            }
         }
 
        

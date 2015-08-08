@@ -47,13 +47,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\bfBase.cs" />
+    <Compile Include="Base\LoanDBContext.cs" />
     <Compile Include="Company\bfCompany.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SysBase\Tree\bfTree.cs" />
     <Compile Include="User\bfUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data.Models\Data.Models.csproj">
+      <Project>{d48cbc89-6579-4680-8f73-fd132323f87c}</Project>
+      <Name>Data.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

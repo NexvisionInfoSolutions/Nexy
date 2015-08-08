@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\Schedules\sdtoSchedule.cs" />
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
     <Compile Include="Base\BaseData.cs" />
+    <Compile Include="SysBase\Tree\Tree.cs" />
+    <Compile Include="SysBase\Tree\TreeNode.cs" />
     <Compile Include="Common\Enumerations.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

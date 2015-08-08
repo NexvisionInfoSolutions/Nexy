@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace Business.Base
 {
-    class bfBase : DbContext
+    public class bfBase
     {
-        public bfBase(System.Data.Common.DbConnection dbConnection, Boolean OwnsConnection) : base(dbConnection, OwnsConnection) { }
+        protected LoanManagementSystem.Models.LoanDBContext AppDb = null;
+        public bfBase(DbContext Db)
+        {
+            if (Db == null)
+            {
+                AppDb = new LoanManagementSystem.Models.LoanDBContext();
+            }
+            else
+                AppDb = Db as LoanManagementSystem.Models.LoanDBContext;
+        }
     }
 }
