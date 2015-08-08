@@ -31,8 +31,6 @@ namespace Data.Models.Accounts
 
         public long AddressId { get; set; }
 
-        public long ContactUserId { get; set; }
-
         public string TIN { get; set; }
 
         public string CST { get; set; }
@@ -49,10 +47,7 @@ namespace Data.Models.Accounts
         public virtual sdtoContact Contacts { get; set; }
 
         [ForeignKey("AddressId")]
-        public virtual sdtoAddress Address { get; set; }
-
-        [ForeignKey("ContactUserId")]
-        public virtual sdtoUser ContactPerson { get; set; }
+        public virtual sdtoAddress Address { get; set; }       
 
         [ForeignKey("AccountTypeId")]
         public virtual sdtoAccountType AccountType { get; set; }

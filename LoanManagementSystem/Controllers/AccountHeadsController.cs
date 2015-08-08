@@ -18,8 +18,8 @@ namespace LoanManagementSystem.Controllers
         // GET: AccountHeads
         public ActionResult Index()
         {
-            var sdtoAccountHeads = db.sdtoAccountHeads.Include(s => s.AccountType).Include(s => s.Address).Include(s => s.ContactPerson).Include(s => s.Contacts);
-            return View(sdtoAccountHeads.ToList());
+            var accountHeads = db.AccountHeads.Include(s => s.AccountType).Include(s => s.Address).Include(s => s.Contacts);
+            return View(accountHeads.ToList());
         }
 
         // GET: AccountHeads/Details/5
@@ -29,7 +29,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountHead sdtoAccountHead = db.sdtoAccountHeads.Find(id);
+            sdtoAccountHead sdtoAccountHead = db.AccountHeads.Find(id);
             if (sdtoAccountHead == null)
             {
                 return HttpNotFound();
@@ -40,10 +40,8 @@ namespace LoanManagementSystem.Controllers
         // GET: AccountHeads/Create
         public ActionResult Create()
         {
-            ViewBag.AccountTypeId = new SelectList(db.sdtoAccountTypes, "sdtoAccountTypeId", "AccountType");
-            ViewBag.AddressId = new SelectList(db.sdtoAddresses, "AddressId", "Address1");
-            ViewBag.ContactUserId = new SelectList(db.User, "UserID", "Code");
-            ViewBag.ContactId = new SelectList(db.sdtoContacts, "ContactId", "Telephone1");
+            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", 0);
+            ViewBag.AccountTypeList = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType");
             return View();
         }
 
@@ -52,20 +50,35 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AccountHeadId,AccountCode,AccountName,ScheduleId,AccountTypeId,CreditLimit,CreditDays,ContactId,AddressId,ContactUserId,TIN,CST,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")] sdtoAccountHead sdtoAccountHead)
+        public ActionResult Create(//[Bind(Include = "AccountHeadId,AccountCode,AccountName,ScheduleId,AccountTypeId,CreditLimit,CreditDays,TIN,CST,Contacts.ContactName,Contacts.Mobile1,Contacts.Telephone1,Address.Address1")]
+            sdtoAccountHead accHead)
         {
             if (ModelState.IsValid)
             {
-                db.sdtoAccountHeads.Add(sdtoAccountHead);
+                accHead.CreatedOn = DateTime.Now;
+                accHead.ModifiedOn = DateTime.Now;
+
+                if (accHead.Address != null)
+                {
+                    accHead.Address.CreatedOn = accHead.CreatedOn;
+                    accHead.Address.ModifiedOn = accHead.ModifiedOn;
+                }
+
+                if (accHead.Contacts != null)
+                {
+                    accHead.Contacts.CreatedOn = accHead.CreatedOn;
+                    accHead.Contacts.ModifiedOn = accHead.ModifiedOn;
+                }
+
+                db.AccountHeads.Add(accHead);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AccountTypeId = new SelectList(db.sdtoAccountTypes, "sdtoAccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
-            ViewBag.AddressId = new SelectList(db.sdtoAddresses, "AddressId", "Address1", sdtoAccountHead.AddressId);
-            ViewBag.ContactUserId = new SelectList(db.User, "UserID", "Code", sdtoAccountHead.ContactUserId);
-            ViewBag.ContactId = new SelectList(db.sdtoContacts, "ContactId", "Telephone1", sdtoAccountHead.ContactId);
-            return View(sdtoAccountHead);
+            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", accHead.ScheduleId);
+            ViewBag.AccountTypeList = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", accHead.AccountTypeId);
+
+            return View(accHead);
         }
 
         // GET: AccountHeads/Edit/5
@@ -75,15 +88,14 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountHead sdtoAccountHead = db.sdtoAccountHeads.Find(id);
+            sdtoAccountHead sdtoAccountHead = db.AccountHeads.Find(id);
             if (sdtoAccountHead == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AccountTypeId = new SelectList(db.sdtoAccountTypes, "sdtoAccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
-            ViewBag.AddressId = new SelectList(db.sdtoAddresses, "AddressId", "Address1", sdtoAccountHead.AddressId);
-            ViewBag.ContactUserId = new SelectList(db.User, "UserID", "Code", sdtoAccountHead.ContactUserId);
-            ViewBag.ContactId = new SelectList(db.sdtoContacts, "ContactId", "Telephone1", sdtoAccountHead.ContactId);
+            ViewBag.AccountTypeId = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
+            ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtoAccountHead.AddressId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtoAccountHead.ContactId);
             return View(sdtoAccountHead);
         }
 
@@ -92,7 +104,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "AccountHeadId,AccountCode,AccountName,ScheduleId,AccountTypeId,CreditLimit,CreditDays,ContactId,AddressId,ContactUserId,TIN,CST,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")] sdtoAccountHead sdtoAccountHead)
+        public ActionResult Edit([Bind(Include = "AccountHeadId,AccountCode,AccountName,ScheduleId,AccountTypeId,CreditLimit,CreditDays,ContactId,AddressId,TIN,CST,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")] sdtoAccountHead sdtoAccountHead)
         {
             if (ModelState.IsValid)
             {
@@ -100,10 +112,9 @@ namespace LoanManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AccountTypeId = new SelectList(db.sdtoAccountTypes, "sdtoAccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
-            ViewBag.AddressId = new SelectList(db.sdtoAddresses, "AddressId", "Address1", sdtoAccountHead.AddressId);
-            ViewBag.ContactUserId = new SelectList(db.User, "UserID", "Code", sdtoAccountHead.ContactUserId);
-            ViewBag.ContactId = new SelectList(db.sdtoContacts, "ContactId", "Telephone1", sdtoAccountHead.ContactId);
+            ViewBag.AccountTypeId = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
+            ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtoAccountHead.AddressId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtoAccountHead.ContactId);
             return View(sdtoAccountHead);
         }
 
@@ -114,7 +125,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountHead sdtoAccountHead = db.sdtoAccountHeads.Find(id);
+            sdtoAccountHead sdtoAccountHead = db.AccountHeads.Find(id);
             if (sdtoAccountHead == null)
             {
                 return HttpNotFound();
@@ -127,8 +138,8 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            sdtoAccountHead sdtoAccountHead = db.sdtoAccountHeads.Find(id);
-            db.sdtoAccountHeads.Remove(sdtoAccountHead);
+            sdtoAccountHead sdtoAccountHead = db.AccountHeads.Find(id);
+            db.AccountHeads.Remove(sdtoAccountHead);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

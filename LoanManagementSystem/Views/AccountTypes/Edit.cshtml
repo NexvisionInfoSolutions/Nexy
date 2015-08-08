@@ -15,7 +15,7 @@
         <h4>sdtoAccountType</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.sdtoAccountTypeId)
+        @Html.HiddenFor(model => model.AccountTypeId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.AccountType, htmlAttributes: new { @class = "control-label col-md-2" })

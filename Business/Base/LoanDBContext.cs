@@ -19,12 +19,12 @@ namespace LoanManagementSystem.Models
 
         public DbSet<sdtoSchedule> Schedules { get; set; }
 
-        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountType> sdtoAccountTypes { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountType> AccountTypes { get; set; }
 
-        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountHead> sdtoAccountHeads { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountHead> AccountHeads { get; set; }
 
-        public System.Data.Entity.DbSet<LoanManagementSystem.Models.sdtoAddress> sdtoAddresses { get; set; }
+        public System.Data.Entity.DbSet<LoanManagementSystem.Models.sdtoAddress> Address { get; set; }
 
-        public System.Data.Entity.DbSet<LoanManagementSystem.Models.sdtoContact> sdtoContacts { get; set; }
+        public System.Data.Entity.DbSet<LoanManagementSystem.Models.sdtoContact> Contacts { get; set; }
     }
 }

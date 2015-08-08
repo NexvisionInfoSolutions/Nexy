@@ -61,7 +61,9 @@ namespace LoanManagementSystem.Controllers
         // GET: ScheduleSettings/Create
         public ActionResult Create()
         {
-            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName");
+            var SelectList1 = db.Schedules.ToList();
+            SelectList1.Insert(0, new sdtoSchedule() { ScheduleId = 0, ScheduleName = "Root" });
+            ViewBag.ScheduleList = new SelectList(SelectList1, "ScheduleId", "ScheduleName", 0);
             return View();
         }
 

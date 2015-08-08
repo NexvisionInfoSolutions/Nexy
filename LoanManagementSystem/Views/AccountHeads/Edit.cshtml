@@ -82,14 +82,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ContactUserId, "ContactUserId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ContactUserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ContactUserId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.TIN, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @class = "form-control" } })

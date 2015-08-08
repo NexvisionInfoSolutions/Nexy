@@ -13,6 +13,9 @@ namespace LoanManagementSystem.Models
         [Key]
         public long ContactId { get; set; }
 
+        [MaxLength(200)]
+        public string ContactName { get; set; }
+
         [MaxLength(20)]
         public string Telephone1 { get; set; }
         

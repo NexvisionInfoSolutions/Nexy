@@ -14,7 +14,7 @@ namespace Data.Models.Accounts
     public class sdtoAccountType
     {
         [Key]
-        public long sdtoAccountTypeId { get; set; }
+        public long AccountTypeId { get; set; }
 
         [MaxLength(100)]
         public string AccountType { get; set; }

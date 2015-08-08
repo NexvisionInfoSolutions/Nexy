@@ -18,7 +18,7 @@ namespace LoanManagementSystem.Controllers
         // GET: AccountTypes
         public ActionResult Index()
         {
-            return View(db.sdtoAccountTypes.ToList());
+            return View(db.AccountTypes.ToList());
         }
 
         // GET: AccountTypes/Details/5
@@ -28,7 +28,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountType sdtoAccountType = db.sdtoAccountTypes.Find(id);
+            sdtoAccountType sdtoAccountType = db.AccountTypes.Find(id);
             if (sdtoAccountType == null)
             {
                 return HttpNotFound();
@@ -47,11 +47,11 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "sdtoAccountTypeId,AccountType,Status")] sdtoAccountType sdtoAccountType)
+        public ActionResult Create([Bind(Include = "AccountTypeId,AccountType,Status")] sdtoAccountType sdtoAccountType)
         {
             if (ModelState.IsValid)
             {
-                db.sdtoAccountTypes.Add(sdtoAccountType);
+                db.AccountTypes.Add(sdtoAccountType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountType sdtoAccountType = db.sdtoAccountTypes.Find(id);
+            sdtoAccountType sdtoAccountType = db.AccountTypes.Find(id);
             if (sdtoAccountType == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "sdtoAccountTypeId,AccountType,Status")] sdtoAccountType sdtoAccountType)
+        public ActionResult Edit([Bind(Include = "AccountTypeId,AccountType,Status")] sdtoAccountType sdtoAccountType)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoAccountType sdtoAccountType = db.sdtoAccountTypes.Find(id);
+            sdtoAccountType sdtoAccountType = db.AccountTypes.Find(id);
             if (sdtoAccountType == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            sdtoAccountType sdtoAccountType = db.sdtoAccountTypes.Find(id);
-            db.sdtoAccountTypes.Remove(sdtoAccountType);
+            sdtoAccountType sdtoAccountType = db.AccountTypes.Find(id);
+            db.AccountTypes.Remove(sdtoAccountType);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
