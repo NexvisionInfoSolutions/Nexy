@@ -70,6 +70,8 @@ namespace LoanManagementSystem.Controllers
                     accHead.Contacts.ModifiedOn = accHead.ModifiedOn;
                 }
 
+                accHead.Contacts = db.Contacts.Add(accHead.Contacts);
+                accHead.Address = db.Address.Add(accHead.Address);
                 db.AccountHeads.Add(accHead);
                 db.SaveChanges();
                 return RedirectToAction("Index");

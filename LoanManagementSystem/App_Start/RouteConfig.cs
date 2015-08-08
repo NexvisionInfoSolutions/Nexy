@@ -13,6 +13,13 @@ namespace LoanManagementSystem
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapRoute(
+            //    "SubFolder", 
+            //    "SOProblems/SubFolder/ChildController/{action}",
+            //    new { controller = "ChildController", action = "Index" },
+            //    new[] { "Practise.Areas.SOProblems.Controllers.SubFolder" }
+            //);
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

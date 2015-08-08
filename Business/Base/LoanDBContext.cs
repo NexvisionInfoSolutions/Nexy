@@ -26,5 +26,7 @@ namespace LoanManagementSystem.Models
         public System.Data.Entity.DbSet<LoanManagementSystem.Models.sdtoAddress> Address { get; set; }
 
         public System.Data.Entity.DbSet<LoanManagementSystem.Models.sdtoContact> Contacts { get; set; }
+
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountBookType> sdtoAccountBookTypes { get; set; }
     }
 }
