@@ -1,0 +1,19 @@
+﻿@model  Data.Models.SysBase.Tree.TreeNode<Data.Models.Accounts.Schedules.sdtoSchedule>
+@foreach (var treeNode in Model.Children)
+{
+    <ul>
+        <li>
+            <a href="#">
+                @treeNode.NodeElement.ScheduleName              
+            </a>@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = Model.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+
+
+            @if (treeNode.Children.Count > 0)
+            {
+                @Html.Partial("TreeView", treeNode)
+            }
+        </li>
+    </ul>
+}
