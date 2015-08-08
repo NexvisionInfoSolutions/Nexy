@@ -16,10 +16,11 @@ namespace Data.Models.Accounts.Schedules
 
         [MaxLength(100)]
         public string ScheduleName { get; set; }
-     
+
+        [Editable(false)]
         public long ParentId { get; set; }
 
-        [ForeignKey("ScheduleId")]
+        [NotMapped]
         public sdtoSchedule Parent { get; set; }
     }
 }

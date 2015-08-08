@@ -1,0 +1,139 @@
+﻿@model Data.Models.Accounts.sdtoAccountHead
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>sdtoAccountHead</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountType.AccountType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountType.AccountType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.Address1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.Address1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactPerson.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactPerson.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contacts.Telephone1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contacts.Telephone1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ScheduleId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ScheduleId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditLimit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditLimit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditDays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CST)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CST)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AccountHeadId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

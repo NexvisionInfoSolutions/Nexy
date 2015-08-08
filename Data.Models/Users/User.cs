@@ -11,7 +11,7 @@ namespace LoanManagementSystem.Models
     public class sdtoUser : sdtoBaseData
     {
         [Key]
-        public int UserID { get; set; }
+        public long UserID { get; set; }
 
         [MaxLength(10)]
         public string Code { get; set; }

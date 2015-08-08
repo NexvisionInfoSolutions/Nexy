@@ -9,13 +9,9 @@ namespace Data.Models
     namespace Enumerations
     {
         public enum UserGroupStatus { Inactive = 0, Active = 1 }
-    }
-}
 
-namespace Data.Models.Common
-{
-    public enum CompanyStatus
-    {
-        Inactive = 0, Active
+        public enum CompanyStatus { Inactive = 0, Active }
+
+        public enum AccountTypeStatus { Inactive = 0, Active }
     }
 }

@@ -169,6 +169,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountHeadsController.cs" />
+    <Compile Include="Controllers\AccountTypesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ScheduleSettingsController.cs" />
@@ -276,6 +278,16 @@
     <Content Include="Views\ScheduleSettings\Edit.cshtml" />
     <Content Include="Views\ScheduleSettings\Index.cshtml" />
     <Content Include="Views\ScheduleSettings\TreeView.cshtml" />
+    <Content Include="Views\AccountTypes\Create.cshtml" />
+    <Content Include="Views\AccountTypes\Delete.cshtml" />
+    <Content Include="Views\AccountTypes\Details.cshtml" />
+    <Content Include="Views\AccountTypes\Edit.cshtml" />
+    <Content Include="Views\AccountTypes\Index.cshtml" />
+    <Content Include="Views\AccountHeads\Create.cshtml" />
+    <Content Include="Views\AccountHeads\Delete.cshtml" />
+    <Content Include="Views\AccountHeads\Details.cshtml" />
+    <Content Include="Views\AccountHeads\Edit.cshtml" />
+    <Content Include="Views\AccountHeads\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

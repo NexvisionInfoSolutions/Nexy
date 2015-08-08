@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\Schedules\sdtoSchedule.cs" />
+    <Compile Include="Accounts\sdtoAccountType.cs" />
+    <Compile Include="Accounts\sdtoAccountHead.cs" />
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
     <Compile Include="Base\BaseData.cs" />
