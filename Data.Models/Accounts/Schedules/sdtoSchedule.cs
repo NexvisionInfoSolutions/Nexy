@@ -19,7 +19,7 @@ namespace Data.Models.Accounts.Schedules
      
         public long ParentId { get; set; }
 
-        //[ForeignKey("ScheduleId")]
-        //public sdtoSchedule Parent { get; set; }
+        [ForeignKey("ScheduleId")]
+        public sdtoSchedule Parent { get; set; }
     }
 }

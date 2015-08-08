@@ -4,10 +4,10 @@
     <ul>
         <li>
             <a href="#">
-                @treeNode.NodeElement.ScheduleName              
-            </a>@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = Model.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+                @treeNode.NodeElement.ScheduleName
+            </a>@Html.ActionLink("Edit", "Edit", new { id = @treeNode.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = @treeNode.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = @treeNode.Id })
 
 
             @if (treeNode.Children.Count > 0)

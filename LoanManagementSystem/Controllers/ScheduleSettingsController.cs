@@ -32,17 +32,35 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoSchedule sdtoSchedule = db.Schedules.Find(id);
-            if (sdtoSchedule == null)
+            var sdtoSchedules = (
+                                 from I in db.Schedules.Where(w => w.ScheduleId == id)
+                                 from O in db.Schedules.Where(w => w.ScheduleId == I.ParentId).DefaultIfEmpty()
+                                 select new { ScheduleId = I.ScheduleId, ParentId = I.ParentId, ScheduleName = I.ScheduleName, ParentScheduleId = O.ScheduleId, ParentScheduleName = O.ScheduleName }
+                                ).ToList().Select(x => new sdtoSchedule()
+                                       {
+                                           ScheduleId = x.ScheduleId,
+                                           ScheduleName = x.ScheduleName,
+                                           ParentId = x.ParentId,
+                                           Parent = new sdtoSchedule()
+                                           {
+                                               ScheduleId = x.ParentScheduleId,
+                                               ScheduleName = x.ParentScheduleName
+                                           }
+                                       }); ;
+
+
+
+
+            if (sdtoSchedules == null)
             {
                 return HttpNotFound();
             }
-            return View(sdtoSchedule);
+            return View(sdtoSchedules.FirstOrDefault());
         }
 
         // GET: ScheduleSettings/Create
         public ActionResult Create()
-        {           
+        {
             ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName");
             return View();
         }
@@ -61,7 +79,7 @@ namespace LoanManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoSchedule.ScheduleId);
+            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoSchedule.ParentId);
             return View(sdtoSchedule);
         }
 
@@ -77,7 +95,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoSchedule.ScheduleId);
+            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoSchedule.ParentId);
             return View(sdtoSchedule);
         }
 

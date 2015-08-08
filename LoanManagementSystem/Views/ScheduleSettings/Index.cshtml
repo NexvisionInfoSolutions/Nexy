@@ -7,68 +7,29 @@
 
 <h2>Index</h2>
 
-<script src="@Url.Content("~/Scripts/jstree.js")" type="text/javascript"></script>
-<script type="text/javascript">
-    $(function () {
-        $('#treeDemo').jstree();
-        var tree = $('#treeDemo');
-        tree.bind("loaded.jstree", function (event, data) {
-            tree.jstree("open_all");
+@*<script src="@Url.Content("~/Scripts/jstree.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#treeDemo').jstree();
+            var tree = $('#treeDemo');
+            tree.bind("loaded.jstree", function (event, data) {
+                tree.jstree("open_all");
+            });
         });
-    });
-</script>
+    </script>*@
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        @*<th>
-                @Html.DisplayNameFor(model => model.Nodes.FirstOrDefault().Value.NodeElement.Parent.ScheduleName)
-            </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Nodes.FirstOrDefault().NodeElement.ScheduleName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nodes.FirstOrDefault().NodeElement.ParentId)
-        </th>
-        <th></th>
-    </tr>
+<h2>
+    Tree View Demo!!!
+</h2>
+<div id="treeDemo">
+    @*<ul id="tree">
+        <li>*@
+    @*<a href="#">@Model.RootNode.Id</a>*@
+    @Html.Partial("TreeView", Model.Nodes.FirstOrDefault())
+    @*</li>
+        </ul>*@
+</div>
 
-    @foreach (var item in Model.Nodes)
-    {
-        <tr>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.NodeElement.Parent.ScheduleName)
-                </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.NodeElement.ScheduleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NodeElement.ParentId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-    <tr>
-        <td colspan="3">
-            <h2>
-                Tree View Demo!!!
-            </h2>
-            <div id="treeDemo">
-                <ul id="tree">
-                    <li>
-                        <a href="#">@Model.RootNode.Id</a>
-                        @Html.Partial("TreeView", Model.Nodes.FirstOrDefault())
-                    </li>
-                </ul>
-            </div>
-        </td>
-    </tr>
-
-</table>
