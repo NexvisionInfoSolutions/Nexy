@@ -28,6 +28,13 @@ namespace LoanManagementSystem.Models
 
         public string Zipcode { get; set; }
 
+        public string Place { get; set; }
+
+        public string Post { get; set; }
+
+        public string District { get; set; }
+
+
         public DateTime CreatedOn { get; set; }
 
         public long CreatedBy { get; set; }
