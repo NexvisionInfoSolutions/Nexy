@@ -1,0 +1,16 @@
+﻿@model  Data.Models.SysBase.Tree.TreeNode<Data.Models.Accounts.sdtoUrlInfo>
+@foreach (var treeNode in Model.Children)
+{
+    <ul>
+        <li>
+            <a href="@treeNode.NodeElement.Url">
+                @treeNode.NodeElement.UrlText
+            </a>
+
+            @if (treeNode.Children.Count > 0)
+            {
+                @Html.Partial("MenuView", treeNode)
+            }
+        </li>
+    </ul>
+}

@@ -20,7 +20,7 @@ namespace LoanManagementSystem.Controllers
         // GET: ScheduleSettings
         public ActionResult Index()
         {
-            bfTree objBfTree = new bfTree(db);
+            bfTree<sdtoSchedule> objBfTree = new bfTree<sdtoSchedule>(db);
             var schedules = objBfTree.GetData();
             return View(schedules);
         }

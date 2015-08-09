@@ -1,4 +1,5 @@
 ﻿using Business.Base;
+using Data.Models.Accounts;
 using Data.Models.Accounts.Schedules;
 using Data.Models.SysBase.Tree;
 using System;
@@ -10,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace Business.SysBase.Tree
 {
-    public class bfTree : bfBase
+    public class bfTree<T> : bfBase where T : class
     {
         public bfTree(DbContext dbConnection) : base(dbConnection) { }
 
-        public Data.Models.SysBase.Tree.Tree<sdtoSchedule> GetData()
+        public Data.Models.SysBase.Tree.Tree<T> GetData()
         {
-            var tree = new Data.Models.SysBase.Tree.Tree<sdtoSchedule>();
+            var tree = new Data.Models.SysBase.Tree.Tree<T>();
 
             //Add root node
-            tree.RootNode = new TreeNode<sdtoSchedule>() { Id = 0, ParentId = 0 };
+            tree.RootNode = new TreeNode<T>() { Id = 0, ParentId = 0 };
 
             // Add each element as a tree node
             //Dictionary<long, TreeNode<sdtoSchedule>> Nodes = db.Schedules
@@ -35,34 +36,34 @@ namespace Business.SysBase.Tree
             return tree;
         }
 
-        private void BuildChildNode(TreeNode<sdtoSchedule> rootNode)
+        private void BuildChildNode(TreeNode<T> rootNode)
         {
             if (rootNode != null)
             {
-                IQueryable<sdtoSchedule> schedules = AppDb.Schedules.Where(x => x.ParentId == rootNode.Id);
-                if (schedules.Any())
+                List<TreeNode<T>> childNodeCollection = new List<TreeNode<T>>();
+                if (typeof(T) == typeof(sdtoSchedule))
                 {
-                    List<TreeNode<sdtoSchedule>> chidNode = schedules.Select(t => new Data.Models.SysBase.Tree.TreeNode<sdtoSchedule>() { Id = t.ScheduleId, ParentId = t.ParentId, NodeElement = t })
-                        .ToList();
-                    //.ToDictionary(t => t.Id);
-
-                    //(from e1 in db.Schedules
-                    // where e1.ParentId == rootNode.Id
-                    // select new Data.Models.SysBase.Tree.TreeNode<sdtoSchedule>()
-                    // {
-                    //     Id = e1.ScheduleId,
-                    //     ParentId = e1.ParentId,
-                    //     NodeElement = new sdtoSchedule() { ScheduleId = e1.ScheduleId, ParentId = e1.ParentId, ScheduleName = e1.ScheduleName }
-                    // }).ToDictionary(t => t.Id);
-
-                    foreach (var childRootNode in chidNode)
+                    IQueryable<sdtoSchedule> schedules = AppDb.Schedules.Where(x => x.ParentId == rootNode.Id);
+                    if (schedules.Any())
                     {
-                        BuildChildNode(childRootNode);
-                        rootNode.Children.Add(childRootNode);
+                        childNodeCollection = schedules.Select(t => new Data.Models.SysBase.Tree.TreeNode<T>() { Id = t.ScheduleId, ParentId = t.ParentId, NodeElement = t as T }).ToList();
                     }
+                }
+                else if (typeof(T) == typeof(sdtoUrlInfo))
+                {
+                    IQueryable<sdtoUrlInfo> urlCollection = AppDb.UrlInfoCollection.Where(x => x.ParentId == rootNode.Id);
+                    if (urlCollection.Any())
+                    {
+                        childNodeCollection = urlCollection.Select(t => new Data.Models.SysBase.Tree.TreeNode<T>() { Id = t.UrlId, ParentId = t.ParentId, NodeElement = t as T }).ToList();
+                    }
+                }
+
+                foreach (var childRootNode in childNodeCollection)
+                {
+                    BuildChildNode(childRootNode);
+                    rootNode.Children.Add(childRootNode);
                 }
             }
         }
-
     }
 }

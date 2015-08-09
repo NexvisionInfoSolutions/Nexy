@@ -27,8 +27,8 @@ namespace LoanManagementSystem
                 Database.SetInitializer(new DropCreateDatabaseIfModelChanges<LoanDBContext>());
                 db.Database.Initialize(true);
             }
-        }
 
-       
+            GlobalFilters.Filters.Add(new LoanManagementSystem.App_Start.MenuLoaderActionFilter(), 0);
+        }       
     }
 }
