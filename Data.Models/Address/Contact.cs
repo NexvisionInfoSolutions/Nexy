@@ -29,17 +29,14 @@ namespace LoanManagementSystem.Models
         public string Mobile2 { get; set; }
 
         [MaxLength(20)]
-        public string Fax1 { get; set; }
-
-        [MaxLength(20)]
-        public string Fax2 { get; set; }
+        public string Fax { get; set; }
 
         [MaxLength(200)]
         public string Email1 { get; set; }
 
         [MaxLength(200)]
         public string Email2 { get; set; }
-        
+
         public DateTime CreatedOn { get; set; }
 
         public long CreatedBy { get; set; }
