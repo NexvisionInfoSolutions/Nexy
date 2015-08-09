@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.Company
 {
-    class bfCompany : bfBase
+    class bfCompany: bfBase
     {
         public bfCompany(DbContext dbConnection) : base(dbConnection) { }
     }
