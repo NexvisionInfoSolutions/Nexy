@@ -46,14 +46,40 @@ namespace LoanManagementSystem.Models
 
         public long AddressId { get; set; }
 
+        public long PermanentAddressId { get; set; }
+
+        public long GuaranterAddressId { get; set; }
+
+        public long PermanentContactId { get; set; }
+
+        public long GuaranterContactId { get; set; }
+
+        public string FatherName { get; set; }
+
+        public string GuaranterName { get; set; }
+
+        public string Occupation { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
 
         [ForeignKey("ContactId")]
         public virtual sdtoContact Contacts { get; set; }
 
         [ForeignKey("AddressId")]
-        public virtual sdtoAddress Address { get; set; }   
+        public virtual sdtoAddress Address { get; set; } 
 
+        [ForeignKey("PermanentAddressId")]
+        public virtual sdtoAddress PermanentAddress { get; set; }
 
+        [ForeignKey("GuaranterAddressId")]
+        public virtual sdtoAddress GuaranterAddress { get; set; }
 
+        [ForeignKey("PermanentContactId")]
+        public virtual sdtoContact PermanentContacts { get; set; }
+
+        [ForeignKey("GuaranterContactId")]
+        public virtual sdtoContact GuaranterContacts { get; set; }
+        
     }
 }
