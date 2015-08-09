@@ -19,5 +19,8 @@ namespace Data.Models
         public enum AccountBookTypeStatus { Inactive = 0, Active }
 
         public enum UrlInfoStatus { Inactive = 0, Active = 1 }
+
+        public enum UserType { Executive = 1, Member = 2 }
+
     }
 }
