@@ -17,6 +17,8 @@ namespace LoanManagementSystem.Models
         public DbSet<sdtoUserGroup> Usergroup { get; set; }
         public DbSet<sdtoUser> User { get; set; }
         public DbSet<sdtoSchedule> Schedules { get; set; }
+
+        public DbSet<sdtoCompany> Companies { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountType> AccountTypes { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountHead> AccountHeads { get; set; }
         public System.Data.Entity.DbSet<LoanManagementSystem.Models.sdtoAddress> Address { get; set; }
