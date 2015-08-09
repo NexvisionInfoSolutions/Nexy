@@ -1,33 +1,34 @@
-﻿body {
+﻿/*body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
-
-/* Set padding to keep content from hitting the edges */
+*/
+/* Set padding to keep content from hitting the edges 
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
+*/
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
-*/
+
 .dl-horizontal dt {
     white-space: normal;
 }
-
-/* Set width on the form input elements since they're 100% wide by default */
+*/
+/* Set width on the form input elements since they're 100% wide by default 
 input,
 select,
 textarea {
     max-width: 280px;
 }
-
+*/
 
 /*
  * jsTree default theme 2.0.0
  * Supported features: dots/no-dots, icons/no-icons, loading, clicked, hovered, checkbox, search
-  */
+  
 
 .jstree-default li, 
 .jstree-default i { background-image:url("d.png"); background-repeat:no-repeat; background-color:transparent; }
@@ -78,7 +79,6 @@ textarea {
 
 #jstree-marker.jstree-default { background:url("d.png") -41px -57px no-repeat !important; text-indent:-100px; }
 
-/* RTL PART */
 .jstree-rtl.jstree-default .jstree-hovered,
 .jstree-rtl.jstree-default .jstree-clicked { padding:0 1px 0 2px; }
 .jstree-rtl.jstree-default li { background-image:url("dots_rtl.gif"); background-position: 100% 0px; }
@@ -91,7 +91,4 @@ textarea {
 .jstree-rtl.jstree-default .jstree-anchor .jstree-undetermined { background-position:-18px -19px; }
 .jstree-rtl.jstree-default .jstree-anchor .jstree-undetermined:hover { background-position:-18px -37px; }
 
-/*
- * jsTree default theme 2.0.0
- * Supported features: dots/no-dots, icons/no-icons, loading, clicked, hovered, checkbox, search
-  */
+*/
