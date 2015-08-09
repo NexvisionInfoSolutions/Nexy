@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Models.Enumerations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,6 +11,15 @@ namespace LoanManagementSystem.Models
     [System.ComponentModel.DataAnnotations.Schema.Table("Users")]
     public class sdtoUser : sdtoBaseData
     {
+        public sdtoUser()
+        {
+            //Description = string.Empty;
+            //Designation = string.Empty;
+            //ContactNo = string.Empty;
+            //Address = string.Empty;
+            //UserGroupId = 3;
+        }
+
         [Key]
         public long UserID { get; set; }
 
@@ -21,11 +31,29 @@ namespace LoanManagementSystem.Models
         public string Description { get; set; }
 
 
-        public long UserGroupId { get; set; }
+        public long? UserGroupId { get; set; }
         [ForeignKey("UserGroupId")]
         public virtual sdtoUserGroup UserGroup { get; set; }
 
         public bool IsActive { get; set; }
+
+        [MaxLength(50)]
+        public string Designation { get; set; }
+
+        public UserType UserType { get; set; }
+
+        public long ContactId { get; set; }
+
+        public long AddressId { get; set; }
+
+
+        [ForeignKey("ContactId")]
+        public virtual sdtoContact Contacts { get; set; }
+
+        [ForeignKey("AddressId")]
+        public virtual sdtoAddress Address { get; set; }   
+
+
 
     }
 }
