@@ -5,68 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Member Details</h2>
 
-<div>
-    <h4>sdtoUser</h4>
+<div> 
 	<hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Address.Address1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address.Address1)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Contacts.ContactName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Contacts.ContactName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.GuaranterAddress.Address1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GuaranterAddress.Address1)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.GuaranterContacts.ContactName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GuaranterContacts.ContactName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PermanentAddress.Address1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PermanentAddress.Address1)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PermanentContacts.ContactName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PermanentContacts.ContactName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserGroup.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserGroup.Name)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Code)
         </dt>
@@ -74,7 +17,6 @@
         <dd>
             @Html.DisplayFor(model => model.Code)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -92,29 +34,49 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
+            @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IsActive)
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <h4>Communication Address</h4>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.Address1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.Address1)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Designation)
+            @Html.DisplayNameFor(model => model.Address.Address2)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.Address2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.Place)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Designation)
+            @Html.DisplayFor(model => model.Address.Place)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserType)
+            @Html.DisplayNameFor(model => model.Address.Post)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.UserType)
+            @Html.DisplayFor(model => model.Address.Post)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.District)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.District)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.FatherName)
         </dt>
@@ -124,12 +86,90 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreatedOn)
+            @Html.DisplayNameFor(model => model.Contacts.Telephone1)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreatedOn)
+            @Html.DisplayFor(model => model.Contacts.Telephone1)
         </dd>
+
+        <h4>Permanent Address</h4>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PermanentAddress.Address1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermanentAddress.Address1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PermanentAddress.Address2)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermanentAddress.Address2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PermanentAddress.Place)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermanentAddress.Place)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PermanentAddress.Post)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermanentAddress.Post)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PermanentAddress.District)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermanentAddress.District)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PermanentContacts.Telephone1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermanentContacts.Telephone1)
+        </dd>
+
+
+        <h4>Guaranter Details</h4>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuaranterName)
+        </dt> 
+        <dd>
+            @Html.DisplayFor(model => model.GuaranterName)
+        </dd> 
+        <dt>
+            @Html.DisplayNameFor(model => model.GuaranterAddress.Address1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuaranterAddress.Address1)
+        </dd> 
+        <dt>
+            @Html.DisplayNameFor(model => model.GuaranterContacts.Telephone1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuaranterContacts.Telephone1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Occupation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Occupation)
+        </dd> 
+       
+        
 
     </dl>
 </div>
