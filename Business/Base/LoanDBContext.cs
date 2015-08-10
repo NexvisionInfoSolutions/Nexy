@@ -36,10 +36,32 @@ namespace LoanManagementSystem.Models
             .Entity<sdtoUser>()
             .HasOptional<sdtoAddress>(u => u.Address)
             .WithOptionalPrincipal();
+
             modelBuilder
             .Entity<sdtoUser>()
             .HasOptional<sdtoContact>(u => u.Contacts)
             .WithOptionalPrincipal();
+
+         //   modelBuilder
+         //  .Entity<sdtoUser>()
+         //  .HasOptional<sdtoAddress>(u => u.PermanentAddress)
+         //  .WithOptionalPrincipal();
+
+         //   modelBuilder
+         // .Entity<sdtoUser>()
+         // .HasOptional<sdtoAddress>(u => u.GuaranterAddress)
+         // .WithOptionalPrincipal();
+
+            
+         //   modelBuilder
+         // .Entity<sdtoUser>()
+         // .HasOptional<sdtoContact>(u => u.PermanentContacts)
+         // .WithOptionalPrincipal();
+
+         //   modelBuilder
+         //.Entity<sdtoUser>()
+         //.HasOptional<sdtoContact>(u => u.GuaranterContacts)
+         //.WithOptionalPrincipal();
         }
 
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoLoanInfo> sdtoLoanInfoes { get; set; }
