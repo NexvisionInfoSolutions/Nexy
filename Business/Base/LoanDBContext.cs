@@ -28,11 +28,20 @@ namespace LoanManagementSystem.Models
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoSettings> GeneralSettings { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountBook> AccountBooks { get; set; }
 
-        //public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoUrlInfo> UrlInfoCollection { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoUrlInfo> UrlInfoCollection { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder
+            .Entity<sdtoUser>()
+            .HasOptional<sdtoAddress>(u => u.Address)
+            .WithOptionalPrincipal();
+            modelBuilder
+            .Entity<sdtoUser>()
+            .HasOptional<sdtoContact>(u => u.Contacts)
+            .WithOptionalPrincipal();
         }
     }
 }
