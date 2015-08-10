@@ -173,6 +173,8 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ExecutiveController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
+    <Compile Include="Controllers\Loan\LoanController.cs" />
+    <Compile Include="Controllers\Loan\LoanRepaymentsController.cs" />
     <Compile Include="Controllers\Settings\AccountBooksController.cs" />
     <Compile Include="Controllers\Settings\AccountHeadsController.cs" />
     <Compile Include="Controllers\Settings\AccountTypesController.cs" />
@@ -445,6 +447,16 @@
     <Content Include="Views\UserGroup\Details.cshtml" />
     <Content Include="Views\UserGroup\Edit.cshtml" />
     <Content Include="Views\UserGroup\Index.cshtml" />
+    <Content Include="Views\Loan\Create.cshtml" />
+    <Content Include="Views\Loan\Delete.cshtml" />
+    <Content Include="Views\Loan\Details.cshtml" />
+    <Content Include="Views\Loan\Edit.cshtml" />
+    <Content Include="Views\Loan\Index.cshtml" />
+    <Content Include="Views\LoanRepayments\Create.cshtml" />
+    <Content Include="Views\LoanRepayments\Delete.cshtml" />
+    <Content Include="Views\LoanRepayments\Details.cshtml" />
+    <Content Include="Views\LoanRepayments\Edit.cshtml" />
+    <Content Include="Views\LoanRepayments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web; 
+using System.Web;
 
 namespace LoanManagementSystem.Models
 {
@@ -42,7 +42,7 @@ namespace LoanManagementSystem.Models
 
         public UserType? UserType { get; set; }
 
-        public long ContactId { get; set; }
+        public long? ContactId { get; set; }
 
         public long? AddressId { get; set; }
 
@@ -60,14 +60,13 @@ namespace LoanManagementSystem.Models
 
         public string Occupation { get; set; }
 
-        public DateTime? CreatedOn { get; set; }
-
+        //public DateTime CreatedOn { get; set; }
 
         [ForeignKey("ContactId")]
         public virtual sdtoContact Contacts { get; set; }
 
         [ForeignKey("AddressId")]
-        public virtual sdtoAddress Address { get; set; } 
+        public virtual sdtoAddress Address { get; set; }
 
         [ForeignKey("PermanentAddressId")]
         public virtual sdtoAddress PermanentAddress { get; set; }
@@ -80,6 +79,6 @@ namespace LoanManagementSystem.Models
 
         [ForeignKey("GuaranterContactId")]
         public virtual sdtoContact GuaranterContacts { get; set; }
-        
+
     }
 }

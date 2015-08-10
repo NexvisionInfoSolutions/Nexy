@@ -54,6 +54,11 @@ namespace LoanManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 user.UserType = UserType.User;
+                if (user.Address != null)
+                    user.Address = db.Address.Add(user.Address);
+                if (user.Contacts != null)
+                    user.Contacts = db.Contacts.Add(user.Contacts);
+                user.CreatedOn = DateTime.Now;
                 db.User.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");

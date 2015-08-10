@@ -1,0 +1,148 @@
+﻿@model IEnumerable<Data.Models.Accounts.sdtoLoanInfo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Member.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RepaymentStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RePaymentInterval)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestedAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProposedAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalInstallments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChequeDetails)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InteresRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SanctionedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SanctionedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RepaymentStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RePaymentInterval)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestedAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProposedAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalInstallments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChequeDetails)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InteresRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SanctionedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SanctionedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsDeleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedOn)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LoanId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LoanId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LoanId })
+        </td>
+    </tr>
+}
+
+</table>

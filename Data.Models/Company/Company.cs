@@ -18,7 +18,7 @@ namespace LoanManagementSystem.Models
         public string Code { get; set; }
 
         [MaxLength(100)]
-        public string Name { get; set; } 
+        public string Name { get; set; }
 
         public long AddressId { get; set; }
 
@@ -28,31 +28,28 @@ namespace LoanManagementSystem.Models
         [MaxLength(20)]
         public string TIN { get; set; }
 
-         
         public long ContactId { get; set; }
- 
-         
-        //public CompanyStatus Status { get; set; } 
-        public bool IsDeleted { get; set; }
 
-         
+        //public CompanyStatus Status { get; set; } 
+        //public bool IsDeleted { get; set; }
+
         [MaxLength(200)]
         public string WebUrl { get; set; }
-         
+
         public string LogoUrl { get; set; }
 
-        public long CreatedBy { get; set; }
+        //public long CreatedBy { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        //public DateTime CreatedOn { get; set; }
 
-        public long ModifiedBy { get; set; }
+        //public long ModifiedBy { get; set; }
 
-        public DateTime ModifiedOn { get; set; }
+        //public DateTime ModifiedOn { get; set; }
 
         [ForeignKey("ContactId")]
         public virtual sdtoContact Contacts { get; set; }
 
         [ForeignKey("AddressId")]
-        public virtual sdtoAddress Address { get; set; }      
+        public virtual sdtoAddress Address { get; set; }
     }
 }

@@ -210,13 +210,11 @@
                 </form>
                 <!-- /.search form -->
                 <!-- Sidebar Menu -->
-                @Html.Partial("MenuView", ((Data.Models.SysBase.Tree.Tree<Data.Models.Accounts.sdtoUrlInfo>)ViewBag.Menu).Nodes.FirstOrDefault())
+                
                 <ul class="sidebar-menu">
                     <li class="header">HEADER</li>
                     <!-- Optionally, you can add icons to the links -->
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @Html.Partial("MenuView", ((Data.Models.SysBase.Tree.Tree<Data.Models.Accounts.sdtoUrlInfo>)ViewBag.Menu).Nodes.FirstOrDefault())
                     <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
                     <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
                     <li class="treeview">

@@ -1,0 +1,163 @@
+﻿@model Data.Models.Accounts.sdtoLoanRepayment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>sdtoLoanRepayment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanDetails.ChequeDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanDetails.ChequeDetails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RepaymentCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RepaymentCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PrincipalAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrincipalAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InterestAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InterestAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InterestRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InterestRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RepaymentAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RepaymentAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PendingPrincipalAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PendingPrincipalAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentMode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentMode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChequeDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChequeDetails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LoanRepaymentId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

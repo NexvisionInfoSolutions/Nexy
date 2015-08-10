@@ -18,7 +18,6 @@ namespace LoanManagementSystem.Models
         public DbSet<sdtoUserGroup> Usergroup { get; set; }
         public DbSet<sdtoUser> User { get; set; }
         public DbSet<sdtoSchedule> Schedules { get; set; }
-
         public DbSet<sdtoCompany> Companies { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountType> AccountTypes { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountHead> AccountHeads { get; set; }
@@ -27,7 +26,6 @@ namespace LoanManagementSystem.Models
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountBookType> AccountBookTypes { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoSettings> GeneralSettings { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoAccountBook> AccountBooks { get; set; }
-
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoUrlInfo> UrlInfoCollection { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -43,5 +41,9 @@ namespace LoanManagementSystem.Models
             .HasOptional<sdtoContact>(u => u.Contacts)
             .WithOptionalPrincipal();
         }
+
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoLoanInfo> sdtoLoanInfoes { get; set; }
+
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoLoanRepayment> sdtoLoanRepayments { get; set; }
     }
 }

@@ -27,16 +27,16 @@ namespace LoanManagementSystem.Models
 
         public UserGroupStatus Status { get; set; }
 
-        public bool IsDeleted { get; set; }
+        //public bool IsDeleted { get; set; }
 
         public string Description { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        //public DateTime CreatedOn { get; set; }
 
-        public long CreatedBy { get; set; }
+        //public long CreatedBy { get; set; }
 
-        public DateTime ModifiedOn { get; set; }
+        //public DateTime ModifiedOn { get; set; }
 
-        public long ModifiedBy { get; set; }
+        //public long ModifiedBy { get; set; }
     }
 }

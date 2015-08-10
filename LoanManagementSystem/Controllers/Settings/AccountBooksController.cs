@@ -53,18 +53,21 @@ namespace LoanManagementSystem.Controllers.Settings
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AccountBookId,BookCode,BookName,BookDescription,AccountBookTypeId,AccountHeadId,BankInterest,BankCharges,ReceiptVoucherPrefix,ReceiptVoucherSuffix,PaymentVoucherPrefix,PaymentVoucherSuffix,Status")] sdtoAccountBook sdtoAccountBook)
+        public ActionResult Create(//[Bind(Include = "AccountBookId,BookCode,BookName,BookDescription,AccountBookTypeId,AccountHeadId,BankInterest,BankCharges,ReceiptVoucherPrefix,ReceiptVoucherSuffix,PaymentVoucherPrefix,PaymentVoucherSuffix,Status")] 
+            sdtoAccountBook AccountBook)
         {
             if (ModelState.IsValid)
             {
-                db.AccountBooks.Add(sdtoAccountBook);
+                AccountBook.CreatedOn = DateTime.Now;
+                AccountBook.ModifiedOn = null;
+                db.AccountBooks.Add(AccountBook);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AccountBookTypeId = new SelectList(db.AccountBookTypes, "AccountBookTypeId", "AccountBookType", sdtoAccountBook.AccountBookTypeId);
-            ViewBag.AccountHeadId = new SelectList(db.AccountHeads, "AccountHeadId", "AccountCode", sdtoAccountBook.AccountHeadId);
-            return View(sdtoAccountBook);
+            ViewBag.AccountBookTypeId = new SelectList(db.AccountBookTypes, "AccountBookTypeId", "AccountBookType", AccountBook.AccountBookTypeId);
+            ViewBag.AccountHeadId = new SelectList(db.AccountHeads, "AccountHeadId", "AccountCode", AccountBook.AccountHeadId);
+            return View(AccountBook);
         }
 
         // GET: AccountBooks/Edit/5
@@ -93,6 +96,7 @@ namespace LoanManagementSystem.Controllers.Settings
         {
             if (ModelState.IsValid)
             {
+                sdtoAccountBook.ModifiedOn = DateTime.Now;
                 db.Entry(sdtoAccountBook).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

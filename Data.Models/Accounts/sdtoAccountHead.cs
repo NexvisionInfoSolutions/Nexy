@@ -41,7 +41,7 @@ namespace Data.Models.Accounts
 
         public long ModifiedBy { get; set; }
 
-        public DateTime ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
 
         [ForeignKey("ContactId")]
         public virtual sdtoContact Contacts { get; set; }

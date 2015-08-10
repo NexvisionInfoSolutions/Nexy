@@ -56,18 +56,16 @@ namespace LoanManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 accHead.CreatedOn = DateTime.Now;
-                accHead.ModifiedOn = DateTime.Now;
+                accHead.ModifiedOn = null;
 
                 if (accHead.Address != null)
                 {
-                    accHead.Address.CreatedOn = accHead.CreatedOn;
-                    accHead.Address.ModifiedOn = accHead.ModifiedOn;
+                    accHead.Address.CreatedOn = accHead.CreatedOn;                    
                 }
 
                 if (accHead.Contacts != null)
                 {
-                    accHead.Contacts.CreatedOn = accHead.CreatedOn;
-                    accHead.Contacts.ModifiedOn = accHead.ModifiedOn;
+                    accHead.Contacts.CreatedOn = accHead.CreatedOn;                    
                 }
 
                 accHead.Contacts = db.Contacts.Add(accHead.Contacts);
@@ -110,6 +108,7 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                sdtoAccountHead.ModifiedOn = DateTime.Now;
                 db.Entry(sdtoAccountHead).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

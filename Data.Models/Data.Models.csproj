@@ -48,6 +48,8 @@
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
     <Compile Include="Base\BaseData.cs" />
+    <Compile Include="Loan\sdtoLoanRepayment.cs" />
+    <Compile Include="Loan\sdtoLoanInfo.cs" />
     <Compile Include="Settings\sdtoSettings.cs" />
     <Compile Include="SysBase\sdtoUrlInfo.cs" />
     <Compile Include="SysBase\Tree\Tree.cs" />
