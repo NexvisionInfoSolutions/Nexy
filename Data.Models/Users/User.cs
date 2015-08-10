@@ -40,19 +40,19 @@ namespace LoanManagementSystem.Models
         [MaxLength(50)]
         public string Designation { get; set; }
 
-        public UserType UserType { get; set; }
+        public UserType? UserType { get; set; }
 
         public long ContactId { get; set; }
 
-        public long AddressId { get; set; }
+        public long? AddressId { get; set; }
 
-        public long PermanentAddressId { get; set; }
+        public long? PermanentAddressId { get; set; }
 
-        public long GuaranterAddressId { get; set; }
+        public long? GuaranterAddressId { get; set; }
 
-        public long PermanentContactId { get; set; }
+        public long? PermanentContactId { get; set; }
 
-        public long GuaranterContactId { get; set; }
+        public long? GuaranterContactId { get; set; }
 
         public string FatherName { get; set; }
 
@@ -60,7 +60,7 @@ namespace LoanManagementSystem.Models
 
         public string Occupation { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
 
         [ForeignKey("ContactId")]
