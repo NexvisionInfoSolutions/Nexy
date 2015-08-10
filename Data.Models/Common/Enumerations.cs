@@ -20,7 +20,7 @@ namespace Data.Models
 
         public enum UrlInfoStatus { Inactive = 0, Active = 1 }
 
-        public enum UserType { Executive = 1, Member = 2 }
+        public enum UserType {User=1, Executive = 2, Member = 3 }
 
     }
 }
