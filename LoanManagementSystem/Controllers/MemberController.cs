@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Models;
+using Data.Models.Enumerations;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -18,7 +19,7 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Index()
         {
             var user = db.User.Include(s => s.Address).Include(s => s.Contacts).Include(s => s.GuaranterAddress).Include(s => s.GuaranterContacts).Include(s => s.PermanentAddress).Include(s => s.PermanentContacts).Include(s => s.UserGroup);
-            return View(user.ToList());
+            return View(user.Where(s => s.UserType == UserType.Member).ToList());
         }
 
         // GET: /Member/Details/5
@@ -58,6 +59,7 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                sdtouser.UserType = UserType.Member;
                 if (sdtouser.Address != null)
                 {
                     sdtouser.Address.CreatedOn = DateTime.Now;

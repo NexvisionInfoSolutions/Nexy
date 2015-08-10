@@ -6,7 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using LoanManagementSystem.Models; 
+using LoanManagementSystem.Models;
+using Data.Models.Enumerations; 
 
 namespace LoanManagementSystem.Controllers
 {
@@ -18,7 +19,7 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Index()
         {
             var user = db.User.Include(u => u.UserGroup);
-            return View(user.ToList());
+            return View(user.Where(s => s.UserType == UserType.User).ToList());
         }
 
         // GET: /User/Details/5
@@ -48,10 +49,11 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserID,Code,Name,Description,UserGroupId,IsActive")] sdtoUser user)
+        public ActionResult Create(sdtoUser user)
         {
             if (ModelState.IsValid)
             {
+                user.UserType = UserType.User;
                 db.User.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");

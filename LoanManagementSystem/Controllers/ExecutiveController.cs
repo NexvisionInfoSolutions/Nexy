@@ -19,7 +19,8 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Index()
         {
             var user = db.User.Include(s => s.Address).Include(s => s.Contacts).Include(s => s.UserGroup);
-            return View(user.ToList());
+     
+            return View(user.Where(s=> s.UserType==UserType.Executive).ToList());
         }
 
         // GET: /Executive/Details/5
@@ -55,6 +56,7 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                sdtouser.UserType = UserType.Executive;
                 if (sdtouser.Address != null)
                 {
                     sdtouser.Address.CreatedOn = DateTime.Now;
@@ -117,6 +119,7 @@ namespace LoanManagementSystem.Controllers
                 {
                     sdtouser.Contacts.ModifiedOn = DateTime.Now;
                 }
+                db.User.Attach(sdtouser);
                 db.Entry(sdtouser).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
