@@ -123,7 +123,14 @@ namespace LoanManagementSystem.Controllers
             if (sdtouser == null)
             {
                 return HttpNotFound();
-            }
+            
+            } 
+            sdtouser.UserAddress = db.Address.Find(sdtouser.UserAddressId);
+            sdtouser.PermanentAddress = db.Address.Find(sdtouser.PermanentAddressId);
+            sdtouser.GuaranterAddress = db.Address.Find(sdtouser.GuaranterAddressId);
+            sdtouser.Contacts = db.Contacts.Find(sdtouser.ContactId);
+            sdtouser.PermanentContacts = db.Contacts.Find(sdtouser.PermanentContactId);
+            sdtouser.GuaranterContacts = db.Contacts.Find(sdtouser.GuaranterContactId);
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.ContactId);
             ViewBag.GuaranterAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.GuaranterAddressId);
@@ -143,6 +150,7 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                //var user  = db.User.Find(sdtouser.UserID);
                 if (sdtouser.UserAddress != null)
                 {
                     sdtouser.UserAddress.ModifiedOn = DateTime.Now;
@@ -169,7 +177,16 @@ namespace LoanManagementSystem.Controllers
                 if (sdtouser.GuaranterContacts != null)
                 { 
                     sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
-                } 
+                }
+
+
+                //sdtouser.UserAddress.AddressId = user.UserAddressId;
+                //sdtouser.PermanentAddress = db.Address.Find(sdtouser.PermanentAddressId);
+                //sdtouser.GuaranterAddress = db.Address.Find(sdtouser.GuaranterAddressId);
+                //sdtouser.Contacts = db.Contacts.Find(sdtouser.ContactId);
+                //sdtouser.PermanentContacts = db.Contacts.Find(sdtouser.PermanentContactId);
+                //sdtouser.GuaranterContacts = db.Contacts.Find(sdtouser.GuaranterContactId);
+                //db.User.Attach(user);
 
                 db.Entry(sdtouser).State = EntityState.Modified;
                 db.SaveChanges();
