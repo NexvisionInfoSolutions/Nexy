@@ -36,6 +36,7 @@ namespace LoanManagementSystem.Models
         [MaxLength(200)]
         public string WebUrl { get; set; }
 
+        [NotMapped]
         public string LogoUrl { get; set; }
 
         //public long CreatedBy { get; set; }
@@ -47,9 +48,9 @@ namespace LoanManagementSystem.Models
         //public DateTime ModifiedOn { get; set; }
 
         [ForeignKey("ContactId")]
-        public virtual sdtoContact Contacts { get; set; }
+        public sdtoContact Contacts { get; set; }
 
         [ForeignKey("AddressId")]
-        public virtual sdtoAddress Address { get; set; }
+        public sdtoAddress Address { get; set; }
     }
 }

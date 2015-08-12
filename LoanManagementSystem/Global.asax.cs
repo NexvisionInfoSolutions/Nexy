@@ -24,11 +24,11 @@ namespace LoanManagementSystem
 
             using (var db = new LoanDBContext())
             {
-                Database.SetInitializer(new DropCreateDatabaseIfModelChanges<LoanDBContext>());
+                Database.SetInitializer(new Business.Base.LoanDBInitializer());
                 db.Database.Initialize(true);
             }
 
             GlobalFilters.Filters.Add(new LoanManagementSystem.App_Start.MenuLoaderActionFilter(), 0);
-        }       
+        }
     }
 }

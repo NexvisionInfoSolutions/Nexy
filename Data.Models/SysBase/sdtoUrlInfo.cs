@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Data.Models.Accounts
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("UrlInfo")]
-    public class sdtoUrlInfo
+    public class sdtoUrlInfo : sdtoBaseData
     {
         [Key]
         public long UrlId { get; set; }
@@ -21,22 +21,22 @@ namespace Data.Models.Accounts
 
         public string Url { get; set; }
 
+        [InverseProperty("Parent")]
         public long ParentId { get; set; }
 
-        public DateTime CreatedOn { get; set; }
-        public DateTime ModifiedOn { get; set; }
-        public long CreatedBy { get; set; }
-        public long ModifiedBy { get; set; }
+        //public DateTime CreatedOn { get; set; }
+        //public DateTime ModifiedOn { get; set; }
+        //public long CreatedBy { get; set; }
+        //public long ModifiedBy { get; set; }
 
         public UrlInfoStatus Status { get; set; }
 
-        public bool IsDeleted { get; set; }
+        //public bool IsDeleted { get; set; }
 
-        public long DeletedBy { get; set; }
+        //public long DeletedBy { get; set; }
 
-        public DateTime DeletedOn { get; set; }
-
-        [NotMapped]
+        //public DateTime DeletedOn { get; set; }
+        
         public sdtoUrlInfo Parent { get; set; }
     }
 }

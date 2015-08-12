@@ -1,8 +1,8 @@
 ﻿@model  Data.Models.SysBase.Tree.TreeNode<Data.Models.Accounts.sdtoUrlInfo>
 @foreach (var treeNode in Model.Children)
 {
-    <ul>
-        <li>
+    <ul class=@(treeNode.ParentId == 0 ? "sidebar-menu" : "treeview-menu")>
+        <li class=@(treeNode.ParentId==0?"header":"")>
             <a href="@treeNode.NodeElement.Url">
                 @treeNode.NodeElement.UrlText
             </a>

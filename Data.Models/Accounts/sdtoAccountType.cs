@@ -19,6 +19,9 @@ namespace Data.Models.Accounts
         [MaxLength(100)]
         public string AccountType { get; set; }
 
+        [MaxLength(100)]
+        public string UniqueName { get; set; }
+
         public AccountTypeStatus Status { get; set; }
     }
 }

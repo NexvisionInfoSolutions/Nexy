@@ -11,15 +11,6 @@ namespace LoanManagementSystem.Models
     [System.ComponentModel.DataAnnotations.Schema.Table("Users")]
     public class sdtoUser : sdtoBaseData
     {
-        public sdtoUser()
-        {
-            //Description = string.Empty;
-            //Designation = string.Empty;
-            //ContactNo = string.Empty;
-            //Address = string.Empty;
-            //UserGroupId = 3;
-        }
-
         [Key]
         public long UserID { get; set; }
 
@@ -30,10 +21,10 @@ namespace LoanManagementSystem.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-
         public long? UserGroupId { get; set; }
+
         [ForeignKey("UserGroupId")]
-        public virtual sdtoUserGroup UserGroup { get; set; }
+        public sdtoUserGroup UserGroup { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -44,7 +35,7 @@ namespace LoanManagementSystem.Models
 
         public long? ContactId { get; set; }
 
-        public long? AddressId { get; set; }
+        public long? UserAddressId { get; set; }
 
         public long? PermanentAddressId { get; set; }
 
@@ -63,22 +54,21 @@ namespace LoanManagementSystem.Models
         //public DateTime CreatedOn { get; set; }
 
         [ForeignKey("ContactId")]
-        public virtual sdtoContact Contacts { get; set; }
+        public sdtoContact Contacts { get; set; }
 
-        [ForeignKey("AddressId")]
-        public virtual sdtoAddress Address { get; set; }
+        [ForeignKey("UserAddressId")]
+        public sdtoAddress UserAddress { get; set; }
 
         [ForeignKey("PermanentAddressId")]
-        public virtual sdtoAddress PermanentAddress { get; set; }
+        public sdtoAddress PermanentAddress { get; set; }
 
         [ForeignKey("GuaranterAddressId")]
-        public virtual sdtoAddress GuaranterAddress { get; set; }
+        public sdtoAddress GuaranterAddress { get; set; }
 
         [ForeignKey("PermanentContactId")]
-        public virtual sdtoContact PermanentContacts { get; set; }
+        public sdtoContact PermanentContacts { get; set; }
 
         [ForeignKey("GuaranterContactId")]
-        public virtual sdtoContact GuaranterContacts { get; set; }
-
+        public sdtoContact GuaranterContacts { get; set; }
     }
 }

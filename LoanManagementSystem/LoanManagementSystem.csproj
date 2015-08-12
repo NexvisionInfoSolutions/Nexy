@@ -170,9 +170,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CompanyController.cs" />
-    <Compile Include="Controllers\ExecutiveController.cs" />
-    <Compile Include="Controllers\MemberController.cs" />
+    <Compile Include="Controllers\User\CompanyController.cs" />
+    <Compile Include="Controllers\User\ExecutiveController.cs" />
+    <Compile Include="Controllers\User\MemberController.cs" />
     <Compile Include="Controllers\Loan\LoanController.cs" />
     <Compile Include="Controllers\Loan\LoanRepaymentsController.cs" />
     <Compile Include="Controllers\Settings\AccountBooksController.cs" />
@@ -184,7 +184,7 @@
     <Compile Include="Controllers\Settings\ScheduleSettingsController.cs" />
     <Compile Include="Controllers\Settings\AccountBookTypesController.cs" />
     <Compile Include="Controllers\Settings\SettingsController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\User\UserController.cs" />
     <Compile Include="Controllers\Settings\UserGroupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

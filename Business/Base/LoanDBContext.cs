@@ -32,15 +32,15 @@ namespace LoanManagementSystem.Models
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
-            modelBuilder
-            .Entity<sdtoUser>()
-            .HasOptional<sdtoAddress>(u => u.Address)
-            .WithOptionalPrincipal();
+            //modelBuilder
+            //.Entity<sdtoUser>()
+            //.HasOptional<sdtoAddress>(u => u.UserAddress)
+            //.WithOptionalPrincipal();
 
-            modelBuilder
-            .Entity<sdtoUser>()
-            .HasOptional<sdtoContact>(u => u.Contacts)
-            .WithOptionalPrincipal();
+            //modelBuilder
+            //.Entity<sdtoUser>()
+            //.HasOptional<sdtoContact>(u => u.Contacts)
+            //.WithOptionalPrincipal();
 
          //   modelBuilder
          //  .Entity<sdtoUser>()
@@ -51,7 +51,6 @@ namespace LoanManagementSystem.Models
          // .Entity<sdtoUser>()
          // .HasOptional<sdtoAddress>(u => u.GuaranterAddress)
          // .WithOptionalPrincipal();
-
             
          //   modelBuilder
          // .Entity<sdtoUser>()

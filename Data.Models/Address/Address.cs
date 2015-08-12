@@ -34,7 +34,6 @@ namespace LoanManagementSystem.Models
 
         public string District { get; set; }
 
-
         //public DateTime CreatedOn { get; set; }
 
         //public long CreatedBy { get; set; }
