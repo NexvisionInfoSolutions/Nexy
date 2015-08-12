@@ -19,9 +19,9 @@ namespace LoanManagementSystem.Controllers.Settings
         public ActionResult Index()
         {
             var sdtoUrlInfoes = (
-                                 from I in db.UrlInfoCollection
+                                 from I in db.UrlInfoCollection.Where(x => x.IsMenu == true)
                                  from O in db.UrlInfoCollection.Where(w => w.UrlId == I.ParentId).DefaultIfEmpty()
-                                 select new { UrlId = I.UrlId, ParentId = I.ParentId, UrlText = I.UrlText, ParentUrlId = O !=null ? O.UrlId:0, ParentUrlText = O !=null ? O.UrlText : "Root" }
+                                 select new { UrlId = I.UrlId, ParentId = I.ParentId, UrlText = I.UrlText, ParentUrlId = O != null ? O.UrlId : 0, ParentUrlText = O != null ? O.UrlText : "Root" }
                                 ).ToList().Select(x => new sdtoUrlInfo()
                                        {
                                            UrlId = x.UrlId,

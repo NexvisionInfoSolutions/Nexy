@@ -51,7 +51,7 @@ namespace Business.SysBase.Tree
                 }
                 else if (typeof(T) == typeof(sdtoUrlInfo))
                 {
-                    IQueryable<sdtoUrlInfo> urlCollection = AppDb.UrlInfoCollection.Where(x => x.ParentId == rootNode.Id);
+                    IQueryable<sdtoUrlInfo> urlCollection = AppDb.UrlInfoCollection.Where(x => x.ParentId == rootNode.Id && x.IsMenu == true).OrderBy(x => x.MenuOrder);
                     if (urlCollection.Any())
                     {
                         childNodeCollection = urlCollection.Select(t => new Data.Models.SysBase.Tree.TreeNode<T>() { Id = t.UrlId, ParentId = t.ParentId, NodeElement = t as T }).ToList();

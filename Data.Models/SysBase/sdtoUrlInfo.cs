@@ -24,6 +24,10 @@ namespace Data.Models.Accounts
         [InverseProperty("Parent")]
         public long ParentId { get; set; }
 
+        public bool IsMenu { get; set; }
+
+        public int? MenuOrder { get; set; }
+
         //public DateTime CreatedOn { get; set; }
         //public DateTime ModifiedOn { get; set; }
         //public long CreatedBy { get; set; }
@@ -36,7 +40,7 @@ namespace Data.Models.Accounts
         //public long DeletedBy { get; set; }
 
         //public DateTime DeletedOn { get; set; }
-        
+
         public sdtoUrlInfo Parent { get; set; }
     }
 }
