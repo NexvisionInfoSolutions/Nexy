@@ -89,10 +89,11 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,Code,Name,Description,UserGroupId,IsActive")] sdtoUser user)
+        public ActionResult Edit(sdtoUser user)
         {
             if (ModelState.IsValid)
             {
+                user.UserType = UserType.User;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
