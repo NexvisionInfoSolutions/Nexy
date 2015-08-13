@@ -103,7 +103,7 @@ namespace LoanManagementSystem.Controllers
             }
 
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
-            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.ContactId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             ViewBag.GuaranterAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.GuaranterAddressId);
             ViewBag.GuaranterContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.GuaranterContactId);
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.PermanentAddressId);
@@ -128,11 +128,11 @@ namespace LoanManagementSystem.Controllers
             sdtouser.UserAddress = db.Address.Find(sdtouser.UserAddressId);
             sdtouser.PermanentAddress = db.Address.Find(sdtouser.PermanentAddressId);
             sdtouser.GuaranterAddress = db.Address.Find(sdtouser.GuaranterAddressId);
-            sdtouser.Contacts = db.Contacts.Find(sdtouser.ContactId);
+            sdtouser.Contacts = db.Contacts.Find(sdtouser.UserContactId);
             sdtouser.PermanentContacts = db.Contacts.Find(sdtouser.PermanentContactId);
             sdtouser.GuaranterContacts = db.Contacts.Find(sdtouser.GuaranterContactId);
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
-            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.ContactId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             ViewBag.GuaranterAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.GuaranterAddressId);
             ViewBag.GuaranterContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.GuaranterContactId);
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.PermanentAddressId);
@@ -193,7 +193,7 @@ namespace LoanManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
-            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.ContactId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             ViewBag.GuaranterAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.GuaranterAddressId);
             ViewBag.GuaranterContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.GuaranterContactId);
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.PermanentAddressId);
