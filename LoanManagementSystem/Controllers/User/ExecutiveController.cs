@@ -78,7 +78,7 @@ namespace LoanManagementSystem.Controllers
             }
 
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
-            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.ContactId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             //ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
             return View(sdtouser);
         }
@@ -96,7 +96,7 @@ namespace LoanManagementSystem.Controllers
                 return HttpNotFound();
             }
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
-            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.ContactId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
             return View(sdtouser);
         }
@@ -125,7 +125,7 @@ namespace LoanManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
-            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.ContactId);
+            ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             //ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
             return View(sdtouser);
         }
