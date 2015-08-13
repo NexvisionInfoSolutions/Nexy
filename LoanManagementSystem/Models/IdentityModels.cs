@@ -21,7 +21,7 @@ namespace LoanManagementSystem.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("LoanDBContext", throwIfV1Schema: false)
         {
         }
 

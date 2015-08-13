@@ -477,6 +477,10 @@
       <Project>{d48cbc89-6579-4680-8f73-fd132323f87c}</Project>
       <Name>Data.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UtilityHelper\UtilityHelper.csproj">
+      <Project>{61719ea8-290b-4efe-8e87-15d9c38ef00a}</Project>
+      <Name>UtilityHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

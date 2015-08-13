@@ -18,7 +18,7 @@ namespace LoanManagementSystem.Models
         public string Code { get; set; }
 
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string CompanyName { get; set; }
 
         public long AddressId { get; set; }
 

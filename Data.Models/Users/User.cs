@@ -17,8 +17,21 @@ namespace LoanManagementSystem.Models
         [MaxLength(10)]
         public string Code { get; set; }
 
-        [MaxLength(50)]
-        public string Name { get; set; }
+        [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Username or email of the user that is used to validate the user.
+        /// </summary>
+        [MaxLength(200)]
+        public string UserName { get; set; }
+
+        [MaxLength(100)]
+        public string Password { get; set; }
+
         public string Description { get; set; }
 
         public long? UserGroupId { get; set; }
@@ -54,21 +67,23 @@ namespace LoanManagementSystem.Models
         //public DateTime CreatedOn { get; set; }
 
         [ForeignKey("ContactId")]
-        public sdtoContact Contacts { get; set; }
+        public virtual sdtoContact Contacts { get; set; }
 
         [ForeignKey("UserAddressId")]
-        public sdtoAddress UserAddress { get; set; }
+        public virtual sdtoAddress UserAddress { get; set; }
 
         [ForeignKey("PermanentAddressId")]
-        public sdtoAddress PermanentAddress { get; set; }
+        public virtual sdtoAddress PermanentAddress { get; set; }
 
         [ForeignKey("GuaranterAddressId")]
-        public sdtoAddress GuaranterAddress { get; set; }
+        public virtual sdtoAddress GuaranterAddress { get; set; }
 
         [ForeignKey("PermanentContactId")]
-        public sdtoContact PermanentContacts { get; set; }
+        public virtual sdtoContact PermanentContacts { get; set; }
 
         [ForeignKey("GuaranterContactId")]
-        public sdtoContact GuaranterContacts { get; set; }
+        public virtual sdtoContact GuaranterContacts { get; set; }
+
+        public long? CompanyId { get; set; }
     }
 }

@@ -10,12 +10,14 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         @*<h4>Company</h4>*@
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.CompanyId)
+        @Html.HiddenFor(model => model.AddressId)
+        @Html.HiddenFor(model => model.ContactId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
@@ -26,10 +28,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.CompanyName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
+                @Html.EditorFor(model => model.CompanyName)
+                @Html.ValidationMessageFor(model => model.CompanyName)
             </div>
         </div>
 
@@ -37,7 +39,7 @@
             @*@Html.LabelFor(model => model.Address.Address1, "Address", new { @class = "control-label col-md-2" })*@
             @Html.LabelFor(model => model.Address.Address1, "Address", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Address.Address1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Address.Address1, new { htmlAttributes = new { @class = "form-control" } })
 
             </div>
         </div>
@@ -59,12 +61,12 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.ContactId, "ContactId", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ContactId", String.Empty)
-                @Html.ValidationMessageFor(model => model.ContactId)
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.ContactId, "ContactId", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("ContactId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.ContactId)
+                </div>
+            </div>*@
         <div class="form-group">
             @Html.LabelFor(model => model.Contacts.ContactName, "Contact Person", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -96,12 +98,12 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.IsDeleted, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsDeleted)
-                @Html.ValidationMessageFor(model => model.IsDeleted)
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.IsDeleted, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsDeleted)
+                    @Html.ValidationMessageFor(model => model.IsDeleted)
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.WebUrl, new { @class = "control-label col-md-2" })
@@ -120,36 +122,36 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy)
-                @Html.ValidationMessageFor(model => model.CreatedBy)
+                @Html.LabelFor(model => model.CreatedBy, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CreatedBy)
+                    @Html.ValidationMessageFor(model => model.CreatedBy)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedOn, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedOn)
-                @Html.ValidationMessageFor(model => model.CreatedOn)
+            <div class="form-group">
+                @Html.LabelFor(model => model.CreatedOn, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CreatedOn)
+                    @Html.ValidationMessageFor(model => model.CreatedOn)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ModifiedBy, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedBy)
-                @Html.ValidationMessageFor(model => model.ModifiedBy)
+            <div class="form-group">
+                @Html.LabelFor(model => model.ModifiedBy, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ModifiedBy)
+                    @Html.ValidationMessageFor(model => model.ModifiedBy)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ModifiedOn, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedOn)
-                @Html.ValidationMessageFor(model => model.ModifiedOn)
-            </div>
-        </div>*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.ModifiedOn, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ModifiedOn)
+                    @Html.ValidationMessageFor(model => model.ModifiedOn)
+                </div>
+            </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

@@ -9,7 +9,7 @@ namespace LoanManagementSystem.Models
 {
     public class sdtoBaseData
     {
-        public DateTime CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
 

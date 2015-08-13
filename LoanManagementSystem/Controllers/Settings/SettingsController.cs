@@ -39,7 +39,17 @@ namespace LoanManagementSystem.Controllers.Settings
         // GET: Settings/Create
         public ActionResult Create()
         {
-            return View();
+            sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (userDetails == null)
+                userDetails = new sdtoUser();
+
+            ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
+
+            var settings = db.GeneralSettings.Where(x => x.CompanyId == userDetails.CompanyId);
+            if (settings != null && settings.Count() > 0)
+                return EditOnCreate(settings.FirstOrDefault(x => x.CompanyId == userDetails.CompanyId) as sdtoSettings);
+            else
+                return View(new sdtoSettings() { CompanyId = userDetails.CompanyId, BankCharges = 0, BankInterest = 0 });
         }
 
         // POST: Settings/Create
@@ -70,6 +80,20 @@ namespace LoanManagementSystem.Controllers.Settings
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
+            if (sdtoSettings == null)
+            {
+                return HttpNotFound();
+            }
+            return View(sdtoSettings);
+        }
+
+        // GET: Settings/Edit/5
+        public ActionResult EditOnCreate(sdtoSettings sdtoSettings)
+        {
+            if (sdtoSettings == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (sdtoSettings == null)
             {
                 return HttpNotFound();

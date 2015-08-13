@@ -86,7 +86,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoCompany sdtocompany = db.Companies.Find(id);
+            sdtoCompany sdtocompany = db.Companies.Include(s => s.Address).Include(s => s.Contacts).Where(x => x.CompanyId == id).FirstOrDefault();
             if (sdtocompany == null)
             {
                 return HttpNotFound();
@@ -117,10 +117,14 @@ namespace LoanManagementSystem.Controllers
                     objcompany.Contacts.ModifiedOn = objcompany.ModifiedOn;
                 }
 
-                //objcompany.Contacts = db.Contacts.Add(objcompany.Contacts);
-                //objcompany.Address = db.Address.Add(objcompany.Address);
+                db.Contacts.Attach(objcompany.Contacts);
+                db.Address.Attach(objcompany.Address);
+                db.Companies.Attach(objcompany);
 
-                db.Entry(objcompany).State = EntityState.Modified;
+                db.Entry<sdtoContact>(objcompany.Contacts).State = EntityState.Modified;
+                db.Entry<sdtoAddress>(objcompany.Address).State = EntityState.Modified;
+                db.Entry<sdtoCompany>(objcompany).State = EntityState.Modified;
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
