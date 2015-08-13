@@ -46,7 +46,7 @@ namespace LoanManagementSystem.Models
 
         public UserType? UserType { get; set; }
 
-        public long? ContactId { get; set; }
+        public long UserContactId { get; set; }
 
         public long? UserAddressId { get; set; }
 
@@ -66,7 +66,7 @@ namespace LoanManagementSystem.Models
 
         //public DateTime CreatedOn { get; set; }
 
-        [ForeignKey("ContactId")]
+        [ForeignKey("UserContactId")]
         public virtual sdtoContact Contacts { get; set; }
 
         [ForeignKey("UserAddressId")]
