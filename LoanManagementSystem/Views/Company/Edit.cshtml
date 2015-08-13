@@ -7,7 +7,7 @@
 
 <h2>Edit Company</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Company", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -18,6 +18,15 @@
         @Html.HiddenFor(model => model.CompanyId)
         @Html.HiddenFor(model => model.AddressId)
         @Html.HiddenFor(model => model.ContactId)
+        @Html.HiddenFor(m => m.CreatedBy)
+        @Html.HiddenFor(m => m.CreatedOn)
+        @Html.HiddenFor(m => m.ModifiedBy)
+        @Html.HiddenFor(m => m.Address.CreatedBy)
+        @Html.HiddenFor(m => m.Address.CreatedOn)
+        @Html.HiddenFor(m => m.Address.ModifiedBy)
+        @Html.HiddenFor(m => m.Contacts.CreatedBy)
+        @Html.HiddenFor(m => m.Contacts.CreatedOn)
+        @Html.HiddenFor(m => m.Contacts.ModifiedBy)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
@@ -32,6 +41,23 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CompanyName)
                 @Html.ValidationMessageFor(model => model.CompanyName)
+            </div>
+        </div>
+
+        @if (File.Exists(Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\Company\\" + @Model.CompanyId + ".logo"))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.LogoUrl, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <img src="~/Utility/CompanyLogo?CompanyId=@Model.CompanyId" alt="Logo" />
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LogoUrl, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input name="Logo" type="file" />
             </div>
         </div>
 
@@ -111,15 +137,7 @@
                 @Html.EditorFor(model => model.WebUrl)
                 @Html.ValidationMessageFor(model => model.WebUrl)
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LogoUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LogoUrl)
-                @Html.ValidationMessageFor(model => model.LogoUrl)
-            </div>
-        </div>
+        </div>        
 
         @*<div class="form-group">
                 @Html.LabelFor(model => model.CreatedBy, new { @class = "control-label col-md-2" })

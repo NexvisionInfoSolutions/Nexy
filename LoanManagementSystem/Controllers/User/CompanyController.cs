@@ -7,12 +7,31 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Models;
+using System.IO;
 
 namespace LoanManagementSystem.Controllers
 {
     public class CompanyController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
+
+        private void FileUpload(long CompanyId, HttpPostedFileBase uploadFile)
+        {
+            if (uploadFile.ContentLength > 0)
+            {
+                DirectoryInfo dirComp = new DirectoryInfo(HttpContext.Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\Company");
+                if (!dirComp.Exists)
+                    dirComp.Create();
+
+                FileInfo objFile = new FileInfo(Path.Combine(dirComp.FullName, System.Guid.NewGuid() + ".logo"));
+                ViewBag.CompanyLogoFile = objFile.FullName;
+
+                if (objFile.Exists)
+                    objFile.Delete();
+
+                uploadFile.SaveAs(objFile.FullName);
+            }
+        }
 
         // GET: /Company/
         public ActionResult Index()
@@ -49,29 +68,55 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(sdtoCompany objcompany)//[Bind(Include="CompanyId,Code,Name,AddressId,Owner,TIN,ContactId,IsDeleted,WebUrl,LogoUrl,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")]
+        public ActionResult Create(sdtoCompany objcompany, HttpPostedFileBase Logo)//[Bind(Include="CompanyId,Code,Name,AddressId,Owner,TIN,ContactId,IsDeleted,WebUrl,LogoUrl,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")]
         {
             if (ModelState.IsValid)
             {
-                objcompany.CreatedOn = DateTime.Now;
-                objcompany.ModifiedOn = DateTime.Now;
+                var validImageTypes = new string[]
+                                        {
+                                            "image/gif",
+                                            "image/jpeg",
+                                            "image/pjpeg",
+                                            "image/png"
+                                        };
 
-                if (objcompany.Address != null)
+                if (Logo == null || Logo.ContentLength == 0)
                 {
-                    objcompany.Address.CreatedOn = objcompany.CreatedOn;
+                    ModelState.AddModelError("Logo", "This field is required");
                 }
-
-                if (objcompany.Contacts != null)
+                else if (!validImageTypes.Contains(Logo.ContentType))
                 {
-                    objcompany.Contacts.CreatedOn = objcompany.CreatedOn;
+                    ModelState.AddModelError("Logo", "Please choose either a GIF, JPG or PNG image");
                 }
+                else
+                {
+                    objcompany.CreatedOn = DateTime.Now;
+                    objcompany.ModifiedOn = DateTime.Now;
 
-                objcompany.Contacts = db.Contacts.Add(objcompany.Contacts);
-                objcompany.Address = db.Address.Add(objcompany.Address);
+                    if (objcompany.Address != null)
+                    {
+                        objcompany.Address.CreatedOn = objcompany.CreatedOn;
+                    }
 
-                db.Companies.Add(objcompany);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    if (objcompany.Contacts != null)
+                    {
+                        objcompany.Contacts.CreatedOn = objcompany.CreatedOn;
+                    }
+
+                    objcompany.Contacts = db.Contacts.Add(objcompany.Contacts);
+                    objcompany.Address = db.Address.Add(objcompany.Address);
+
+                    objcompany = db.Companies.Add(objcompany);
+                    db.SaveChanges();
+                    FileUpload(objcompany.CompanyId, Logo);
+
+                    System.IO.FileInfo fInfo = new FileInfo(ViewBag.CompanyLogoFile);
+                    fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, objcompany.CompanyId + ".logo"), true);
+                    fInfo.Delete();
+
+                    // objcompany.LogoUrl = ViewBag.CompanyLogoFile
+                    return RedirectToAction("Index");
+                }
             }
 
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", objcompany.AddressId);
@@ -101,7 +146,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(sdtoCompany objcompany)//[Bind(Include="CompanyId,Code,Name,AddressId,Owner,TIN,ContactId,IsDeleted,WebUrl,LogoUrl,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")]
+        public ActionResult Edit(sdtoCompany objcompany, HttpPostedFileBase Logo)//[Bind(Include="CompanyId,Code,Name,AddressId,Owner,TIN,ContactId,IsDeleted,WebUrl,LogoUrl,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")]
         {
             if (ModelState.IsValid)
             {
@@ -109,13 +154,25 @@ namespace LoanManagementSystem.Controllers
 
                 if (objcompany.Address != null)
                 {
-                    objcompany.Address.ModifiedOn = objcompany.ModifiedOn;
+                    objcompany.Address.AddressId = objcompany.AddressId;
+                    objcompany.Address.ModifiedOn = DateTime.Now;
+                    objcompany.Address.ModifiedBy = objcompany.ModifiedBy;
                 }
 
                 if (objcompany.Contacts != null)
                 {
-                    objcompany.Contacts.ModifiedOn = objcompany.ModifiedOn;
+                    objcompany.Contacts.ContactId = objcompany.ContactId;
+                    objcompany.Contacts.ModifiedOn = DateTime.Now;
+                    objcompany.Contacts.ModifiedBy = objcompany.ModifiedBy;
                 }
+
+                FileUpload(objcompany.CompanyId, Logo);
+
+                System.IO.FileInfo fInfo = new FileInfo(ViewBag.CompanyLogoFile);
+                fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, objcompany.CompanyId + ".logo"), true);
+                fInfo.Delete();
+
+                objcompany.LogoUrl = "ContentUpload/Company/" + objcompany.CompanyId + ".logo";
 
                 db.Contacts.Attach(objcompany.Contacts);
                 db.Address.Attach(objcompany.Address);
@@ -124,7 +181,6 @@ namespace LoanManagementSystem.Controllers
                 db.Entry<sdtoContact>(objcompany.Contacts).State = EntityState.Modified;
                 db.Entry<sdtoAddress>(objcompany.Address).State = EntityState.Modified;
                 db.Entry<sdtoCompany>(objcompany).State = EntityState.Modified;
-
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
