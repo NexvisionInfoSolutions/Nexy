@@ -78,7 +78,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ID,Code,Description")] sdtoUserGroup usergroup)
+        public ActionResult Edit( sdtoUserGroup usergroup)
         {
             if (ModelState.IsValid)
             {
