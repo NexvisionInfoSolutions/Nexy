@@ -46,7 +46,7 @@ namespace LoanManagementSystem.Models
 
         public UserType? UserType { get; set; }
 
-        public long UserContactId { get; set; }
+        public long? UserContactId { get; set; }
 
         public long? UserAddressId { get; set; }
 
