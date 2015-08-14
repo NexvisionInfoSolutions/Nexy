@@ -57,7 +57,7 @@ namespace LoanManagementSystem.Controllers
 
         // GET: /Company/Create
         public ActionResult Create()
-        {
+        {            
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1");
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName");
             return View();

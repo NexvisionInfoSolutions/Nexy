@@ -43,7 +43,13 @@ namespace LoanManagementSystem.Controllers.Settings
             if (userDetails == null)
                 userDetails = new sdtoUser();
 
-            ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
+            var items = new SelectList(db.Companies, "CompanyId", "CompanyName");
+            ViewBag.CompanyList = items;
+            if (items == null || items.Count() == 0)
+            {
+                TempData["ERR_PREMATURE_MESSAGE"] = "Please register a company for configuring settings";
+                return RedirectToAction("Create", "Company");
+            }
 
             var settings = db.GeneralSettings.Where(x => x.CompanyId == userDetails.CompanyId);
             if (settings != null && settings.Count() > 0)
@@ -80,6 +86,8 @@ namespace LoanManagementSystem.Controllers.Settings
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
+            ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
+            
             if (sdtoSettings == null)
             {
                 return HttpNotFound();
