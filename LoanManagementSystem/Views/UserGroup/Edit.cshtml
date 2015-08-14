@@ -1,18 +1,16 @@
 ﻿@model LoanManagementSystem.Models.sdtoUserGroup
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit User Group";
 }
-
-<h2>Edit</h2>
+ 
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>UserGroup</h4>
+    <div class="form-horizontal"> 
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.UserGroupId)
