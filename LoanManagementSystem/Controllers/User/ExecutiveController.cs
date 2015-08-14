@@ -110,6 +110,7 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                sdtouser.UserType = UserType.Executive;
                 if (sdtouser.UserAddress != null)
                 {
                     sdtouser.UserAddress.ModifiedOn = DateTime.Now;  
