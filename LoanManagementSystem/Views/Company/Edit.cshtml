@@ -1,11 +1,10 @@
 ﻿@model LoanManagementSystem.Models.sdtoCompany
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Company";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Edit Company</h2>
+ 
 
 @using (Html.BeginForm("Edit", "Company", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

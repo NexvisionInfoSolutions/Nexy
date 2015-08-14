@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create New Company</h2>
+@*<h2>Create New Company</h2>*@
 
 @Html.Label(Convert.ToString(TempData["ERR_PREMATURE_MESSAGE"]));
 @using (Html.BeginForm("Create", "Company", FormMethod.Post, new { enctype = "multipart/form-data" }))
