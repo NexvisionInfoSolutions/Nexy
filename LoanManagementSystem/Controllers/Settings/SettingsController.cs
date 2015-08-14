@@ -18,7 +18,8 @@ namespace LoanManagementSystem.Controllers.Settings
         // GET: Settings
         public ActionResult Index()
         {
-            return View(db.GeneralSettings.ToList());
+            var list = db.GeneralSettings.Include(x => x.Company);
+            return View(list.ToList());
         }
 
         // GET: Settings/Details/5
@@ -63,12 +64,12 @@ namespace LoanManagementSystem.Controllers.Settings
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SettingsId,CompanyId,BankInterest,BankCharges")] sdtoSettings Settings)
+        public ActionResult Create(//[Bind(Include = "SettingsId,CompanyId,BankInterest,BankCharges")] 
+            sdtoSettings Settings)
         {
             if (ModelState.IsValid)
             {
-                Settings.CreatedOn = DateTime.Now;
-                Settings.ModifiedOn = Settings.CreatedOn;
+                Settings.CreatedOn = DateTime.Now;                
 
                 db.GeneralSettings.Add(Settings);
                 db.SaveChanges();
@@ -87,7 +88,7 @@ namespace LoanManagementSystem.Controllers.Settings
             }
             sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
             ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
-            
+
             if (sdtoSettings == null)
             {
                 return HttpNotFound();

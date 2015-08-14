@@ -15,12 +15,15 @@ namespace Data.Models.Accounts
     {
         [Key]
         public long SettingsId { get; set; }
-
+        
         public long? CompanyId { get; set; }
 
         public float BankInterest { get; set; }
 
         public float BankCharges { get; set; }
+
+        [ForeignKey("CompanyId")]
+        public virtual sdtoCompany Company { get; set; }
 
         //public long CreatedBy { get; set; }
         //public DateTime CreatedOn { get; set; }

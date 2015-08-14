@@ -57,7 +57,7 @@ namespace LoanManagementSystem.Controllers
 
         // GET: /Company/Create
         public ActionResult Create()
-        {            
+        {
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1");
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName");
             return View();
@@ -84,7 +84,7 @@ namespace LoanManagementSystem.Controllers
                 {
                     ModelState.AddModelError("Logo", "This field is required");
                 }
-                else if (!validImageTypes.Contains(Logo.ContentType))
+                else if (Logo != null && !validImageTypes.Contains(Logo.ContentType))
                 {
                     ModelState.AddModelError("Logo", "Please choose either a GIF, JPG or PNG image");
                 }
@@ -108,12 +108,14 @@ namespace LoanManagementSystem.Controllers
 
                     objcompany = db.Companies.Add(objcompany);
                     db.SaveChanges();
-                    FileUpload(objcompany.CompanyId, Logo);
+                    if (Logo != null)
+                    {
+                        FileUpload(objcompany.CompanyId, Logo);
 
-                    System.IO.FileInfo fInfo = new FileInfo(ViewBag.CompanyLogoFile);
-                    fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, objcompany.CompanyId + ".logo"), true);
-                    fInfo.Delete();
-
+                        System.IO.FileInfo fInfo = new FileInfo(ViewBag.CompanyLogoFile);
+                        fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, objcompany.CompanyId + ".logo"), true);
+                        fInfo.Delete();
+                    }
                     // objcompany.LogoUrl = ViewBag.CompanyLogoFile
                     return RedirectToAction("Index");
                 }
@@ -166,13 +168,16 @@ namespace LoanManagementSystem.Controllers
                     objcompany.Contacts.ModifiedBy = objcompany.ModifiedBy;
                 }
 
-                FileUpload(objcompany.CompanyId, Logo);
+                if (Logo != null)
+                {
+                    FileUpload(objcompany.CompanyId, Logo);
 
-                System.IO.FileInfo fInfo = new FileInfo(ViewBag.CompanyLogoFile);
-                fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, objcompany.CompanyId + ".logo"), true);
-                fInfo.Delete();
+                    System.IO.FileInfo fInfo = new FileInfo(ViewBag.CompanyLogoFile);
+                    fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, objcompany.CompanyId + ".logo"), true);
+                    fInfo.Delete();
 
-                objcompany.LogoUrl = "ContentUpload/Company/" + objcompany.CompanyId + ".logo";
+                    objcompany.LogoUrl = "ContentUpload/Company/" + objcompany.CompanyId + ".logo";
+                }
 
                 db.Contacts.Attach(objcompany.Contacts);
                 db.Address.Attach(objcompany.Address);
