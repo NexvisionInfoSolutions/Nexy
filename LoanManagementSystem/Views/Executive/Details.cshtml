@@ -1,11 +1,11 @@
 ﻿@model LoanManagementSystem.Models.sdtoUser
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Executive Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Executive Details</h2>
+@*<h2>Executive Details</h2>*@
 
 <div> 
 	<hr />
@@ -45,7 +45,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Address.Address1)
+            @Html.DisplayFor(model => model.UserAddress.Address1)
         </dd>
 
         <dt>
