@@ -34,5 +34,6 @@ namespace Data.Models.Accounts
 
         [ForeignKey("UserId")]
         public sdtoUser Member { get; set; }
+        public decimal InstallmentAmount { get; set; }
     }
 }

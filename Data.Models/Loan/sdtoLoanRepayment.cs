@@ -22,6 +22,7 @@ namespace Data.Models.Accounts
         public float InterestRate { get; set; }
         public decimal RepaymentAmount { get; set; }
         public decimal PendingPrincipalAmount { get; set; }
+        public int PendingInstallments { get; set; }
         public RepaymentStatus Status { get; set; }
         public ModeOfPayment PaymentMode { get; set; }
         public string ChequeDetails { get; set; }
