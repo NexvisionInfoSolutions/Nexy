@@ -1,12 +1,9 @@
 ﻿@model IEnumerable<Data.Models.Accounts.sdtoAccountBook>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "List Account Books";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h2>Index</h2>
-
+} 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -33,18 +30,7 @@
         <th>
             @Html.DisplayNameFor(model => model.BankCharges)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReceiptVoucherPrefix)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReceiptVoucherSuffix)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentVoucherPrefix)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentVoucherSuffix)
-        </th>
+       
         <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
@@ -74,18 +60,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.BankCharges)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReceiptVoucherPrefix)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReceiptVoucherSuffix)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentVoucherPrefix)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentVoucherSuffix)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
