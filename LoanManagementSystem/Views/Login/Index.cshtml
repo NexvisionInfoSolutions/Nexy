@@ -28,10 +28,11 @@
 
 
    
-    <table width="50%" border="0" align="center" style="padding-right:100px;vertical-align:central;padding-top:2em;">
+    @*<table width="50%" border="0" align="center" style="padding-right:100px;vertical-align:central;padding-top:2em;">*@
+    <table width="25%" align="center" style="border: 1 solid back; border-collapse: collapse;" border="1" cellpadding="5" cellspacing="5">
         <tr>
-            <td>
-                <h2>Login</h2>
+            <td colspan="2" style="background-color: Gray;">
+                LOGIN
             </td>
         </tr>
         <tr>
@@ -41,39 +42,41 @@
                 {
                     //this is for create form tag
                     @Html.AntiForgeryToken() // this is for prevent CSRF attack
-                                @Html.ValidationSummary(true)
+                                                @Html.ValidationSummary(true)
 
 
 
-                                <table>
-                                    <tr>
-                                        <td>@Html.LabelFor(a => a.UserName)</td>
-                                        <td>@Html.TextBoxFor(a => a.UserName)</td>
-                                        <td>@Html.ValidationMessageFor(a => a.UserName)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            @Html.LabelFor(a => a.Password)
-                                        </td>
-                                        <td>
-                                            @Html.PasswordFor(a => a.Password)
-                                        </td>
-                                        <td>
-                                            @Html.ValidationMessageFor(a => a.Password)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <input type="submit" value="Login" />
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                                <table>
+                                                    <tr>
+                                                        <td>@Html.LabelFor(a => a.UserName)</td>
+                                                        <td>@Html.TextBoxFor(a => a.UserName)</td>
+                                                        <td>@Html.ValidationMessageFor(a => a.UserName)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            @Html.LabelFor(a => a.Password)
+                                                        </td>
+                                                        <td>
+                                                            @Html.PasswordFor(a => a.Password)
+                                                        </td>
+                                                        <td>
+                                                            @Html.ValidationMessageFor(a => a.Password)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td align="center">
+                                                            <input type="submit" value="Login" />
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
                 }
 
             </td>
         </tr>
     </table>
+
+
 
 </body>
