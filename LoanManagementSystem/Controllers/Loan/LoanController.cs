@@ -40,8 +40,11 @@ namespace LoanManagementSystem.Controllers.Loan
         // GET: Loan/Create
         public ActionResult Create()
         {
-            ViewBag.UserList = new SelectList(db.User, "UserID", "Code");
-            return View();
+            var loan = new sdtoLoanInfo();
+            loan.RePaymentInterval = Data.Models.Enumerations.RepaymentInterval.Monthly;
+            loan.Status = Data.Models.Enumerations.LoanStatus.Active;
+            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
+            return View(loan);
         }
 
         // POST: Loan/Create
@@ -59,7 +62,7 @@ namespace LoanManagementSystem.Controllers.Loan
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.User, "UserID", "Code", sdtoLoanInfo.UserId);
+            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoLoanInfo);
         }
 
@@ -75,7 +78,7 @@ namespace LoanManagementSystem.Controllers.Loan
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.User, "UserID", "Code", sdtoLoanInfo.UserId);
+            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoLoanInfo);
         }
 
@@ -92,7 +95,7 @@ namespace LoanManagementSystem.Controllers.Loan
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.User, "UserID", "Code", sdtoLoanInfo.UserId);
+            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoLoanInfo);
         }
 

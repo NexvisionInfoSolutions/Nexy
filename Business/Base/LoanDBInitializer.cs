@@ -63,7 +63,7 @@ namespace Business.Base
             //16
             sdtoUrlInfo urlAccountHeads = new sdtoUrlInfo() { Url = "/AccountHeads/Index", CreatedOn = DateTime.Now, UrlText = "Account Heads", ParentId = 8, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
             urlAccountHeads = context.UrlInfoCollection.Add(urlAccountHeads);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountTypes/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Head", ParentId = 8, IsMenu = true, MenuOrder = 2 });//urlAccountHeads.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountHeads/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Head", ParentId = 8, IsMenu = true, MenuOrder = 2 });//urlAccountHeads.ParentId });
 
             //sdtoUrlInfo urlAccountBookTypes = new sdtoUrlInfo() { Url = "/AccountBookTypes/Index", CreatedOn = DateTime.Now, UrlText = "Account Book Types", ParentId = 4 };//urlSettings.ParentId };
             //urlAccountBookTypes = context.UrlInfoCollection.Add(urlAccountBookTypes);

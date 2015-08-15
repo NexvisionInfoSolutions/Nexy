@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Data.Models.Accounts
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("AccountBook")]
-    public class sdtoAccountBook
+    public class sdtoAccountBook : sdtoBaseData
     {
         [Key]
         public long AccountBookId { get; set; }
@@ -53,12 +53,12 @@ namespace Data.Models.Accounts
         [ForeignKey("AccountHeadId")]
         public virtual sdtoAccountHead AccountHead { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        //public DateTime CreatedOn { get; set; }
 
-        public DateTime? ModifiedOn { get; set; }
+        //public DateTime? ModifiedOn { get; set; }
 
-        public long CreatedBy { get; set; }
+        //public long CreatedBy { get; set; }
 
-        public long ModifiedBy { get; set; }
+        //public long ModifiedBy { get; set; }
     }
 }

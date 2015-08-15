@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Data.Models.Accounts
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("AccountHead")]
-    public class sdtoAccountHead
+    public class sdtoAccountHead : sdtoBaseData
     {
         [Key]
         public long AccountHeadId { get; set; }
@@ -35,19 +35,19 @@ namespace Data.Models.Accounts
 
         public string CST { get; set; }
 
-        public long CreatedBy { get; set; }
+        //public long CreatedBy { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        //public DateTime CreatedOn { get; set; }
 
-        public long ModifiedBy { get; set; }
+        //public long ModifiedBy { get; set; }
 
-        public DateTime? ModifiedOn { get; set; }
+        //public DateTime? ModifiedOn { get; set; }
 
         [ForeignKey("ContactId")]
         public virtual sdtoContact Contacts { get; set; }
 
         [ForeignKey("AddressId")]
-        public virtual sdtoAddress Address { get; set; }       
+        public virtual sdtoAddress Address { get; set; }
 
         [ForeignKey("AccountTypeId")]
         public virtual sdtoAccountType AccountType { get; set; }

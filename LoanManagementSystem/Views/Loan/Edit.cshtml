@@ -3,20 +3,39 @@
 @{
     ViewBag.Title = "Edit Loan";
     Layout = "~/Views/Shared/_Layout.cshtml";
-} 
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var datepc = $('.datepicker');
+        datepc.datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '-3d',
+            showOn: "both",
+            buttonImageOnly: true,
+            buttonImage: "calendar.gif",
+            buttonText: "Calendar",
+            regional: ["en-US"]
+        });
+    });
+</script>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal"> 
+
+    <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.LoanId)
+        @Html.HiddenFor(model => model.Status)
 
         <div class="form-group">
             @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.UserId, (SelectList)ViewBag.UserList, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,7 +43,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RepaymentStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "datepicker datefield", @type = "date" } })
                 @Html.ValidationMessageFor(model => model.RepaymentStartDate, "", new { @class = "text-danger" })
             </div>
         </div>
