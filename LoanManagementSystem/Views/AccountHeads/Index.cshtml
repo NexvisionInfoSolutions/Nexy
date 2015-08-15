@@ -1,12 +1,9 @@
 ﻿@model IEnumerable<Data.Models.Accounts.sdtoAccountHead>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "List Account Head";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h2>Index</h2>
-
+} 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -27,33 +24,18 @@
         <th>
             @Html.DisplayNameFor(model => model.AccountName)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleId)
-        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.CreditLimit)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreditDays)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TIN)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CST)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
+         
         <th>
             @Html.DisplayNameFor(model => model.CreatedOn)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ModifiedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ModifiedOn)
-        </th>
+         
         <th></th>
     </tr>
 
@@ -74,33 +56,18 @@
         <td>
             @Html.DisplayFor(modelItem => item.AccountName)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ScheduleId)
-        </td>
+         
         <td>
             @Html.DisplayFor(modelItem => item.CreditLimit)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CreditDays)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TIN)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CST)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedBy)
-        </td>
+       
         <td>
             @Html.DisplayFor(modelItem => item.CreatedOn)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ModifiedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ModifiedOn)
-        </td>
+        
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.AccountHeadId }) |
             @Html.ActionLink("Details", "Details", new { id=item.AccountHeadId }) |
