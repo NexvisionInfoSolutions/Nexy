@@ -18,7 +18,7 @@ namespace LoanManagementSystem.Controllers.Settings
         // GET: Settings
         public ActionResult Index()
         {
-            var list = db.GeneralSettings.Include(x => x.Company);
+            var list = db.GeneralSettings.Include(s => s.Company).Include(y => y.CreatedByUser);
             return View(list.ToList());
         }
 

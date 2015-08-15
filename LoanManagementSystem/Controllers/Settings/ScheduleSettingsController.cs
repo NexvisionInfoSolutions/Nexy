@@ -97,6 +97,9 @@ namespace LoanManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            //db.
+
             ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoSchedule.ParentId);
             return View(sdtoSchedule);
         }

@@ -60,12 +60,12 @@ namespace LoanManagementSystem.Controllers
 
                 if (accHead.Address != null)
                 {
-                    accHead.Address.CreatedOn = accHead.CreatedOn;                    
+                    accHead.Address.CreatedOn = accHead.CreatedOn;
                 }
 
                 if (accHead.Contacts != null)
                 {
-                    accHead.Contacts.CreatedOn = accHead.CreatedOn;                    
+                    accHead.Contacts.CreatedOn = accHead.CreatedOn;
                 }
 
                 accHead.Contacts = db.Contacts.Add(accHead.Contacts);
@@ -93,6 +93,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.SchedulesList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoAccountHead.ScheduleId);
             ViewBag.AccountTypeId = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtoAccountHead.AddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtoAccountHead.ContactId);
@@ -113,6 +114,7 @@ namespace LoanManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.SchedulesList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoAccountHead.ScheduleId);
             ViewBag.AccountTypeId = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtoAccountHead.AddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtoAccountHead.ContactId);
