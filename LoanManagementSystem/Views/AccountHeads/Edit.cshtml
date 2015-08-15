@@ -15,6 +15,8 @@
         @Html.HiddenFor(model => model.AccountHeadId)
         @Html.HiddenFor(model => model.CreatedBy)
         @Html.HiddenFor(model => model.CreatedOn)
+        @Html.HiddenFor(model => model.ContactId)
+        @Html.HiddenFor(model => model.AddressId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.AccountCode, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -64,21 +66,36 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ContactId, "ContactId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ContactId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ContactId, "", new { @class = "text-danger" })
-            </div>
+        div class="form-group">
+        @Html.LabelFor(model => model.Contacts.Telephone1, "Telephone", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Contacts.Telephone1, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.ValidationMessageFor(model => model.ContactPerson.Name, "", new { @class = "text-danger" })*@
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.AddressId, "AddressId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("AddressId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AddressId, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contacts.Mobile1, "Mobile", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Contacts.Mobile1, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.ValidationMessageFor(model => model.ContactPerson.Name, "", new { @class = "text-danger" })*@
         </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Address.Address1, "Address", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Address.Address1, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.ValidationMessageFor(model => model.ContactPerson.Name, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contacts.ContactName, "Contact Person", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Contacts.ContactName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.TIN, htmlAttributes: new { @class = "control-label col-md-2" })

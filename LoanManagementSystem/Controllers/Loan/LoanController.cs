@@ -57,6 +57,7 @@ namespace LoanManagementSystem.Controllers.Loan
         {
             if (ModelState.IsValid)
             {
+                sdtoLoanInfo.InstallmentAmount = sdtoLoanInfo.LoanAmount / sdtoLoanInfo.TotalInstallments;
                 db.sdtoLoanInfoes.Add(sdtoLoanInfo);
                 db.SaveChanges();
                 return RedirectToAction("Index");
