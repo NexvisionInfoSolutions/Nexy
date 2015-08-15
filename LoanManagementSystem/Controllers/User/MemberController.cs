@@ -62,25 +62,25 @@ namespace LoanManagementSystem.Controllers
                 sdtouser.UserType = UserType.Member;
                 if (sdtouser.UserAddress != null)
                 {
-                    sdtouser.UserAddress.CreatedOn = DateTime.Now;                   
+                    sdtouser.UserAddress.CreatedOn = DateTime.Now;
                 }
 
                 if (sdtouser.Contacts != null)
                 {
-                    sdtouser.Contacts.CreatedOn = DateTime.Now;                    
+                    sdtouser.Contacts.CreatedOn = DateTime.Now;
                 }
                 if (sdtouser.PermanentAddress != null)
                 {
-                    sdtouser.PermanentAddress.CreatedOn = DateTime.Now;                    
+                    sdtouser.PermanentAddress.CreatedOn = DateTime.Now;
                 }
 
                 if (sdtouser.PermanentContacts != null)
                 {
-                    sdtouser.PermanentContacts.CreatedOn = DateTime.Now;                    
+                    sdtouser.PermanentContacts.CreatedOn = DateTime.Now;
                 }
                 if (sdtouser.GuaranterAddress != null)
                 {
-                    sdtouser.GuaranterAddress.CreatedOn = DateTime.Now;                   
+                    sdtouser.GuaranterAddress.CreatedOn = DateTime.Now;
                 }
 
                 if (sdtouser.GuaranterContacts != null)
@@ -88,6 +88,8 @@ namespace LoanManagementSystem.Controllers
                     sdtouser.GuaranterContacts.CreatedOn = DateTime.Now;
                     sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
                 }
+
+                sdtouser.CreatedOn = DateTime.Now;
                 sdtouser.UserAddress = db.Address.Add(sdtouser.UserAddress);
                 sdtouser.Contacts = db.Contacts.Add(sdtouser.Contacts);
 
@@ -123,8 +125,8 @@ namespace LoanManagementSystem.Controllers
             if (sdtouser == null)
             {
                 return HttpNotFound();
-            
-            } 
+
+            }
             sdtouser.UserAddress = db.Address.Find(sdtouser.UserAddressId);
             sdtouser.PermanentAddress = db.Address.Find(sdtouser.PermanentAddressId);
             sdtouser.GuaranterAddress = db.Address.Find(sdtouser.GuaranterAddressId);
@@ -157,25 +159,25 @@ namespace LoanManagementSystem.Controllers
                 }
 
                 if (sdtouser.Contacts != null)
-                { 
+                {
                     sdtouser.Contacts.ModifiedOn = DateTime.Now;
                 }
                 if (sdtouser.PermanentAddress != null)
-                { 
+                {
                     sdtouser.PermanentAddress.ModifiedOn = DateTime.Now;
                 }
 
                 if (sdtouser.PermanentContacts != null)
-                { 
+                {
                     sdtouser.PermanentContacts.ModifiedOn = DateTime.Now;
                 }
                 if (sdtouser.GuaranterAddress != null)
-                { 
+                {
                     sdtouser.GuaranterAddress.ModifiedOn = DateTime.Now;
                 }
 
                 if (sdtouser.GuaranterContacts != null)
-                { 
+                {
                     sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
                 }
 
@@ -197,7 +199,7 @@ namespace LoanManagementSystem.Controllers
             ViewBag.GuaranterAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.GuaranterAddressId);
             ViewBag.GuaranterContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.GuaranterContactId);
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.PermanentAddressId);
-            ViewBag.PermanentContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.PermanentContactId); 
+            ViewBag.PermanentContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.PermanentContactId);
             return View(sdtouser);
         }
 

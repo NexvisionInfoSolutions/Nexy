@@ -15,7 +15,18 @@
         @*<h4>sdtoUser</h4>*@
         <hr />
         @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.UserID)                
+        @Html.HiddenFor(model => model.CreatedBy)
+        @Html.HiddenFor(model => model.CreatedOn)
+        @Html.HiddenFor(model => model.IsDeleted)
+        @Html.HiddenFor(model => model.UserContactId)
+        @Html.HiddenFor(model => model.UserAddressId)
+        @Html.HiddenFor(model => model.CompanyId)
+        @Html.HiddenFor(model => model.GuaranterAddressId)
+        @Html.HiddenFor(model => model.GuaranterContactId)
+        @Html.HiddenFor(model => model.PermanentAddressId)
+        @Html.HiddenFor(model => model.PermanentContactId)
+        @Html.HiddenFor(model => model.UserGroupId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })

@@ -40,12 +40,14 @@ namespace LoanManagementSystem.Controllers.Settings
         // GET: AccountBooks/Create
         public ActionResult Create()
         {
+            sdtoAccountBook objAccBook = new sdtoAccountBook();
             sdtoSettings settings = db.GeneralSettings.Where(x => x.CompanyId == 1).FirstOrDefault();
             ViewBag.AccountBookTypeId = new SelectList(db.AccountBookTypes, "AccountBookTypeId", "AccountBookType");
             ViewBag.AccountHeadId = new SelectList(db.AccountHeads, "AccountHeadId", "AccountCode");
             ViewBag.BankInterest = settings.BankInterest;
             ViewBag.BankCharges = settings.BankCharges;
-            return View();
+            objAccBook.Status = Data.Models.Enumerations.AccountBookStatus.Active;
+            return View(objAccBook);
         }
 
         // POST: AccountBooks/Create
@@ -92,7 +94,8 @@ namespace LoanManagementSystem.Controllers.Settings
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "AccountBookId,BookCode,BookName,BookDescription,AccountBookTypeId,AccountHeadId,BankInterest,BankCharges,ReceiptVoucherPrefix,ReceiptVoucherSuffix,PaymentVoucherPrefix,PaymentVoucherSuffix,Status")] sdtoAccountBook sdtoAccountBook)
+        public ActionResult Edit(//[Bind(Include = "AccountBookId,BookCode,BookName,BookDescription,AccountBookTypeId,AccountHeadId,BankInterest,BankCharges,ReceiptVoucherPrefix,ReceiptVoucherSuffix,PaymentVoucherPrefix,PaymentVoucherSuffix,Status")] 
+            sdtoAccountBook sdtoAccountBook)
         {
             if (ModelState.IsValid)
             {

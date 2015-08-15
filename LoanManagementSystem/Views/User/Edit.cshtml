@@ -10,11 +10,22 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal"> 
+
+    <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.CreatedBy)
+        @Html.HiddenFor(model => model.CreatedOn)
+        @Html.HiddenFor(model => model.IsDeleted)
+        @Html.HiddenFor(model => model.UserContactId)
+        @Html.HiddenFor(model => model.UserAddressId)
+        @Html.HiddenFor(model => model.CompanyId)
+        @Html.HiddenFor(model => model.GuaranterAddressId)
+        @Html.HiddenFor(model => model.GuaranterContactId)
+        @Html.HiddenFor(model => model.PermanentAddressId)
+        @Html.HiddenFor(model => model.PermanentContactId)
+        @Html.HiddenFor(model => model.UserGroupId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
@@ -50,7 +61,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserGroupId, "UserGroupId", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("UserGroupId", String.Empty)
+                @Html.DropDownListFor(model => model.UserGroupId, (SelectList)ViewBag.UserGroupList, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UserGroupId)
             </div>
         </div>

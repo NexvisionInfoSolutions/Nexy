@@ -40,7 +40,7 @@ namespace LoanManagementSystem.Controllers
         // GET: /User/Create
         public ActionResult Create()
         {
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code");
+            ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code");
             return View();
         }
 
@@ -59,12 +59,14 @@ namespace LoanManagementSystem.Controllers
                 if (user.Contacts != null)
                     user.Contacts = db.Contacts.Add(user.Contacts);
                 user.CreatedOn = DateTime.Now;
+                user.IsActive = true;
+
                 db.User.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
+            ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
             return View(user);
         }
 
@@ -80,7 +82,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
+            ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
             return View(user);
         }
 
@@ -98,7 +100,7 @@ namespace LoanManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserGroupID = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
+            ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
             return View(user);
         }
 
