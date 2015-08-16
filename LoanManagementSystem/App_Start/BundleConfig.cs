@@ -31,8 +31,14 @@ namespace LoanManagementSystem
                       "~/Content/font-awesome.min.css",
                       "~/Content/ionicons.min.css",
                       "~/Content/Layout.css",
-                      "~/Content/skins/skin-green.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/skin").Include(
+                      "~/Content/skins/skin-green.css"));
+
+            bundles.Add(new StyleBundle("~/Content/noskin").Include(
+                      "~/Content/skins/skin-no.css"));
+
         }
     }
 }

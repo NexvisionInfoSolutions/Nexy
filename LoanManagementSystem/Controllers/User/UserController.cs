@@ -7,13 +7,49 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Models;
-using Data.Models.Enumerations; 
+using Data.Models.Enumerations;
+using System.Web.Security;
 
 namespace LoanManagementSystem.Controllers
 {
     public class UserController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
+
+        public ActionResult Login()
+        {
+            FormsAuthentication.SignOut();
+            return View("Login");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(sdtoUser u)
+        {
+            FormsAuthentication.SignOut();
+            // this action is for handle post (login)
+            if (ModelState.IsValid) // this is check validity
+            {
+                using (LoanDBContext dc = new LoanDBContext())
+                {
+                    var v = dc.User.Where(a => a.UserName.Equals(u.UserName) && a.Password.Equals(u.Password)).FirstOrDefault();
+                    if (v != null)
+                    {
+                        FormsAuthentication.SetAuthCookie(u.UserName, false);
+                        Session["LogedUserID"] = v.UserID.ToString();
+                        //Session["LogedUserFullname"] = v.FirstName.ToString() + " " + v.LastName.ToString();
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+            }
+            return View("Index");
+        }
+
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+        }
 
         // GET: /User/
         public ActionResult Index()
@@ -63,7 +99,10 @@ namespace LoanManagementSystem.Controllers
 
                 db.User.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("Login");
             }
 
             ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);

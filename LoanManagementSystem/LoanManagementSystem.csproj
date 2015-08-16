@@ -467,8 +467,8 @@
     <Content Include="Views\LoanRepayments\Details.cshtml" />
     <Content Include="Views\LoanRepayments\Edit.cshtml" />
     <Content Include="Views\LoanRepayments\Index.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Login\Login001.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\LogOff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

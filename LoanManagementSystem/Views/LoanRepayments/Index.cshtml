@@ -5,14 +5,175 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="form-group">
-    <div class="col-md-10">
-        @Html.DropDownList("LoanId", (SelectList)ViewBag.LoanList, htmlAttributes: new { @class = "form-control", @ID = "ddlLoan", onchange = "document.location.href = '/LoanRepayments/Index?LoanId=' + this.options[this.selectedIndex].value;" })
+<section class="invoice">
+    @*<!-- title row -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                <i class="fa fa-globe"></i> AdminLTE, Inc.
+                <small class="pull-right">Date: 2/10/2014</small>
+            </h2>
+        </div><!-- /.col -->
+    </div>*@
+    <!-- info row -->
+    <div class="row invoice-info"></div>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.DropDownList("LoanId", (SelectList)ViewBag.LoanList, htmlAttributes: new { @class = "form-control", @ID = "ddlLoan", onchange = "document.location.href = '/LoanRepayments/Index?LoanId=' + this.options[this.selectedIndex].value;" })
+        </div>
     </div>
-</div>
-@{
-    var Loan = ViewBag.LoanDetails as Data.Models.Accounts.sdtoLoanInfo;
-    if (Loan != null && Loan.LoanId > 0)
+    @{
+        var Loan = ViewBag.LoanDetails as Data.Models.Accounts.sdtoLoanInfo;
+        if (Loan != null && Loan.LoanId > 0)
+        {
+            <div class="form-horizontal">
+                <hr />
+                <div class="form-group">
+
+                </div>
+                <div class="form-group">
+                    @Html.Label("Member", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.Member.FirstName + " " + Loan.Member.LastName)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Loan Start Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.RepaymentStartDate.Value.ToString("yyyy-MMM-dd"))
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Loan Interest %", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.InteresRate.ToString(), Loan.InteresRate.ToString())
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Loan Amount", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.LoanAmount.ToString(), Loan.LoanAmount.ToString())
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Loan Payment Interval", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.RePaymentInterval.ToString())
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.Notes)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.ActionLink("Add loan repayment", "Create", new { LoanId = Loan.LoanId })
+                    |
+                    @Html.ActionLink("Add a New Loan", "Create", "Loan")
+                    |
+                    @Html.ActionLink("Back to List of Loans", "Index", "Loan")
+                </div>
+            </div>
+        }
+    }
+
+    @if (Model.Count() > 0)
+    {
+        @*<table class="table bg-teal">*@
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.RepaymentCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PendingPrincipalAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.InterestAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.InterestRate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RepaymentAmount)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentMode)
+                            </th>
+
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RepaymentCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PendingPrincipalAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InterestAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InterestRate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RepaymentAmount)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentMode)
+                            </td>
+
+
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.LoanRepaymentId }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.LoanRepaymentId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.LoanRepaymentId })
+                            </td>
+                        </tr>
+                }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                Total Principal Pending : <b>@ViewBag.TotalPendingPrincipal</b>
+                            </td>
+                            <td colspan="5">
+                                Total Paid : <b>@ViewBag.TotalPaid</b>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    }
+    else
     {
         <div class="form-horizontal">
             <hr />
@@ -20,145 +181,8 @@
 
             </div>
             <div class="form-group">
-                @Html.Label("Member", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Label(Loan.Member.FirstName + " " + Loan.Member.LastName)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("Loan Start Date", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Label(Loan.RepaymentStartDate.Value.ToString("yyyy-MMM-dd"))
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("Loan Interest %", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Label(Loan.InteresRate.ToString(), Loan.InteresRate.ToString())
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("Loan Amount", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Label(Loan.LoanAmount.ToString(), Loan.LoanAmount.ToString())
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("Loan Payment Interval", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Label(Loan.RePaymentInterval.ToString())
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Label(Loan.Notes)
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.ActionLink("Add loan repayment", "Create", new { LoanId = Loan.LoanId })
-                |
-                @Html.ActionLink("Add a New Loan", "Create", "Loan")
-                |
-                @Html.ActionLink("Back to List of Loans", "Index", "Loan")
+                <span>Payment records are not available</span>
             </div>
         </div>
     }
-}
-
-@if (Model.Count() > 0)
-{
-    <table class="table bg-teal">
-        <tr>
-
-            <th>
-                @Html.DisplayNameFor(model => model.RepaymentCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PendingPrincipalAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InterestAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InterestRate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RepaymentAmount)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentMode)
-            </th>
-
-
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.RepaymentCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PendingPrincipalAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InterestAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InterestRate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RepaymentAmount)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentMode)
-                </td>
-
-
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.LoanRepaymentId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.LoanRepaymentId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.LoanRepaymentId })
-                </td>
-            </tr>
-        }
-        <tr>
-            <td colspan="3">
-                Total Principal Pending : <b>@ViewBag.TotalPendingPrincipal</b>
-            </td>
-            <td colspan="5">
-                Total Paid : <b>@ViewBag.TotalPaid</b>
-            </td>
-        </tr>
-    </table>
-}
-else
-{
-    <div class="form-horizontal">
-        <hr />
-        <div class="form-group">
-
-        </div>
-        <div class="form-group">
-            <span>Payment records are not available</span>
-        </div>
-    </div>
-}
+</section>
