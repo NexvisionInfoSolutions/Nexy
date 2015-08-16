@@ -16,7 +16,9 @@ namespace LoanManagementSystem.Models
             ModifiedOn = DateTime.Now;
         }
 
+        
         [Key]
+        [Display(Name = "User Group")]
         public long UserGroupId { get; set; }
 
         [MaxLength(100)]

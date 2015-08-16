@@ -17,15 +17,18 @@ namespace LoanManagementSystem.Models
         [MaxLength(10)]
         public string Code { get; set; }
 
+        [Display(Name = "First Name")]
         [MaxLength(100)]
         public string FirstName { get; set; }
 
+        [Display(Name = "Last Name")]
         [MaxLength(100)]
         public string LastName { get; set; }
 
         /// <summary>
         /// Username or email of the user that is used to validate the user.
         /// </summary>
+        [Display(Name = "User Name")]
         [MaxLength(200)]
         public string UserName { get; set; }
 
@@ -34,11 +37,14 @@ namespace LoanManagementSystem.Models
 
         public string Description { get; set; }
 
+        [Display(Name = "User Group")]
         public long? UserGroupId { get; set; }
 
         [ForeignKey("UserGroupId")]
+        [Display(Name = "User Group")]
         public sdtoUserGroup UserGroup { get; set; }
 
+        [Display(Name = "Active")]
         public bool IsActive { get; set; }
 
         [MaxLength(50)]
@@ -58,8 +64,10 @@ namespace LoanManagementSystem.Models
 
         public long? GuaranterContactId { get; set; }
 
+        [Display(Name = "Father's Name")]
         public string FatherName { get; set; }
 
+        [Display(Name = "Guaranter Name")]
         public string GuaranterName { get; set; }
 
         public string Occupation { get; set; }
@@ -72,9 +80,11 @@ namespace LoanManagementSystem.Models
         [ForeignKey("UserAddressId")]
         public virtual sdtoAddress UserAddress { get; set; }
 
+        [Display(Name = "Permanent Address")]
         [ForeignKey("PermanentAddressId")]
         public virtual sdtoAddress PermanentAddress { get; set; }
 
+         [Display(Name = "Guaranter Address")]
         [ForeignKey("GuaranterAddressId")]
         public virtual sdtoAddress GuaranterAddress { get; set; }
 
