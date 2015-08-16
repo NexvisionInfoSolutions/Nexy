@@ -9,12 +9,31 @@ using System.Web.Mvc;
 using LoanManagementSystem.Models;
 using Data.Models.Enumerations;
 using System.Web.Security;
+using System.IO;
 
 namespace LoanManagementSystem.Controllers
 {
     public class UserController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
+
+        private void FileUpload(long UserId, HttpPostedFileBase uploadFile)
+        {
+            if (uploadFile.ContentLength > 0)
+            {
+                DirectoryInfo dirUser = new DirectoryInfo(HttpContext.Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\User\\Profile");
+                if (!dirUser.Exists)
+                    dirUser.Create();
+
+                FileInfo objFile = new FileInfo(Path.Combine(dirUser.FullName, System.Guid.NewGuid() + ".logo"));
+                ViewBag.UserProfileAvatar = objFile.FullName;
+
+                if (objFile.Exists)
+                    objFile.Delete();
+
+                uploadFile.SaveAs(objFile.FullName);
+            }
+        }
 
         public ActionResult Login()
         {
@@ -36,7 +55,7 @@ namespace LoanManagementSystem.Controllers
                     if (v != null)
                     {
                         FormsAuthentication.SetAuthCookie(u.UserName, false);
-                        Session["LogedUserID"] = v.UserID.ToString();
+                        Session["UserDetails"] = v;
                         //Session["LogedUserFullname"] = v.FirstName.ToString() + " " + v.LastName.ToString();
                         return RedirectToAction("Index", "Home");
                     }
@@ -85,24 +104,52 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(sdtoUser user)
+        public ActionResult Create(sdtoUser user, HttpPostedFileBase ProfileImage)
         {
             if (ModelState.IsValid)
             {
-                user.UserType = UserType.User;
-                if (user.UserAddress != null)
-                    user.UserAddress = db.Address.Add(user.UserAddress);
-                if (user.Contacts != null)
-                    user.Contacts = db.Contacts.Add(user.Contacts);
-                user.CreatedOn = DateTime.Now;
-                user.IsActive = true;
+                var validImageTypes = new string[]
+                                        {
+                                            "image/gif",
+                                            "image/jpeg",
+                                            "image/pjpeg",
+                                            "image/png"
+                                        };
 
-                db.User.Add(user);
-                db.SaveChanges();
-                if (User.Identity.IsAuthenticated)
-                    return RedirectToAction("Index");
+                if (ProfileImage == null || ProfileImage.ContentLength == 0)
+                {
+                    ModelState.AddModelError("ProfileImage", "This field is required");
+                }
+                else if (ProfileImage != null && !validImageTypes.Contains(ProfileImage.ContentType))
+                {
+                    ModelState.AddModelError("ProfileImage", "Please choose either a GIF, JPG or PNG image");
+                }
                 else
-                    return RedirectToAction("Login");
+                {
+                    user.UserType = UserType.User;
+                    if (user.UserAddress != null)
+                        user.UserAddress = db.Address.Add(user.UserAddress);
+                    if (user.Contacts != null)
+                        user.Contacts = db.Contacts.Add(user.Contacts);
+                    user.CreatedOn = DateTime.Now;
+                    user.IsActive = true;
+
+                    db.User.Add(user);
+                    db.SaveChanges();
+                    if (ProfileImage != null)
+                    {
+                        FileUpload(user.UserID, ProfileImage);
+
+                        System.IO.FileInfo fInfo = new FileInfo(ViewBag.UserProfileAvatar);
+                        fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, user.UserID+ ".logo"), true);
+                        fInfo.Delete();
+                    }
+
+                    if (User.Identity.IsAuthenticated)
+                        return RedirectToAction("Index");
+                    else
+                        return RedirectToAction("Login");
+                }
             }
 
             ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
@@ -130,13 +177,23 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(sdtoUser user)
+        public ActionResult Edit(sdtoUser user, HttpPostedFileBase ProfileImage)
         {
             if (ModelState.IsValid)
             {
                 user.UserType = UserType.User;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
+
+                if (ProfileImage != null)
+                {
+                    FileUpload(user.UserID, ProfileImage);
+
+                    System.IO.FileInfo fInfo = new FileInfo(ViewBag.UserProfileAvatar);
+                    fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, user.UserID + ".logo"), true);
+                    fInfo.Delete();              
+                }
+
                 return RedirectToAction("Index");
             }
             ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);

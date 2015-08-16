@@ -7,7 +7,7 @@
 @*<h2>Edit User</h2>*@
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -64,7 +64,21 @@
                 @Html.ValidationMessageFor(model => model.LastName)
             </div>
         </div>
-
+        @if (File.Exists(Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\User\\Profile\\" + @Model.UserID + ".logo"))
+        {
+            <div class="form-group">
+                @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <img src="~/Utility/ProfileImage?UserId=@Model.UserID" alt="Logo" />
+                </div>
+            </div>
+        }        
+        <div class="form-group">
+            @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input name="ProfileImage" type="file" />
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">

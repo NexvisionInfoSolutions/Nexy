@@ -7,7 +7,7 @@
 @*<h2>Create User</h2>*@
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -52,7 +52,14 @@
                 @Html.ValidationMessageFor(model => model.LastName)
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input name="ProfileImage" type="file" />
+                @*@Html.TextBoxFor(m => m.Logo, new { type = "file" })*@
+                @*@Html.ValidationMessageFor(model => model.CompanyName)*@
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">

@@ -24,5 +24,20 @@ namespace LoanManagementSystem.Controllers
             else
                 return View();
         }
+
+        public ActionResult ProfileImage(long UserId)
+        {
+            FileInfo fInfo = new FileInfo(Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\USer\\Profile\\" + UserId + ".logo");
+            if (fInfo.Exists)
+            {
+                FileStream fs = fInfo.OpenRead();
+                byte[] bImages = new byte[fs.Length];
+                fs.Read(bImages, 0, bImages.Length);
+                fs.Close();
+                return File(bImages, "image/" + (fInfo.Extension.Trim(". /\\".ToCharArray())));
+            }
+            else
+                return View();
+        }
     }
 }
