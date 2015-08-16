@@ -12,14 +12,17 @@ namespace LoanManagementSystem.Models
     public class sdtoCompany : sdtoBaseData
     {
         [Key]
+        [Display(Name = "Company ID")]
         public long CompanyId { get; set; }
 
         [MaxLength(10)]
         public string Code { get; set; }
 
         [MaxLength(100)]
+        [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
+        [Display(Name = "Address")]
         public long AddressId { get; set; }
 
         [MaxLength(200)]
@@ -34,9 +37,11 @@ namespace LoanManagementSystem.Models
         //public bool IsDeleted { get; set; }
 
         [MaxLength(200)]
+        [Display(Name = "Web Url")]
         public string WebUrl { get; set; }
 
         [NotMapped]
+        [Display(Name = "Logo Url")]
         public string LogoUrl { get; set; }
 
         //public long CreatedBy { get; set; }
