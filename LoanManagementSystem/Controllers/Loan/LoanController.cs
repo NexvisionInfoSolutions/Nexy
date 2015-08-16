@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
+using Data.Models.Enumerations;
 
 namespace LoanManagementSystem.Controllers.Loan
 {
@@ -46,7 +47,6 @@ namespace LoanManagementSystem.Controllers.Loan
             ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(loan);
         }
-
         // POST: Loan/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -126,6 +126,70 @@ namespace LoanManagementSystem.Controllers.Loan
             return RedirectToAction("Index");
         }
 
+        public ActionResult LoanCancellation(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            sdtoLoanRepayment repay = db.sdtoLoanRepayments.Where(x => x.LoanId == id).FirstOrDefault();
+            ViewData["PaidAmount"] = repay.RepaymentAmount;
+            ViewData["BalaceAmount"] = repay.PendingPrincipalAmount;
+
+            sdtoLoanInfo sdtoLoanInfo = db.sdtoLoanInfoes.Find(id);
+            if (sdtoLoanInfo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(sdtoLoanInfo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LoanCancellation(sdtoLoanInfo objLoanInfo)
+        {
+            if (ModelState.IsValid)
+            {
+                sdtoLoanInfo sdtoloanInfo = db.sdtoLoanInfoes.Find(objLoanInfo.LoanId);
+                sdtoloanInfo.Status = LoanStatus.Inactive;
+                db.Entry(sdtoloanInfo).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult LoanRecall(long? id)
+        {
+            sdtoLoanRepayment repay = db.sdtoLoanRepayments.Where(x => x.LoanId == id).FirstOrDefault();
+            ViewData["PaidAmount"] = repay.RepaymentAmount;
+            ViewData["BalaceAmount"] = repay.PendingPrincipalAmount;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            sdtoLoanInfo sdtoLoanInfo = db.sdtoLoanInfoes.Find(id);
+            if (sdtoLoanInfo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(sdtoLoanInfo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LoanRecall(sdtoLoanInfo objLoanInfo)
+        {
+            if (ModelState.IsValid)
+            {
+                sdtoLoanInfo sdtoloanInfo = db.sdtoLoanInfoes.Find(objLoanInfo.LoanId);
+                sdtoloanInfo.Status = LoanStatus.Active;
+                db.Entry(sdtoloanInfo).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
