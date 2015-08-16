@@ -15,16 +15,36 @@ namespace Data.Models.Accounts
     {
         [Key]
         public long LoanRepaymentId { get; set; }
+
+        [Display(Name = "Loan ID")]
         public long LoanId { get; set; }
+
+        [Display(Name = "Repayment Code")]
         public string RepaymentCode { get; set; }
+
+        [Display(Name = "Principal Amount")]
         public decimal PrincipalAmount { get; set; }
+
+        [Display(Name = "Interest Amount")]
         public decimal InterestAmount { get; set; }
+
+        [Display(Name = "Interest Rate")]
         public float InterestRate { get; set; }
+
+        [Display(Name = "Repayment Amount")]
         public decimal RepaymentAmount { get; set; }
+
+         [Display(Name = "Pending Principal Amount")]
         public decimal PendingPrincipalAmount { get; set; }
+
+        [Display(Name = "Pending Installments")]
         public int PendingInstallments { get; set; }
         public RepaymentStatus Status { get; set; }
+
+        [Display(Name = "Payment Mode")]
         public ModeOfPayment PaymentMode { get; set; }
+
+        [Display(Name = "Cheque Details")]
         public string ChequeDetails { get; set; }
         public string Notes { get; set; }
         [ForeignKey("LoanId")]
