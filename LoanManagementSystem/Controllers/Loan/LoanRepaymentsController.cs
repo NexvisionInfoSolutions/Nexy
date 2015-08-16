@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
+using Data.Models.Enumerations;
 
 namespace LoanManagementSystem.Controllers.Loan
 {
@@ -30,7 +31,7 @@ namespace LoanManagementSystem.Controllers.Loan
             //};
 
             sdtoLoanRepayment repay = new sdtoLoanRepayment();
-            var itemsLoan = db.sdtoLoanInfoes.Include(x => x.Member).ToList();
+            var itemsLoan = db.sdtoLoanInfoes.Include(x => x.Member).Where(x => x.Status == LoanStatus.Active).ToList();
             var itemsLoans = itemsLoan.Select(x => new SelectListItem() { Value = x.LoanId.ToString(), Text = x.LoanId + " - " + x.LoanAmount + "[" + x.Member.FirstName + " " + x.Member.LastName + "]" }).ToList();
             itemsLoans.Insert(0, new SelectListItem() { Value = "0", Text = "Select a loan" });
             ViewBag.LoanList = new SelectList(itemsLoans, "Value", "Text");
@@ -78,8 +79,8 @@ namespace LoanManagementSystem.Controllers.Loan
         public ActionResult Create(int? LoanId)
         {
             sdtoLoanRepayment repay = new sdtoLoanRepayment();
-            var itemsLoan = db.sdtoLoanInfoes.Include(x => x.Member).ToList();
-            var itemsLoans = itemsLoan.Select(x => new SelectListItem() { Value = x.LoanId.ToString(), Text = x.LoanId + " - " + x.LoanAmount + "[" + x.Member.FirstName + " " + x.Member.LastName + "]" }).ToList();
+            var itemsLoan = db.sdtoLoanInfoes.Include(x => x.Member).Where(x => x.Status == LoanStatus.Active).ToList();
+            var itemsLoans = itemsLoan.Select(x => new SelectListItem() { Value = x.LoanId.ToString() , Text = x.LoanId + " - " + x.LoanAmount + "[" + x.Member.FirstName + " " + x.Member.LastName + "]" }).ToList();
             itemsLoans.Insert(0, new SelectListItem() { Value = "0", Text = "Select a loan" });
             ViewBag.LoanList = new SelectList(itemsLoans, "Value", "Text");
 
