@@ -26,6 +26,7 @@ namespace LoanManagementSystem.Models
 
         public string Country { get; set; }
 
+        [Display(Name = "Zip code")]
         public string Zipcode { get; set; }
 
         public string Place { get; set; }
