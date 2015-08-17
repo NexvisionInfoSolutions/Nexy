@@ -80,7 +80,7 @@ namespace LoanManagementSystem.Controllers.Loan
         {
             sdtoLoanRepayment repay = new sdtoLoanRepayment();
             var itemsLoan = db.sdtoLoanInfoes.Include(x => x.Member).Where(x => x.Status == LoanStatus.Active).ToList();
-            var itemsLoans = itemsLoan.Select(x => new SelectListItem() { Value = x.LoanId.ToString() , Text = x.LoanId + " - " + x.LoanAmount + "[" + x.Member.FirstName + " " + x.Member.LastName + "]" }).ToList();
+            var itemsLoans = itemsLoan.Select(x => new SelectListItem() { Value = x.LoanId.ToString(), Text = x.LoanId + " - " + x.LoanAmount + "[" + x.Member.FirstName + " " + x.Member.LastName + "]" }).ToList();
             itemsLoans.Insert(0, new SelectListItem() { Value = "0", Text = "Select a loan" });
             ViewBag.LoanList = new SelectList(itemsLoans, "Value", "Text");
 
@@ -113,6 +113,7 @@ namespace LoanManagementSystem.Controllers.Loan
                 repay.PrincipalAmount = loandetails.LoanAmount;
 
                 repay.Status = Data.Models.Enumerations.RepaymentStatus.Paid;
+                repay.PaymentMode = ModeOfPayment.Cash;
 
                 repay.RepaymentAmount = loandetails.InstallmentAmount + repay.InterestAmount;
             }
@@ -162,7 +163,7 @@ namespace LoanManagementSystem.Controllers.Loan
 
                 db.sdtoLoanRepayments.Add(sdtoLoanRepayment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { LoanId = sdtoLoanRepayment.LoanId });
             }
 
             var itemsLoan = db.sdtoLoanInfoes.Include(x => x.Member).ToList();
@@ -205,7 +206,7 @@ namespace LoanManagementSystem.Controllers.Loan
             {
                 db.Entry(sdtoLoanRepayment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { LoanId = sdtoLoanRepayment.LoanId });
             }
             var itemsLoan = db.sdtoLoanInfoes.Include(x => x.Member).ToList();
             var itemsLoans = itemsLoan.Select(x => new SelectListItem() { Value = x.LoanId.ToString(), Text = x.LoanId + " - " + x.LoanAmount + "[" + x.Member.FirstName + " " + x.Member.LastName + "]" }).ToList();

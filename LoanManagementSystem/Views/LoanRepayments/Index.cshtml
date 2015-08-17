@@ -7,14 +7,14 @@
 
 <section class="invoice">
     @*<!-- title row -->
-    <div class="row">
-        <div class="col-xs-12">
-            <h2 class="page-header">
-                <i class="fa fa-globe"></i> AdminLTE, Inc.
-                <small class="pull-right">Date: 2/10/2014</small>
-            </h2>
-        </div><!-- /.col -->
-    </div>*@
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> AdminLTE, Inc.
+                    <small class="pull-right">Date: 2/10/2014</small>
+                </h2>
+            </div><!-- /.col -->
+        </div>*@
     <!-- info row -->
     <div class="row invoice-info"></div>
     <div class="form-group">
@@ -67,9 +67,23 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.Label("Installment Amount", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.InstallmentAmount.ToString())
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Installments", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(Loan.TotalInstallments.ToString())
+                    </div>
+                </div>
+
+                <div class="form-group">
                     @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.Label(Loan.Notes)
+                        @Html.Label("" + Loan.Notes)
                     </div>
                 </div>
             </div>
@@ -124,40 +138,40 @@
                     <tbody>
 
                         @foreach (var item in Model)
-                {
-                        <tr>
+                        {
+                            <tr>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RepaymentCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PendingPrincipalAmount)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.InterestAmount)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.InterestRate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RepaymentAmount)
-                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RepaymentCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PendingPrincipalAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.InterestAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.InterestRate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RepaymentAmount)
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PaymentMode)
-                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaymentMode)
+                                </td>
 
 
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.LoanRepaymentId }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.LoanRepaymentId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.LoanRepaymentId })
-                            </td>
-                        </tr>
-                }
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.LoanRepaymentId }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.LoanRepaymentId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.LoanRepaymentId })
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                     <tfoot>
                         <tr>

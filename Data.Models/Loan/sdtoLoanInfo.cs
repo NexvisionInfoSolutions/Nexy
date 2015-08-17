@@ -18,7 +18,7 @@ namespace Data.Models.Accounts
         /// <summary>
         /// User Id of the member
         /// </summary>
-         [Display(Name = "User ID")]
+        [Display(Name = "User ID")]
         public long UserId { get; set; }
 
         [Display(Name = "Repayment Start Date")]
@@ -46,7 +46,7 @@ namespace Data.Models.Accounts
         [Display(Name = "Interes Rate")]
         public float InteresRate { get; set; }
 
-         [Display(Name = "Sanctioned Date")]
+        [Display(Name = "Sanctioned Date")]
         public DateTime? SanctionedDate { get; set; }
 
         [Display(Name = "Sanctioned By")]

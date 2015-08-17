@@ -47,9 +47,9 @@ namespace Business.Base
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/UserGroup/Create", CreatedOn = DateTime.Now, UrlText = "Add User Group", ParentId = 5, IsMenu = true, MenuOrder = 2 });//urlUserGroup.ParentId });                       
 
             //12
-            sdtoUrlInfo urlGeneralSettings = new sdtoUrlInfo() { Url = "/Settings/Index", CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 6, IsMenu = true, MenuOrder = 1 };// urlSettings.ParentId };
+            sdtoUrlInfo urlGeneralSettings = new sdtoUrlInfo() { Url = "/Settings/Index", CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 6, IsMenu = false, MenuOrder = 1 };// urlSettings.ParentId };
             urlGeneralSettings = context.UrlInfoCollection.Add(urlGeneralSettings);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/Create", CreatedOn = DateTime.Now, UrlText = "Add General Settings", ParentId = 6, IsMenu = true, MenuOrder = 2 });//urlGeneralSettings.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/Edit/1", CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 6, IsMenu = true, MenuOrder = 2 });//urlGeneralSettings.ParentId });
 
             //14
             sdtoUrlInfo urlAccountSchedules = new sdtoUrlInfo() { Url = "/ScheduleSettings/Index", CreatedOn = DateTime.Now, UrlText = "Account Schedules", ParentId = 7, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };

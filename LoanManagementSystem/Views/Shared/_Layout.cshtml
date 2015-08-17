@@ -11,6 +11,8 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("/bundles/jqwidgets")
+    @Scripts.Render("~/bundles/grid")
     @Scripts.Render("~/bundles/layout")
     @RenderSection("scripts", required: false)
 
@@ -28,7 +30,7 @@
             if (UserDetails == null)
             {
                 UserDetails = new LoanManagementSystem.Models.sdtoUser();
-            }          
+            }
         }
 
         <!-- Main Header -->

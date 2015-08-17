@@ -63,7 +63,7 @@ namespace Data.Models.Accounts
         public DateTime? ApprovedDate { get; set; }
 
         [Display(Name = "Approved By")]
-        public long ApprovedBy { get; set; }
+        public long? ApprovedBy { get; set; }
 
         public string Notes { get; set; }
 

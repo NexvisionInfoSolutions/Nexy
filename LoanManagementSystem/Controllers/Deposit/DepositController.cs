@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
+using Data.Models.Enumerations;
 
 namespace LoanManagementSystem.Controllers.Deposit
 {
@@ -38,13 +39,20 @@ namespace LoanManagementSystem.Controllers.Deposit
         }
 
         // GET: sdtoDepositInfoes/Create
-        public ActionResult Create()
+        public ActionResult Create(long? UserId)
         {
-            ViewBag.CreatedBy = new SelectList(db.User, "UserID", "Code");
-            ViewBag.DeletedBy = new SelectList(db.User, "UserID", "Code");
-            ViewBag.UserId = new SelectList(db.User, "UserID", "Code");
-            ViewBag.ModifiedBy = new SelectList(db.User, "UserID", "Code");
-            return View();
+            var deposit = new sdtoDepositInfo();
+            deposit.DepositType = Data.Models.Enumerations.DepositType.Fixed;
+            deposit.Status = Data.Models.Enumerations.DepositStatus.Active;
+
+
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && (UserId == null || UserId.Value == 0 || x.UserID == UserId));
+
+            if (listUsers == null || listUsers.Count(x => x.UserID > 0) == 0)
+                return RedirectToAction("Create", "Member");
+
+            ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
+            return View(deposit);
         }
 
         // POST: sdtoDepositInfoes/Create
@@ -52,7 +60,8 @@ namespace LoanManagementSystem.Controllers.Deposit
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DepositId,UserId,Duration,DepositType,MaturityDate,TotalInstallments,DepositAmount,MatureAmount,InstallmentAmount,ClosedDate,RecurringDepositDate,Status,ChequeDetails,InteresRate,ApprovedDate,ApprovedBy,Notes,CreatedOn,ModifiedOn,CreatedBy,ModifiedBy,IsDeleted,DeletedBy,DeletedOn")] sdtoDepositInfo sdtoDepositInfo)
+        public ActionResult Create(//[Bind(Include = "DepositId,UserId,Duration,DepositType,MaturityDate,TotalInstallments,DepositAmount,MatureAmount,InstallmentAmount,ClosedDate,RecurringDepositDate,Status,ChequeDetails,InteresRate,ApprovedDate,ApprovedBy,Notes,CreatedOn,ModifiedOn,CreatedBy,ModifiedBy,IsDeleted,DeletedBy,DeletedOn")] 
+            sdtoDepositInfo sdtoDepositInfo)
         {
             if (ModelState.IsValid)
             {
@@ -61,10 +70,8 @@ namespace LoanManagementSystem.Controllers.Deposit
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CreatedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.CreatedBy);
-            ViewBag.DeletedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.DeletedBy);
-            ViewBag.UserId = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.UserId);
-            ViewBag.ModifiedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.ModifiedBy);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoDepositInfo);
         }
 
@@ -80,10 +87,8 @@ namespace LoanManagementSystem.Controllers.Deposit
             {
                 return HttpNotFound();
             }
-            ViewBag.CreatedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.CreatedBy);
-            ViewBag.DeletedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.DeletedBy);
-            ViewBag.UserId = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.UserId);
-            ViewBag.ModifiedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.ModifiedBy);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoDepositInfo);
         }
 
@@ -92,7 +97,8 @@ namespace LoanManagementSystem.Controllers.Deposit
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DepositId,UserId,Duration,DepositType,MaturityDate,TotalInstallments,DepositAmount,MatureAmount,InstallmentAmount,ClosedDate,RecurringDepositDate,Status,ChequeDetails,InteresRate,ApprovedDate,ApprovedBy,Notes,CreatedOn,ModifiedOn,CreatedBy,ModifiedBy,IsDeleted,DeletedBy,DeletedOn")] sdtoDepositInfo sdtoDepositInfo)
+        public ActionResult Edit(//[Bind(Include = "DepositId,UserId,Duration,DepositType,MaturityDate,TotalInstallments,DepositAmount,MatureAmount,InstallmentAmount,ClosedDate,RecurringDepositDate,Status,ChequeDetails,InteresRate,ApprovedDate,ApprovedBy,Notes,CreatedOn,ModifiedOn,CreatedBy,ModifiedBy,IsDeleted,DeletedBy,DeletedOn")] 
+            sdtoDepositInfo sdtoDepositInfo)
         {
             if (ModelState.IsValid)
             {
@@ -100,10 +106,8 @@ namespace LoanManagementSystem.Controllers.Deposit
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CreatedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.CreatedBy);
-            ViewBag.DeletedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.DeletedBy);
-            ViewBag.UserId = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.UserId);
-            ViewBag.ModifiedBy = new SelectList(db.User, "UserID", "Code", sdtoDepositInfo.ModifiedBy);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoDepositInfo);
         }
 

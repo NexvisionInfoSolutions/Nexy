@@ -1,63 +1,174 @@
 ﻿@model IEnumerable<Data.Models.Accounts.sdtoLoanInfo>
 
+@using GridMvc.Html
+
 @{
     ViewBag.Title = "List Loans";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Html.ActionLink("Create New", "Create")
-<table class="table bg-teal">
-    <tr>
-        <th>
-            @Html.DisplayName("Member")
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.RequestedAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProposedAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanAmount)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@*<table class="table bg-teal">
         <tr>
-            <td>
-                @Html.Label(item.Member.FirstName + " " + item.Member.LastName)
-            </td>
+            <th>
+                @Html.DisplayName("Member")
+            </th>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestedAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProposedAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanAmount)
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.RequestedAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProposedAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanAmount)
+            </th>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.LoanId }) |
-                @Html.ActionLink("Details", "Index", "LoanRepayments", new { LoanId = item.LoanId }, new { id = item.LoanId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.LoanId })
-                @Html.ActionLink("Cancel", "LoanCancellation", new { id = item.LoanId })
-                @Html.ActionLink("Recall", "LoanRecall", new { id = item.LoanId })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+
+            </th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.Label(item.Member.FirstName + " " + item.Member.LastName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestedAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProposedAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoanAmount)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.LoanId }) |
+                    @Html.ActionLink("Details", "Index", "LoanRepayments", new { LoanId = item.LoanId }, new { id = item.LoanId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.LoanId })
+                    @Html.ActionLink("Cancel", "LoanCancellation", new { id = item.LoanId })
+                    @Html.ActionLink("Recall", "LoanRecall", new { id = item.LoanId })
+                </td>
+            </tr>
+        }
+
+    </table>*@
+
+@*@section scripts {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // prepare the data
+                var source =
+                {
+                    dataType: "json",
+                    dataFields: [
+                        { name: 'LoanId', type: 'number' },
+                        { name: 'FirstName', type: 'string' },
+                        { name: 'LastName', type: 'string' },
+                        { name: 'LoanAmount', type: 'number' },
+                        { name: 'CreatedOn', type: 'date' },
+                        { name: 'InstallmentAmount', type: 'number' },
+                        { name: 'InteresRate', type: 'number' },
+                        { name: 'Notes', type: 'string' }
+                    ],
+                    id: 'LoanId',
+                    url: '/Loan/LoansInfo'
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                // create Tree Grid
+                var gridInfo = $("#dataTable").jqxDataTable(
+                {
+                    width: 1050,
+                    source: dataAdapter,
+                    theme: 'arctic',
+                    pageSize: 5,
+                    sortable: true,
+                    filterable: true,
+                    pageable: true,
+                    columns: [
+                      { text: 'Loan Id', dataField: 'LoanId', width: 200 },
+                      { text: 'First Name', dataField: 'FirstName', width: 200 },
+                      { text: 'Last Name', dataField: 'LastName', width: 160 },
+                      { text: 'Loan Amount', dataField: 'LoanAmount', width: 120 },
+                      { text: 'Loan Date', dataField: 'CreatedOn', cellsFormat: 'd', width: 120 },
+                      { text: 'Installment Amount', dataField: 'InstallmentAmount', width: 250 },
+                      { text: 'Interest Rate', dataField: 'InteresRate', width: 120 },
+                      { text: 'Notes', dataField: 'Notes' }
+                    ]
+                });
+            });
+        </script>
+    }
+    <div id="dataTable"></div>*@
+
+@helper CustomRenderActionColumn(Data.Models.Accounts.sdtoLoanInfo loan)
+{
+    <b>
+        @Html.ActionLink("Edit", "Edit", new { id = loan.LoanId }) | @Html.ActionLink("Details", "Index", "LoanRepayments", new { LoanId = loan.LoanId }, new { id = loan.LoanId }) | @Html.ActionLink("Delete", "Delete", new { id = loan.LoanId })
+        | @Html.ActionLink("Cancel", "LoanCancellation", new { id = loan.LoanId }) | @Html.ActionLink("Recall", "LoanRecall", new { id = loan.LoanId })
+    </b>
+}
+
+@Html.Grid(Model).Columns(columns =>
+{
+    /* Adding not mapped column, that renders body, using inline Razor html helper */
+    columns.Add()
+            .Encoded(false)
+            .Sanitized(false)
+            .SetWidth(150)
+            .RenderValueAs(d => CustomRenderActionColumn(d));
+
+    /* Adding "OrderID" column: */
+    columns.Add(o => o.LoanId)
+            .Titled("Loan#")
+            .SetWidth(100);
+
+    /* Adding "OrderDate" column: */
+    columns.Add(o => o.RepaymentStartDate, "Loan Date")
+            .Titled("Repayment Date")
+            .SortInitialDirection(GridMvc.Sorting.GridSortDirection.Descending)
+            .Format("{0:dd/MM/yyyy}")
+            .SetWidth(110);
+
+    /* Adding "CompanyName" column: */
+    columns.Add(o => o.Member.FirstName)
+            .Titled("Member")
+            .ThenSortByDescending(o => o.LoanId)
+            .RenderValueAs(x => x.Member.FirstName + " " + x.Member.LastName);
+    //.SetFilterWidgetType("CustomCompanyNameFilterWidget");
+
+    //columns.Add(o => o.Member.LastName)
+    //.Titled("Last Name")
+    //.ThenSortByDescending(o => o.LoanId);
+
+    /* Adding "Vip customer" column: */
+    columns.Add(o => o.LoanAmount)
+            .Titled("Loan Amount")
+            .SetWidth(150);
+    //.RenderValueAs(o => CustomRenderingOfColumn(o));
+
+    columns.Add(o => o.InstallmentAmount)
+            .Titled("Installment Amount")
+            .SetWidth(150);
+
+    columns.Add(o => o.InteresRate)
+    .Titled("Interest Rate")
+    .SetWidth(150);
+
+    columns.Add(o => o.Notes)
+            .Titled("Notes")
+            .SetWidth(150);
+
+}).WithPaging(15).Sortable().Filterable().WithMultipleFilters()
+@*.SetRowCssClasses(item => item.Customer.IsVip ? "warning" : string.Empty)*@
+

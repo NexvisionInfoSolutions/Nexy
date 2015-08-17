@@ -19,8 +19,26 @@ namespace LoanManagementSystem.Controllers.Loan
         // GET: Loan
         public ActionResult Index()
         {
-            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.Member);
+            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser);
             return View(sdtoLoanInfoes.ToList());
+        }
+
+        public JsonResult LoansInfo()
+        {
+            var dbResult = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).ToList();
+            var loans = (from loan in dbResult
+                         select new
+                         {
+                             loan.LoanId,
+                             loan.Member.FirstName,
+                             loan.Member.LastName,
+                             loan.LoanAmount,
+                             loan.CreatedOn,
+                             loan.InstallmentAmount,
+                             loan.InteresRate,
+                             loan.Notes
+                         });
+            return Json(loans, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Loan/Details/5
@@ -39,12 +57,20 @@ namespace LoanManagementSystem.Controllers.Loan
         }
 
         // GET: Loan/Create
-        public ActionResult Create()
+        public ActionResult Create(long? UserId)
         {
             var loan = new sdtoLoanInfo();
             loan.RePaymentInterval = Data.Models.Enumerations.RepaymentInterval.Monthly;
             loan.Status = Data.Models.Enumerations.LoanStatus.Active;
-            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
+
+            loan.InteresRate = db.GeneralSettings.FirstOrDefault().BankInterest;
+
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && (UserId == null || UserId.Value == 0 || x.UserID == UserId));
+
+            if (listUsers == null || listUsers.Count(x => x.UserID > 0) == 0)
+                return RedirectToAction("Create", "Member");
+
+            ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(loan);
         }
         // POST: Loan/Create

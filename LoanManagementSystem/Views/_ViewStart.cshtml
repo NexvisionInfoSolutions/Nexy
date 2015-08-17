@@ -5,6 +5,6 @@
 @*@{
     if (!User.Identity.IsAuthenticated)
     {
-        return System.Web.Mvc.RedirectResult("Login", "User");
+        return Controller.("Login", "User");
     }
 }*@

@@ -26,10 +26,48 @@ namespace LoanManagementSystem
             bundles.Add(new ScriptBundle("~/bundles/layout").Include(
                       "~/Scripts/layout.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/grid").Include(
+                    "~/Scripts/gridmvc.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqwidgets").Include(
+                "~/Scripts/jqx-all.js",
+                "~/Scripts/jqxcore.js"
+                //"~/Scripts/jqxdata.js",
+                //"~/Scripts/jqxgrid.js",
+                //"~/Scripts/jqxgrid.selection.js",
+                //"~/Scripts/jqxgrid.pager.js",
+                //"~/Scripts/jqxtreegrid.js",
+                //"~/Scripts/jqxtree.js",
+
+            //"~/Scripts/jqxdatetimeinput.js",
+
+            //"~/Scripts/jqxbuttons.js",
+                //"~/Scripts/jqxslider.js",
+                //"~/Scripts/jqxscrollbar.js",
+                //"~/Scripts/jqxdropdownlist.js",
+                //"~/Scripts/jqxlistbox.js",
+
+            //"~/Scripts/jqxdatatable.js",
+                //"~/Scripts/jqxmenu.js",
+                //"~/Scripts/jqxlistmenu.js",
+                //"~/Scripts/jqxcalendar.js",
+                //"~/Scripts/jqxgrid.sort.js",
+                //"~/Scripts/jqxgrid.filter.js",
+                //"~/Scripts/jqxdatetimeinput.js",
+                //"~/Scripts/jqxdropdownlist.js",
+                //"~/Scripts/jqxslider.js",
+                //"~/Scripts/globalize.js"
+            ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.min.css",
                       "~/Content/ionicons.min.css",
+                      "~/Content/Gridmvc.css",
+                      "~/Content/jqx.base.css",
+                      "~/Content/jqx.web.css",
+                      "~/Content/jqx.ui-lightness.css",
                       "~/Content/Layout.css",
                       "~/Content/site.css"));
 
@@ -38,7 +76,6 @@ namespace LoanManagementSystem
 
             bundles.Add(new StyleBundle("~/Content/noskin").Include(
                       "~/Content/skins/skin-no.css"));
-
         }
     }
 }

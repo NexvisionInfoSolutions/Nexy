@@ -10,7 +10,7 @@
     $(document).ready(function () {
         var datepc = $('.datepicker');
         datepc.datepicker({
-            format: 'yyyy-mm-dd',
+            format: 'yyyy/M/dd',
             startDate: '-3d',
             showOn: "both",
             buttonImageOnly: true,
@@ -18,12 +18,18 @@
             buttonText: "Calendar",
             regional: ["en-US"]
         });
+
+        //$(".datepicker").jqxDateTimeInput({ width: '100px', height: '20px' });
+
+        //$.getScript('../../Scripts/globalize.culture.en-US.js', function () {
+        //    $(".datepicker").jqxDateTimeInput({ culture: 'en-US' });
+        //});
     });
 </script>
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()    
+    @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         <hr />

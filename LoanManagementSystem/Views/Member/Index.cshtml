@@ -12,7 +12,7 @@
 </p>
 <table class="table">
     <tr>
-         
+
         <th>
             @Html.DisplayNameFor(model => model.Code)
         </th>
@@ -22,16 +22,16 @@
         <th>
             @Html.DisplayNameFor(model => model.LastName)
         </th>
-        
+
         <th>
             @*@Html.DisplayNameFor(model => model.Description)*@
             @Html.Label("Remarks")
         </th>
-         
-        
+
+
         @*<th>
-            @Html.DisplayNameFor(model => model.UserType)
-        </th>*@
+                @Html.DisplayNameFor(model => model.UserType)
+            </th>*@
         <th>
             @Html.DisplayNameFor(model => model.FatherName)
         </th>
@@ -41,37 +41,39 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-      
-        <td>
-            @Html.DisplayFor(modelItem => item.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td> 
-        
-        @*<td>
-            @Html.DisplayFor(modelItem => item.UserType)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.FatherName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UserID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.UserType)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.FatherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.UserID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserID }) |
+                @Html.ActionLink("Add New Loan", "Create", "Loan", new { UserId = item.UserID }, new { id = item.UserID })
+            </td>
+        </tr>
+    }
 
 </table>
