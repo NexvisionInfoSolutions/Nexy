@@ -15,14 +15,14 @@ namespace LoanManagementSystem.Controllers.Deposit
     {
         private LoanDBContext db = new LoanDBContext();
 
-        // GET: Deposit
+        // GET: sdtoDepositInfoes
         public ActionResult Index()
         {
             var sdtoDepositInfoes = db.sdtoDepositInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser);
             return View(sdtoDepositInfoes.ToList());
         }
 
-        // GET: Deposit/Details/5
+        // GET: sdtoDepositInfoes/Details/5
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -37,7 +37,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             return View(sdtoDepositInfo);
         }
 
-        // GET: Deposit/Create
+        // GET: sdtoDepositInfoes/Create
         public ActionResult Create()
         {
             ViewBag.CreatedBy = new SelectList(db.User, "UserID", "Code");
@@ -47,7 +47,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             return View();
         }
 
-        // POST: Deposit/Create
+        // POST: sdtoDepositInfoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -68,7 +68,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             return View(sdtoDepositInfo);
         }
 
-        // GET: Deposit/Edit/5
+        // GET: sdtoDepositInfoes/Edit/5
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -87,7 +87,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             return View(sdtoDepositInfo);
         }
 
-        // POST: Deposit/Edit/5
+        // POST: sdtoDepositInfoes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -107,7 +107,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             return View(sdtoDepositInfo);
         }
 
-        // GET: Deposit/Delete/5
+        // GET: sdtoDepositInfoes/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -122,7 +122,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             return View(sdtoDepositInfo);
         }
 
-        // POST: Deposit/Delete/5
+        // POST: sdtoDepositInfoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)

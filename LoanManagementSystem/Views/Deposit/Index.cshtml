@@ -1,173 +1,166 @@
 ﻿@model IEnumerable<Data.Models.Accounts.sdtoDepositInfo>
 
 @{
-    Layout = null;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
+<h2>Index</h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedByUser.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedByUser.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedByUser.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DepositType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaturityDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalInstallments)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DepositAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MatureAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InstallmentAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClosedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecurringDepositDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChequeDetails)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InteresRate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApprovedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApprovedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedOn)
-            </th>
-            <th></th>
-        </tr>
-    
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedByUser.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedByUser.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Member.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedByUser.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepositType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaturityDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalInstallments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepositAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatureAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InstallmentAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClosedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecurringDepositDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChequeDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InteresRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedOn)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.DepositId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.DepositId }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.DepositId })
-            </td>
-        </tr>
-    }
-    
-    </table>
-</body>
-</html>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedByUser.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedByUser.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedByUser.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepositType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaturityDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalInstallments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepositAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MatureAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InstallmentAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClosedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecurringDepositDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChequeDetails)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InteresRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApprovedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApprovedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedByUser.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedByUser.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedByUser.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepositType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaturityDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalInstallments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepositAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MatureAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InstallmentAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClosedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecurringDepositDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChequeDetails)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InteresRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApprovedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApprovedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsDeleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedOn)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.DepositId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DepositId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DepositId })
+        </td>
+    </tr>
+}
+
+</table>

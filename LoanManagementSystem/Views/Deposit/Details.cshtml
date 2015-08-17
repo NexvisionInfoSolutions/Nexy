@@ -1,210 +1,203 @@
 ﻿@model Data.Models.Accounts.sdtoDepositInfo
 
 @{
-    Layout = null;
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
+<h2>Details</h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-    <div>
-        <h4>sdtoDepositInfo</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.CreatedByUser.Code)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.CreatedByUser.Code)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DeletedByUser.Code)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DeletedByUser.Code)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Member.Code)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Member.Code)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.ModifiedByUser.Code)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.ModifiedByUser.Code)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Duration)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Duration)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DepositType)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DepositType)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.MaturityDate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.MaturityDate)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalInstallments)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.TotalInstallments)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DepositAmount)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DepositAmount)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.MatureAmount)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.MatureAmount)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.InstallmentAmount)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.InstallmentAmount)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.ClosedDate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.ClosedDate)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.RecurringDepositDate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.RecurringDepositDate)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Status)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Status)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.ChequeDetails)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.ChequeDetails)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.InteresRate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.InteresRate)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.ApprovedDate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.ApprovedDate)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.ApprovedBy)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.ApprovedBy)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Notes)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Notes)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.CreatedOn)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.ModifiedOn)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.IsDeleted)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DeletedOn)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DeletedOn)
-            </dd>
-    
-        </dl>
-    </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.DepositId }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-</body>
-</html>
+<div>
+    <h4>sdtoDepositInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedByUser.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedByUser.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedByUser.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedByUser.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Member.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedByUser.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedByUser.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepositType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepositType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaturityDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaturityDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalInstallments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalInstallments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepositAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepositAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MatureAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MatureAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InstallmentAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InstallmentAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClosedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RecurringDepositDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RecurringDepositDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChequeDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChequeDetails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InteresRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InteresRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DepositId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
