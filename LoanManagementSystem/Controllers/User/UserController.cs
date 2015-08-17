@@ -141,7 +141,7 @@ namespace LoanManagementSystem.Controllers
                         FileUpload(user.UserID, ProfileImage);
 
                         System.IO.FileInfo fInfo = new FileInfo(ViewBag.UserProfileAvatar);
-                        fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, user.UserID+ ".logo"), true);
+                        fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, user.UserID + ".logo"), true);
                         fInfo.Delete();
                     }
 
@@ -191,7 +191,7 @@ namespace LoanManagementSystem.Controllers
 
                     System.IO.FileInfo fInfo = new FileInfo(ViewBag.UserProfileAvatar);
                     fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, user.UserID + ".logo"), true);
-                    fInfo.Delete();              
+                    fInfo.Delete();
                 }
 
                 return RedirectToAction("Index");

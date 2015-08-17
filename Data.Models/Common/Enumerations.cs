@@ -20,11 +20,15 @@ namespace Data.Models
 
         public enum UrlInfoStatus { Inactive = 0, Active = 1 }
 
-        public enum UserType {User=1, Executive = 2, Member = 3 }
+        public enum UserType { User = 1, Executive = 2, Member = 3 }
 
         public enum RepaymentInterval { Daily = 1, Weekly, Monthly, BiMonthly, Quaterly, Yearly }
 
-        public enum LoanStatus { Inactive = 0, Active = 1 }
+        public enum LoanStatus { Inactive = 0, Active = 1, Approved, Completed, Cancelled, Recalled }
+
+        public enum DepositType { Fixed = 1, Recurring }
+
+        public enum DepositStatus { Inactive = 0, Active = 1, Matured, Closed, Unclaimed }
 
         public enum RepaymentStatus { Pending = 0, Paid, Posted }
 

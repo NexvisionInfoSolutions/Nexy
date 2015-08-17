@@ -170,6 +170,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Deposit\DepositController.cs" />
     <Compile Include="Controllers\User\CompanyController.cs" />
     <Compile Include="Controllers\User\ExecutiveController.cs" />
     <Compile Include="Controllers\User\MemberController.cs" />
@@ -469,6 +470,13 @@
     <Content Include="Views\LoanRepayments\Index.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\LogOff.cshtml" />
+    <Content Include="Views\Loan\LoanCancellation.cshtml" />
+    <Content Include="Views\Loan\LoanRecall.cshtml" />
+    <Content Include="Views\Deposit\Create.cshtml" />
+    <Content Include="Views\Deposit\Delete.cshtml" />
+    <Content Include="Views\Deposit\Details.cshtml" />
+    <Content Include="Views\Deposit\Edit.cshtml" />
+    <Content Include="Views\Deposit\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

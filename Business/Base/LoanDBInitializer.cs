@@ -118,13 +118,25 @@ namespace Business.Base
             sdtoUrlInfo urlCompanyHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Company", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlCompanyHead = context.UrlInfoCollection.Add(urlCompanyHead);
 
+            //35
             sdtoUrlInfo urlCompanies = new sdtoUrlInfo() { Url = "/Company/Index", CreatedOn = DateTime.Now, UrlText = "Company details", ParentId = 34, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlCompanies = context.UrlInfoCollection.Add(urlCompanies);
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Company/Create", CreatedOn = DateTime.Now, UrlText = "Add Company", ParentId = 34, IsMenu = true, MenuOrder = 2 });//urlCompanies.ParentId });
 
-            sdtoUrlInfo urlRepaymentLoans = new sdtoUrlInfo() { Url = "/LoanRepayments/Index", CreatedOn = DateTime.Now, UrlText = "Loan Repayments", ParentId = 31, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            //37
+            sdtoUrlInfo urlRepaymentLoans = new sdtoUrlInfo() { Url = "/LoanRepayments/Index", CreatedOn = DateTime.Now, UrlText = "Loan Repayments", ParentId = 31, IsMenu = true, MenuOrder = 3 };//urlAccounts.ParentId };
             urlRepaymentLoans = context.UrlInfoCollection.Add(urlRepaymentLoans);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/LoanRepayments/Create", CreatedOn = DateTime.Now, UrlText = "Add Loan Repayment", ParentId = 31, IsMenu = true, MenuOrder = 2 });//urlLoans.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/LoanRepayments/Create", CreatedOn = DateTime.Now, UrlText = "Add Loan Repayment", ParentId = 31, IsMenu = true, MenuOrder = 4 });//urlLoans.ParentId });
+
+            //39
+            sdtoUrlInfo urlDepositHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Deposits", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            urlDepositHead = context.UrlInfoCollection.Add(urlDepositHead);
+
+            //40
+            sdtoUrlInfo urlDeposits = new sdtoUrlInfo() { Url = "/Deposit/Index", CreatedOn = DateTime.Now, UrlText = "Deposits", ParentId = 39, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            urlDeposits = context.UrlInfoCollection.Add(urlDeposits);
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Deposit/Create", CreatedOn = DateTime.Now, UrlText = "Add Deposit Account", ParentId = 39, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
+
 
             /*******************************/
             /** Account Types **/
@@ -137,6 +149,35 @@ namespace Business.Base
 
             context.AccountBookTypes.Add(new sdtoAccountBookType() { AccountBookType = "Cash", Status = Data.Models.Enumerations.AccountBookTypeStatus.Active, UniqueName = "CASH" });
             context.AccountBookTypes.Add(new sdtoAccountBookType() { AccountBookType = "Bank", Status = Data.Models.Enumerations.AccountBookTypeStatus.Active, UniqueName = "BANK" });
+
+            context.Usergroup.Add(new sdtoUserGroup() { Code = "GN", Description = "General", Name = "Owner", Status = Data.Models.Enumerations.UserGroupStatus.Active, IsDeleted = false, CreatedOn = DateTime.Now });
+
+            sdtoAddress sdtoCompAddr = new sdtoAddress() { Address1 = "Address of Owner" };
+
+            sdtoCompAddr = context.Address.Add(sdtoCompAddr);
+            var sa = context.Address.FirstOrDefault();
+            if (sa != null)
+                sdtoCompAddr = sa;
+
+            sdtoContact sdtoContactss = new sdtoContact() { ContactName = "Name of Owner" };
+            sdtoContactss = context.Contacts.Add(sdtoContactss);
+            var sc = context.Contacts.FirstOrDefault();
+            if (sc != null)
+                sdtoContactss = sc;
+
+            sdtoCompAddr.AddressId = 1;
+            sdtoContactss.ContactId = 1;
+
+            sdtoCompany cmpObj = new sdtoCompany() { AddressId = sdtoCompAddr.AddressId, ContactId = sdtoContactss.ContactId, Code = "General", CompanyName = "Owner", IsDeleted = false, TIN = "1233", CreatedOn = DateTime.Now };
+            cmpObj = context.Companies.Add(cmpObj);
+            var scc = context.Companies.FirstOrDefault();
+            if (scc != null)
+                cmpObj = scc;
+
+            cmpObj.CompanyId = 1;
+
+            sdtoSettings sd = new sdtoSettings() { BankCharges = 10, BankInterest = 10, CompanyId = cmpObj.CompanyId, CreatedOn = DateTime.Now };
+            context.GeneralSettings.Add(sd);
 
             base.Seed(context);
         }

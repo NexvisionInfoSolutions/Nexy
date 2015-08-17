@@ -151,7 +151,8 @@ namespace LoanManagementSystem.Controllers.Loan
             if (ModelState.IsValid)
             {
                 sdtoLoanInfo sdtoloanInfo = db.sdtoLoanInfoes.Find(objLoanInfo.LoanId);
-                sdtoloanInfo.Status = LoanStatus.Inactive;
+                sdtoloanInfo.Status = LoanStatus.Cancelled;
+                sdtoloanInfo.Notes = objLoanInfo.Notes;
                 db.Entry(sdtoloanInfo).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -183,7 +184,8 @@ namespace LoanManagementSystem.Controllers.Loan
             if (ModelState.IsValid)
             {
                 sdtoLoanInfo sdtoloanInfo = db.sdtoLoanInfoes.Find(objLoanInfo.LoanId);
-                sdtoloanInfo.Status = LoanStatus.Active;
+                sdtoloanInfo.Status = LoanStatus.Recalled;
+                sdtoloanInfo.Notes = objLoanInfo.Notes;
                 db.Entry(sdtoloanInfo).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
