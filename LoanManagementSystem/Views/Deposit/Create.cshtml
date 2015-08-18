@@ -1,7 +1,7 @@
 ﻿@model Data.Models.Accounts.sdtoDepositInfo
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Add Deposit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
@@ -27,14 +27,11 @@
     });
 </script>
 
-<h2>Create</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>sdtoDepositInfo</h4>
+    <div class="form-horizontal"> 
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
