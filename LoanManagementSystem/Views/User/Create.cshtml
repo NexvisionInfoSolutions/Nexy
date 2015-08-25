@@ -1,4 +1,4 @@
-﻿@model LoanManagementSystem.Models.sdtoUser
+﻿@model LoanManagementSystem.Models.sdtoViewUserAccount
 
 @{
     ViewBag.Title = "Create User";
@@ -33,11 +33,17 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password)
+                @Html.PasswordFor(model => model.Password)
                 @Html.ValidationMessageFor(model => model.Password)
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.ConfirmPassword)
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -71,7 +77,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserGroupId, "UserGroupId", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.UserGroupId, (SelectList)ViewBag.UserGroupList, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.UserGroupId, (SelectList)ViewBag.UserGroupList, htmlAttributes: new { })
                 @Html.ValidationMessageFor(model => model.UserGroupId)
             </div>
         </div>

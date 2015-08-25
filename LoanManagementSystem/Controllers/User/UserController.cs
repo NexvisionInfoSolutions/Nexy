@@ -59,9 +59,11 @@ namespace LoanManagementSystem.Controllers
                         //Session["LogedUserFullname"] = v.FirstName.ToString() + " " + v.LastName.ToString();
                         return RedirectToAction("Index", "Home");
                     }
+                    else
+                        ModelState.AddModelError("", "Invalid login attempt.");
                 }
             }
-            return View("Index");
+            return View();
         }
 
         public ActionResult LogOff()
@@ -133,8 +135,8 @@ namespace LoanManagementSystem.Controllers
                         user.Contacts = db.Contacts.Add(user.Contacts);
                     user.CreatedOn = DateTime.Now;
                     user.IsActive = true;
-
-                    db.User.Add(user);
+                    sdtoUser userd = (sdtoUser)user;
+                    db.User.Add(userd);
                     db.SaveChanges();
                     if (ProfileImage != null)
                     {
