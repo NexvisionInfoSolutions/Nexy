@@ -20,7 +20,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UrlText, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UrlText, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.UrlText, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.UrlText, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Url, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ParentId, "ParentId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("ParentId", (SelectList)ViewBag.MenuList, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("ParentId", (SelectList)ViewBag.MenuList, htmlAttributes: new {  })
                 @Html.ValidationMessageFor(model => model.ParentId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CreatedOn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedOn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CreatedOn, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.CreatedOn, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -52,7 +52,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ModifiedOn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedOn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ModifiedOn, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.ModifiedOn, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -60,7 +60,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -68,7 +68,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ModifiedBy, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ModifiedBy, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.ModifiedBy, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -76,7 +76,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
+                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new {  })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -94,7 +94,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DeletedBy, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DeletedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.DeletedBy, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.DeletedBy, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -102,7 +102,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DeletedOn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DeletedOn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.DeletedOn, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.DeletedOn, "", new { @class = "text-danger" })
             </div>
         </div>

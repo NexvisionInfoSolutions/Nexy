@@ -13,13 +13,13 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*@Html.HiddenFor(model => model.CompanyId, new { htmlAttributes = new { @class = "form-control" } })*@
-        @Html.HiddenFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+        @*@Html.HiddenFor(model => model.CompanyId, new { htmlAttributes = new {  } })*@
+        @Html.HiddenFor(model => model.CreatedBy, new { htmlAttributes = new {  } })
 
         <div class="form-group">
             @Html.LabelFor(model => model.CompanyId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CompanyId, (SelectList)ViewBag.CompanyList, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.CompanyId, (SelectList)ViewBag.CompanyList, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.BankInterest, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BankInterest, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BankInterest, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.BankInterest, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.BankInterest, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BankCharges, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BankCharges, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.BankCharges, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.BankCharges, "", new { @class = "text-danger" })
             </div>
         </div>

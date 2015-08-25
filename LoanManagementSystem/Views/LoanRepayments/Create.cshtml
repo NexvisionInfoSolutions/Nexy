@@ -32,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.LoanId, "LoanId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("LoanId", (SelectList)ViewBag.LoanList, htmlAttributes: new { @class = "form-control", @ID = "ddlLoan", onchange = "document.location.href = '/LoanRepayments/Create?LoanId=' + this.options[this.selectedIndex].value;" })
+                @Html.DropDownList("LoanId", (SelectList)ViewBag.LoanList, htmlAttributes: new {  @ID = "ddlLoan", onchange = "document.location.href = '/LoanRepayments/Create?LoanId=' + this.options[this.selectedIndex].value;" })
                 @Html.ValidationMessageFor(model => model.LoanId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -40,7 +40,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RepaymentCode, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RepaymentCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.RepaymentCode, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.RepaymentCode, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -72,7 +72,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RepaymentAmount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RepaymentAmount, new { htmlAttributes = new { @class = "form-control", @ID = "txtRepaymentAmount" } })
+                @Html.EditorFor(model => model.RepaymentAmount, new { htmlAttributes = new {  @ID = "txtRepaymentAmount" } })
                 @Html.ValidationMessageFor(model => model.RepaymentAmount, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -80,7 +80,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PendingPrincipalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.LabelFor(x => x.PendingPrincipalAmount, @Model.PendingPrincipalAmount.ToString("N"), new { @class = "form-control", @ID = "lblPendingPrincipalAmount" })
+                @Html.LabelFor(x => x.PendingPrincipalAmount, @Model.PendingPrincipalAmount.ToString("N"), new {  @ID = "lblPendingPrincipalAmount" })
                 @*@Html.ValidationMessageFor(model => model.PendingPrincipalAmount, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -89,7 +89,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PaymentMode, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.PaymentMode, htmlAttributes: new { @class = "form-control" })
+                @Html.EnumDropDownListFor(model => model.PaymentMode, htmlAttributes: new {  })
                 @Html.ValidationMessageFor(model => model.PaymentMode, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -97,7 +97,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ChequeDetails, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.ChequeDetails, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.ChequeDetails, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.ChequeDetails, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -105,7 +105,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Notes, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
             </div>
         </div>

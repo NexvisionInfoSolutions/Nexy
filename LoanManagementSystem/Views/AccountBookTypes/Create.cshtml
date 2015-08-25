@@ -18,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.AccountBookType, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AccountBookType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.AccountBookType, new { htmlAttributes = new {  } })
                 @Html.ValidationMessageFor(model => model.AccountBookType, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
+                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new {  })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>
