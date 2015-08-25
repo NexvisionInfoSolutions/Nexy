@@ -18,8 +18,9 @@ namespace LoanManagementSystem.Controllers
         // GET: /Member/
         public ActionResult Index()
         {
-            var user = db.User.Include(s => s.UserAddress).Include(s => s.Contacts).Include(s => s.GuaranterAddress).Include(s => s.GuaranterContacts).Include(s => s.PermanentAddress).Include(s => s.PermanentContacts).Include(s => s.UserGroup);
-            return View(user.Where(s => s.UserType == UserType.Member).ToList());
+            var user = db.User.Where(s => s.UserType == UserType.Member); //.Include(s => s.UserAddress).Include(s => s.Contacts).Include(s => s.GuaranterAddress).Include(s => s.GuaranterContacts).Include(s => s.PermanentAddress).Include(s => s.PermanentContacts).Include(s => s.UserGroup);
+            return View(user);
+            //return View(user.Where(s => s.UserType == UserType.Member).ToList());
         }
 
         // GET: /Member/Details/5
