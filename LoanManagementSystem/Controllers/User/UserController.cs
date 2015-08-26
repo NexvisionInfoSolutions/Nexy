@@ -126,6 +126,10 @@ namespace LoanManagementSystem.Controllers
                 {
                     ModelState.AddModelError("ProfileImage", "Please choose either a GIF, JPG or PNG image");
                 }
+                else if (user != null && db.User.Count(x => x.UserName.Equals(user.UserName, StringComparison.InvariantCultureIgnoreCase)) > 0)
+                {
+                    ModelState.AddModelError("UserName", string.Format("User name {0} is unavailable. Please select a different user name.", user.UserName));
+                }
                 else
                 {
                     user.UserType = UserType.User;
@@ -135,8 +139,7 @@ namespace LoanManagementSystem.Controllers
                         user.Contacts = db.Contacts.Add(user.Contacts);
                     user.CreatedOn = DateTime.Now;
                     user.IsActive = true;
-                    sdtoUser userd = (sdtoUser)user;
-                    db.User.Add(userd);
+                    db.User.Add(user);
                     db.SaveChanges();
                     if (ProfileImage != null)
                     {

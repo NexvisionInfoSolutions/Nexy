@@ -33,9 +33,11 @@ namespace Data.Models.Accounts
         [Display(Name = "Proposed Amount")]
         public decimal ProposedAmount { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Loan amount should be greater than zero")]
         [Display(Name = "Loan Amount")]
         public decimal LoanAmount { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Total Installments should be greater than zero")]
         [Display(Name = "Total Installments")]
         public int TotalInstallments { get; set; }
         public LoanStatus Status { get; set; }

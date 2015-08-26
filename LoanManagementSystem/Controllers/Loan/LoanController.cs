@@ -36,7 +36,8 @@ namespace LoanManagementSystem.Controllers.Loan
                              loan.CreatedOn,
                              loan.InstallmentAmount,
                              loan.InteresRate,
-                             loan.Notes
+                             loan.Notes,
+                             LoanInfo = loan.LoanId
                          });
             return Json(loans, JsonRequestBehavior.AllowGet);
         }
@@ -118,6 +119,7 @@ namespace LoanManagementSystem.Controllers.Loan
         {
             if (ModelState.IsValid)
             {
+                sdtoLoanInfo.InstallmentAmount = sdtoLoanInfo.LoanAmount / sdtoLoanInfo.TotalInstallments;
                 db.Entry(sdtoLoanInfo).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

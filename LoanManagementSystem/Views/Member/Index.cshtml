@@ -12,7 +12,7 @@
 </p>
 <table class="table">
     <tr>
-
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Code)
         </th>
@@ -44,7 +44,13 @@
     @foreach (var item in Model)
     {
         <tr>
-
+            <td>
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="~/Utility/ProfileImage?UserId=@item.UserID" class="img-circle" alt="User Image" />
+                    </div>
+                </div>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Code)
             </td>

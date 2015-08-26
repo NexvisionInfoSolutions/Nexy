@@ -8,12 +8,31 @@ using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Models;
 using Data.Models.Enumerations;
+using System.IO;
 
 namespace LoanManagementSystem.Controllers
 {
     public class MemberController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
+
+        private void FileUpload(long UserId, HttpPostedFileBase uploadFile)
+        {
+            if (uploadFile.ContentLength > 0)
+            {
+                DirectoryInfo dirUser = new DirectoryInfo(HttpContext.Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\User\\Profile");
+                if (!dirUser.Exists)
+                    dirUser.Create();
+
+                FileInfo objFile = new FileInfo(Path.Combine(dirUser.FullName, System.Guid.NewGuid() + ".logo"));
+                ViewBag.UserProfileAvatar = objFile.FullName;
+
+                if (objFile.Exists)
+                    objFile.Delete();
+
+                uploadFile.SaveAs(objFile.FullName);
+            }
+        }
 
         // GET: /Member/
         public ActionResult Index()
@@ -56,53 +75,82 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(sdtoUser sdtouser)//[Bind(Include="UserID,Code,Name,Description,UserGroupId,IsActive,Designation,UserType,ContactId,AddressId,PermanentAddressId,GuaranterAddressId,PermanentContactId,GuaranterContactId,FatherName,CreatedOn")]
+        public ActionResult Create(sdtoUser sdtouser, HttpPostedFileBase ProfileImage)//[Bind(Include="UserID,Code,Name,Description,UserGroupId,IsActive,Designation,UserType,ContactId,AddressId,PermanentAddressId,GuaranterAddressId,PermanentContactId,GuaranterContactId,FatherName,CreatedOn")]
         {
             if (ModelState.IsValid)
             {
-                sdtouser.UserType = UserType.Member;
-                if (sdtouser.UserAddress != null)
+                var validImageTypes = new string[]
+                                        {
+                                            "image/gif",
+                                            "image/jpeg",
+                                            "image/pjpeg",
+                                            "image/png"
+                                        };
+
+                if (ProfileImage == null || ProfileImage.ContentLength == 0)
                 {
-                    sdtouser.UserAddress.CreatedOn = DateTime.Now;
+                    ModelState.AddModelError("ProfileImage", "This field is required");
                 }
-
-                if (sdtouser.Contacts != null)
+                else if (ProfileImage != null && !validImageTypes.Contains(ProfileImage.ContentType))
                 {
-                    sdtouser.Contacts.CreatedOn = DateTime.Now;
+                    ModelState.AddModelError("ProfileImage", "Please choose either a GIF, JPG or PNG image");
                 }
-                if (sdtouser.PermanentAddress != null)
+                else
                 {
-                    sdtouser.PermanentAddress.CreatedOn = DateTime.Now;
+                    sdtouser.UserType = UserType.Member;
+                    if (sdtouser.UserAddress != null)
+                    {
+                        sdtouser.UserAddress.CreatedOn = DateTime.Now;
+                    }
+
+                    if (sdtouser.Contacts != null)
+                    {
+                        sdtouser.Contacts.CreatedOn = DateTime.Now;
+                    }
+                    if (sdtouser.PermanentAddress != null)
+                    {
+                        sdtouser.PermanentAddress.CreatedOn = DateTime.Now;
+                    }
+
+                    if (sdtouser.PermanentContacts != null)
+                    {
+                        sdtouser.PermanentContacts.CreatedOn = DateTime.Now;
+                    }
+                    if (sdtouser.GuaranterAddress != null)
+                    {
+                        sdtouser.GuaranterAddress.CreatedOn = DateTime.Now;
+                    }
+
+                    if (sdtouser.GuaranterContacts != null)
+                    {
+                        sdtouser.GuaranterContacts.CreatedOn = DateTime.Now;
+                        sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
+                    }
+
+                    sdtouser.CreatedOn = DateTime.Now;
+                    sdtouser.UserAddress = db.Address.Add(sdtouser.UserAddress);
+                    sdtouser.Contacts = db.Contacts.Add(sdtouser.Contacts);
+
+                    sdtouser.PermanentAddress = db.Address.Add(sdtouser.PermanentAddress);
+                    sdtouser.PermanentContacts = db.Contacts.Add(sdtouser.PermanentContacts);
+
+                    sdtouser.GuaranterAddress = db.Address.Add(sdtouser.GuaranterAddress);
+                    sdtouser.GuaranterContacts = db.Contacts.Add(sdtouser.GuaranterContacts);
+
+                    db.User.Add(sdtouser);
+                    db.SaveChanges();
+
+                    if (ProfileImage != null)
+                    {
+                        FileUpload(sdtouser.UserID, ProfileImage);
+
+                        System.IO.FileInfo fInfo = new FileInfo(ViewBag.UserProfileAvatar);
+                        fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, sdtouser.UserID + ".logo"), true);
+                        fInfo.Delete();
+                    }
+
+                    return RedirectToAction("Index");
                 }
-
-                if (sdtouser.PermanentContacts != null)
-                {
-                    sdtouser.PermanentContacts.CreatedOn = DateTime.Now;
-                }
-                if (sdtouser.GuaranterAddress != null)
-                {
-                    sdtouser.GuaranterAddress.CreatedOn = DateTime.Now;
-                }
-
-                if (sdtouser.GuaranterContacts != null)
-                {
-                    sdtouser.GuaranterContacts.CreatedOn = DateTime.Now;
-                    sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
-                }
-
-                sdtouser.CreatedOn = DateTime.Now;
-                sdtouser.UserAddress = db.Address.Add(sdtouser.UserAddress);
-                sdtouser.Contacts = db.Contacts.Add(sdtouser.Contacts);
-
-                sdtouser.PermanentAddress = db.Address.Add(sdtouser.PermanentAddress);
-                sdtouser.PermanentContacts = db.Contacts.Add(sdtouser.PermanentContacts);
-
-                sdtouser.GuaranterAddress = db.Address.Add(sdtouser.GuaranterAddress);
-                sdtouser.GuaranterContacts = db.Contacts.Add(sdtouser.GuaranterContacts);
-
-                db.User.Add(sdtouser);
-                db.SaveChanges();
-                return RedirectToAction("Index");
             }
 
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
@@ -149,7 +197,7 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(sdtoUser sdtouser)
+        public ActionResult Edit(sdtoUser sdtouser, HttpPostedFileBase ProfileImage)
         {
             if (ModelState.IsValid)
             {
@@ -193,6 +241,16 @@ namespace LoanManagementSystem.Controllers
 
                 db.Entry(sdtouser).State = EntityState.Modified;
                 db.SaveChanges();
+
+                if (ProfileImage != null)
+                {
+                    FileUpload(sdtouser.UserID, ProfileImage);
+
+                    System.IO.FileInfo fInfo = new FileInfo(ViewBag.UserProfileAvatar);
+                    fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, sdtouser.UserID + ".logo"), true);
+                    fInfo.Delete();
+                }
+
                 return RedirectToAction("Index");
             }
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);

@@ -64,52 +64,69 @@
 
     </table>*@
 
-@*@section scripts {
-        <script type="text/javascript">
-            $(document).ready(function () {
-                // prepare the data
-                var source =
-                {
-                    dataType: "json",
-                    dataFields: [
-                        { name: 'LoanId', type: 'number' },
-                        { name: 'FirstName', type: 'string' },
-                        { name: 'LastName', type: 'string' },
-                        { name: 'LoanAmount', type: 'number' },
-                        { name: 'CreatedOn', type: 'date' },
-                        { name: 'InstallmentAmount', type: 'number' },
-                        { name: 'InteresRate', type: 'number' },
-                        { name: 'Notes', type: 'string' }
-                    ],
-                    id: 'LoanId',
-                    url: '/Loan/LoansInfo'
-                };
-                var dataAdapter = new $.jqx.dataAdapter(source);
-                // create Tree Grid
-                var gridInfo = $("#dataTable").jqxDataTable(
-                {
-                    width: 1050,
-                    source: dataAdapter,
-                    theme: 'arctic',
-                    pageSize: 5,
-                    sortable: true,
-                    filterable: true,
-                    pageable: true,
-                    columns: [
-                      { text: 'Loan Id', dataField: 'LoanId', width: 200 },
-                      { text: 'First Name', dataField: 'FirstName', width: 200 },
-                      { text: 'Last Name', dataField: 'LastName', width: 160 },
-                      { text: 'Loan Amount', dataField: 'LoanAmount', width: 120 },
-                      { text: 'Loan Date', dataField: 'CreatedOn', cellsFormat: 'd', width: 120 },
-                      { text: 'Installment Amount', dataField: 'InstallmentAmount', width: 250 },
-                      { text: 'Interest Rate', dataField: 'InteresRate', width: 120 },
-                      { text: 'Notes', dataField: 'Notes' }
-                    ]
-                });
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'LoanId', type: 'number' },
+                    { name: 'FirstName', type: 'string' },
+                    { name: 'LastName', type: 'string' },
+                    { name: 'LoanAmount', type: 'number' },
+                    { name: 'CreatedOn', type: 'date' },
+                    { name: 'InstallmentAmount', type: 'number' },
+                    { name: 'InteresRate', type: 'number' },
+                    { name: 'Notes', type: 'string' },
+                    { name: 'LoanInfo', type: 'number' },
+                ],
+                id: 'LoanId',
+                url: '/Loan/LoansInfo'
+            };
+
+            var linkrenderer = function (row, column, value) {
+                //if (value.indexOf('#') != -1) {
+                //    value = value.substring(0, value.indexOf('#'));
+                //}
+                //var format = { target: '"_blank"' };
+                //var html = $.jqx.dataFormat.formatlink(value, format);
+                var html = '<b><a href="/Loan/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/LoanRepayments/Index?LoanId=' + value + '">Details</a>'
+                          + ' | <a href="/Loan/Delete/' + value + '">Delete</a> | <a href="/Loan/LoanCancellation/' + value + '">Cancel</a>'
+                          + ' | <a href="/Loan/LoanRecall/' + value + '">Recall</a></b>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'Loan Id', dataField: 'LoanId', width: 200 },
+                  { text: 'First Name', dataField: 'FirstName', width: 200 },
+                  { text: 'Last Name', dataField: 'LastName', width: 160 },
+                  { text: 'Loan Amount', dataField: 'LoanAmount', width: 120 },
+                  { text: 'Loan Date', dataField: 'CreatedOn', cellsFormat: 'd', width: 120 },
+                  { text: 'Installment Amount', dataField: 'InstallmentAmount', width: 250 },
+                  { text: 'Interest Rate', dataField: 'InteresRate', width: 120 },
+                  { text: 'Notes', dataField: 'Notes', width: 200 },
+                  {
+                      text: 'Edit', dataField: 'LoanInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 200,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
             });
-        </script>
-    }
-    <div id="dataTable"></div>*@
+        });
+    </script>
+}
+<div id="dataTable"></div>
 
 @helper CustomRenderActionColumn(Data.Models.Accounts.sdtoLoanInfo loan)
 {

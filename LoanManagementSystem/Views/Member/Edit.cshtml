@@ -7,11 +7,11 @@
 
 @*<h2>Edit Member</h2>*@
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Member", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal"> 
+
+    <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.UserID)
@@ -50,8 +50,24 @@
             </div>
         </div>
 
+        @if (File.Exists(Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\User\\Profile\\" + @Model.UserID + ".logo"))
+        {
+            <div class="form-group">
+                @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <img src="~/Utility/ProfileImage?UserId=@Model.UserID" alt="Logo" />
+                </div>
+            </div>
+        }
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" }) 
+            @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input name="ProfileImage" type="file" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Description)
                 @Html.ValidationMessageFor(model => model.Description)
@@ -59,7 +75,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CreatedOn, new { @class = "control-label col-md-2" }) 
+            @Html.LabelFor(model => model.CreatedOn, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CreatedOn)
                 @Html.ValidationMessageFor(model => model.CreatedOn)
@@ -132,7 +148,7 @@
                 @Html.ValidationMessageFor(model => model.PermanentAddress.Address1)
                 @Html.HiddenFor(model => model.PermanentAddressId)
                 @Html.HiddenFor(model => model.PermanentAddress.AddressId)
-                @Html.HiddenFor(model => model.UserType) 
+                @Html.HiddenFor(model => model.UserType)
             </div>
         </div>
         <div class="form-group">
@@ -211,7 +227,7 @@
             </div>
         </div>
 
-        
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

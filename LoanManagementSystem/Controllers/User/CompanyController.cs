@@ -87,7 +87,7 @@ namespace LoanManagementSystem.Controllers
                 else if (Logo != null && !validImageTypes.Contains(Logo.ContentType))
                 {
                     ModelState.AddModelError("Logo", "Please choose either a GIF, JPG or PNG image");
-                }
+                }                
                 else
                 {
                     objcompany.CreatedOn = DateTime.Now;
