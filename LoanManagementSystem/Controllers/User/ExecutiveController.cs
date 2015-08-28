@@ -22,6 +22,21 @@ namespace LoanManagementSystem.Controllers
      
             return View(user.Where(s=> s.UserType==UserType.Executive).ToList());
         }
+        public JsonResult ExecutiveInfo()
+        {
+            var dbResult = db.User.Where(s => s.UserType == UserType.Executive).ToList();
+            var Users = (from users in dbResult
+                         select new
+                         {
+                             users.UserID,
+                             users.FirstName,
+                             users.LastName,
+                             users.Designation,
+                             users.Code,
+                             ExecutiveInfo = users.UserID
+                         });
+            return Json(Users, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: /Executive/Details/5
         public ActionResult Details(long? id)

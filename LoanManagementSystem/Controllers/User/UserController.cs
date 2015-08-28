@@ -79,6 +79,21 @@ namespace LoanManagementSystem.Controllers
             return View(user.Where(s => s.UserType == UserType.User).ToList());
         }
 
+        public JsonResult UserInfo()
+        {
+            var dbResult = db.User.Include(u => u.UserGroup).ToList();
+            var Users = (from users in dbResult
+                         select new
+                         {
+                             users.UserID,
+                             users.FirstName,
+                             users.LastName,
+                             users.UserName,
+                             users.Code ,
+                             UserInfo = users.UserID
+                         });
+            return Json(Users, JsonRequestBehavior.AllowGet);
+        }
         // GET: /User/Details/5
         public ActionResult Details(int? id)
         {

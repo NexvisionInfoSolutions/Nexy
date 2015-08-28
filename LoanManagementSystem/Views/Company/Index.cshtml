@@ -10,59 +10,71 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr> 
-         
-        <th>
-            @Html.DisplayNameFor(model => model.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Owner)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TIN)
-        </th> 
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th> 
-        <th>
-            @Html.DisplayNameFor(model => model.ModifiedOn)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CompanyName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Owner)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TIN)
-        </td>
-       
-         
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td> 
-        <td>
-            @Html.DisplayFor(modelItem => item.ModifiedOn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CompanyId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CompanyId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CompanyId })
-        </td>
-    </tr>
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'CompanyId', type: 'number' },
+                    { name: 'Code', type: 'string' },
+                    { name: 'CompanyName', type: 'string' },
+                    { name: 'Owner', type: 'string' },
+                     { name: 'TIN', type: 'string' },
+                    { name: 'CompaniesInfo', type: 'number' },
+
+                ],
+                id: 'CompanyId',
+                url: '/Company/CompaniesInfo'
+            };
+
+            var linkrenderer = function (row, column, value) {
+                //if (value.indexOf('#') != -1) {
+                //    value = value.substring(0, value.indexOf('#'));
+                //}
+                //var format = { target: '"_blank"' };
+                //var html = $.jqx.dataFormat.formatlink(value, format);
+                var html = '<b><a href="/Company/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Company/Details/' + value + '">Details</a>'
+                          + ' | <a href="/Company/Delete/' + value + '">Delete</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'Company ID', dataField: 'CompanyId', width: 120 },
+                  { text: 'Code', dataField: 'Code', width: 120 },
+                  { text: 'Company Name', dataField: 'CompanyName', width: 200 },
+                  { text: 'Owner', dataField: 'Owner', width: 160 }, 
+                  { text: 'TIN', dataField: 'TIN', width: 150 },
+
+                  {
+                      text: 'Edit', dataField: 'CompaniesInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
+            });
+        });
+    </script>
 }
+<div id="dataTable"></div>
 
-</table>
+@helper CustomRenderActionColumn(LoanManagementSystem.Models.sdtoCompany Company)
+{
+    <b>
+        @Html.ActionLink("Edit", "Edit", new { id = Company.CompanyId }) | @Html.ActionLink("Details", "Details", new { id = Company.CompanyId }) | @Html.ActionLink("Delete", "Delete", new { id = Company.CompanyId })
+        |
+    </b>
+}
+     

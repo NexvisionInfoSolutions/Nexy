@@ -3,83 +3,79 @@
 @{
     ViewBag.Title = "List of Members";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@*<h2>List of Members</h2>*@
+} 
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th></th>
-        <th>
-            @Html.DisplayNameFor(model => model.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
 
-        <th>
-            @*@Html.DisplayNameFor(model => model.Description)*@
-            @Html.Label("Remarks")
-        </th>
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'UserID', type: 'number' },
+                    { name: 'Code', type: 'string' },
+                    { name: 'FirstName', type: 'string' },
+                    { name: 'LastName', type: 'string' },
+                     { name: 'FatherName', type: 'string' },
+                    { name: 'MemberInfo', type: 'number' },
+
+                ],
+                id: 'UserID',
+                url: '/Member/MemberInfo'
+            };
+
+            var linkrenderer = function (row, column, value) {
+                //if (value.indexOf('#') != -1) {
+                //    value = value.substring(0, value.indexOf('#'));
+                //}
+                //var format = { target: '"_blank"' };
+                //var html = $.jqx.dataFormat.formatlink(value, format);
+                var html = '<b><a href="/Member/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Member/Details/' + value + '">Details</a>'
+                          + ' | <a href="/Member/Delete/' + value + '">Delete</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'Memeber Id', dataField: 'UserID', width: 120 },
+                  { text: 'Code', dataField: 'Code', width: 120 },
+                  { text: 'First Name', dataField: 'FirstName', width: 200 },
+                  { text: 'Last Name', dataField: 'LastName', width: 160 },
+
+                  { text: 'Fathers Name', dataField: 'FatherName', width: 150 },
+
+                  {
+                      text: 'Edit', dataField: 'MemberInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
+            });
+        });
+    </script>
+}
+<div id="dataTable"></div>
+
+@helper CustomRenderActionColumn(LoanManagementSystem.Models.sdtoUser User)
+{
+    <b>
+        @Html.ActionLink("Edit", "Edit", new { id = User.UserID }) | @Html.ActionLink("Details", "Details", new { id = User.UserID }) | @Html.ActionLink("Delete", "Delete", new { id = User.UserID })
+        |
+    </b>
+}
 
 
-        @*<th>
-                @Html.DisplayNameFor(model => model.UserType)
-            </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.FatherName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                <div class="user-panel">
-                    <div class="pull-left image">
-                        <img src="~/Utility/ProfileImage?UserId=@item.UserID" class="img-circle" alt="User Image" />
-                    </div>
-                </div>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.UserType)
-                </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.FatherName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.UserID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.UserID }) |
-                @Html.ActionLink("Add New Loan", "Create", "Loan", new { UserId = item.UserID }, new { id = item.UserID })
-            </td>
-        </tr>
-    }
-
-</table>
+ 

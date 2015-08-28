@@ -40,6 +40,23 @@ namespace LoanManagementSystem.Controllers
             return View(companies.ToList());
         }
 
+        public JsonResult CompaniesInfo()
+        {
+            var dbResult = db.Companies.Include(s => s.Address).Include(s => s.Contacts).ToList();
+            var Companies = (from Company in dbResult
+                         select new
+                         {
+                             Company.CompanyId,
+                             Company.CompanyName,
+                             Company.Code,
+                             Company.Owner,
+                             Company.TIN,
+                             CompaniesInfo = Company.CompanyId
+                         });
+            return Json(Companies, JsonRequestBehavior.AllowGet);
+        }
+
+
         // GET: /Company/Details/5
         public ActionResult Details(long? id)
         {

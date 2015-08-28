@@ -8,31 +8,60 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.UserGroupId }) |
-            @Html.ActionLink("Details", "Details", new { id = item.UserGroupId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.UserGroupId })
-        </td>
-    </tr>
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'UserGroupId', type: 'number' },
+                    { name: 'Code', type: 'string' },
+                    { name: 'Description', type: 'string' }, 
+                    { name: 'UserGroupInfo', type: 'number' },
+
+                ],
+                id: 'UserGroupId',
+                url: '/UserGroup/UserGroupInfo'
+            };
+
+            var linkrenderer = function (row, column, value) {
+                //if (value.indexOf('#') != -1) {
+                //    value = value.substring(0, value.indexOf('#'));
+                //}
+                //var format = { target: '"_blank"' };
+                //var html = $.jqx.dataFormat.formatlink(value, format);
+                var html = '<b><a href="/UserGroup/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/UserGroup/Details/' + value + '">Details</a>'
+                          + ' | <a href="/UserGroup/Delete/' + value + '">Delete</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 850,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'UserGroup ID', dataField: 'UserGroupId', width: 120 },
+                  { text: 'Code', dataField: 'Code', width: 120 },
+                  { text: 'Description', dataField: 'Description', width: 250 },   
+
+                  {
+                      text: 'Edit', dataField: 'UserGroupInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 360,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
+            });
+        });
+    </script>
 }
+<div id="dataTable"></div>
 
-</table>
+ 

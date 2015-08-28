@@ -9,7 +9,75 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'UserID', type: 'number' },
+                    { name: 'Code', type: 'string' },
+                    { name: 'FirstName', type: 'string' },
+                    { name: 'LastName', type: 'string' },
+                     { name: 'UserName', type: 'string' },
+                    { name: 'UserInfo', type: 'number' },
+                    
+                ],
+                id: 'UserID',
+                url: '/User/UserInfo'
+            };
+
+            var linkrenderer = function (row, column, value) {
+                //if (value.indexOf('#') != -1) {
+                //    value = value.substring(0, value.indexOf('#'));
+                //}
+                //var format = { target: '"_blank"' };
+                //var html = $.jqx.dataFormat.formatlink(value, format);
+                var html = '<b><a href="/User/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/User/Details/' + value + '">Details</a>'
+                          + ' | <a href="/User/Delete/' + value + '">Delete</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'User Id', dataField: 'UserID', width: 120 },
+                  { text: 'Code', dataField: 'Code', width: 120 },
+                  { text: 'First Name', dataField: 'FirstName', width: 200 },
+                  { text: 'Last Name', dataField: 'LastName', width: 160 },
+                  
+                  { text: 'UserName', dataField: 'UserName', width: 150 },
+                
+                  {
+                      text: 'Edit', dataField: 'UserInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
+            });
+        });
+    </script>
+}
+<div id="dataTable"></div>
+
+@helper CustomRenderActionColumn(LoanManagementSystem.Models.sdtoUser User)
+{
+    <b>
+        @Html.ActionLink("Edit", "Edit", new { id = User.UserID }) | @Html.ActionLink("Details", "Details", new { id = User.UserID }) | @Html.ActionLink("Delete", "Delete", new { id = User.UserID })
+        | 
+    </b>
+}
+
+@*<table class="table">
     <tr>
         <th>
 
@@ -64,4 +132,4 @@
             </td>
         </tr>
     }
-</table>
+</table>*@

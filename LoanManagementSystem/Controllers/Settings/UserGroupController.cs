@@ -19,7 +19,19 @@ namespace LoanManagementSystem.Controllers
         {
             return View(db.Usergroup.ToList());
         }
-
+        public JsonResult UsergroupInfo()
+        {
+            var dbResult = db.Usergroup.ToList();
+            var Users = (from users in dbResult
+                         select new
+                         {
+                             users.UserGroupId,
+                             users.Code,
+                             users.Description, 
+                             UsergroupInfo = users.UserGroupId
+                         });
+            return Json(Users, JsonRequestBehavior.AllowGet);
+        }
         // GET: /UserGroup/Details/5
         public ActionResult Details(int? id)
         {

@@ -10,225 +10,64 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-@*<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedByUser.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletedByUser.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Member.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ModifiedByUser.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DepositType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MaturityDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TotalInstallments)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DepositAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MatureAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InstallmentAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClosedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RecurringDepositDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ChequeDetails)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InteresRate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApprovedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Notes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ModifiedOn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletedOn)
-        </th>
-        <th></th>
-    </tr>
+ 
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'DepositId', type: 'number' }, 
+                    { name: 'RecurringDepositDate', type: 'date' },
+                    { name: 'DepositAmount', type: 'number' },
+                    { name: 'InstallmentAmount', type: 'number' },
+                    { name: 'InteresRate', type: 'number' },
+                    { name: 'DepositInfo', type: 'number' },
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedByUser.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedByUser.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Member.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedByUser.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepositType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaturityDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalInstallments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepositAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatureAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InstallmentAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClosedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecurringDepositDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChequeDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InteresRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedOn)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.DepositId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.DepositId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.DepositId })
-            </td>
-        </tr>
-    }
+                ],
+                id: 'DepositId',
+                url: '/Deposit/DepositInfo'
+            };
 
-</table>*@
-
-@helper CustomRenderActionColumn(Data.Models.Accounts.sdtoDepositInfo deposit)
-{
-    <b>
-        @Html.ActionLink("Edit", "Edit", new { id = deposit.DepositId }) | @Html.ActionLink("Details", "Index", "LoanRepayments", new { DepositId = deposit.DepositId }, new { id = deposit.DepositId }) | @Html.ActionLink("Delete", "Delete", new { id = deposit.DepositId })
-        | @*@Html.ActionLink("Cancel", "LoanCancellation", new { id = deposit.DepositId }) | @Html.ActionLink("Recall", "LoanRecall", new { id = deposit.DepositId })*@
-    </b>
+            var linkrenderer = function (row, column, value) {
+                //if (value.indexOf('#') != -1) {
+                //    value = value.substring(0, value.indexOf('#'));
+                //}
+                //var format = { target: '"_blank"' };
+                //var html = $.jqx.dataFormat.formatlink(value, format);
+                var html = '<b><a href="/Deposit/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Deposit/Details/' + value + '">Details</a>'
+                          + ' | <a href="/Deposit/Delete/' + value + '">Delete</a>';
+                        
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'Deposit ID', dataField: 'DepositId', width: 120 }, 
+                  { text: 'Recurring Deposit Date', dataField: 'RecurringDepositDate', cellsFormat: 'd', width: 200 }, 
+                  { text: 'Deposit Amount', dataField: 'DepositAmount', width: 150 },
+                  { text: 'Installment Amount', dataField: 'InstallmentAmount', width: 150 },
+                  { text: 'Interes Rate', dataField: 'InteresRate', width: 150 },
+                  {
+                      text: 'Edit', dataField: 'DepositInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
+            });
+        });
+    </script>
 }
+<div id="dataTable"></div>
 
-@Html.Grid(Model).Columns(columns =>
-{
-    /* Adding not mapped column, that renders body, using inline Razor html helper */
-    columns.Add()
-            .Encoded(false)
-            .Sanitized(false)
-            .SetWidth(150)
-            .RenderValueAs(d => CustomRenderActionColumn(d));
-
-    /* Adding "OrderID" column: */
-    columns.Add(o => o.DepositId)
-            .Titled("Deposit#")
-            .SetWidth(100);
-
-    /* Adding "OrderID" column: */
-    columns.Add(o => o.DepositType)
-            .Titled("Deposit Type")
-            .SetWidth(100);
-
-    /* Adding "OrderDate" column: */
-    columns.Add(o => o.RecurringDepositDate, "Recurring Deposit Date")
-            .Titled("Recurring Deposit Date")
-            .SortInitialDirection(GridMvc.Sorting.GridSortDirection.Descending)
-            .Format("{0:dd/MM/yyyy}")
-            .SetWidth(110);
-
-    /* Adding "CompanyName" column: */
-    columns.Add(o => o.Member.FirstName)
-            .Titled("Member")
-            .ThenSortByDescending(o => o.DepositId)
-            .RenderValueAs(x => x.Member.FirstName + " " + x.Member.LastName);
-    //.SetFilterWidgetType("CustomCompanyNameFilterWidget");
-
-    //columns.Add(o => o.Member.LastName)
-    //.Titled("Last Name")
-    //.ThenSortByDescending(o => o.LoanId);
-
-    /* Adding "Vip customer" column: */
-    columns.Add(o => o.DepositAmount)
-            .Titled("Loan Amount")
-            .SetWidth(150);
-    //.RenderValueAs(o => CustomRenderingOfColumn(o));
-
-    columns.Add(o => o.InstallmentAmount)
-            .Titled("Installment Amount")
-            .SetWidth(150);
-
-    columns.Add(o => o.InteresRate)
-    .Titled("Interest Rate")
-    .SetWidth(150);
-
-    columns.Add(o => o.Notes)
-            .Titled("Notes")
-            .SetWidth(150);
-
-}).WithPaging(15).Sortable().Filterable().WithMultipleFilters()
-@*.SetRowCssClasses(item => item.Customer.IsVip ? "warning" : string.Empty)*@
-
+     

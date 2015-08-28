@@ -23,6 +23,23 @@ namespace LoanManagementSystem.Controllers.Deposit
             return View(sdtoDepositInfoes.ToList());
         }
 
+        public JsonResult DepositInfo()
+        {
+            var dbResult = db.sdtoDepositInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).ToList();
+            var Deposits = (from Deposit in dbResult
+                             select new
+                             {
+                                 Deposit.DepositId, 
+                                 Deposit.RecurringDepositDate,
+                                 Deposit.DepositAmount,
+                                 Deposit.InstallmentAmount,
+                                 Deposit.InteresRate,
+                                 DepositInfo = Deposit.DepositId
+                             });
+            return Json(Deposits, JsonRequestBehavior.AllowGet);
+        }
+
+
         // GET: sdtoDepositInfoes/Details/5
         public ActionResult Details(long? id)
         {

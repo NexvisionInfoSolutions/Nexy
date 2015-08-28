@@ -136,7 +136,7 @@
     </b>
 }
 
-@Html.Grid(Model).Columns(columns =>
+@*@Html.Grid(Model).Columns(columns =>
 {
     /* Adding not mapped column, that renders body, using inline Razor html helper */
     columns.Add()
@@ -186,6 +186,6 @@
             .Titled("Notes")
             .SetWidth(150);
 
-}).WithPaging(15).Sortable().Filterable().WithMultipleFilters()
+}).WithPaging(15).Sortable().Filterable().WithMultipleFilters()*@
 @*.SetRowCssClasses(item => item.Customer.IsVip ? "warning" : string.Empty)*@
 
