@@ -21,7 +21,23 @@ namespace LoanManagementSystem.Controllers.Settings
             var sdtoAccountBooks = db.AccountBooks.Include(s => s.AccountBookType).Include(s => s.AccountHead);
             return View(sdtoAccountBooks.ToList());
         }
+        public JsonResult AccountBooksInfo()
+        {
+            var dbResult = db.AccountBooks.Include(s => s.AccountBookType).Include(s => s.AccountHead).ToList();
+            var AccountBooks = (from AccountBook in dbResult
+                                select new
+                                {
+                                    AccountBook.AccountBookId,
+                                    AccountBook.AccountBookType.AccountBookType,
+                                    AccountBook.BankCharges,
+                                    AccountBook.BankInterest,
+                                    AccountBook.BookCode,
+                                    AccountBook.BookName,
 
+                                    AccountBooksInfo = AccountBook.AccountBookId
+                                });
+            return Json(AccountBooks, JsonRequestBehavior.AllowGet);
+        }
         // GET: AccountBooks/Details/5
         public ActionResult Details(long? id)
         {

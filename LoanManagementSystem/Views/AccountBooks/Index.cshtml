@@ -7,69 +7,64 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountBookType.AccountBookType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountHead.AccountCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BankInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BankCharges)
-        </th>
-       
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
+                      @section scripts {
+                          <script type="text/javascript">
+                              $(document).ready(function () {
+                                  // prepare the data
+                                  var source =
+                                  {
+                                      dataType: "json",
+                                      dataFields: [
+                                          { name: 'AccountBookId', type: 'number' },
+                                          { name: 'AccountBookType', type: 'string' },
+                                          { name: 'BankCharges', type: 'number' },
+                                          { name: 'BankInterest', type: 'number' },
+                                          { name: 'BookCode', type: 'string' },
+                                          { name: 'BookName', type: 'string' },
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountBookType.AccountBookType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountHead.AccountCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankInterest)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankCharges)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AccountBookId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AccountBookId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AccountBookId })
-        </td>
-    </tr>
-}
+                                      ],
+                                      id: 'AccountBookId',
+                                      url: '/AccountBooks/AccountBooksInfo'
+                                  };
 
-</table>
+                                  var linkrenderer = function (row, column, value) {
+                                      //if (value.indexOf('#') != -1) {
+                                      //    value = value.substring(0, value.indexOf('#'));
+                                      //}
+                                      //var format = { target: '"_blank"' };
+                                      //var html = $.jqx.dataFormat.formatlink(value, format);
+                                      var html = '<b><a href="/AccountBooks/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/AccountBooks/Details/' + value + '">Details</a>'
+                                                + ' | <a href="/AccountBooks/Delete/' + value + '">Delete</a>';
+
+                                      return html;
+                                  }
+                                  var dataAdapter = new $.jqx.dataAdapter(source);
+                                  // create Tree Grid
+                                  var gridInfo = $("#dataTable").jqxDataTable(
+                                  {
+                                      width: 1050,
+                                      source: dataAdapter,
+                                      theme: 'arctic',
+                                      pageSize: 5,
+                                      sortable: true,
+                                      filterable: true,
+                                      pageable: true,
+                                      columns: [
+                                        { text: 'Account BookId', dataField: 'AccountBookId', width: 120 },
+                                        { text: 'Account BookType', dataField: 'AccountBookType', width: 200 },
+                                        { text: 'Bank Charges', dataField: 'BankCharges', width: 150 },
+                                        { text: 'Bank Interest', dataField: 'BankInterest', width: 150 },
+                                        { text: 'Book Code', dataField: 'BookCode', width: 200 },
+                                        { text: 'Book Name', dataField: 'BookName', width: 200 },
+                                        {
+                                            text: 'Edit', dataField: 'AccountBooksInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                                            cellsRenderer: linkrenderer
+                                        }
+                                      ]
+                                  });
+                              });
+                          </script>
+                      }
+                      <div id="dataTable"></div>
+
+

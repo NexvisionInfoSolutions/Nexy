@@ -21,7 +21,23 @@ namespace LoanManagementSystem.Controllers
             var accountHeads = db.AccountHeads.Include(s => s.AccountType).Include(s => s.Address).Include(s => s.Contacts);
             return View(accountHeads.ToList());
         }
+        public JsonResult AccountHeadInfo()
+        {
+            var dbResult = db.AccountHeads.Include(s => s.AccountType).Include(s => s.Address).Include(s => s.Contacts).ToList();
+            var AccountHeads = (from AccountHead in dbResult
+                         select new
+                         {
+                             AccountHead.AccountHeadId,
+                             AccountHead.AccountName,
+                             AccountHead.AccountType,
+                             AccountHead.CreditDays,
+                             AccountHead.CreditLimit,
+                             AccountHead.AccountCode,
 
+                             AccountHeadInfo = AccountHead.AccountHeadId
+                         });
+            return Json(AccountHeads, JsonRequestBehavior.AllowGet);
+        }
         // GET: AccountHeads/Details/5
         public ActionResult Details(long? id)
         {

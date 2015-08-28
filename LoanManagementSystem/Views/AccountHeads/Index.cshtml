@@ -7,73 +7,63 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountType.AccountType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address.Address1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Contacts.ContactName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountName)
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.CreditLimit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreditDays)
-        </th>
-         
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-         
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountType.AccountType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address.Address1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Contacts.ContactName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountName)
-        </td>
-         
-        <td>
-            @Html.DisplayFor(modelItem => item.CreditLimit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreditDays)
-        </td>
-       
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AccountHeadId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AccountHeadId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AccountHeadId })
-        </td>
-    </tr>
-}
+                      @section scripts {
+                          <script type="text/javascript">
+                              $(document).ready(function () {
+                                  // prepare the data
+                                  var source =
+                                  {
+                                      dataType: "json",
+                                      dataFields: [
+                                          { name: 'AccountHeadId', type: 'number' },
+                                          { name: 'AccountName', type: 'string' }, 
+                                          { name: 'CreditDays', type: 'number' },
+                                          { name: 'CreditLimit', type: 'number' },
+                                          { name: 'AccountCode', type: 'string' },
 
-</table>
+                                      ],
+                                      id: 'AccountHeadId',
+                                      url: '/AccountHeads/AccountHeadInfo'
+                                  };
+
+                                  var linkrenderer = function (row, column, value) {
+                                      //if (value.indexOf('#') != -1) {
+                                      //    value = value.substring(0, value.indexOf('#'));
+                                      //}
+                                      //var format = { target: '"_blank"' };
+                                      //var html = $.jqx.dataFormat.formatlink(value, format);
+                                      var html = '<b><a href="/AccountHeads/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/AccountHeads/Details/' + value + '">Details</a>'
+                                                + ' | <a href="/AccountHeads/Delete/' + value + '">Delete</a>';
+
+                                      return html;
+                                  }
+                                  var dataAdapter = new $.jqx.dataAdapter(source);
+                                  // create Tree Grid
+                                  var gridInfo = $("#dataTable").jqxDataTable(
+                                  {
+                                      width: 1050,
+                                      source: dataAdapter,
+                                      theme: 'arctic',
+                                      pageSize: 5,
+                                      sortable: true,
+                                      filterable: true,
+                                      pageable: true,
+                                      columns: [
+                                        { text: 'Account Head ID', dataField: 'AccountHeadId', width: 120 },
+                                        { text: 'Account Name', dataField: 'AccountName', width: 200 }, 
+                                        { text: 'Credit Days', dataField: 'CreditDays', width: 150 },
+                                        { text: 'Credit Limit', dataField: 'CreditLimit', width: 150 },
+                                        { text: 'Account Code', dataField: 'AccountCode', width: 200 },
+                                        {
+                                            text: 'Edit', dataField: 'AccountHeadInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                                            cellsRenderer: linkrenderer
+                                        }
+                                      ]
+                                  });
+                              });
+                          </script>
+                      }
+                      <div id="dataTable"></div>
+
+
