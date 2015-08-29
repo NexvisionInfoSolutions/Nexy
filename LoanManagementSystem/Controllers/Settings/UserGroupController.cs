@@ -60,7 +60,9 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="ID,Code,Description")] sdtoUserGroup usergroup)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(usergroup.Code))
+                ModelState.AddModelError("","Code cannot be empty");
+            else if(ModelState.IsValid)
             {
                 db.Usergroup.Add(usergroup);
                 db.SaveChanges();
