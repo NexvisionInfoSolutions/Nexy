@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Loan Repayment List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
 <section class="invoice">
@@ -69,7 +69,7 @@
                 <div class="form-group">
                     @Html.Label("Installment Amount", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.Label(Loan.InstallmentAmount.ToString())
+                        @Html.Label(Loan.InstallmentAmount.ToString(), Loan.InstallmentAmount.ToString())
                     </div>
                 </div>
 

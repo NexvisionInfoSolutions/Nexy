@@ -1,0 +1,204 @@
+﻿@model IEnumerable<Data.Models.Accounts.sdtoWithdrawalInfo>
+
+@{
+    ViewBag.Title = "Deposit Withdrawal List";
+}
+
+<section class="invoice">
+    @*<!-- title row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> AdminLTE, Inc.
+                    <small class="pull-right">Date: 2/10/2014</small>
+                </h2>
+            </div><!-- /.col -->
+        </div>*@
+    <!-- info row -->
+    <div class="row invoice-info"></div>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.DropDownList("DepositId", (SelectList)ViewBag.DepositList, htmlAttributes: new { @ID = "ddlDeposit", onchange = "document.location.href = '/Deposit/Withdrawals?DepositId=' + this.options[this.selectedIndex].value;" })
+        </div>
+    </div>
+    @{
+        var DepositInfo = ViewBag.DepositDetails as Data.Models.Accounts.sdtoDepositInfo;
+        if (DepositInfo != null && DepositInfo.DepositId > 0)
+        {
+            <div class="form-horizontal">
+                <hr />
+                <div class="form-group">
+
+                </div>
+                <div class="form-group">
+                    @Html.Label("Member", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(DepositInfo.Member.FirstName + " " + DepositInfo.Member.LastName)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Deposit Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(DepositInfo.CreatedOn.Value.ToString("yyyy-MMM-dd"))
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Deposit Interest %", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(DepositInfo.InteresRate.ToString(), DepositInfo.InteresRate.ToString())
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Deposit Amount", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(DepositInfo.DepositAmount.ToString(), DepositInfo.DepositAmount.ToString())
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Duration in days", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(DepositInfo.Duration.ToString(), DepositInfo.Duration.ToString())
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Maturity Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(DepositInfo.MaturityDate.ToString(), DepositInfo.MaturityDate.Value.ToString("yyyy-MM-dd"))
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Maturity Amount", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(DepositInfo.MatureAmount.ToString(), DepositInfo.MatureAmount.ToString())
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                        @Html.Label("Installments", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.Label(Loan.TotalInstallments.ToString())
+                        </div>
+                    </div>*@
+
+                <div class="form-group">
+                    @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label("" + DepositInfo.Notes)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @if (ViewBag.TotalBalance > 0)
+                    {
+                        @Html.ActionLink("Withdraw Deposit", "WithdrawAmount", new { DepositId = DepositInfo.DepositId })
+                        <span>|</span>
+                    }
+                    @Html.ActionLink("Add a New Deposit", "Create")
+                    |
+                    @Html.ActionLink("Back to List of Deposits", "Index")
+                </div>
+            </div>
+        }
+    }
+
+    @if (Model.Count() > 0)
+    {
+        @*<table class="table bg-teal">*@
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.WithdrawalCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BalanceDepositAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.InterestAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.InterestRate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.WithdrawalAmount)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentMode)
+                            </th>
+
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.WithdrawalCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BalanceDepositAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.InterestAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.InterestRate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.WithdrawalAmount)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaymentMode)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.WithdrawalId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.WithdrawalId })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                Total Balance Available : <b>@ViewBag.TotalBalance</b>
+                            </td>
+                            <td colspan="5">
+                                Total Withdrawn : <b>@ViewBag.TotalWithdrawan</b>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                <span>Payment records are not available</span>
+            </div>
+        </div>
+    }
+</section>

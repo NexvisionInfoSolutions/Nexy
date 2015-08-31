@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace LoanManagementSystem.Models
 {
     public class sdtoViewUserAccount : sdtoUser
-    {
+    {       
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]

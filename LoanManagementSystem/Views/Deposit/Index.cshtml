@@ -2,15 +2,15 @@
 
 @{
     ViewBag.Title = "List of Deposit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 @using GridMvc.Html
-     
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
- 
+
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
@@ -19,10 +19,10 @@
             {
                 dataType: "json",
                 dataFields: [
-                    { name: 'DepositId', type: 'number' }, 
-                    { name: 'RecurringDepositDate', type: 'date' },
+                    { name: 'DepositId', type: 'number' },
+                    { name: 'DepositCode', type: 'string' },
                     { name: 'DepositAmount', type: 'number' },
-                    { name: 'InstallmentAmount', type: 'number' },
+                    { name: 'Member', type: 'string' },
                     { name: 'InteresRate', type: 'number' },
                     { name: 'DepositInfo', type: 'number' },
 
@@ -37,9 +37,9 @@
                 //}
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
-                var html = '<b><a href="/Deposit/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Deposit/Details/' + value + '">Details</a>'
+                var html = '<b><a href="/Deposit/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Deposit/Withdrawals?DepositId=' + value + '">Details</a>'
                           + ' | <a href="/Deposit/Delete/' + value + '">Delete</a>';
-                        
+
                 return html;
             }
             var dataAdapter = new $.jqx.dataAdapter(source);
@@ -54,10 +54,11 @@
                 filterable: true,
                 pageable: true,
                 columns: [
-                  { text: 'Deposit ID', dataField: 'DepositId', width: 120 }, 
-                  { text: 'Recurring Deposit Date', dataField: 'RecurringDepositDate', cellsFormat: 'd', width: 200 }, 
+                  { text: 'Deposit ID', dataField: 'DepositId', width: 120 },
+                  { text: 'Deposit Code', dataField: 'DepositCode', width: 200 },
+                  { text: 'Member', dataField: 'Member', width: 150 },                  
                   { text: 'Deposit Amount', dataField: 'DepositAmount', width: 150 },
-                  { text: 'Installment Amount', dataField: 'InstallmentAmount', width: 150 },
+                  //{ text: 'Installment Amount', dataField: 'InstallmentAmount', width: 150 },
                   { text: 'Interes Rate', dataField: 'InteresRate', width: 150 },
                   {
                       text: 'Edit', dataField: 'DepositInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
@@ -70,4 +71,3 @@
 }
 <div id="dataTable"></div>
 
-     

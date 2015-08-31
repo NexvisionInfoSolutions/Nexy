@@ -2,21 +2,31 @@
 @using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 {
     @Html.AntiForgeryToken()
-
-    <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
         @if (Request.IsAuthenticated)
         {
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-            </li>
-            @*<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
-            <li>@Html.ActionLink("Sign out", "LogOff", "User", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+            LoanManagementSystem.Models.sdtoUser UserDetails = HttpContext.Current.Session["UserDetails"] as LoanManagementSystem.Models.sdtoUser;
+            if (UserDetails == null)
+            {
+                UserDetails = new LoanManagementSystem.Models.sdtoUser();
+            }
+
+            <a class="dropdown-toggle" data-toggle="dropdown" href="/Manage/Index">
+                <img src="~/Utility/ProfileImage?UserId=@UserDetails.UserID" class="profile-img-circle" alt="User Profile" /><strong> @UserDetails.FirstName @UserDetails.LastName </strong><i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                @*<li>
+                    <a href="#"><i class="fa fa-user-plus"></i> My Profile</a>
+                </li>
+                <li class="divider"></li>*@
+                <li>
+                    <a href="/User/LogOff"><i class="fa fa-sign-out"></i>Logout</a>
+                </li>
+            </ul>
         }
         else
         {
-            <li>
-                @Html.ActionLink("Sign In", "Login", "User", routeValues: null, htmlAttributes: new { id = "loginLink" })
-            </li>
+            @Html.ActionLink("Sign In", "Login", "User", routeValues: null, htmlAttributes: new { @id = "loginLink", @class = "fa fa-sign-in" })
         }
-    </ul>
+    </li>
 }

@@ -75,8 +75,8 @@ namespace LoanManagementSystem.Controllers
         // GET: /User/
         public ActionResult Index()
         {
-            var user = db.User.Include(u => u.UserGroup);
-            return View(user.Where(s => s.UserType == UserType.User).ToList());
+            var user = db.User.Include(u => u.UserGroup).Where(s => s.UserType == UserType.User);
+            return View(user);
         }
 
         public JsonResult UserInfo()
@@ -89,8 +89,9 @@ namespace LoanManagementSystem.Controllers
                              users.FirstName,
                              users.LastName,
                              users.UserName,
-                             users.Code ,
-                             UserInfo = users.UserID
+                             users.Code,
+                             UserInfo = users.UserID,
+                             UserGroup = users.UserGroup != null ? users.UserGroup.Name : string.Empty
                          });
             return Json(Users, JsonRequestBehavior.AllowGet);
         }

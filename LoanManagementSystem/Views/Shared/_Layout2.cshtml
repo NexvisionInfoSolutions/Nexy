@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <title>@ViewBag.Title - Loan Management System</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/skin")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("/bundles/jqwidgets")
+    @Scripts.Render("~/bundles/grid")
+    @Scripts.Render("~/bundles/layout")
+    @RenderSection("scripts", required: false)
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    @{
+        LoanManagementSystem.Models.sdtoUser UserDetails = HttpContext.Current.Session["UserDetails"] as LoanManagementSystem.Models.sdtoUser;
+        if (UserDetails == null)
+        {
+            UserDetails = new LoanManagementSystem.Models.sdtoUser();
+        }
+    }
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Loan Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="notifications-wrapper">
+                <ul class="nav">
+                    @*@if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                    <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-tasks">
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <p>
+                                                    <strong>Task 1</strong>
+                                                    <span class="pull-right text-muted">60% Complete</span>
+                                                </p>
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                                        <span class="sr-only">60% Complete (danger)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <p>
+                                                    <strong>Task 2</strong>
+                                                    <span class="pull-right text-muted">30% Complete</span>
+                                                </p>
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
+                                                        <span class="sr-only">30% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <p>
+                                                    <strong>Task 3</strong>
+                                                    <span class="pull-right text-muted">80% Complete</span>
+                                                </p>
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                                        <span class="sr-only">80% Complete (warning)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <p>
+                                                    <strong>Task 4</strong>
+                                                    <span class="pull-right text-muted">90% Complete</span>
+                                                </p>
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                                                        <span class="sr-only">90% Complete (success)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a class="text-center" href="#">
+                                            <strong>See Tasks List + </strong>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }*@
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV TOP  -->
+        @if (User.Identity.IsAuthenticated)
+        {
+            <nav class="navbar-default navbar-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="main-menu">
+                        <li>
+                            <div class="clearfix">&nbsp;</div>
+                        </li>
+                        @Html.Partial("MenuView", ((Data.Models.SysBase.Tree.Tree<Data.Models.Accounts.sdtoUrlInfo>)ViewBag.Menu).Nodes.FirstOrDefault())
+                    </ul>
+                </div>
+            </nav>
+        }
+
+        @*<ul class="nav" id="main-menu">
+                <li>
+                    <a href="index.html"><i class="fa fa-dashboard "></i>Dashboard</a>
+                </li>
+                <li>
+                    <a class="active-menu" href="ui.html"><i class="fa fa-venus "></i>UI Elements </a>
+                </li>
+                <li>
+                    <a href="table.html"><i class="fa fa-bolt "></i>Data Tables </a>
+                </li>
+                <li>
+                    <a href="forms.html"><i class="fa fa-code "></i>Forms</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-sitemap "></i>Multilevel Link <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#"><i class="fa fa-cogs "></i>Second  Link</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bullhorn "></i>Second Link</a>
+                        </li>
+                        <li>
+                            <a href="#">Second Level<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#">Third  Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Link</a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="blank.html"><i class="fa fa-dashcube "></i>Blank Page</a>
+                </li>
+
+            </ul>*@
+
+        <!-- /. SIDEBAR MENU (navbar-side) -->
+        <div id="page-wrapper" class="page-wrapper-cls">
+            <div id="page-inner">
+                @*<div class="row">
+                        <div class="col-md-12">
+                            <h1 class="page-head-line">@ViewBag.Title</h1>
+                        </div>
+                    </div>*@
+                @if (ViewBag.ShowHeaderInfo != null && ViewBag.ShowHeaderInfo == true)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-info">
+                                @*<h4><i class="fa fa-info"></i> Note:</h4>*@
+
+                                @ViewBag.Message
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                @ViewBag.Title
+                            </div>
+                            <div class="panel-body">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+
+    <!-- /. WRAPPER  -->
+    <footer>
+        &copy; 2015 YourCompany | By : <a href="http://www.designbootstrap.com/" target="_blank">DesignBootstrap</a>
+    </footer>
+</body>
+</html>

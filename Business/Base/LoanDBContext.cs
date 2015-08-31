@@ -68,5 +68,6 @@ namespace LoanManagementSystem.Models
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoLoanRepayment> sdtoLoanRepayments { get; set; }
 
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoDepositInfo> sdtoDepositInfoes { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoWithdrawalInfo> DepositWithdrawals { get; set; }
     }
 }

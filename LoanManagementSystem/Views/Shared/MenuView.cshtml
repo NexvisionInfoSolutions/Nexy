@@ -1,16 +1,27 @@
 ﻿@model  Data.Models.SysBase.Tree.TreeNode<Data.Models.Accounts.sdtoUrlInfo>
 @foreach (var treeNode in Model.Children)
 {
-    <ul class=@(treeNode.ParentId == 0 ? "sidebar-menu" : "treeview-menu")>
-        <li class=@(treeNode.ParentId==0?"header":"")>
-            <a href="@treeNode.NodeElement.Url">
+    if (treeNode.Children.Count > 0)
+    {
+        <li>
+            <a href="@treeNode.NodeElement.Url" class="fa fa-caret-down">
                 @treeNode.NodeElement.UrlText
             </a>
 
-            @if (treeNode.Children.Count > 0)
-            {
-                @Html.Partial("MenuView", treeNode)
-            }
+            <ul class=@(treeNode.ParentId == 0 ? "nav nav-third-level" : "nav nav-second-level")>
+                <li class=@(treeNode.ParentId == 0 ? "fa header" : "fa")>
+                    @Html.Partial("MenuView", treeNode)
+                </li>
+            </ul>
         </li>
-    </ul>
+    }
+    else
+    {
+        <li>
+            <a href="@treeNode.NodeElement.Url" class="fa">
+                @treeNode.NodeElement.UrlText
+            </a>
+        </li>
+    }
+
 }

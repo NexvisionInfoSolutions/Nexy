@@ -20,7 +20,8 @@ namespace Data.Models.Accounts
         /// </summary>
         [Display(Name = "User ID")]
         public long UserId { get; set; }
-
+        [Display(Name = "Deposit Code")]
+        public string DepositCode { get; set; }
         /// <summary>
         /// Duration of the deposit in days
         /// </summary>
@@ -50,7 +51,6 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Recurring Date")]
         public DateTime? RecurringDepositDate { get; set; }
-
         public DepositStatus Status { get; set; }
 
         [Display(Name = "Cheque Details")]
@@ -68,6 +68,6 @@ namespace Data.Models.Accounts
         public string Notes { get; set; }
 
         [ForeignKey("UserId")]
-        public sdtoUser Member { get; set; }
+        public sdtoUser Member { get; set; }       
     }
 }

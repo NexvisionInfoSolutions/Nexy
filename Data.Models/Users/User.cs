@@ -10,7 +10,7 @@ namespace LoanManagementSystem.Models
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("Users")]
     public class sdtoUser : sdtoBaseData
-    {
+    {       
         [Key]
         public long UserID { get; set; }
 

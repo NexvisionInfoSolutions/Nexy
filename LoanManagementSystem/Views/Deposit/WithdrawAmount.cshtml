@@ -1,0 +1,116 @@
+﻿@model Data.Models.Accounts.sdtoWithdrawalInfo
+
+@{
+    ViewBag.Title = "Withdraw Deposit Amount";
+}
+
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(function () {
+        $('#txtWithdrawAmount').keyup(function () {
+            $('#lblBalanceAmount').text((parseFloat($("#hdnBalanceDepositAmount").val()) - (parseFloat($('#txtWithdrawAmount').val()))));
+        });
+    })
+
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(x => x.BalanceDepositAmount, new { @ID = "hdnBalanceDepositAmount" })
+        @Html.HiddenFor(x => x.InterestAmount, new { @ID = "hdnInterestAmount" })
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.InterestRate)        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DepositId, "DepositId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DepositId", (SelectList)ViewBag.DepositList, htmlAttributes: new { @ID = "ddlDeposit", onchange = "document.location.href = '/Deposit/WithdrawAmount?DepositId=' + this.options[this.selectedIndex].value;" })
+                @Html.ValidationMessageFor(model => model.DepositId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.WithdrawalCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.WithdrawalCode, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.WithdrawalCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Available Balance", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.LabelFor(x => x.BalanceDepositAmount, @Model.BalanceDepositAmount.ToString("N"))
+                @*@Html.ValidationMessageFor(model => model.PrincipalAmount, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.LabelFor(x => x.InterestAmount, @Model.InterestAmount.ToString("N"))
+                @*@Html.ValidationMessageFor(model => model.InterestAmount, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestRate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.LabelFor(x => x.InterestRate, @Model.InterestRate.ToString("N"))
+                @*@Html.ValidationMessageFor(model => model.InterestRate, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.WithdrawalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.WithdrawalAmount, new { htmlAttributes = new { @ID = "txtWithdrawAmount" } })
+                @Html.ValidationMessageFor(model => model.WithdrawalAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BalanceDepositAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.LabelFor(x => x.BalanceDepositAmount, @Model.BalanceDepositAmount.ToString("N"), new { @ID = "lblBalanceAmount" })
+                @*@Html.ValidationMessageFor(model => model.PendingPrincipalAmount, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewInterestRate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.EditorFor(model => model.NewInterestRate, new { htmlAttributes = new { @ID = "txtNewInterestRate" } })
+               @Html.ValidationMessageFor(model => model.NewInterestRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentMode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.PaymentMode, htmlAttributes: new { })
+                @Html.ValidationMessageFor(model => model.PaymentMode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ChequeDetails, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.ChequeDetails, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.ChequeDetails, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Notes, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

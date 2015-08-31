@@ -8,6 +8,11 @@ namespace LoanManagementSystem.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult NewDesign()
+        {
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();

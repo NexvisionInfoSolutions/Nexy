@@ -23,7 +23,7 @@
                     { name: 'LastName', type: 'string' },
                      { name: 'UserName', type: 'string' },
                     { name: 'UserInfo', type: 'number' },
-                    
+                    { name: 'UserGroup', type: 'string' },
                 ],
                 id: 'UserID',
                 url: '/User/UserInfo'
@@ -35,7 +35,7 @@
                 //}
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
-                var html = '<b><a href="/User/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/User/Details/' + value + '">Details</a>'
+                var html = '<b><a href="/User/Edit/' + value + '">Edit</a>' //|<a id="lnpayment" href="/User/Details/' + value + '">Details</a>'
                           + ' | <a href="/User/Delete/' + value + '">Delete</a>';
                 return html;
             }
@@ -51,13 +51,12 @@
                 filterable: true,
                 pageable: true,
                 columns: [
-                  { text: 'User Id', dataField: 'UserID', width: 120 },
+                  //{ text: 'User Id', dataField: 'UserID', width: 120 },
                   { text: 'Code', dataField: 'Code', width: 120 },
                   { text: 'First Name', dataField: 'FirstName', width: 200 },
-                  { text: 'Last Name', dataField: 'LastName', width: 160 },
-                  
+                  { text: 'Last Name', dataField: 'LastName', width: 160 },                  
                   { text: 'UserName', dataField: 'UserName', width: 150 },
-                
+                  { text: 'User Group', dataField: 'UserGroup', width: 150 },
                   {
                       text: 'Edit', dataField: 'UserInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
                       cellsRenderer: linkrenderer

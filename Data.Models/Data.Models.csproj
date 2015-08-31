@@ -49,6 +49,7 @@
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
     <Compile Include="Base\BaseData.cs" />
+    <Compile Include="Deposit\sdtoWithdrawalInfo.cs" />
     <Compile Include="Deposit\sdtoDepositInfo.cs" />
     <Compile Include="Loan\sdtoLoanRepayment.cs" />
     <Compile Include="Loan\sdtoLoanInfo.cs" />

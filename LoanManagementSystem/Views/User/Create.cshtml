@@ -11,80 +11,84 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
+    <div class="col-md-5">
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.CompanyId)
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Code)
-                @Html.ValidationMessageFor(model => model.Code)
+                @Html.LabelFor(m => m.Code)
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Enter code" })
+                @Html.ValidationMessageFor(m => m.Code)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName)
+                @Html.LabelFor(model => model.UserName)
+                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Enter username" })
                 @Html.ValidationMessageFor(model => model.UserName)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.PasswordFor(model => model.Password)
+                @Html.LabelFor(model => model.Password)
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Enter Password" })
                 @Html.ValidationMessageFor(model => model.Password)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.PasswordFor(model => model.ConfirmPassword)
+                @Html.LabelFor(model => model.ConfirmPassword)
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Enter Confirm Password" })
                 @Html.ValidationMessageFor(model => model.ConfirmPassword)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName)
+                @Html.LabelFor(model => model.UserGroupId)
+                @Html.DropDownListFor(model => model.UserGroupId, (SelectList)ViewBag.UserGroupList, htmlAttributes: new { @class = "form-control", @placeholder = "Select User Group" })
+                @Html.ValidationMessageFor(model => model.UserGroupId)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.FirstName)
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "Enter First Name" })
                 @Html.ValidationMessageFor(model => model.FirstName)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName)
+                @Html.LabelFor(model => model.LastName)
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Enter Last Name" })
                 @Html.ValidationMessageFor(model => model.LastName)
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input name="ProfileImage" type="file" />
-                @*@Html.TextBoxFor(m => m.Logo, new { type = "file" })*@
-                @*@Html.ValidationMessageFor(model => model.CompanyName)*@
+                @Html.Label("Profile Image")
+                <input name="ProfileImage" type="file" class="form-control" />
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
+                @Html.LabelFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Enter description" })
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserGroupId, "UserGroupId", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.UserGroupId, (SelectList)ViewBag.UserGroupList, htmlAttributes: new { })
-                @Html.ValidationMessageFor(model => model.UserGroupId)
+        <div class="form-group center-block">
+            <div class="col-md-7">
+            </div>
+            <div class="col-md-3">
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+        <div class="form-group center-block">
+            <div class="col-md-7">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-default">Submit</button>
             </div>
         </div>
     </div>

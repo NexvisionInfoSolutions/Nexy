@@ -32,6 +32,8 @@ namespace Data.Models
 
         public enum RepaymentStatus { Pending = 0, Paid, Posted }
 
+        public enum WithdrawalStatus { Pending = 0, Paid, Posted }
+
         public enum ModeOfPayment { Cash = 1, Cheque = 2, Others = 9 }
     }
 }

@@ -24,7 +24,8 @@ namespace LoanManagementSystem
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/layout").Include(
-                      "~/Scripts/layout.js"));
+                      "~/Scripts/layout2.js",
+                      "~/Scripts/jquery.metisMenu.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/grid").Include(
                     "~/Scripts/gridmvc.js"
@@ -62,13 +63,13 @@ namespace LoanManagementSystem
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/font-awesome.min.css",
+                      "~/Content/font-awesome.css",
                       "~/Content/ionicons.min.css",
                       "~/Content/Gridmvc.css",
                       "~/Content/jqx.base.css",
                       "~/Content/jqx.web.css",
                       "~/Content/jqx.ui-lightness.css",
-                      "~/Content/Layout.css",
+                      "~/Content/Layout2.css",
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/skin").Include(

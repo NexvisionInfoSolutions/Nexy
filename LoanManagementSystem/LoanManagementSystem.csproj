@@ -208,10 +208,14 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\Layout.css" />
-    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ionicons.min.css" />
+    <Content Include="Content\Layout2.css" />
     <Content Include="Content\skins\skin-black-light.css" />
     <Content Include="Content\skins\skin-black-light.min.css" />
     <Content Include="Content\skins\skin-black.css" />
@@ -555,6 +559,7 @@
     <Content Include="Content\jqx.web.css" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\jquery.metisMenu.js" />
     <Content Include="Scripts\jqx-all.js" />
     <Content Include="Scripts\jqxbuttons.js" />
     <Content Include="Scripts\jqxcalendar.js" />
@@ -668,6 +673,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -678,6 +692,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jstree.js" />
+    <Content Include="Scripts\Layout2.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -726,7 +741,7 @@
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\EditOld.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\ScheduleSettings\Create.cshtml" />
     <Content Include="Views\ScheduleSettings\Delete.cshtml" />
@@ -802,10 +817,17 @@
     <Content Include="Views\Deposit\Create.cshtml" />
     <Content Include="Views\Deposit\Delete.cshtml" />
     <Content Include="Views\Deposit\Details.cshtml" />
-    <Content Include="Views\Deposit\Edit.cshtml" />
+    <Content Include="Views\Deposit\EditOld.cshtml" />
     <Content Include="Views\Deposit\Index.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Home\NewDesign.cshtml" />
+    <Content Include="Views\Shared\_LayoutAnonymous.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Deposit\Edit.cshtml" />
+    <Content Include="Views\Deposit\Withdrawals.cshtml" />
+    <Content Include="Views\Deposit\WithdrawAmount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
