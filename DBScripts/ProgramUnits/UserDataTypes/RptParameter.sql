@@ -8,7 +8,7 @@ IF NOT EXISTS (
 BEGIN
 	CREATE TYPE dbo.[RptParameter] AS TABLE (
 		EntityId BIGINT NULL
-		,EntityIdType VARCHAR(10) NULL
+		,EntityType VARCHAR(10) NULL
 		)
 
 	PRINT 'User type RptParameter is created successfully.'
