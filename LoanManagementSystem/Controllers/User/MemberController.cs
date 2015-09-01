@@ -99,7 +99,16 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(sdtoUser sdtouser, HttpPostedFileBase ProfileImage)//[Bind(Include="UserID,Code,Name,Description,UserGroupId,IsActive,Designation,UserType,ContactId,AddressId,PermanentAddressId,GuaranterAddressId,PermanentContactId,GuaranterContactId,FatherName,CreatedOn")]
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(sdtouser.Code))
+                ModelState.AddModelError("", "Code cannot be empty");
+            else if (string.IsNullOrEmpty(sdtouser.FirstName))
+                ModelState.AddModelError("", "FirstName cannot be empty");
+            else if (string.IsNullOrEmpty(sdtouser.LastName))
+                ModelState.AddModelError("", "LastName cannot be empty");
+            else if (string.IsNullOrEmpty(sdtouser.UserAddress.Address1))
+                ModelState.AddModelError("", "Communication Address cannot be empty");
+
+            else if (ModelState.IsValid)
             {
                 var validImageTypes = new string[]
                                         {
@@ -111,11 +120,11 @@ namespace LoanManagementSystem.Controllers
 
                 if (ProfileImage == null || ProfileImage.ContentLength == 0)
                 {
-                    ModelState.AddModelError("ProfileImage", "This field is required");
+                    ModelState.AddModelError("", "ProfileImage is required");
                 }
                 else if (ProfileImage != null && !validImageTypes.Contains(ProfileImage.ContentType))
                 {
-                    ModelState.AddModelError("ProfileImage", "Please choose either a GIF, JPG or PNG image");
+                    ModelState.AddModelError("", "Please choose either a GIF, JPG or PNG image for ProfileImage");
                 }
                 else
                 {
