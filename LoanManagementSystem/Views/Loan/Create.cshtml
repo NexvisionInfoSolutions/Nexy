@@ -8,16 +8,18 @@
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
-        var datepc = $('.datepicker');
+        var datepc = $('.dpicker');
         datepc.datepicker({
             format: 'yyyy/M/dd',
             startDate: '-3d',
-            showOn: "both",
+            //showOn: "both",
             buttonImageOnly: true,
             buttonImage: "calendar.gif",
             buttonText: "Calendar",
             regional: ["en-US"]
         });
+
+        //$(".dpicker").jqxDateTimeInput({ width: '300px', height: '25px' });
 
         //$(".datepicker").jqxDateTimeInput({ width: '100px', height: '20px' });
 
@@ -47,7 +49,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RepaymentStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "datepicker datefield", @type = "date" } })
+                @Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "dpicker", @type = "date" } })
                 @Html.ValidationMessageFor(model => model.RepaymentStartDate, "", new { @class = "text-danger" })
             </div>
         </div>

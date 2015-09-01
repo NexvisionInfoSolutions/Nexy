@@ -25,13 +25,15 @@ namespace LoanManagementSystem
 
             bundles.Add(new ScriptBundle("~/bundles/layout").Include(
                       "~/Scripts/layout2.js",
-                      "~/Scripts/jquery.metisMenu.js",
-                      "~/Scripts/jqx-all.js",
-                      "~/Scripts/jqxcore.js"));
+                      "~/Scripts/jquery.metisMenu.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/grid").Include(
                     "~/Scripts/gridmvc.js"
                 ));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqwidgets").Include(
+                "~/Scripts/jqx-all.js",
+                "~/Scripts/jqxcore.js"));
 
             //bundles.Add(new ScriptBundle("~/bundles/jqwidgets").Include(
             //    "~/Scripts/jqx-all.js",

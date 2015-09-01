@@ -51,6 +51,7 @@
     <Compile Include="Base\LoanDBInitializer.cs" />
     <Compile Include="Company\bfCompany.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\bfReport.cs" />
     <Compile Include="SysBase\Tree\bfTree.cs" />
     <Compile Include="User\bfUser.cs" />
   </ItemGroup>

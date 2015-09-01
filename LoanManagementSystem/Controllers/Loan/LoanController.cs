@@ -71,7 +71,9 @@ namespace LoanManagementSystem.Controllers.Loan
             if (listUsers == null || listUsers.Count(x => x.UserID > 0) == 0)
                 return RedirectToAction("Create", "Member");
 
-            ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
+            var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
+            users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
+            ViewBag.UserList = new SelectList(users, "Value", "Text");
             return View(loan);
         }
         // POST: Loan/Create
@@ -90,7 +92,10 @@ namespace LoanManagementSystem.Controllers.Loan
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
+            users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
+            ViewBag.UserList = new SelectList(users, "Value", "Text");
             return View(sdtoLoanInfo);
         }
 
@@ -106,7 +111,11 @@ namespace LoanManagementSystem.Controllers.Loan
             {
                 return HttpNotFound();
             }
-            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
+
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
+            users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
+            ViewBag.UserList = new SelectList(users, "Value", "Text");
             return View(sdtoLoanInfo);
         }
 
@@ -124,7 +133,11 @@ namespace LoanManagementSystem.Controllers.Loan
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserList = new SelectList(db.User.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
+
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
+            users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
+            ViewBag.UserList = new SelectList(users, "Value", "Text");
             return View(sdtoLoanInfo);
         }
 

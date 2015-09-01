@@ -9,7 +9,7 @@
 
     $(document).ready(function () {
         $('#txtRepaymentAmount').keyup(function () {
-            $('#lblPendingPrincipalAmount').text((parseFloat($("#hdnPendingPrincipalAmount").val()) - (parseFloat($('#txtRepaymentAmount').val()) - parseFloat($('#hdnInterestAmount').val()))));
+            $('#lblPendingPrincipalAmount').text((parseFloat($("#hdnPendingPrincipalAmount").val().length == 0 ? 0 : $("#hdnPendingPrincipalAmount").val()) - (parseFloat($('#txtRepaymentAmount').val().length == 0 ? 0 : $('#txtRepaymentAmount').val()) - parseFloat($('#hdnInterestAmount').val().length == 0 ? 0 : $('#hdnInterestAmount').val()))));
         });
     })
 
