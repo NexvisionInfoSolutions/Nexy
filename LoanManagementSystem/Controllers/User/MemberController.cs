@@ -42,9 +42,11 @@ namespace LoanManagementSystem.Controllers
             //return View(user.Where(s => s.UserType == UserType.Member).ToList());
         }
 
+
+
         public JsonResult MemberInfo()
         {
-            var dbResult = db.User.Where(s => s.UserType == UserType.Member).ToList();
+            var dbResult = db.User.Include(s => s.UserAddress).Include(s => s.PermanentAddress).Include(s => s.Contacts).Where(s => s.UserType == UserType.Member).ToList();
             var Users = (from users in dbResult
                          select new
                          {
@@ -53,7 +55,11 @@ namespace LoanManagementSystem.Controllers
                              users.LastName,
                              users.FatherName,
                              users.Code,
-                             MemberInfo = users.UserID
+                             MemberInfo = users.UserID,
+                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode),
+                             PermanentAddress = UtilityHelper.UtilityHelper.FormatAddress(users.PermanentAddress.Address1, users.PermanentAddress.Address2, users.PermanentAddress.Place, users.PermanentAddress.Post, users.PermanentAddress.District, users.PermanentAddress.Zipcode),
+                             UserContactPhone = users.Contacts.Telephone1,
+                             UserContactMobile = users.Contacts.Mobile1
                          });
             return Json(Users, JsonRequestBehavior.AllowGet);
         }

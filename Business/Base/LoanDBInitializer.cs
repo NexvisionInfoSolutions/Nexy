@@ -22,120 +22,120 @@ namespace Business.Base
             urlSettings = context.UrlInfoCollection.Add(urlSettings);
 
             //5
-            sdtoUrlInfo urlUserGroupHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "User Groups", ParentId = 4, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
+            sdtoUrlInfo urlUserGroupHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "User Groups", ParentId = 4, IsMenu = false, MenuOrder = 1 };//urlSettings.ParentId };
             urlUserGroupHead = context.UrlInfoCollection.Add(urlUserGroupHead);
 
             //6
-            sdtoUrlInfo urlGeneralSettingsHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 4, IsMenu = true, MenuOrder = 2 };// urlSettings.ParentId };
+            sdtoUrlInfo urlGeneralSettingsHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 4, IsMenu = false, MenuOrder = 2 };// urlSettings.ParentId };
             urlGeneralSettingsHead = context.UrlInfoCollection.Add(urlGeneralSettingsHead);
 
             //7
-            sdtoUrlInfo urlAccountSchedulesHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Account Schedules", ParentId = 4, IsMenu = true, MenuOrder = 3 };//urlSettings.ParentId };
+            sdtoUrlInfo urlAccountSchedulesHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Account Schedules", ParentId = 4, IsMenu = false, MenuOrder = 3 };//urlSettings.ParentId };
             urlAccountSchedulesHead = context.UrlInfoCollection.Add(urlAccountSchedulesHead);
 
             //8
-            sdtoUrlInfo urlAccountHeadsHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Account Heads", ParentId = 4, IsMenu = true, MenuOrder = 4 };//urlSettings.ParentId };
+            sdtoUrlInfo urlAccountHeadsHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Account Heads", ParentId = 4, IsMenu = false, MenuOrder = 4 };//urlSettings.ParentId };
             urlAccountHeadsHead = context.UrlInfoCollection.Add(urlAccountHeadsHead);
 
             //9
-            sdtoUrlInfo urlAccountBooksHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Account Books", ParentId = 4, IsMenu = true, MenuOrder = 5 };//urlSettings.ParentId };
+            sdtoUrlInfo urlAccountBooksHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Account Books", ParentId = 4, IsMenu = false, MenuOrder = 5 };//urlSettings.ParentId };
             urlAccountBooksHead = context.UrlInfoCollection.Add(urlAccountBooksHead);
 
             //10
-            sdtoUrlInfo urlUserGroup = new sdtoUrlInfo() { Url = "/UserGroup/Index", CreatedOn = DateTime.Now, UrlText = "List User Groups", ParentId = 5, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
+            sdtoUrlInfo urlUserGroup = new sdtoUrlInfo() { Url = "/UserGroup/Index", CreatedOn = DateTime.Now, UrlText = "List User Groups", ParentId = 4, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
             urlUserGroup = context.UrlInfoCollection.Add(urlUserGroup);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/UserGroup/Create", CreatedOn = DateTime.Now, UrlText = "Add User Group", ParentId = 5, IsMenu = true, MenuOrder = 2 });//urlUserGroup.ParentId });                       
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/UserGroup/Create", CreatedOn = DateTime.Now, UrlText = "Add User Group", ParentId = 5, IsMenu = false, MenuOrder = 2 });//urlUserGroup.ParentId });                       
 
             //12
-            sdtoUrlInfo urlGeneralSettings = new sdtoUrlInfo() { Url = "/Settings/Edit/1", CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 6, IsMenu = true, MenuOrder = 1 };// urlSettings.ParentId };
+            sdtoUrlInfo urlGeneralSettings = new sdtoUrlInfo() { Url = "/Settings/Edit/1", CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 4, IsMenu = true, MenuOrder = 1 };// urlSettings.ParentId };
             urlGeneralSettings = context.UrlInfoCollection.Add(urlGeneralSettings);
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/Edit/1", CreatedOn = DateTime.Now, UrlText = "General Settings", ParentId = 6, IsMenu = false, MenuOrder = 2 });//urlGeneralSettings.ParentId });
 
             //14
-            sdtoUrlInfo urlAccountSchedules = new sdtoUrlInfo() { Url = "/ScheduleSettings/Index", CreatedOn = DateTime.Now, UrlText = "View Account Schedules", ParentId = 7, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
+            sdtoUrlInfo urlAccountSchedules = new sdtoUrlInfo() { Url = "/ScheduleSettings/Index", CreatedOn = DateTime.Now, UrlText = "View Account Schedules", ParentId = 4, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
             urlAccountSchedules = context.UrlInfoCollection.Add(urlAccountSchedules);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/ScheduleSettings/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Schedule", ParentId = 7, IsMenu = true, MenuOrder = 2 });//urlAccountSchedules.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/ScheduleSettings/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Schedule", ParentId = 7, IsMenu = false, MenuOrder = 2 });//urlAccountSchedules.ParentId });
 
             //sdtoUrlInfo urlAccountTypes = new sdtoUrlInfo() { Url = "/AccountTypes/Index", CreatedOn = DateTime.Now, UrlText = "Account Types", ParentId = 4 };//urlSettings.ParentId };
             //urlAccountTypes = context.UrlInfoCollection.Add(urlAccountTypes);
             //context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountTypes/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Type", ParentId = 11 });//urlAccountTypes.ParentId });
 
             //16
-            sdtoUrlInfo urlAccountHeads = new sdtoUrlInfo() { Url = "/AccountHeads/Index", CreatedOn = DateTime.Now, UrlText = "List Account Heads", ParentId = 8, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
+            sdtoUrlInfo urlAccountHeads = new sdtoUrlInfo() { Url = "/AccountHeads/Index", CreatedOn = DateTime.Now, UrlText = "List Account Heads", ParentId = 4, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
             urlAccountHeads = context.UrlInfoCollection.Add(urlAccountHeads);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountHeads/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Head", ParentId = 8, IsMenu = true, MenuOrder = 2 });//urlAccountHeads.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountHeads/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Head", ParentId = 8, IsMenu = false, MenuOrder = 2 });//urlAccountHeads.ParentId });
 
             //sdtoUrlInfo urlAccountBookTypes = new sdtoUrlInfo() { Url = "/AccountBookTypes/Index", CreatedOn = DateTime.Now, UrlText = "Account Book Types", ParentId = 4 };//urlSettings.ParentId };
             //urlAccountBookTypes = context.UrlInfoCollection.Add(urlAccountBookTypes);
             //context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountBookTypes/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Book Type", ParentId = 15 });//urlAccountBookTypes.ParentId });
 
             //18
-            sdtoUrlInfo urlAccountBooks = new sdtoUrlInfo() { Url = "/AccountBooks/Index", CreatedOn = DateTime.Now, UrlText = "List Account Books", ParentId = 9, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
+            sdtoUrlInfo urlAccountBooks = new sdtoUrlInfo() { Url = "/AccountBooks/Index", CreatedOn = DateTime.Now, UrlText = "List Account Books", ParentId = 4, IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
             urlAccountBooks = context.UrlInfoCollection.Add(urlAccountBooks);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountBooks/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Book", ParentId = 9, IsMenu = true, MenuOrder = 2 });//urlAccountBooks.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/AccountBooks/Create", CreatedOn = DateTime.Now, UrlText = "Add Account Book", ParentId = 9, IsMenu = false, MenuOrder = 2 });//urlAccountBooks.ParentId });
 
             //20
             sdtoUrlInfo urlUserManagement = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Manage Users", IsMenu = true, MenuOrder = 1 };
             urlUserManagement = context.UrlInfoCollection.Add(urlUserManagement);
 
             //21
-            sdtoUrlInfo urlUsersHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Users", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlUsersHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Users", ParentId = 20, IsMenu = false, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlUsersHead = context.UrlInfoCollection.Add(urlUsersHead);
 
             //22
-            sdtoUrlInfo urlMembersHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Members", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlMembersHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Members", ParentId = 20, IsMenu = false, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlMembersHead = context.UrlInfoCollection.Add(urlMembersHead);
 
             //23
-            sdtoUrlInfo urlExecutivesHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Executives", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlExecutivesHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Executives", ParentId = 20, IsMenu = false, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlExecutivesHead = context.UrlInfoCollection.Add(urlExecutivesHead);
 
-            sdtoUrlInfo urlUsers = new sdtoUrlInfo() { Url = "/User/Index", CreatedOn = DateTime.Now, UrlText = "List of Users", ParentId = 21, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlUsers = new sdtoUrlInfo() { Url = "/User/Index", CreatedOn = DateTime.Now, UrlText = "List of Users", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlUsers = context.UrlInfoCollection.Add(urlUsers);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/User/Create", CreatedOn = DateTime.Now, UrlText = "Add User", ParentId = 21, IsMenu = true, MenuOrder = 2 });//urlUsers.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/User/Create", CreatedOn = DateTime.Now, UrlText = "Add User", ParentId = 21, IsMenu = false, MenuOrder = 2 });//urlUsers.ParentId });
 
-            sdtoUrlInfo urlMembers = new sdtoUrlInfo() { Url = "/Member/Index", CreatedOn = DateTime.Now, UrlText = "List of Members", ParentId = 22, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlMembers = new sdtoUrlInfo() { Url = "/Member/Index", CreatedOn = DateTime.Now, UrlText = "List of Members", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlMembers = context.UrlInfoCollection.Add(urlMembers);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Member/Create", CreatedOn = DateTime.Now, UrlText = "Add Member", ParentId = 22, IsMenu = true, MenuOrder = 2 }); ;// urlMembers.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Member/Create", CreatedOn = DateTime.Now, UrlText = "Add Member", ParentId = 22, IsMenu = false, MenuOrder = 2 }); ;// urlMembers.ParentId });
 
-            sdtoUrlInfo urlExecutives = new sdtoUrlInfo() { Url = "/Executive/Index", CreatedOn = DateTime.Now, UrlText = "List of Executives", ParentId = 23, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlExecutives = new sdtoUrlInfo() { Url = "/Executive/Index", CreatedOn = DateTime.Now, UrlText = "List of Executives", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlExecutives = context.UrlInfoCollection.Add(urlExecutives);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Executive/Create", CreatedOn = DateTime.Now, UrlText = "Add Executive", ParentId = 23, IsMenu = true, MenuOrder = 2 });//urlExecutives.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Executive/Create", CreatedOn = DateTime.Now, UrlText = "Add Executive", ParentId = 23, IsMenu = false, MenuOrder = 2 });//urlExecutives.ParentId });
 
             //30
             sdtoUrlInfo urlAccounts = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Manage Accounts", IsMenu = true, MenuOrder = 2 };
             urlAccounts = context.UrlInfoCollection.Add(urlAccounts);
 
             //31
-            sdtoUrlInfo urlLoansHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Loans", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            sdtoUrlInfo urlLoansHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Loans", ParentId = 30, IsMenu = false, MenuOrder = 1 };//urlAccounts.ParentId };
             urlLoansHead = context.UrlInfoCollection.Add(urlLoansHead);
 
-            sdtoUrlInfo urlLoans = new sdtoUrlInfo() { Url = "/Loan/Index", CreatedOn = DateTime.Now, UrlText = "List Loans", ParentId = 31, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            sdtoUrlInfo urlLoans = new sdtoUrlInfo() { Url = "/Loan/Index", CreatedOn = DateTime.Now, UrlText = "List Loans", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
             urlLoans = context.UrlInfoCollection.Add(urlLoans);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Loan/Create", CreatedOn = DateTime.Now, UrlText = "Add Loan", ParentId = 31, IsMenu = true, MenuOrder = 2 });//urlLoans.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Loan/Create", CreatedOn = DateTime.Now, UrlText = "Add Loan", ParentId = 31, IsMenu = false, MenuOrder = 2 });//urlLoans.ParentId });
 
             //34
-            sdtoUrlInfo urlCompanyHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Company", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlCompanyHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Company", ParentId = 20, IsMenu = false, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlCompanyHead = context.UrlInfoCollection.Add(urlCompanyHead);
 
             //35
-            sdtoUrlInfo urlCompanies = new sdtoUrlInfo() { Url = "/Company/Index", CreatedOn = DateTime.Now, UrlText = "View Company details", ParentId = 34, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
+            sdtoUrlInfo urlCompanies = new sdtoUrlInfo() { Url = "/Company/Index", CreatedOn = DateTime.Now, UrlText = "View Company details", ParentId = 20, IsMenu = true, MenuOrder = 1 };//urlUserManagement.ParentId };
             urlCompanies = context.UrlInfoCollection.Add(urlCompanies);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Company/Create", CreatedOn = DateTime.Now, UrlText = "Add Company", ParentId = 34, IsMenu = true, MenuOrder = 2 });//urlCompanies.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Company/Create", CreatedOn = DateTime.Now, UrlText = "Add Company", ParentId = 34, IsMenu = false, MenuOrder = 2 });//urlCompanies.ParentId });
 
             //37
-            sdtoUrlInfo urlRepaymentLoans = new sdtoUrlInfo() { Url = "/LoanRepayments/Index", CreatedOn = DateTime.Now, UrlText = "View Loan Repayments", ParentId = 31, IsMenu = true, MenuOrder = 3 };//urlAccounts.ParentId };
+            sdtoUrlInfo urlRepaymentLoans = new sdtoUrlInfo() { Url = "/LoanRepayments/Index", CreatedOn = DateTime.Now, UrlText = "View Loan Repayments", ParentId = 30, IsMenu = true, MenuOrder = 3 };//urlAccounts.ParentId };
             urlRepaymentLoans = context.UrlInfoCollection.Add(urlRepaymentLoans);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/LoanRepayments/Create", CreatedOn = DateTime.Now, UrlText = "Add Loan Repayment", ParentId = 31, IsMenu = true, MenuOrder = 4 });//urlLoans.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/LoanRepayments/Create", CreatedOn = DateTime.Now, UrlText = "Add Loan Repayment", ParentId = 31, IsMenu = false, MenuOrder = 4 });//urlLoans.ParentId });
 
             //39
-            sdtoUrlInfo urlDepositHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Deposits", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            sdtoUrlInfo urlDepositHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Deposits", ParentId = 30, IsMenu = false, MenuOrder = 1 };//urlAccounts.ParentId };
             urlDepositHead = context.UrlInfoCollection.Add(urlDepositHead);
 
             //40
-            sdtoUrlInfo urlDeposits = new sdtoUrlInfo() { Url = "/Deposit/Index", CreatedOn = DateTime.Now, UrlText = "View Deposits", ParentId = 39, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            sdtoUrlInfo urlDeposits = new sdtoUrlInfo() { Url = "/Deposit/Index", CreatedOn = DateTime.Now, UrlText = "View Deposits", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
             urlDeposits = context.UrlInfoCollection.Add(urlDeposits);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Deposit/Create", CreatedOn = DateTime.Now, UrlText = "Add Deposit Account", ParentId = 39, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Deposit/Create", CreatedOn = DateTime.Now, UrlText = "Add Deposit Account", ParentId = 39, IsMenu = false, MenuOrder = 2 });//urlDeposits.ParentId });
 
 
             /*******************************/

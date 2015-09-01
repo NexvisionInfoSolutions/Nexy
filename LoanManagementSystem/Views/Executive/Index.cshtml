@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "List of Executives";
-    
+
 }
 
 @*<h2>List of Executives</h2>*@
@@ -23,8 +23,11 @@
                     { name: 'Code', type: 'string' },
                     { name: 'FirstName', type: 'string' },
                     { name: 'LastName', type: 'string' },
-                     { name: 'Designation', type: 'string' },
+                    { name: 'Designation', type: 'string' },
                     { name: 'ExecutiveInfo', type: 'number' },
+                    { name: 'UserAddress', type: 'string' },
+                    { name: 'UserContactPhone', type: 'string' },
+                    { name: 'UserContactMobile', type: 'string' },
 
                 ],
                 id: 'UserID',
@@ -37,7 +40,7 @@
                 //}
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
-                var html = '<b><a href="/Executive/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Executive/Details/' + value + '">Details</a>'
+                var html = '<b><a href="/Executive/Edit/' + value + '">Edit</a>' //|<a id="lnpayment" href="/Executive/Details/' + value + '">Details</a>'
                           + ' | <a href="/Executive/Delete/' + value + '">Delete</a>';
                 return html;
             }
@@ -53,15 +56,16 @@
                 filterable: true,
                 pageable: true,
                 columns: [
-                  { text: 'Executive Id', dataField: 'UserID', width: 120 },
+                  //{ text: 'Executive Id', dataField: 'UserID', width: 120 },
                   { text: 'Code', dataField: 'Code', width: 120 },
                   { text: 'First Name', dataField: 'FirstName', width: 200 },
                   { text: 'Last Name', dataField: 'LastName', width: 160 },
-
                   { text: 'Designation', dataField: 'Designation', width: 150 },
-
+                  { text: 'Address', dataField: 'UserAddress', width: 200 },
+                  { text: 'Telephone', dataField: 'UserContactPhone', width: 100 },
+                  { text: 'Mobile', dataField: 'UserContactMobile', width: 100 },
                   {
-                      text: 'Edit', dataField: 'ExecutiveInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                      text: 'Edit', dataField: 'ExecutiveInfo', cellsAlign: 'center', align: "center", filterable: false, editable: false, sortable: false, width: 300,
                       cellsRenderer: linkrenderer
                   }
                 ]

@@ -21,9 +21,12 @@
                     { name: 'Code', type: 'string' },
                     { name: 'FirstName', type: 'string' },
                     { name: 'LastName', type: 'string' },
-                     { name: 'FatherName', type: 'string' },
+                    { name: 'FatherName', type: 'string' },
                     { name: 'MemberInfo', type: 'number' },
-
+                    { name: 'UserAddress', type: 'string' },
+                    { name: 'PermanentAddress', type: 'string' },
+                    { name: 'UserContactPhone', type: 'string' },
+                    { name: 'UserContactMobile', type: 'string' },
                 ],
                 id: 'UserID',
                 url: '/Member/MemberInfo'
@@ -35,7 +38,7 @@
                 //}
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
-                var html = '<b><a href="/Member/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Member/Details/' + value + '">Details</a>'
+                var html = '<b><a href="/Member/Edit/' + value + '">Edit</a>' //|<a id="lnpayment" href="/Member/Details/' + value + '">Details</a>'
                           + ' | <a href="/Member/Delete/' + value + '">Delete</a>';
                 return html;
             }
@@ -51,13 +54,15 @@
                 filterable: true,
                 pageable: true,
                 columns: [
-                  { text: 'Memeber Id', dataField: 'UserID', width: 120 },
+                  //{ text: 'Memeber Id', dataField: 'UserID', width: 120 },
                   { text: 'Code', dataField: 'Code', width: 120 },
                   { text: 'First Name', dataField: 'FirstName', width: 200 },
                   { text: 'Last Name', dataField: 'LastName', width: 160 },
-
                   { text: 'Fathers Name', dataField: 'FatherName', width: 150 },
-
+                  { text: 'Address', dataField: 'UserAddress', width: 160 },
+                  { text: 'Permanent Address', dataField: 'PermanentAddress', width: 160 },
+                  { text: 'Phone', dataField: 'UserContactPhone', width: 160 },
+                  //{ text: 'Mobile', dataField: 'UserContactMobile', width: 160 },                  
                   {
                       text: 'Edit', dataField: 'MemberInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
                       cellsRenderer: linkrenderer
@@ -72,7 +77,7 @@
 @helper CustomRenderActionColumn(LoanManagementSystem.Models.sdtoUser User)
 {
     <b>
-        @Html.ActionLink("Edit", "Edit", new { id = User.UserID }) | @Html.ActionLink("Details", "Details", new { id = User.UserID }) | @Html.ActionLink("Delete", "Delete", new { id = User.UserID })
+        @Html.ActionLink("Edit", "Edit", new { id = User.UserID }) @*| @Html.ActionLink("Details", "Details", new { id = User.UserID })*@ | @Html.ActionLink("Delete", "Delete", new { id = User.UserID })
         |
     </b>
 }

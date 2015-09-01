@@ -81,7 +81,7 @@ namespace LoanManagementSystem.Controllers
 
         public JsonResult UserInfo()
         {
-            var dbResult = db.User.Include(u => u.UserGroup).ToList();
+            var dbResult = db.User.Include(u => u.UserGroup).Where(s => s.UserType == UserType.User).ToList();
             var Users = (from users in dbResult
                          select new
                          {

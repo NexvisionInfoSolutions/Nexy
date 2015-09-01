@@ -24,7 +24,7 @@ namespace LoanManagementSystem.Controllers
         }
         public JsonResult ExecutiveInfo()
         {
-            var dbResult = db.User.Where(s => s.UserType == UserType.Executive).ToList();
+            var dbResult = db.User.Include(s => s.UserAddress).Include(s => s.Contacts).Where(s => s.UserType == UserType.Executive).ToList();
             var Users = (from users in dbResult
                          select new
                          {
@@ -33,7 +33,10 @@ namespace LoanManagementSystem.Controllers
                              users.LastName,
                              users.Designation,
                              users.Code,
-                             ExecutiveInfo = users.UserID
+                             ExecutiveInfo = users.UserID,
+                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode),                             
+                             UserContactPhone = users.Contacts.Telephone1,
+                             UserContactMobile = users.Contacts.Mobile1
                          });
             return Json(Users, JsonRequestBehavior.AllowGet);
         }

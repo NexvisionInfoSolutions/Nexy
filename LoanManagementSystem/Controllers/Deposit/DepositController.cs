@@ -43,8 +43,11 @@ namespace LoanManagementSystem.Controllers.Deposit
             itemsDeposits.Insert(0, new SelectListItem() { Value = "0", Text = "Select a deposit" });
             ViewBag.DepositList = new SelectList(itemsDeposits, "Value", "Text");
 
-            ViewBag.DepositDetails = db.sdtoDepositInfoes.Where(x => x.DepositId == DepositId).FirstOrDefault();
+            var deposit = db.sdtoDepositInfoes.Where(x => x.DepositId == DepositId).FirstOrDefault();
 
+            ViewBag.DepositDetails = deposit;
+            ViewBag.TotalWithdrawan = 0;
+            ViewBag.TotalBalance = deposit.DepositAmount;
             var sdtoWidthdrawals = db.DepositWithdrawals.Where(x => x.DepositId == DepositId).Include(s => s.Deposit);
             if (sdtoWidthdrawals != null && sdtoWidthdrawals.Count() > 0)
             {
@@ -121,7 +124,7 @@ namespace LoanManagementSystem.Controllers.Deposit
                     var depositBalanceAmt = depositDetails.DepositAmount;
                     var depositInterest = depositDetails.InteresRate;
                     //var loanPendingInstallments = depositDetails.TotalInstallments;
-                    
+
                     int days = (DateTime.Now - depositDetails.CreatedOn.Value).Days;
 
                     var withdrawalInterest = depositInterest;

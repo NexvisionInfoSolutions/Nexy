@@ -4,7 +4,7 @@
     if (treeNode.Children.Count > 0)
     {
         <li>
-            <a href="@treeNode.NodeElement.Url" class="fa fa-caret-down">
+            <a href='@(string.IsNullOrWhiteSpace(treeNode.NodeElement.Url)? "javascript:void(0);" : Url.Content(treeNode.NodeElement.Url))' class="fa fa-caret-down">
                 @treeNode.NodeElement.UrlText
             </a>
 

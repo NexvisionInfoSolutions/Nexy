@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Edit Member";
-    
+
 }
 
 @*<h2>Edit Member</h2>*@
@@ -11,230 +11,260 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.UserID)
-        @Html.HiddenFor(model => model.CreatedBy)
-        @Html.HiddenFor(model => model.CreatedOn)
-        @Html.HiddenFor(model => model.IsDeleted)
-        @Html.HiddenFor(model => model.UserContactId)
-        @Html.HiddenFor(model => model.UserAddressId)
-        @Html.HiddenFor(model => model.CompanyId)
-        @Html.HiddenFor(model => model.GuaranterAddressId)
-        @Html.HiddenFor(model => model.GuaranterContactId)
-        @Html.HiddenFor(model => model.PermanentAddressId)
-        @Html.HiddenFor(model => model.PermanentContactId)
-        @Html.HiddenFor(model => model.UserGroupId)
 
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.UserID)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreatedOn)
+    @Html.HiddenFor(model => model.IsDeleted)
+    @Html.HiddenFor(model => model.UserContactId)
+    @Html.HiddenFor(model => model.UserAddressId)
+    @Html.HiddenFor(model => model.CompanyId)
+    @Html.HiddenFor(model => model.GuaranterAddressId)
+    @Html.HiddenFor(model => model.GuaranterContactId)
+    @Html.HiddenFor(model => model.PermanentAddressId)
+    @Html.HiddenFor(model => model.PermanentContactId)
+    @Html.HiddenFor(model => model.UserGroupId)
+    @Html.HiddenFor(model => model.Contacts.ContactId)
+    @Html.HiddenFor(model => model.PermanentAddress.AddressId)
+    @Html.HiddenFor(model => model.UserType)
+    @Html.HiddenFor(model => model.PermanentContacts.ContactId)
+    @Html.HiddenFor(model => model.GuaranterAddress.AddressId)
+    @Html.HiddenFor(model => model.GuaranterContacts.ContactId)
+
+    <div class="col-md-5">
+        <h4>User Details</h4>
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CompanyId)
         <div class="form-group">
-            @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Code)
-                @Html.ValidationMessageFor(model => model.Code)
+                @Html.LabelFor(m => m.Code)
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Enter code" })
+                @Html.ValidationMessageFor(m => m.Code)
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName)
+                @Html.LabelFor(model => model.FirstName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "Enter 'First Name" })
                 @Html.ValidationMessageFor(model => model.FirstName)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName)
+                @Html.LabelFor(model => model.LastName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Enter Last Name" })
                 @Html.ValidationMessageFor(model => model.LastName)
             </div>
         </div>
-
         @if (File.Exists(Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\User\\Profile\\" + @Model.UserID + ".logo"))
         {
-            <div class="form-group">
-                @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <img src="~/Utility/ProfileImage?UserId=@Model.UserID" alt="Logo" />
-                </div>
-            </div>
-        }
         <div class="form-group">
-            @Html.Label("Profile Image", new { @class = "control-label col-md-2" })
+            @*@Html.Label("Profile Image", new { @class = "control-label col-md-2" })*@
             <div class="col-md-10">
-                <input name="ProfileImage" type="file" />
+                <img src="~/Utility/ProfileImage?UserId=@Model.UserID" alt="Logo" style="width:inherit; height:auto" />
             </div>
         </div>
-
+        }
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
+                @Html.Label("Profile Image", new { @class = "control-label" })
+                <input name="ProfileImage" type="file" class="form-control" />
+                @*@Html.TextBoxFor(m => m.Logo, new { type = "file" })*@
+                @*@Html.ValidationMessageFor(model => model.CompanyName)*@
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.Description, "Remarks", new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Enter Description" })
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedOn, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedOn)
-                @Html.ValidationMessageFor(model => model.CreatedOn)
-            </div>
-        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.UserGroupId, "UserGroupId", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("UserGroupId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.UserGroupId)
+                </div>
+            </div>*@
 
-        <h4>Communication Address</h4>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsActive)
+                    @Html.ValidationMessageFor(model => model.IsActive)
+                </div>
+            </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserAddress.Address1, "Address1", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAddress.Address1)
-                @Html.ValidationMessageFor(model => model.UserAddress.Address1)
-                @Html.HiddenFor(model => model.UserAddressId)
-                @Html.HiddenFor(model => model.UserAddress.AddressId)
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.Designation, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Designation)
+                    @Html.ValidationMessageFor(model => model.Designation)
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserAddress.Address2, "Address2", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAddress.Address2)
-                @Html.ValidationMessageFor(model => model.UserAddress.Address2)
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserAddress.Place, "Place", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAddress.Place)
-                @Html.ValidationMessageFor(model => model.UserAddress.Place)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserAddress.Post, "PO", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAddress.Post)
-                @Html.ValidationMessageFor(model => model.UserAddress.Post)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserAddress.District, "District", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAddress.District)
-                @Html.ValidationMessageFor(model => model.UserAddress.District)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.FatherName, "Fathers Name", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FatherName)
-                @Html.ValidationMessageFor(model => model.FatherName)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Contacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Contacts.Telephone1)
-                @Html.ValidationMessageFor(model => model.Contacts.Telephone1)
-                @Html.HiddenFor(model => model.UserContactId)
-                @Html.HiddenFor(model => model.Contacts.ContactId)
-            </div>
-        </div>
-
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserType, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserType)
+                    @Html.ValidationMessageFor(model => model.UserType)
+                </div>
+            </div>*@
+    </div>
+    <div class="col-md-5">
         <h4>Permanent Address</h4>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PermanentAddress.Address1, "Address1", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PermanentAddress.Address1)
+                @Html.LabelFor(model => model.PermanentAddress.Address1, "Address1", new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.PermanentAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address Line 1" })
                 @Html.ValidationMessageFor(model => model.PermanentAddress.Address1)
-                @Html.HiddenFor(model => model.PermanentAddressId)
-                @Html.HiddenFor(model => model.PermanentAddress.AddressId)
-                @Html.HiddenFor(model => model.UserType)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PermanentAddress.Address2, "Address2", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PermanentAddress.Address2)
+                @Html.LabelFor(model => model.PermanentAddress.Address2, "Address2", new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.PermanentAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
                 @Html.ValidationMessageFor(model => model.PermanentAddress.Address2)
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.PermanentAddress.Place, "Place", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PermanentAddress.Place)
+                @Html.LabelFor(model => model.PermanentAddress.Place, "Place", new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.PermanentAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
                 @Html.ValidationMessageFor(model => model.PermanentAddress.Place)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PermanentAddress.Post, "PO", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PermanentAddress.Post)
+                @Html.LabelFor(model => model.PermanentAddress.Post, "PO", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.PermanentAddress.Post, new { @class = "form-control", @placeholder = "Enter PO" })
                 @Html.ValidationMessageFor(model => model.PermanentAddress.Post)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PermanentAddress.District, "District", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PermanentAddress.District)
+                @Html.LabelFor(model => model.PermanentAddress.District, "District", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.PermanentAddress.District, new { @class = "form-control", @placeholder = "Enter District" })
                 @Html.ValidationMessageFor(model => model.PermanentAddress.District)
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.PermanentContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
+                @Html.TextBoxFor(model => model.PermanentContacts.Telephone1, new { @class = "form-control", @placeholder = "Enter Phone" })
+                @Html.ValidationMessageFor(model => model.PermanentContacts.Telephone1)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h4>Communication Address</h4>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PermanentContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PermanentContacts.Telephone1)
-                @Html.ValidationMessageFor(model => model.PermanentContacts.Telephone1)
-                @Html.HiddenFor(model => model.PermanentContactId)
-                @Html.HiddenFor(model => model.PermanentContacts.ContactId)
+                @Html.LabelFor(model => model.UserAddress.Address1, "Address1", new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.UserAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address Line 1" })
+                @Html.ValidationMessageFor(model => model.UserAddress.Address1)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.UserAddress.Address2, "Address2", new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.UserAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
+                @Html.ValidationMessageFor(model => model.UserAddress.Address2)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.UserAddress.Place, "Place", new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.UserAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
+                @Html.ValidationMessageFor(model => model.UserAddress.Place)
             </div>
         </div>
 
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.UserAddress.Post, "PO", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.UserAddress.Post, new { @class = "form-control", @placeholder = "Enter PO" })
+                @Html.ValidationMessageFor(model => model.UserAddress.Post)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.UserAddress.District, "District", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.UserAddress.District, new { @class = "form-control", @placeholder = "Enter District" })
+                @Html.ValidationMessageFor(model => model.UserAddress.District)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.FatherName, "Fathers Name", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.FatherName, new { @class = "form-control", @placeholder = "Enter Father's Name" })
+                @Html.ValidationMessageFor(model => model.FatherName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.Contacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
+                @Html.TextBoxFor(model => model.Contacts.Telephone1, new { @class = "form-control", @placeholder = "Enter Phone" })
+                @Html.ValidationMessageFor(model => model.Contacts.Telephone1)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
         <h4>Guaranter Details</h4>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.GuaranterName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.GuaranterName)
+                @Html.LabelFor(model => model.GuaranterName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.GuaranterName, new { @class = "form-control", @placeholder = "Enter Guaranter Name" })
                 @Html.ValidationMessageFor(model => model.GuaranterName)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.GuaranterAddress.Address1, "Address1", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.GuaranterAddress.Address1)
+                @Html.LabelFor(model => model.GuaranterAddress.Address1, "Address", new { @class = "control-label col-md-2" })
+                @Html.TextAreaFor(model => model.GuaranterAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address" })
                 @Html.ValidationMessageFor(model => model.GuaranterAddress.Address1)
-                @Html.HiddenFor(model => model.GuaranterAddressId)
-                @Html.HiddenFor(model => model.GuaranterAddress.AddressId)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.GuaranterContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.GuaranterContacts.Telephone1)
+                @Html.LabelFor(model => model.GuaranterContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
+                @Html.TextBoxFor(model => model.GuaranterContacts.Telephone1, new { @class = "form-control", @placeholder = "Enter Phone" })
                 @Html.ValidationMessageFor(model => model.GuaranterContacts.Telephone1)
-                @Html.HiddenFor(model => model.GuaranterContactId)
-                @Html.HiddenFor(model => model.GuaranterContacts.ContactId)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Occupation, "Occupation", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Occupation)
+                @Html.LabelFor(model => model.Occupation, "Occupation", new { @class = "control-label col-md-2" })
+                @Html.TextBoxFor(model => model.Occupation, new { @class = "form-control", @placeholder = "Enter Occupation" })
                 @Html.ValidationMessageFor(model => model.Occupation)
             </div>
         </div>
-
-
-
+    </div>
+    <div class="col-md-10">
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
 }
 
 <div>

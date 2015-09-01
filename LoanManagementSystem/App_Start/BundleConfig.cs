@@ -25,41 +25,43 @@ namespace LoanManagementSystem
 
             bundles.Add(new ScriptBundle("~/bundles/layout").Include(
                       "~/Scripts/layout2.js",
-                      "~/Scripts/jquery.metisMenu.js"));
+                      "~/Scripts/jquery.metisMenu.js",
+                      "~/Scripts/jqx-all.js",
+                      "~/Scripts/jqxcore.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/grid").Include(
                     "~/Scripts/gridmvc.js"
                 ));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqwidgets").Include(
-                "~/Scripts/jqx-all.js",
-                "~/Scripts/jqxcore.js"
-                //"~/Scripts/jqxdata.js",
-                //"~/Scripts/jqxgrid.js",
-                //"~/Scripts/jqxgrid.selection.js",
-                //"~/Scripts/jqxgrid.pager.js",
-                //"~/Scripts/jqxtreegrid.js",
-                //"~/Scripts/jqxtree.js",
+            //bundles.Add(new ScriptBundle("~/bundles/jqwidgets").Include(
+            //    "~/Scripts/jqx-all.js",
+            //    "~/Scripts/jqxcore.js"
+            //    //"~/Scripts/jqxdata.js",
+            //    //"~/Scripts/jqxgrid.js",
+            //    //"~/Scripts/jqxgrid.selection.js",
+            //    //"~/Scripts/jqxgrid.pager.js",
+            //    //"~/Scripts/jqxtreegrid.js",
+            //    //"~/Scripts/jqxtree.js",
 
-            //"~/Scripts/jqxdatetimeinput.js",
+            ////"~/Scripts/jqxdatetimeinput.js",
 
-            //"~/Scripts/jqxbuttons.js",
-                //"~/Scripts/jqxslider.js",
-                //"~/Scripts/jqxscrollbar.js",
-                //"~/Scripts/jqxdropdownlist.js",
-                //"~/Scripts/jqxlistbox.js",
+            ////"~/Scripts/jqxbuttons.js",
+            //    //"~/Scripts/jqxslider.js",
+            //    //"~/Scripts/jqxscrollbar.js",
+            //    //"~/Scripts/jqxdropdownlist.js",
+            //    //"~/Scripts/jqxlistbox.js",
 
-            //"~/Scripts/jqxdatatable.js",
-                //"~/Scripts/jqxmenu.js",
-                //"~/Scripts/jqxlistmenu.js",
-                //"~/Scripts/jqxcalendar.js",
-                //"~/Scripts/jqxgrid.sort.js",
-                //"~/Scripts/jqxgrid.filter.js",
-                //"~/Scripts/jqxdatetimeinput.js",
-                //"~/Scripts/jqxdropdownlist.js",
-                //"~/Scripts/jqxslider.js",
-                //"~/Scripts/globalize.js"
-            ));
+            ////"~/Scripts/jqxdatatable.js",
+            //    //"~/Scripts/jqxmenu.js",
+            //    //"~/Scripts/jqxlistmenu.js",
+            //    //"~/Scripts/jqxcalendar.js",
+            //    //"~/Scripts/jqxgrid.sort.js",
+            //    //"~/Scripts/jqxgrid.filter.js",
+            //    //"~/Scripts/jqxdatetimeinput.js",
+            //    //"~/Scripts/jqxdropdownlist.js",
+            //    //"~/Scripts/jqxslider.js",
+            //    //"~/Scripts/globalize.js"
+            //));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
