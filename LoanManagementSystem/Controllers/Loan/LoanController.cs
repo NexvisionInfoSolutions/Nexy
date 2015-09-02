@@ -88,10 +88,63 @@ namespace LoanManagementSystem.Controllers.Loan
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ImportView(HttpPostedFile DeviceInput)
+        public ActionResult ImportView(HttpPostedFileBase DeviceInput)
         {
             List<sdtoLoanRepayment> lstData = new List<sdtoLoanRepayment>();
-            // Process the input here.
+            sdtoLoanRepayment objLoanRepayment;  
+
+            if (DeviceInput != null)
+            {
+                string arrayofdata = string.Empty;
+                string read = string.Empty;// new StreamReader(DeviceInput.InputStream).ReadLine();
+                 
+                StreamReader csvreader = new StreamReader(DeviceInput.InputStream);
+                while (!csvreader.EndOfStream)
+                {
+                    var line = csvreader.ReadLine();
+                    var values = line.Split(',');
+                    objLoanRepayment = new sdtoLoanRepayment();
+                    objLoanRepayment.LoanId = Convert.ToInt64(values[2]);
+                    var loandetails = db.sdtoLoanInfoes.Find(objLoanRepayment.LoanId);
+                    
+                    if (loandetails!=null)       
+                    {
+                        objLoanRepayment.RepaymentAmount = Convert.ToInt64(values[3]);
+                        objLoanRepayment.RepaymentDate = Convert.ToDateTime(values[8]);
+                        var loanPendingAmt = loandetails.LoanAmount;
+                        var loanInterest = loandetails.InteresRate;
+                        var loanPendingInstallments = loandetails.TotalInstallments;
+
+                        var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == objLoanRepayment.LoanId).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
+                        var repaymentInterest = loanInterest;
+                        var repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+
+                        if (loanRepayment != null && loanRepayment.LoanRepaymentId > 0)
+                        {
+                            loanPendingAmt = loanRepayment.PendingPrincipalAmount;
+                            loanPendingInstallments = loanRepayment.PendingInstallments;
+                            repaymentInterest = loanRepayment.InterestRate;
+
+                            repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+                            objLoanRepayment.RepaymentCode = loanRepayment.RepaymentCode;
+                        }
+
+                        objLoanRepayment.InterestAmount = Math.Round(repaymentInterestAmt, 2);
+                        objLoanRepayment.PendingPrincipalAmount = loanPendingAmt - (objLoanRepayment.RepaymentAmount - repaymentInterestAmt);
+                        objLoanRepayment.PendingInstallments -= Convert.ToInt32(Math.Floor(objLoanRepayment.PendingPrincipalAmount / loandetails.InstallmentAmount));
+                        objLoanRepayment.PrincipalAmount = loandetails.LoanAmount;
+
+                        objLoanRepayment.Status = Data.Models.Enumerations.RepaymentStatus.Paid;
+                        objLoanRepayment.CreatedOn = DateTime.Now;
+
+                        db.sdtoLoanRepayments.Add(objLoanRepayment);
+                        db.SaveChanges(); 
+                    }
+                    
+                }
+                 
+            }
+
             return View(lstData);
         }
 
