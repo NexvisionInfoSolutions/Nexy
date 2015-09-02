@@ -42,5 +42,32 @@ namespace Business.Reports
             }
             return rptCollection;
         }
+
+        public List<sdtoRptLoanSummary> GetRptDepositSummary(long CompanyId, DataTable dtParameters)
+        {
+            List<sdtoRptLoanSummary> rptCollection = new List<sdtoRptLoanSummary>();
+            try
+            {
+                AppDb.Database.Connection.Open();
+                SqlParameter pm = new SqlParameter("@RptParameters", SqlDbType.Structured);
+                pm.Value = dtParameters;
+                pm.TypeName = "dbo.RptParameter";
+                DbRawSqlQuery<sdtoRptLoanSummary> result = AppDb.Database.SqlQuery<sdtoRptLoanSummary>("usp_RptDepositSummary @RptParameters, @vCompanyId",
+                    pm,
+                    new SqlParameter("@vCompanyId", CompanyId));
+
+                if (result != null)
+                    rptCollection = result.ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                AppDb.Database.Connection.Close();
+            }
+            return rptCollection;
+        }
     }
 }

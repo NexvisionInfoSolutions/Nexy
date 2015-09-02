@@ -141,6 +141,7 @@ namespace Business.Base
             sdtoUrlInfo urlReports = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Reports", IsMenu = true, MenuOrder = 5 };
             urlReports = context.UrlInfoCollection.Add(urlReports);
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/LoanSummary", CreatedOn = DateTime.Now, UrlText = "Loan Summary", ParentId = 42, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/DepositSummary", CreatedOn = DateTime.Now, UrlText = "Deposit Summary", ParentId = 42, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
 
             /*******************************/
             /** Account Types **/

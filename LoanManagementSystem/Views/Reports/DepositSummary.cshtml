@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Data.Models.Accounts.sdtoRptDepositSummary>
+
+@{
+    ViewBag.Title = "Deposit Summary";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'DepositId', type: 'number' },
+                    { name: 'UserId', type: 'number' },
+                    { name: 'DepositAmount', type: 'number' },
+                    { name: 'InteresRate', type: 'number' },
+                    //{ name: 'InstallmentAmount', type: 'number' },
+                    { name: 'MaturityDate', type: 'date' },
+                    { name: 'MatureAmount', type: 'number' },
+                    { name: 'TotalWithdrawnAmountPerDeposit', type: 'number' },
+                    { name: 'TotalWithdrawnAmountPerUser', type: 'number' },
+                    { name: 'BalanceDepositAmount', type: 'number' },
+                    //{ name: 'BalanceLoanInstallments', type: 'number' },
+                    { name: 'TotalInterestPaidAmountPerDeposit', type: 'number' },
+                    { name: 'TotalInterestPaidAmountPerUser', type: 'number' },
+                    //{ name: 'TotalInstallments', type: 'number' },
+                    { name: 'FirstName', type: 'string' },
+                    { name: 'LastName', type: 'string' },
+                    { name: 'FatherName', type: 'string' },
+                    { name: 'GuaranterName', type: 'string' },
+                    { name: 'UserAddress', type: 'string' },
+                    { name: 'UserPhone', type: 'string' },
+                    { name: 'UserMobile', type: 'string' },
+                    { name: 'UserEmail', type: 'string' },
+                    { name: 'UserPermanentAddress', type: 'string' },
+                    { name: 'PermanentPhone', type: 'string' },
+                    { name: 'PermanentMobile', type: 'string' },
+                    { name: 'PermanentEmail', type: 'string' }
+                ],
+                id: 'LoanId',
+                url: '/Reports/DepositSummaryInfo'
+            };
+
+            var linkDeposit = function (row, column, value) {
+                var html = '<b><a target="_blank" href="/Deposit/Withdrawals?DepositId=' + value + '">' + value + '</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  //{ text: 'User Id', dataField: 'UserID', width: 120 },
+                  { text: 'Deposit#', dataField: 'DepositId', width: 120, cellsRenderer: linkDeposit },
+                  { text: 'First Name', dataField: 'FirstName', width: 160 },
+                  { text: 'Last Name', dataField: 'LastName', width: 160 },
+                  { text: 'Father Name', dataField: 'FatherName', width: 150 },
+                  { text: 'Deposit Amount', dataField: 'DepositAmount', width: 150 },
+                  { text: 'Maturity Date', dataField: 'MaturityDate', width: 150 },
+                  { text: 'Maturity Amount', dataField: 'MatureAmount', width: 150 },
+                  //{ text: 'Total Installments', dataField: 'TotalInstallments', width: 150 },
+                  //{ text: 'Pending Installments', dataField: 'BalanceLoanInstallments', width: 150 },
+                  { text: 'Interest Rate', dataField: 'InteresRate', width: 150 },
+                  //{ text: 'Installment Amount', dataField: 'InstallmentAmount', width: 150 },
+                  { text: 'Total Amount Paid On Deposit', dataField: 'TotalWithdrawnAmountPerDeposit', width: 150 },
+                  { text: 'Total Amount Paid By User', dataField: 'TotalWithdrawnAmountPerUser', width: 150 },
+                  { text: 'Total Interest Amount Paid On Loan', dataField: 'TotalInterestPaidAmountPerDeposit', width: 150 },
+                  { text: 'Total Interest Amount Paid By User', dataField: 'TotalInterestPaidAmountPerUser', width: 150 },
+                  { text: 'Guaranter', dataField: 'GuaranterName', width: 150 },
+                  { text: 'Communication Address', dataField: 'UserAddress', width: 150 },
+                  { text: 'Phone', dataField: 'UserPhone', width: 150 },
+                  { text: 'Permanent Address', dataField: 'UserPermanentAddress', width: 150 },
+                  { text: 'Permanent Address Phone', dataField: 'PermanentPhone', width: 150 },
+                ]
+            });
+        });
+    </script>
+}
+<div id="dataTable"></div>

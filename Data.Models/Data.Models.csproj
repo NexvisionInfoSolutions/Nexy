@@ -53,6 +53,7 @@
     <Compile Include="Deposit\sdtoDepositInfo.cs" />
     <Compile Include="Loan\sdtoLoanRepayment.cs" />
     <Compile Include="Loan\sdtoLoanInfo.cs" />
+    <Compile Include="Reports\sdtoRptDepositSummary.cs" />
     <Compile Include="Reports\sdtoRptLoanSummary.cs" />
     <Compile Include="Settings\sdtoSettings.cs" />
     <Compile Include="SysBase\sdtoUrlInfo.cs" />
