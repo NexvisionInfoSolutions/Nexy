@@ -11,6 +11,7 @@ using LoanManagementSystem.Models;
 using Data.Models.Enumerations;
 using System.Text;
 using System.IO;
+using Business.Reports;
 
 namespace LoanManagementSystem.Controllers.Loan
 {
@@ -58,21 +59,43 @@ namespace LoanManagementSystem.Controllers.Loan
             }
             return View(sdtoLoanInfo);
         }
+
+        public ActionResult ExportView()
+        {
+            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            long CompanyId = 0;
+            if (sessionUser != null && sessionUser.CompanyId != null)
+                CompanyId = sessionUser.CompanyId.Value;
+
+            DataTable dtRptParams = new DataTable();
+            dtRptParams.Columns.Add(new DataColumn("EntityId", typeof(long)));
+            dtRptParams.Columns.Add(new DataColumn("EntityStartDate", typeof(DateTime)));
+            dtRptParams.Columns.Add(new DataColumn("EntityEndDate", typeof(DateTime)));
+            dtRptParams.Columns.Add(new DataColumn("EntityIntVal", typeof(int)));
+            dtRptParams.Columns.Add(new DataColumn("EntityStrVal", typeof(string)));
+            dtRptParams.Columns.Add(new DataColumn("EntityType", typeof(string)));
+
+            bfReport objReport = new bfReport(null);
+            var loanInfoList = objReport.GetRptLoanSummary(CompanyId, dtRptParams).ToList().Select(x => new sdtoLoanRepayment() { LoanId = x.LoanId, LoanDetails = new sdtoLoanInfo() { Member = new sdtoUser() { FirstName = x.FirstName, LastName = x.LastName } }, PendingPrincipalAmount = x.BalanceLoanAmount });
+
+            return View(loanInfoList);
+        }
+
         public FileStreamResult Export()
         {
-            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser);
+            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).Where(x => x.IsDeleted == false && x.Status == LoanStatus.Active);
             string HeaderData = "";
             string Data = "";
             HeaderData = "Member ID" + "  " + "Name of customer" + "  " + "STOL" + "  " + "Amount" + "  " + "Interest" + Environment.NewLine;
             Data = HeaderData;
-            foreach(sdtoLoanInfo Linfo in  sdtoLoanInfoes)
+            foreach (sdtoLoanInfo Linfo in sdtoLoanInfoes)
             {
-                Data += Linfo.Member.UserID.ToString() + " " + Linfo.Member.FirstName + " " + "STOL" + " " + Linfo.LoanAmount.ToString() + " " +Linfo.InteresRate.ToString() + Environment.NewLine;
+                Data += Linfo.Member.UserID.ToString() + " " + Linfo.Member.FirstName + " " + "STOL" + " " + Linfo.LoanAmount.ToString() + " " + Linfo.InteresRate.ToString() + Environment.NewLine;
             }
             var byteArray = Encoding.ASCII.GetBytes(Data);
             var stream = new MemoryStream(byteArray);
 
-            return File(stream, "text/plain", "LoanData.DAT");   
+            return File(stream, "text/plain", "LoanData.DAT");
 
         }
         // GET: Loan/Create

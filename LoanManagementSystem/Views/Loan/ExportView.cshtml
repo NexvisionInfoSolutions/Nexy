@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Data.Models.Accounts.sdtoLoanRepayment>
+
+@{
+    ViewBag.Title = "Export to Palm Device";
+}
+
+@using (Html.BeginForm("Export", "Loan"))
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Loan")
+            </th>
+            <th>
+                @Html.DisplayName("Member")
+            </th>
+            <th>@Html.DisplayName("Balance")</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.LoanId
+                </td>
+                <td>
+                    @item.LoanDetails.Member.FirstName  @item.LoanDetails.Member.LastName
+                </td>
+                <td>
+                    @item.PendingPrincipalAmount
+                </td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Export" /></td>
+            <td></td>
+        </tr>
+    </table>
+
+}
