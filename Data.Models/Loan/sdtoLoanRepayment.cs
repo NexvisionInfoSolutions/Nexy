@@ -19,6 +19,9 @@ namespace Data.Models.Accounts
         [Display(Name = "Loan ID")]
         public long LoanId { get; set; }
 
+        [Display(Name = "Transaction Date")]
+        public DateTime RepaymentDate { get; set; }
+
         [Display(Name = "Repayment Code")]
         public string RepaymentCode { get; set; }
 
@@ -37,7 +40,7 @@ namespace Data.Models.Accounts
         [Display(Name = "Repayment Amount")]
         public decimal RepaymentAmount { get; set; }
 
-         [Display(Name = "Pending Principal Amount")]
+        [Display(Name = "Pending Principal Amount")]
         public decimal PendingPrincipalAmount { get; set; }
 
         [Display(Name = "Pending Installments")]

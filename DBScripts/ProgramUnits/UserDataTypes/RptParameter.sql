@@ -6,15 +6,22 @@ IF NOT EXISTS (
 			AND ss.NAME = N'dbo'
 		)
 BEGIN
-	CREATE TYPE dbo.[RptParameter] AS TABLE (
-		EntityId BIGINT NULL
-		,EntityType VARCHAR(10) NULL
-		)
+	
+CREATE TYPE dbo.[RptParameter] AS TABLE (
+	EntityId BIGINT NULL
+  ,EntityStartDate date NULL
+  ,EntityEndDate date NULL
+  ,EntityIntVal int NULL
+  ,EntityStrVal varchar(100) NULL
+	,EntityType VARCHAR(10) NULL
+	)
 
-	PRINT 'User type RptParameter is created successfully.'
+PRINT 'User type RptParameter is created successfully.'
 END
 ELSE
-	PRINT 'User type RptParameter already exists'
+BEGIN
+PRINT 'User type RptParameter already exists.'
+END
 GO
 
 

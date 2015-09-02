@@ -16,158 +16,141 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE [dbo].[usp_RptSummary] @RptParameters dbo.RptParameter readonly	  
-  ,@vCompanyId bigint
+  ,@vCompanyId bigint  
 AS
 
+Declare @vCheckByLoanId bit = 0;
+Declare @vCheckByLoanMember bit = 0;
+Declare @vCheckByLoanDate bit = 0;
+Declare @vCheckByLoanStatus bit = 0;
+Declare @vCheckByCharacter bit = 0;
+
 
 IF EXISTS (
 		SELECT TOP 1 1
 		FROM @RptParameters rp
-		WHERE rp.EntityIdType = 'U'
+		WHERE rp.EntityType = 'L' -- Loan Ids
 		)
-	SET @vCheckUserId = 1;
+	SET @vCheckByLoanId = 1;
 
 IF EXISTS (
 		SELECT TOP 1 1
 		FROM @RptParameters rp
-		WHERE rp.EntityIdType = 'S'
+		WHERE rp.EntityType = 'U' -- Member Ids
 		)
-	SET @vCheckShiftTypeId = 1;
+	SET @vCheckByLoanMember = 1;
 
 IF EXISTS (
 		SELECT TOP 1 1
 		FROM @RptParameters rp
-		WHERE rp.EntityIdType = 'T'
+		WHERE rp.EntityType = 'D' -- Date range for repayment dates
 		)
-	SET @vCheckScheduleTypeId = 1;
+	SET @vCheckByLoanDate = 1;
+
+IF EXISTS (
+		SELECT TOP 1 1
+		FROM @RptParameters rp
+		WHERE rp.EntityType = 'S' -- Loan Status
+		)
+	SET @vCheckByLoanStatus = 1;
   
-/*if isnull(@vManagerId,0) = 0
-  select @vManagerId = ap.UserId FROM AppSession ap
-  inner join ShiftsterUsers u on u.UserId = ap.UserId
-  inner join UserDetails ud on ud.UserId = u.UserId
-  where ap.SessionKey = @vSessionKey and ud.Status <> 2 and ud.UserMode = 1;*/
-
-DECLARE @vLoggedInUserId BIGINT, @vModuleName varchar(100);
-
-Select @vCompanyId = u.CompanyId, @vLoggedInUserId = u.UserId, @vModuleName = ap.ModuleName FROM AppSession ap left join ShiftsterUsers u on u.UserId = ap.UserId
-where ap.SessionKey = @vSessionKey;
-
-SELECT distinct u.UserId
-  ,isnull(u.FirstName,space(0))+space(1)+isnull(u.LastName,space(0)) as EmpName
-	,isnull(u.Rate,0) as Rate
-  ,sh.ShiftId
-  ,Sh.ShiftStartDate
-  ,case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end as StdShiftWeekHours
-  ,sh.ShiftHours AS ShiftHours		
-  ,sum(isnull(u.Rate,0) * sh.ShiftHours) OVER (
-		PARTITION BY 1
-		) AS GrandTotalScheduledCosts
-	,sum(sh.ShiftHours) OVER (
-		PARTITION BY u.UserId
-		--,sh.WeekStartDate
-		) AS TotalScheduledHours
-    ,sum(isnull(u.Rate,0) * sh.ShiftHours) OVER (
-		PARTITION BY u.UserId
-		--,sh.WeekStartDate
-		) AS TotalScheduledCosts
-	,CASE 
-		WHEN st.AllowHoursExceed = 0
-			OR sum(sh.ShiftHours) OVER (
-				PARTITION BY u.UserId
-				--,sh.WeekStartDate
-				) < case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-			THEN sum(sh.ShiftHours) OVER (
-					PARTITION BY u.UserId
-					--,sh.WeekStartDate
-					)
-		ELSE case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-		END AS TotalRegularHours
-  ,isnull(u.Rate,0.0) * CASE 
-		WHEN st.AllowHoursExceed = 0
-			OR sum(sh.ShiftHours) OVER (
-				PARTITION BY u.UserId
-				--,sh.WeekStartDate
-				) < case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-			THEN sum(sh.ShiftHours) OVER (
-					PARTITION BY u.UserId
-					--,sh.WeekStartDate
-					)
-		ELSE case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-		END AS TotalRegularCost
-	,CASE 
-		WHEN st.AllowHoursExceed = 1
-			AND sum(sh.ShiftHours) OVER (
-				PARTITION BY u.UserId
-				--,sh.WeekStartDate
-				) > case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-			THEN sum(sh.ShiftHours) OVER (
-					PARTITION BY u.UserId
-					--,sh.WeekStartDate
-					) - case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-		ELSE 0
-		END AS TotalExceededHours
-  ,isnull(u.Rate,0.0) * CASE 
-		WHEN st.AllowHoursExceed = 1
-			AND sum(sh.ShiftHours) OVER (
-				PARTITION BY u.UserId
-				--,sh.WeekStartDate
-				) > case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-			THEN sum(sh.ShiftHours) OVER (
-					PARTITION BY u.UserId
-					--,sh.WeekStartDate
-					) - case when st.ExceededHoursType = 1 then st.OvertimeThreshholdHours else st.ExceededThresholdHours end
-		ELSE 0
-		END AS TotalExceededCosts
-  ,sum(case when sh.ShiftMode = @vCompTimeMode then sh.ShiftHours else 0 end) OVER (PARTITION BY u.UserId
-  --, sh.WeekStartDate
-  ) AS TotalCompHours  
-  ,sum(case when sh.ShiftMode = @vOverTimeMode then sh.ShiftHours else 0 end) OVER (PARTITION BY u.UserId --, sh.WeekStartDate
-  ) AS TotalOverTimeHours  
-  ,sum(isnull(u.Rate,0.0) * case when sh.ShiftMode = @vCompTimeMode then sh.ShiftHours else 0 end) OVER (PARTITION BY u.UserId --, sh.WeekStartDate
-  ) AS TotalCompCost  
-  ,sum(isnull(u.Rate,0.0) * case when sh.ShiftMode = @vOverTimeMode then sh.ShiftHours else 0 end) OVER (PARTITION BY u.UserId --, sh.WeekStartDate
-  ) AS TotalOverTimeCost  
-FROM vwShiftInfo sh
-INNER JOIN Activity ac ON ac.ActivityShiftId = sh.ShiftId
-LEFT JOIN Schedule sch ON sch.ScheduleId = sh.ScheduleId
-LEFT JOIN ScheduleType scht ON scht.ScheduleTypeId = sch.ScheduleTypeId
-LEFT JOIN ShiftType sht ON sht.ShiftTypeId = sh.ShiftTypeId
-INNER JOIN ShiftsterUsers u ON u.UserId = sh.ShUserId
-LEFT JOIN Settings st on st.CompanyId = u.CompanyId
-WHERE isnull(sh.IsDeleted, 'N') = 'N'
-	--AND sht.ShiftTypeStatus = 1
-	--AND u.STATUS = 1
-  AND (@vModuleName = 'MyShiftster' or (@vModuleName <> 'MyShiftster' and isnull(sh.IsPersonal, 0) = 0))
-	AND (
-		@vCheckUserId = 0
+IF EXISTS (
+		SELECT TOP 1 1
+		FROM @RptParameters rp
+		WHERE rp.EntityType = 'M' -- Mixed mode
+		)
+	SET @vCheckByCharacter = 1;  
+  
+Select distinct lf.LoanId, lf.UserId, lf.LoanAmount, lf.TotalInstallments, lf.InteresRate, lf.InstallmentAmount, lf.RepaymentStartDate
+,sum(lr.RepaymentAmount) over (partition by lr.LoanId) as TotalPaidAmountPerLoan
+,sum(lr.RepaymentAmount) over (partition by lf.UserId) as TotalPaidAmountPerUser
+--,sum(lr.RepaymentAmount) over (partition by lr.RepaymentDate) as TotalPaidAmountPerDate
+,Min(isnull(lr.PendingPrincipalAmount, lf.LoanAmount)) over (partition by lr.LoanId) as BalanceLoanAmount
+,Min(isnull(lr.PendingInstallments, lf.TotalInstallments)) over (partition by lr.LoanId) as BalanceLoanInstallments
+,Sum(lr.InterestAmount) over (partition by lr.LoanId) as TotalInterestPaidAmountPerLoan
+,Sum(lr.InterestAmount) over (partition by lf.UserId) as TotalInterestPaidAmountPerUser
+,lf.TotalInstallments
+,u.FirstName
+,u.LastName
+,u.UserType
+,u.FatherName
+,u.GuaranterName
+, isnull(uaddr.Address1, '') + '<br />' + isnull(uaddr.Address2, '') + '<br />' + isnull(uaddr.Place, '') + '<br />' + isnull(uaddr.Post, '') + '<br />' + isnull(uaddr.District, '') + '<br />' as UserAddress
+, uc.Telephone1 as UserPhone
+, uc.Mobile1 as UserMobile
+, uc.Email1 as UserEmail
+, isnull(upAddr.Address1, '') + '<br />' + isnull(upAddr.Address2, '') + '<br />' + isnull(upAddr.Place, '') + '<br />' + isnull(upAddr.Post, '') + '<br />' + isnull(upAddr.District, '') + '<br />' as UserPermanentAddress
+, upc.Telephone1 as PermanentPhone
+, upc.Mobile1 as PermanentMobile
+, upc.Email1 as PermanentEmail
+from LoanInfo lf
+left join LoanRepayment lr on lr.LoanId = lf.LoanId and lr.Status <> 4 and isnull(lr.IsDeleted, 0) = 0
+left join Users u on u.UserID = lf.UserId and u.UserType = 3 -- Members only
+left join Address uaddr on uaddr.AddressId = u.UserAddressId
+left join Address upAddr on upAddr.AddressId = u.PermanentAddressId
+left join Contact uc on uc.ContactId = u.UserContactId
+left join contact upc on upc.ContactId = u.PermanentContactId
+where isnull(lf.IsDeleted, 0) = 0
+AND (@vCompanyId = 0 or u.CompanyId = @vCompanyId)
+AND (
+		@vCheckByLoanId = 0
 		OR EXISTS (
 			SELECT TOP 1 1
 			FROM @RptParameters pm
-			WHERE pm.EntityId = sh.ShUserId
-				AND pm.EntityIdType = 'U'
+			WHERE pm.EntityId = lf.LoanId
+				AND pm.EntityType = 'L'
 			)
 		)
 	AND (
-		@vCheckShiftTypeId = 0
+		@vCheckByLoanMember = 0
 		OR EXISTS (
 			SELECT TOP 1 1
 			FROM @RptParameters pm
-			WHERE pm.EntityId = sh.ShiftTypeId
-				AND pm.EntityIdType = 'S'
+			WHERE pm.EntityId = u.UserID
+				AND pm.EntityType = 'U'
 			)
 		)
 	AND (
-		@vCheckScheduleTypeId = 0
+		@vCheckByLoanDate = 0
 		OR EXISTS (
 			SELECT TOP 1 1
 			FROM @RptParameters pm
-			WHERE pm.EntityId = scht.ScheduleTypeId
-				AND pm.EntityIdType = 'T'
+			WHERE dateadd(dd, 0, datediff(dd, 0 , lr.RepaymentDate)) between pm.EntityStartDate and pm.EntityEndDate
+				AND pm.EntityType = 'D'
 			)
 		)
-	  AND (@vWeekStartDate IS NULL OR (sh.ShiftStartDate between @vWeekStartDate and dateadd(dd,6,@vWeekStartDate)))
-    --and (isnull(@vManagerId,0) = 0 or sh.ShManagerId = @vManagerId)
-    and (ISNULL(@vCompanyId,0) = 0 or u.CompanyId = @vCompanyId)
+  AND (
+		@vCheckByLoanStatus = 0
+		OR EXISTS (
+			SELECT TOP 1 1
+			FROM @RptParameters pm
+			WHERE pm.EntityIntVal = lf.Status
+				AND pm.EntityType = 'S'
+			)
+		)
+  AND (@vCheckByCharacter = 0
+  OR EXISTS (
+			SELECT TOP 1 1
+			FROM @RptParameters pm
+			WHERE ((len(isnull(u.FirstName, '')) > 0 AND u.FirstName like pm.EntityStrVal+ '%')
+        OR (len(isnull(u.LastName, '')) > 0 AND u.LastName like pm.EntityStrVal+ '%')
+        OR (len(isnull(u.UserName, '')) > 0 AND u.UserName like pm.EntityStrVal+ '%')
+        OR (len(isnull(uaddr.Address1, '')) > 0 AND uaddr.Address1 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uaddr.Address2, '')) > 0 AND uaddr.Address2 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uaddr.Place , '')) > 0 AND uaddr.Place like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upAddr.Address1, '')) > 0 AND upAddr.Address1 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upAddr.Address2, '')) > 0 AND upAddr.Address2 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upAddr.Place , '')) > 0 AND upAddr.Place like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uc.Telephone1 , '')) > 0 AND uc.Telephone1 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uc.Mobile1 , '')) > 0 AND uc.Mobile1 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uc.Email1 , '')) > 0 AND uc.Email1 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upc.Telephone1 , '')) > 0 AND upc.Telephone1 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upc.Mobile1 , '')) > 0 AND upc.Mobile1 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upc.Email1 , '')) > 0 AND upc.Email1 like '%' + pm.EntityStrVal + '%')
+        )
+				AND pm.EntityType = 'M'
+			)
+    )
 GO
 
 PRINT 'usp_RptSummary is created successfully..'

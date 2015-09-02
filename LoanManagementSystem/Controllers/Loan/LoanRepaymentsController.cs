@@ -159,6 +159,8 @@ namespace LoanManagementSystem.Controllers.Loan
                     sdtoLoanRepayment.PrincipalAmount = loandetails.LoanAmount;
 
                     sdtoLoanRepayment.Status = Data.Models.Enumerations.RepaymentStatus.Paid;
+                    sdtoLoanRepayment.CreatedOn = DateTime.Now;
+                    sdtoLoanRepayment.RepaymentDate = DateTime.Now;
                 }
 
                 db.sdtoLoanRepayments.Add(sdtoLoanRepayment);

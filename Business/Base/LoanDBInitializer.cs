@@ -137,12 +137,18 @@ namespace Business.Base
             urlDeposits = context.UrlInfoCollection.Add(urlDeposits);
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Deposit/Create", CreatedOn = DateTime.Now, UrlText = "Add Deposit Account", ParentId = 39, IsMenu = false, MenuOrder = 2 });//urlDeposits.ParentId });
 
+            //42
+            sdtoUrlInfo urlReports = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Reports", IsMenu = true, MenuOrder = 5 };
+            urlReports = context.UrlInfoCollection.Add(urlReports);
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/LoanSummary", CreatedOn = DateTime.Now, UrlText = "Loan Summary", ParentId = 42, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
 
             /*******************************/
             /** Account Types **/
 
             context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Cash", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "CASH" });
             context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Bank", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Bank" });
+            context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Debiter", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Debiter" });
+            context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Crediter", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Crediter" });
 
             /*******************************/
             /** Account Book Types **/
