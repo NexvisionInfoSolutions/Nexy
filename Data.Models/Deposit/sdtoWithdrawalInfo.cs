@@ -22,6 +22,9 @@ namespace Data.Models.Accounts
         [Display(Name = "Withdrawal Code")]
         public string WithdrawalCode { get; set; }
 
+        [Display(Name = "Withdrawal Date")]
+        public DateTime? WithdrawalDate { get; set; }
+
         [Display(Name = "Withdrawal Amount")]
         public decimal WithdrawalAmount { get; set; }
 
