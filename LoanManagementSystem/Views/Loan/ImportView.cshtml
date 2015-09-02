@@ -6,6 +6,8 @@
 
 @using (Html.BeginForm("ImportView", "Loan", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
     <table class="table">
         @if (Model != null)
         {
