@@ -67,12 +67,12 @@ namespace LoanManagementSystem.Controllers.Loan
             Data = HeaderData;
             foreach(sdtoLoanInfo Linfo in  sdtoLoanInfoes)
             {
-                Data += Linfo.Member.UserID.ToString() + " " + Linfo.Member.FirstName + " " + "STOL" + " " + Linfo.LoanAmount.ToString() + Environment.NewLine;
+                Data += Linfo.Member.UserID.ToString() + " " + Linfo.Member.FirstName + " " + "STOL" + " " + Linfo.LoanAmount.ToString() + " " +Linfo.InteresRate.ToString() + Environment.NewLine;
             }
             var byteArray = Encoding.ASCII.GetBytes(Data);
             var stream = new MemoryStream(byteArray);
 
-            return File(stream, "text/plain", "LoanData.txt");   
+            return File(stream, "text/plain", "LoanData.DAT");   
 
         }
         // GET: Loan/Create
