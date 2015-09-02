@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
 using Data.Models.Enumerations;
+using System.Text;
+using System.IO;
 
 namespace LoanManagementSystem.Controllers.Loan
 {
@@ -56,7 +58,23 @@ namespace LoanManagementSystem.Controllers.Loan
             }
             return View(sdtoLoanInfo);
         }
+        public FileStreamResult Export()
+        {
+            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser);
+            string HeaderData = "";
+            string Data = "";
+            HeaderData = "Member ID" + "  " + "Name of customer" + "  " + "STOL" + "  " + "Amount" + "  " + "Interest" + Environment.NewLine;
+            Data = HeaderData;
+            foreach(sdtoLoanInfo Linfo in  sdtoLoanInfoes)
+            {
+                Data += Linfo.Member.UserID.ToString() + " " + Linfo.Member.FirstName + " " + "STOL" + " " + Linfo.LoanAmount.ToString() + Environment.NewLine;
+            }
+            var byteArray = Encoding.ASCII.GetBytes(Data);
+            var stream = new MemoryStream(byteArray);
 
+            return File(stream, "text/plain", "LoanData.txt");   
+
+        }
         // GET: Loan/Create
         public ActionResult Create(long? UserId)
         {
