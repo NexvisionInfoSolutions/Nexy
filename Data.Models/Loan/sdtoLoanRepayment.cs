@@ -22,6 +22,9 @@ namespace Data.Models.Accounts
         [Display(Name = "Repayment Code")]
         public string RepaymentCode { get; set; }
 
+        [Display(Name = "Repayment Date")]
+        public DateTime? RepaymentDate { get; set; }
+
         [Display(Name = "Principal Amount")]
         public decimal PrincipalAmount { get; set; }
 
