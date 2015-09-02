@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Data.Models.Accounts.sdtoLoanRepayment>
+
+@{
+    ViewBag.Title = "Import from Palm Device";
+}
+
+@using (Html.BeginForm("ImportView", "Loan", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <table class="table">
+        @if (Model != null)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayName("Loan")
+                </th>
+                <th>
+                    @Html.DisplayName("Member")
+                </th>
+                <th>@Html.DisplayName("Balance")</th>
+            </tr>
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.LoanId
+                    </td>
+                    <td>
+                        @item.LoanDetails.Member.FirstName  @item.LoanDetails.Member.LastName
+                    </td>
+                    <td>
+                        @item.PendingPrincipalAmount
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="3">
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.Label("Source Data")
+                        <input name="DeviceInput" type="file" class="form-control" />                        
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" value="Import" class="form-control" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+}

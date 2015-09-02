@@ -81,6 +81,20 @@ namespace LoanManagementSystem.Controllers.Loan
             return View(loanInfoList);
         }
 
+        public ActionResult ImportView()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ImportView(HttpPostedFile DeviceInput)
+        {
+            List<sdtoLoanRepayment> lstData = new List<sdtoLoanRepayment>();
+            // Process the input here.
+            return View(lstData);
+        }
+
         public FileStreamResult Export()
         {
             var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).Where(x => x.IsDeleted == false && x.Status == LoanStatus.Active);

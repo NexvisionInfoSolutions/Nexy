@@ -839,6 +839,7 @@
     <Content Include="Views\Reports\LoanSummary.cshtml" />
     <Content Include="Views\Reports\DepositSummary.cshtml" />
     <Content Include="Views\Loan\ExportView.cshtml" />
+    <Content Include="Views\Loan\ImportView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
