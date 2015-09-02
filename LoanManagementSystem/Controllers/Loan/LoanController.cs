@@ -115,7 +115,8 @@ namespace LoanManagementSystem.Controllers.Loan
             var listUsers = db.User.Where(x => x.UserType == UserType.Member);
             var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
-            ViewBag.UserList = new SelectList(users, "Value", "Text");
+            //ViewBag.UserList = new SelectList(users, "Value", "Text");
+            ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoLoanInfo);
         }
 
