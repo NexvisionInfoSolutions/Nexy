@@ -8,9 +8,9 @@
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
-        var datepc = $('.dpicker');
+        var datepc = $('.datepicker');
         datepc.datepicker({
-            format: 'yyyy/M/dd',
+            format: 'mm-dd-yyyy',
             startDate: '-3d',
             //showOn: "both",
             buttonImageOnly: true,
@@ -49,8 +49,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RepaymentStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "dpicker", @type = "date" } })
-                @Html.ValidationMessageFor(model => model.RepaymentStartDate, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.RepaymentStartDate, new { @class = "datepicker datefield", placeholder = "Enter Repayment date here..." })
+                @Html.ValidationMessageFor(model => model.RepaymentStartDate)
             </div>
         </div>
 
