@@ -11,7 +11,7 @@
     $(document).ready(function () {
         var datepc = $('.datepicker');
         datepc.datepicker({
-            format: 'yyyy-mm-dd',
+            format: 'mm-dd-yyyy',
             startDate: '-3d',
             showOn: "both",
             buttonImageOnly: true,
@@ -41,6 +41,7 @@
             @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(m => m.UserId, (SelectList)ViewBag.UserList, htmlAttributes: new {  })
+                @*@Html.LabelFor(ViewBag.UserName, new { htmlAttributes = new { } })*@
                 @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -48,8 +49,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RepaymentStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "datepicker datefield", @type = "date" } })
-                @Html.ValidationMessageFor(model => model.RepaymentStartDate, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.RepaymentStartDate, new { @class = "datepicker datefield", placeholder = "Enter Repayment date here..." })
+                @Html.ValidationMessageFor(model => model.RepaymentStartDate)
+
+                @*@Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "datepicker datefield", @type = "date" } })
+                @Html.ValidationMessageFor(model => model.RepaymentStartDate, "", new { @class = "text-danger" })*@
             </div>
         </div>
 
