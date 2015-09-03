@@ -41,11 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\sdtoFinancialPeriod.cs" />
     <Compile Include="Accounts\Schedules\sdtoSchedule.cs" />
     <Compile Include="Accounts\sdtoAccountBook.cs" />
     <Compile Include="Accounts\sdtoAccountBookType.cs" />
     <Compile Include="Accounts\sdtoAccountType.cs" />
     <Compile Include="Accounts\sdtoAccountHead.cs" />
+    <Compile Include="Accounts\Transactions\sdtoBankDepositDetails.cs" />
+    <Compile Include="Accounts\Transactions\sdtoBankDepositHeader.cs" />
+    <Compile Include="Accounts\Transactions\sdtoJournalDetails.cs" />
+    <Compile Include="Accounts\Transactions\sdtoJournalHeader.cs" />
+    <Compile Include="Accounts\Transactions\sdtoReceiptDetails.cs" />
+    <Compile Include="Accounts\Transactions\sdtoOpeningBalance.cs" />
+    <Compile Include="Accounts\Transactions\sdtoReceiptHeader.cs" />
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
     <Compile Include="Base\BaseData.cs" />

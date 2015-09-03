@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using LoanManagementSystem.Models;
 using Data.Models.Enumerations;
 using System.IO;
+using Business.Reports;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -107,7 +108,6 @@ namespace LoanManagementSystem.Controllers
                 ModelState.AddModelError("", "LastName cannot be empty");
             else if (string.IsNullOrEmpty(sdtouser.UserAddress.Address1))
                 ModelState.AddModelError("", "Communication Address cannot be empty");
-
             else if (ModelState.IsValid)
             {
                 var validImageTypes = new string[]
@@ -179,6 +179,9 @@ namespace LoanManagementSystem.Controllers
                         fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, sdtouser.UserID + ".logo"), true);
                         fInfo.Delete();
                     }
+
+                    bfTransaction objAccTransaction = new bfTransaction(db);
+                    objAccTransaction.InitiateMemberAccounts(sdtouser);
 
                     return RedirectToAction("Index");
                 }

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\bfTransaction.cs" />
     <Compile Include="Base\bfBase.cs" />
     <Compile Include="Base\LoanDBContext.cs" />
     <Compile Include="Base\LoanDBInitializer.cs" />

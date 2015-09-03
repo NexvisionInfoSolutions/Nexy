@@ -87,77 +87,123 @@ namespace LoanManagementSystem.Controllers.Loan
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult ImportView(HttpPostedFileBase DeviceInput)
         {
-            List<sdtoLoanRepayment> lstData = new List<sdtoLoanRepayment>();
-            sdtoLoanRepayment objLoanRepayment;  
-
-            if (DeviceInput != null)
+            StreamReader reader = new StreamReader(DeviceInput.InputStream);
+            while (!reader.EndOfStream)
             {
-                string arrayofdata = string.Empty;
-                string read = string.Empty;// new StreamReader(DeviceInput.InputStream).ReadLine();
-                 
-                StreamReader csvreader = new StreamReader(DeviceInput.InputStream);
-                while (!csvreader.EndOfStream)
+                string lineInput = reader.ReadLine();
+                if (!string.IsNullOrWhiteSpace(lineInput))
                 {
-                    var line = csvreader.ReadLine();
-                    var values = line.Split(',');
-                    objLoanRepayment = new sdtoLoanRepayment();
-                    objLoanRepayment.LoanId = Convert.ToInt64(values[2]);
-                    var loandetails = db.sdtoLoanInfoes.Find(objLoanRepayment.LoanId);
-                    
-                    if (loandetails!=null)       
+                    string[] arrLines = lineInput.Split("\0".ToCharArray());
+                    if (arrLines != null && arrLines.Length > 0)
                     {
-                        objLoanRepayment.RepaymentAmount = Convert.ToInt64(values[3]);
-                        objLoanRepayment.RepaymentDate = Convert.ToDateTime(values[8]);
-                        var loanPendingAmt = loandetails.LoanAmount;
-                        var loanInterest = loandetails.InteresRate;
-                        var loanPendingInstallments = loandetails.TotalInstallments;
-
-                        var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == objLoanRepayment.LoanId).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
-                        var repaymentInterest = loanInterest;
-                        var repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
-
-                        if (loanRepayment != null && loanRepayment.LoanRepaymentId > 0)
+                        foreach (string strLine in arrLines)
                         {
-                            loanPendingAmt = loanRepayment.PendingPrincipalAmount;
-                            loanPendingInstallments = loanRepayment.PendingInstallments;
-                            repaymentInterest = loanRepayment.InterestRate;
+                            string[] arrValues = strLine.Split(",".ToCharArray());
+                            if (arrValues != null && arrValues.Length > 10)
+                            {
+                                sdtoLoanRepayment repayment = new sdtoLoanRepayment();
+                                long iLoanId = 0;
+                                long.TryParse(arrValues[2], out iLoanId);
+                                repayment.LoanId = iLoanId;
+                                if (repayment.LoanId > 0)
+                                {
+                                    float fPaymentAmount = 0;
+                                    float.TryParse(arrValues[3], out fPaymentAmount);
 
-                            repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
-                            objLoanRepayment.RepaymentCode = loanRepayment.RepaymentCode;
+                                    DateTime dt = DateTime.Now;
+                                    DateTime.TryParse(arrValues[8], out dt);
+
+                                    repayment.RepaymentDate = dt;
+
+                                    var loandetails = db.sdtoLoanInfoes.Find(repayment.LoanId);
+
+                                    if (loandetails != null)
+                                    {
+                                        var loanPendingAmt = loandetails.LoanAmount;
+                                        var loanInterest = loandetails.InteresRate;
+                                        var loanPendingInstallments = loandetails.TotalInstallments;
+
+                                        var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == repayment.LoanId).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
+                                        var repaymentInterest = loanInterest;
+                                        var repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+
+                                        if (loanRepayment != null && loanRepayment.LoanRepaymentId > 0)
+                                        {
+                                            loanPendingAmt = loanRepayment.PendingPrincipalAmount;
+                                            loanPendingInstallments = loanRepayment.PendingInstallments;
+                                            repaymentInterest = loanRepayment.InterestRate;
+
+                                            repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+                                            repayment.RepaymentCode = loanRepayment.RepaymentCode;
+                                        }
+
+                                        repayment.InterestAmount = Math.Round(repaymentInterestAmt, 2);
+                                        repayment.PendingPrincipalAmount = loanPendingAmt - (repayment.RepaymentAmount - repaymentInterestAmt);
+                                        repayment.PendingInstallments -= Convert.ToInt32(Math.Floor(repayment.PendingPrincipalAmount / loandetails.InstallmentAmount));
+                                        repayment.PrincipalAmount = loandetails.LoanAmount;
+
+                                        repayment.Status = Data.Models.Enumerations.RepaymentStatus.Paid;
+                                        repayment.CreatedOn = DateTime.Now;
+
+                                        db.sdtoLoanRepayments.Add(repayment);
+                                        db.SaveChanges();
+                                    }
+                                }
+                            }
                         }
-
-                        objLoanRepayment.InterestAmount = Math.Round(repaymentInterestAmt, 2);
-                        objLoanRepayment.PendingPrincipalAmount = loanPendingAmt - (objLoanRepayment.RepaymentAmount - repaymentInterestAmt);
-                        objLoanRepayment.PendingInstallments -= Convert.ToInt32(Math.Floor(objLoanRepayment.PendingPrincipalAmount / loandetails.InstallmentAmount));
-                        objLoanRepayment.PrincipalAmount = loandetails.LoanAmount;
-
-                        objLoanRepayment.Status = Data.Models.Enumerations.RepaymentStatus.Paid;
-                        objLoanRepayment.CreatedOn = DateTime.Now;
-
-                        db.sdtoLoanRepayments.Add(objLoanRepayment);
-                        db.SaveChanges(); 
                     }
-                    
                 }
-                 
             }
+            reader.Close();
 
-            return View(lstData);
+            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            long CompanyId = 0;
+            if (sessionUser != null && sessionUser.CompanyId != null)
+                CompanyId = sessionUser.CompanyId.Value;
+
+            DataTable dtRptParams = new DataTable();
+            dtRptParams.Columns.Add(new DataColumn("EntityId", typeof(long)));
+            dtRptParams.Columns.Add(new DataColumn("EntityStartDate", typeof(DateTime)));
+            dtRptParams.Columns.Add(new DataColumn("EntityEndDate", typeof(DateTime)));
+            dtRptParams.Columns.Add(new DataColumn("EntityIntVal", typeof(int)));
+            dtRptParams.Columns.Add(new DataColumn("EntityStrVal", typeof(string)));
+            dtRptParams.Columns.Add(new DataColumn("EntityType", typeof(string)));
+
+            bfReport objReport = new bfReport(null);
+            var loanInfoList = objReport.GetRptLoanSummary(CompanyId, dtRptParams).ToList().Select(x => new sdtoLoanRepayment() { LoanId = x.LoanId, LoanDetails = new sdtoLoanInfo() { Member = new sdtoUser() { FirstName = x.FirstName, LastName = x.LastName } }, PendingPrincipalAmount = x.BalanceLoanAmount });
+
+            return View(loanInfoList);
         }
 
         public FileStreamResult Export()
         {
-            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).Where(x => x.IsDeleted == false && x.Status == LoanStatus.Active);
-            string HeaderData = "";
+            //var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).Where(x => x.IsDeleted == false && x.Status == LoanStatus.Active);
+            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            long CompanyId = 0;
+            if (sessionUser != null && sessionUser.CompanyId != null)
+                CompanyId = sessionUser.CompanyId.Value;
+
+            DataTable dtRptParams = new DataTable();
+            dtRptParams.Columns.Add(new DataColumn("EntityId", typeof(long)));
+            dtRptParams.Columns.Add(new DataColumn("EntityStartDate", typeof(DateTime)));
+            dtRptParams.Columns.Add(new DataColumn("EntityEndDate", typeof(DateTime)));
+            dtRptParams.Columns.Add(new DataColumn("EntityIntVal", typeof(int)));
+            dtRptParams.Columns.Add(new DataColumn("EntityStrVal", typeof(string)));
+            dtRptParams.Columns.Add(new DataColumn("EntityType", typeof(string)));
+
+            bfReport objReport = new bfReport(null);
+            var loanInfoList = objReport.GetRptLoanSummary(CompanyId, dtRptParams).ToList().Select(x => new sdtoLoanRepayment() { LoanId = x.LoanId, LoanDetails = new sdtoLoanInfo() { Member = new sdtoUser() { FirstName = x.FirstName, LastName = x.LastName } }, PendingPrincipalAmount = x.BalanceLoanAmount }).ToList();
+
+            //string HeaderData = "";
             string Data = "";
-            HeaderData = "Member ID" + "  " + "Name of customer" + "  " + "STOL" + "  " + "Amount" + "  " + "Interest" + Environment.NewLine;
-            Data = HeaderData;
-            foreach (sdtoLoanInfo Linfo in sdtoLoanInfoes)
+            //HeaderData = "Member ID" + "  " + "Name of customer" + "  " + "STOL" + "  " + "Amount" + "  " + "Interest" + Environment.NewLine;
+            //Data = HeaderData;
+            foreach (sdtoLoanRepayment Linfo in loanInfoList)
             {
-                Data += Linfo.Member.UserID.ToString() + " " + Linfo.Member.FirstName + " " + "STOL" + " " + Linfo.LoanAmount.ToString() + " " + Linfo.InteresRate.ToString() + Environment.NewLine;
+                Data += Linfo.LoanId + "                 " + Linfo.LoanDetails.Member.FirstName + " " + Linfo.LoanDetails.Member.FirstName + "       STOL            " + Linfo.PendingPrincipalAmount + "                             " + Linfo.LoanDetails.InteresRate + "                                                                                                                                                      ";
+                //Data += Linfo.Member.UserID.ToString() + " " + Linfo.Member.FirstName + " " + "STOL" + " " + Linfo.LoanAmount.ToString() + " " + Linfo.InteresRate.ToString() + Environment.NewLine;
             }
             var byteArray = Encoding.ASCII.GetBytes(Data);
             var stream = new MemoryStream(byteArray);

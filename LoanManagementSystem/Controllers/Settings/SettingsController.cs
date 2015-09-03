@@ -69,7 +69,7 @@ namespace LoanManagementSystem.Controllers.Settings
         {
             if (ModelState.IsValid)
             {
-                Settings.CreatedOn = DateTime.Now;                
+                Settings.CreatedOn = DateTime.Now;
 
                 db.GeneralSettings.Add(Settings);
                 db.SaveChanges();
@@ -88,6 +88,10 @@ namespace LoanManagementSystem.Controllers.Settings
             }
             sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
             ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
+
+            var assetSchedule = db.Schedules.Where(x => x.ShortName == "AS").FirstOrDefault();
+            var SelectList1 = db.Schedules.Where(x => x.BaseScheduleId == assetSchedule.ScheduleId).ToList();
+            ViewBag.ScheduleList = new SelectList(SelectList1, "ScheduleId", "ScheduleName", 0);
 
             if (sdtoSettings == null)
             {
@@ -115,15 +119,26 @@ namespace LoanManagementSystem.Controllers.Settings
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SettingsId,CompanyId,BankInterest,BankCharges,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")] sdtoSettings sdtoSettings)
+        public ActionResult Edit(//[Bind(Include = "SettingsId,CompanyId,BankInterest,BankCharges,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn")] 
+            sdtoSettings sdtoSettings)
         {
             if (ModelState.IsValid)
             {
+                sdtoSettings.CreatedOn = DateTime.Now;
+                sdtoSettings.ModifiedOn = DateTime.Now;
+
                 db.Entry(sdtoSettings).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(sdtoSettings);
+
+            sdtoSettings stg = db.GeneralSettings.Find(sdtoSettings.SettingsId);
+            ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
+
+            var assetSchedule = db.Schedules.Where(x => x.ShortName == "AS").FirstOrDefault();
+            var SelectList1 = db.Schedules.Where(x => x.BaseScheduleId == assetSchedule.ScheduleId).ToList();
+            ViewBag.ScheduleList = new SelectList(SelectList1, "ScheduleId", "ScheduleName", 0);
+            return View(stg);
         }
 
         // GET: Settings/Delete/5

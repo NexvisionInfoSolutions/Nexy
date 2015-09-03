@@ -2,22 +2,23 @@
 
 @{
     ViewBag.Title = "Edit Schedule";
-    
+
 }
- 
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal"> 
+
+    <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ScheduleId)
+        @Html.HiddenFor(m => m.BaseScheduleId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.ScheduleName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ScheduleName, new { htmlAttributes = new {  } })
+                @Html.EditorFor(model => model.ScheduleName, new { htmlAttributes = new { } })
                 @Html.ValidationMessageFor(model => model.ScheduleName, "", new { @class = "text-danger" })
             </div>
         </div>

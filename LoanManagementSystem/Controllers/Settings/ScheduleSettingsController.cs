@@ -32,6 +32,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             var sdtoSchedules = (
                                  from I in db.Schedules.Where(w => w.ScheduleId == id)
                                  from O in db.Schedules.Where(w => w.ScheduleId == I.ParentId).DefaultIfEmpty()
@@ -46,10 +47,7 @@ namespace LoanManagementSystem.Controllers
                                                ScheduleId = x.ParentScheduleId,
                                                ScheduleName = x.ParentScheduleName
                                            }
-                                       }); ;
-
-
-
+                                       });
 
             if (sdtoSchedules == null)
             {
@@ -72,10 +70,19 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ScheduleId,ScheduleName,ParentId")] sdtoSchedule sdtoSchedule)
+        public ActionResult Create(//[Bind(Include = "ScheduleId,ScheduleName,ParentId")] 
+            sdtoSchedule sdtoSchedule)
         {
             if (ModelState.IsValid)
             {
+                var parentSchedule = db.Schedules.Find(sdtoSchedule.ParentId);
+                if (parentSchedule != null)
+                {
+                    if (parentSchedule.ParentId > 0)
+                        sdtoSchedule.BaseScheduleId = parentSchedule.BaseScheduleId;
+                    else
+                        sdtoSchedule.BaseScheduleId = parentSchedule.ScheduleId;
+                }
                 db.Schedules.Add(sdtoSchedule);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -98,9 +105,9 @@ namespace LoanManagementSystem.Controllers
                 return HttpNotFound();
             }
 
-            //db.
-
-            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoSchedule.ParentId);
+            var SelectList1 = db.Schedules.ToList();
+            SelectList1.Insert(0, new sdtoSchedule() { ScheduleId = 0, ScheduleName = "Root" });
+            ViewBag.ScheduleList = new SelectList(SelectList1, "ScheduleId", "ScheduleName", sdtoSchedule.ParentId);            
             return View(sdtoSchedule);
         }
 
@@ -109,10 +116,19 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ScheduleId,ScheduleName,ParentId")] sdtoSchedule sdtoSchedule)
+        public ActionResult Edit(//[Bind(Include = "ScheduleId,ScheduleName,ParentId")]
+            sdtoSchedule sdtoSchedule)
         {
             if (ModelState.IsValid)
             {
+                var parentSchedule = db.Schedules.Find(sdtoSchedule.ParentId);
+                if (parentSchedule != null)
+                {
+                    if (parentSchedule.ParentId > 0)
+                        sdtoSchedule.BaseScheduleId = parentSchedule.BaseScheduleId;
+                    else
+                        sdtoSchedule.BaseScheduleId = parentSchedule.ScheduleId;
+                }
                 db.Entry(sdtoSchedule).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

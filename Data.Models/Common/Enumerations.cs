@@ -35,5 +35,11 @@ namespace Data.Models
         public enum WithdrawalStatus { Pending = 0, Paid, Posted }
 
         public enum ModeOfPayment { Cash = 1, Cheque = 2, Others = 9 }
+
+        public enum ReceiptType { Receipt = 0, Payment = 1 }
+
+        public enum BankTransType { Deposit = 0, Withdrawal = 1 }
+
+        public enum Instrument { Cash = 0, Cheque = 1, CreditCard = 2 }
     }
 }

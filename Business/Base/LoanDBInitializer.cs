@@ -143,19 +143,40 @@ namespace Business.Base
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/LoanSummary", CreatedOn = DateTime.Now, UrlText = "Loan Summary", ParentId = 42, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/DepositSummary", CreatedOn = DateTime.Now, UrlText = "Deposit Summary", ParentId = 42, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
 
+            //45
+            sdtoUrlInfo exportPalm = new sdtoUrlInfo() { Url = "/Loan/ExportView", CreatedOn = DateTime.Now, UrlText = "Export", ParentId = 30, IsMenu = true, MenuOrder = 5 };//urlAccounts.ParentId };
+            exportPalm = context.UrlInfoCollection.Add(exportPalm);
+
+            //45
+            sdtoUrlInfo importPalm = new sdtoUrlInfo() { Url = "/Loan/ImportView", CreatedOn = DateTime.Now, UrlText = "Import", ParentId = 30, IsMenu = true, MenuOrder = 6 };//urlAccounts.ParentId };
+            importPalm = context.UrlInfoCollection.Add(importPalm);
+            /*******************************/
+            /** Schedules **/
+
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Liability", ParentId = 0, ShortName = "LY" });
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Assets", ParentId = 0, ShortName = "AS" });
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Income", ParentId = 0, ShortName = "IC" });
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Expenditure", ParentId = 0, ShortName = "EX" });
+
             /*******************************/
             /** Account Types **/
 
-            context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Cash", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "CASH" });
+            context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Cash", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Cash" });
             context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Bank", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Bank" });
             context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Debiter", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Debiter" });
             context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Crediter", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Crediter" });
+            context.AccountTypes.Add(new sdtoAccountType() { AccountType = "Other", Status = Data.Models.Enumerations.AccountTypeStatus.Active, UniqueName = "Other" });
 
             /*******************************/
             /** Account Book Types **/
 
             context.AccountBookTypes.Add(new sdtoAccountBookType() { AccountBookType = "Cash", Status = Data.Models.Enumerations.AccountBookTypeStatus.Active, UniqueName = "CASH" });
             context.AccountBookTypes.Add(new sdtoAccountBookType() { AccountBookType = "Bank", Status = Data.Models.Enumerations.AccountBookTypeStatus.Active, UniqueName = "BANK" });
+            context.AccountBookTypes.Add(new sdtoAccountBookType() { AccountBookType = "Journal", Status = Data.Models.Enumerations.AccountBookTypeStatus.Active, UniqueName = "Journal" });
+
+            /*******************************/
+            /** Financial Year **/
+            context.FinancialPeriod.Add(new sdtoFinancialPeriod() { StartDate = new DateTime(2015, 4, 1), EndDate = new DateTime(2016, 3, 31), IsCurrentYear = true, PeriodCode = "FY/2015/2016", PeriodName = "FY/2015/2016", IsDeleted = false, CreatedOn = DateTime.Now });
 
             context.Usergroup.Add(new sdtoUserGroup() { Code = "GN", Description = "General", Name = "Owner", Status = Data.Models.Enumerations.UserGroupStatus.Active, IsDeleted = false, CreatedOn = DateTime.Now });
 

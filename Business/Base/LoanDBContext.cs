@@ -42,25 +42,25 @@ namespace LoanManagementSystem.Models
             //.HasOptional<sdtoContact>(u => u.Contacts)
             //.WithOptionalPrincipal();
 
-         //   modelBuilder
-         //  .Entity<sdtoUser>()
-         //  .HasOptional<sdtoAddress>(u => u.PermanentAddress)
-         //  .WithOptionalPrincipal();
+            //   modelBuilder
+            //  .Entity<sdtoUser>()
+            //  .HasOptional<sdtoAddress>(u => u.PermanentAddress)
+            //  .WithOptionalPrincipal();
 
-         //   modelBuilder
-         // .Entity<sdtoUser>()
-         // .HasOptional<sdtoAddress>(u => u.GuaranterAddress)
-         // .WithOptionalPrincipal();
-            
-         //   modelBuilder
-         // .Entity<sdtoUser>()
-         // .HasOptional<sdtoContact>(u => u.PermanentContacts)
-         // .WithOptionalPrincipal();
+            //   modelBuilder
+            // .Entity<sdtoUser>()
+            // .HasOptional<sdtoAddress>(u => u.GuaranterAddress)
+            // .WithOptionalPrincipal();
 
-         //   modelBuilder
-         //.Entity<sdtoUser>()
-         //.HasOptional<sdtoContact>(u => u.GuaranterContacts)
-         //.WithOptionalPrincipal();
+            //   modelBuilder
+            // .Entity<sdtoUser>()
+            // .HasOptional<sdtoContact>(u => u.PermanentContacts)
+            // .WithOptionalPrincipal();
+
+            //   modelBuilder
+            //.Entity<sdtoUser>()
+            //.HasOptional<sdtoContact>(u => u.GuaranterContacts)
+            //.WithOptionalPrincipal();
         }
 
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoLoanInfo> sdtoLoanInfoes { get; set; }
@@ -69,5 +69,13 @@ namespace LoanManagementSystem.Models
 
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoDepositInfo> sdtoDepositInfoes { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoWithdrawalInfo> DepositWithdrawals { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoBankDepositDetails> BankDepositDetails { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoBankDepositHeader> BankDepositHeader { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoJournalDetails> JournalDetails { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoJournalHeader> JournalHeader { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoReceiptDetails> ReceiptDetails { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoReceiptHeader> ReceiptHeader { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoOpeningBalance> OpeningBalance { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoFinancialPeriod> FinancialPeriod { get; set; }
     }
 }

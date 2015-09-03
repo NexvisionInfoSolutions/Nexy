@@ -20,7 +20,14 @@ namespace Data.Models.Accounts.Schedules
         [Editable(false)]
         public long ParentId { get; set; }
 
+        public long BaseScheduleId { get; set; }
+
         [NotMapped]
         public sdtoSchedule Parent { get; set; }
+
+        [NotMapped]
+        public sdtoSchedule BaseSchedule { get; set; }
+
+        public string ShortName { get; set; }
     }
 }

@@ -2,68 +2,68 @@
 
 @{
     ViewBag.Title = "List Account Head";
-    
-} 
+
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 
-                      @section scripts {
-                          <script type="text/javascript">
-                              $(document).ready(function () {
-                                  // prepare the data
-                                  var source =
-                                  {
-                                      dataType: "json",
-                                      dataFields: [
-                                          { name: 'AccountHeadId', type: 'number' },
-                                          { name: 'AccountName', type: 'string' }, 
-                                          { name: 'CreditDays', type: 'number' },
-                                          { name: 'CreditLimit', type: 'number' },
-                                          { name: 'AccountCode', type: 'string' },
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'AccountHeadId', type: 'number' },
+                    { name: 'AccountName', type: 'string' },
+                    { name: 'CreditDays', type: 'number' },
+                    { name: 'CreditLimit', type: 'number' },
+                    { name: 'AccountCode', type: 'string' },
 
-                                      ],
-                                      id: 'AccountHeadId',
-                                      url: '/AccountHeads/AccountHeadInfo'
-                                  };
+                ],
+                id: 'AccountHeadId',
+                url: '/AccountHeads/AccountHeadInfo'
+            };
 
-                                  var linkrenderer = function (row, column, value) {
-                                      //if (value.indexOf('#') != -1) {
-                                      //    value = value.substring(0, value.indexOf('#'));
-                                      //}
-                                      //var format = { target: '"_blank"' };
-                                      //var html = $.jqx.dataFormat.formatlink(value, format);
-                                      var html = '<b><a href="/AccountHeads/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/AccountHeads/Details/' + value + '">Details</a>'
-                                                + ' | <a href="/AccountHeads/Delete/' + value + '">Delete</a>';
+            var linkrenderer = function (row, column, value) {
+                //if (value.indexOf('#') != -1) {
+                //    value = value.substring(0, value.indexOf('#'));
+                //}
+                //var format = { target: '"_blank"' };
+                //var html = $.jqx.dataFormat.formatlink(value, format);
+                var html = '<b><a href="/AccountHeads/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/AccountHeads/Details/' + value + '">Details</a>'
+                          + ' | <a href="/AccountHeads/Delete/' + value + '">Delete</a>';
 
-                                      return html;
-                                  }
-                                  var dataAdapter = new $.jqx.dataAdapter(source);
-                                  // create Tree Grid
-                                  var gridInfo = $("#dataTable").jqxDataTable(
-                                  {
-                                      width: 1050,
-                                      source: dataAdapter,
-                                      theme: 'arctic',
-                                      pageSize: 5,
-                                      sortable: true,
-                                      filterable: true,
-                                      pageable: true,
-                                      columns: [
-                                        { text: 'Account Head ID', dataField: 'AccountHeadId', width: 120 },
-                                        { text: 'Account Name', dataField: 'AccountName', width: 200 }, 
-                                        { text: 'Credit Days', dataField: 'CreditDays', width: 150 },
-                                        { text: 'Credit Limit', dataField: 'CreditLimit', width: 150 },
-                                        { text: 'Account Code', dataField: 'AccountCode', width: 200 },
-                                        {
-                                            text: 'Edit', dataField: 'AccountHeadInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
-                                            cellsRenderer: linkrenderer
-                                        }
-                                      ]
-                                  });
-                              });
-                          </script>
-                      }
-                      <div id="dataTable"></div>
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  //{ text: 'Account Head ID', dataField: 'AccountHeadId', width: 120 },
+                  { text: 'Account Name', dataField: 'AccountName', width: 200 },
+                  { text: 'Credit Days', dataField: 'CreditDays', width: 150 },
+                  { text: 'Credit Limit', dataField: 'CreditLimit', width: 150 },
+                  { text: 'Account Code', dataField: 'AccountCode', width: 200 },
+                  {
+                      text: 'Edit', dataField: 'AccountHeadId', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
+            });
+        });
+    </script>
+}
+<div id="dataTable"></div>
 
 
