@@ -41,6 +41,12 @@ namespace Business.Reports
                 AppDb.AccountHeads.Add(accHead);
                 AppDb.SaveChanges();
 
+                Member.AccountHeadId = accHead.AccountHeadId;
+                Member.ModifiedOn = DateTime.Now;
+                Member.ModifiedBy = Member.UserID;
+                AppDb.Entry(Member).State = EntityState.Modified;
+                AppDb.SaveChanges();
+
                 sdtoOpeningBalance memberOpeniningBalance = new sdtoOpeningBalance()
                 {
                     AccountHeadId = accHead.AccountHeadId,

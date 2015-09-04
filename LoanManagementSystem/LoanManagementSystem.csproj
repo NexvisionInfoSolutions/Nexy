@@ -173,6 +173,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Accounting\AccountingController.cs" />
     <Compile Include="Controllers\Deposit\DepositController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Controllers\User\CompanyController.cs" />
@@ -840,6 +841,9 @@
     <Content Include="Views\Reports\DepositSummary.cshtml" />
     <Content Include="Views\Loan\ExportView.cshtml" />
     <Content Include="Views\Loan\ImportView.cshtml" />
+    <Content Include="Views\Accounting\NewOpeningBalance.cshtml" />
+    <Content Include="Views\Accounting\OpeningBalances.cshtml" />
+    <Content Include="Views\Accounting\UpdateOpeningBalance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

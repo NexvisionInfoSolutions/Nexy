@@ -28,11 +28,11 @@ namespace Data.Models.Accounts
         [MaxLength(100)]
         public string VoucherNo { get; set; }
 
-        public float VoucherTotal { get; set; }
+        public decimal VoucherTotal { get; set; }
         
         public ReceiptType TransType { get; set; }//0 for Cash Receipt, 1 for Cash Payment, 
 
-        public int FinYear { get; set; }
+        public long FinYear { get; set; }
 
         [Display(Name = "Financial Year")]
         [ForeignKey("FinYear")]
@@ -41,7 +41,7 @@ namespace Data.Models.Accounts
 
         public int FromModule { get; set; } //0 for "From Accounts", 1 for "From Posting"
 
-        public int Transaction { get; set; } //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
+        public TransactionType Transaction { get; set; } //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
 
         public long TransId { get; set; }// Transaction id 
 

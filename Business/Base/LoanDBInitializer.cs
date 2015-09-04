@@ -147,9 +147,15 @@ namespace Business.Base
             sdtoUrlInfo exportPalm = new sdtoUrlInfo() { Url = "/Loan/ExportView", CreatedOn = DateTime.Now, UrlText = "Export", ParentId = 30, IsMenu = true, MenuOrder = 5 };//urlAccounts.ParentId };
             exportPalm = context.UrlInfoCollection.Add(exportPalm);
 
-            //45
+            //46
             sdtoUrlInfo importPalm = new sdtoUrlInfo() { Url = "/Loan/ImportView", CreatedOn = DateTime.Now, UrlText = "Import", ParentId = 30, IsMenu = true, MenuOrder = 6 };//urlAccounts.ParentId };
             importPalm = context.UrlInfoCollection.Add(importPalm);
+
+            //47
+            sdtoUrlInfo urlTransacctionHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Transactions", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            urlTransacctionHead = context.UrlInfoCollection.Add(urlTransacctionHead);
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/OpeningBalances", CreatedOn = DateTime.Now, UrlText = "Opening Balance", ParentId = 47, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
+            
             /*******************************/
             /** Schedules **/
 

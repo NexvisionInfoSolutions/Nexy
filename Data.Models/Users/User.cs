@@ -1,4 +1,5 @@
-﻿using Data.Models.Enumerations;
+﻿using Data.Models.Accounts;
+using Data.Models.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -98,5 +99,10 @@ namespace LoanManagementSystem.Models
         public virtual sdtoContact GuaranterContacts { get; set; }
 
         public long? CompanyId { get; set; }
+
+        public long? AccountHeadId { get; set; }
+
+        [ForeignKey("AccountHeadId")]
+        public virtual sdtoAccountHead AccountHead { get; set; }
     }
 }

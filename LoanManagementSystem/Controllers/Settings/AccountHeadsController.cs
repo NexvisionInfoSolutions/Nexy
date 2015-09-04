@@ -25,17 +25,17 @@ namespace LoanManagementSystem.Controllers
         {
             var dbResult = db.AccountHeads.Include(s => s.AccountType).Include(s => s.Address).Include(s => s.Contacts).ToList();
             var AccountHeads = (from AccountHead in dbResult
-                         select new
-                         {
-                             AccountHead.AccountHeadId,
-                             AccountHead.AccountName,
-                             AccountHead.AccountType,
-                             AccountHead.CreditDays,
-                             AccountHead.CreditLimit,
-                             AccountHead.AccountCode,
+                                select new
+                                {
+                                    AccountHead.AccountHeadId,
+                                    AccountHead.AccountName,
+                                    AccountHead.AccountType,
+                                    AccountHead.CreditDays,
+                                    AccountHead.CreditLimit,
+                                    AccountHead.AccountCode,
 
-                             AccountHeadInfo = AccountHead.AccountHeadId
-                         });
+                                    AccountHeadInfo = AccountHead.AccountHeadId
+                                });
             return Json(AccountHeads, JsonRequestBehavior.AllowGet);
         }
         // GET: AccountHeads/Details/5
@@ -71,8 +71,14 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                long? userCreatedBy = null;
+                var userSession = Session["UserDetails"] as sdtoUser;
+                if (userSession != null)
+                    userCreatedBy = userSession.UserID;
+
                 accHead.CreatedOn = DateTime.Now;
                 accHead.ModifiedOn = null;
+                accHead.CreatedBy = userCreatedBy;
 
                 if (accHead.Address != null)
                 {
@@ -88,6 +94,23 @@ namespace LoanManagementSystem.Controllers
                 accHead.Address = db.Address.Add(accHead.Address);
                 db.AccountHeads.Add(accHead);
                 db.SaveChanges();
+
+                sdtoOpeningBalance memberOpeniningBalance = new sdtoOpeningBalance()
+                {
+                    AccountHeadId = accHead.AccountHeadId,
+                    ClosingBalance = 0,
+                    CreditOpeningBalance = 0,
+                    DebitOpeningBalance = 0,
+                    FinancialYearId = 1,
+                    ScheduleId = accHead.ScheduleId,
+                    IsDeleted = false,
+                    CreatedBy = userCreatedBy,
+                    CreatedOn = DateTime.Now
+                };
+
+                db.OpeningBalance.Add(memberOpeniningBalance);
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -125,9 +148,27 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                long? userCreatedBy = null;
+                var userSession = Session["UserDetails"] as sdtoUser;
+                if (userSession != null)
+                    userCreatedBy = userSession.UserID;
+
                 sdtoAccountHead.ModifiedOn = DateTime.Now;
+                sdtoAccountHead.ModifiedBy = userCreatedBy;
+
                 db.Entry(sdtoAccountHead).State = EntityState.Modified;
                 db.SaveChanges();
+
+                var accOpeningBalance = db.OpeningBalance.Where(x => x.AccountHeadId == sdtoAccountHead.AccountHeadId).FirstOrDefault();
+                if (accOpeningBalance != null && accOpeningBalance.ScheduleId != sdtoAccountHead.ScheduleId)
+                {
+                    accOpeningBalance.ScheduleId = sdtoAccountHead.ScheduleId;
+                    accOpeningBalance.ModifiedBy = userCreatedBy;
+
+                    db.Entry(accOpeningBalance).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index");
             }
             ViewBag.SchedulesList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoAccountHead.ScheduleId);

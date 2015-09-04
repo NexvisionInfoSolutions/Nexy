@@ -91,7 +91,19 @@ namespace LoanManagementSystem.Controllers.Settings
 
             var assetSchedule = db.Schedules.Where(x => x.ShortName == "AS").FirstOrDefault();
             var SelectList1 = db.Schedules.Where(x => x.BaseScheduleId == assetSchedule.ScheduleId).ToList();
-            ViewBag.ScheduleList = new SelectList(SelectList1, "ScheduleId", "ScheduleName", 0);
+            ViewBag.AssetScheduleList = new SelectList(SelectList1, "ScheduleId", "ScheduleName", 0);
+
+            var AccountList = db.AccountBooks.Where(x => x.IsDeleted == false).ToList();
+            AccountList.Insert(0, new sdtoAccountBook() { AccountBookId = 0, BookName = "Select an Account" });
+            ViewBag.AccountList = new SelectList(AccountList, "AccountBookId", "BookName", 0);
+
+            var scheduleList = db.Schedules.ToList();
+            scheduleList.Insert(0, new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleId = 0, ScheduleName = "Select a Schedule" });
+            ViewBag.ScheduleList = new SelectList(scheduleList, "ScheduleId", "ScheduleName", 0);
+
+            var bookList = db.AccountBooks.ToList();
+            bookList.Insert(0, new Data.Models.Accounts.sdtoAccountBook { AccountBookId = 0, BookName = "Select a Book" });
+            ViewBag.BookList = new SelectList(bookList, "AccountBookId", "BookName", 0);
 
             if (sdtoSettings == null)
             {

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Data.Models.Accounts.sdtoOpeningBalance>
+
+@{
+    ViewBag.Title = "OpeningBalances";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: 'OpeningBalanceId', type: 'number' },
+                    { name: 'AccountName', type: 'string' },
+                    { name: 'ScheduleName', type: 'string' },
+                    { name: 'DebitOpeningBalance', type: 'number' },
+                    { name: 'CreditOpeningBalance', type: 'number' },
+                    { name: 'ClosingBalance', type: 'number' }
+                ],
+                id: 'OpeningBalanceId',
+                url: '/Accounting/ListOpeningBalances'
+            };
+
+            var linkrenderer = function (row, column, value) {
+                var html = '<b><a href="/Accounting/UpdateOpeningBalance/' + value + '">Edit</a>' //|<a id="lnpayment" href="/User/Details/' + value + '">Details</a>'
+                          + ' | <a href="/Accounting/DeleteOpeningBalance/' + value + '">Delete</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTable").jqxDataTable(
+            {
+                width: 1050,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 5,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'Id', dataField: 'OpeningBalanceId', width: 60 },
+                  { text: 'Account Name', dataField: 'AccountName', width: 120 },
+                  { text: 'Schedule Name', dataField: 'ScheduleName', width: 200 },
+                  { text: 'Debit Opening Balance', dataField: 'DebitOpeningBalance', width: 160 },
+                  { text: 'Credit Opening Balance', dataField: 'CreditOpeningBalance', width: 150 },
+                  { text: 'Closing Balance', dataField: 'ClosingBalance', width: 150 },
+                  {
+                      text: 'Edit', dataField: 'OpeningBalanceIdInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                      cellsRenderer: linkrenderer
+                  }
+                ]
+            });
+        });
+    </script>
+}
+<p>
+    @Html.ActionLink("Create New", "NewOpeningBalance")
+</p>
+
+<div id="dataTable"></div>

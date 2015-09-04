@@ -28,9 +28,9 @@ namespace Data.Models.Accounts
         [MaxLength(1000)]
         public string Narration { get; set; }
 
-        public float DbAmount { get; set; }
+        public decimal DbAmount { get; set; }
 
-        public float CrAmount { get; set; }
+        public decimal CrAmount { get; set; }
 
         public int Display { get; set; }//0 or 1
     }

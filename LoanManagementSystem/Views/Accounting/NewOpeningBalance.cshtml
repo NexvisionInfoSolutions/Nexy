@@ -1,0 +1,81 @@
+﻿@model Data.Models.Accounts.sdtoOpeningBalance
+
+@{
+    ViewBag.Title = "Create Opening Balance";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-5 form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.AccountHeadId, "AccountHeadId", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownList("AccountHeadId", (SelectList)ViewBag.AccountHeads, htmlAttributes: new { @class = "form-control" })
+                @if (((SelectList)ViewBag.AccountHeads) == null || ((SelectList)ViewBag.AccountHeads).Count() == 1)
+                {
+                    @Html.ActionLink("Create Account Header", "Create", "AccountHeads")
+                }
+                @Html.ValidationMessageFor(model => model.AccountHeadId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.ScheduleId, "ScheduleId", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownList("ScheduleId", (SelectList)ViewBag.AccountSchedules, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ScheduleId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.DebitOpeningBalance, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.DebitOpeningBalance, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DebitOpeningBalance, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5 form-horizontal">
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.CreditOpeningBalance, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.CreditOpeningBalance, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CreditOpeningBalance, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+
+                <div class="col-md-10">@Html.LabelFor(model => model.ClosingBalance, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.ClosingBalance, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ClosingBalance, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.FinancialYearId, "FinancialYearId", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownList("FinancialYearId", (SelectList)ViewBag.FinancialYears, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FinancialYearId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -32,7 +32,8 @@ namespace Data.Models.Accounts
         public decimal CreditOpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }
         public long FinancialYearId { get; set; }
-        [ForeignKey("ScheduleId")]
+
+        [ForeignKey("FinancialYearId")]
         public virtual sdtoFinancialPeriod FinancialPeriod { get; set; }
     }
 }

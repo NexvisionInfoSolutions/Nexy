@@ -35,7 +35,7 @@ namespace Data.Models.Accounts
         [Display(Name = "Financial Year")]
         [ForeignKey("FinYear")]
         public sdtoFinancialPeriod FinancialYear { get; set; }
-        public int FinYear { get; set; }
+        public long FinYear { get; set; }
 
         public int FromModule { get; set; } //0 for "From Accounts", 1 for "From Posting"
 

@@ -42,7 +42,7 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Login(sdtoUser u)
         {
             FormsAuthentication.SignOut();
