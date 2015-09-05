@@ -287,8 +287,9 @@ namespace LoanManagementSystem.Controllers.Loan
                             db.SaveChanges();
                         }
 
+                        var settingCashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
                         //Post for Bank book
-                        var accBankBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountHeadId == accHead.AccountHeadId && x.AccountBookType.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                        var accBankBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
                         if (accBankBook != null)
                         {
                             var receipt = new sdtoReceiptHeader()

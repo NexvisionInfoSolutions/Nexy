@@ -155,7 +155,9 @@ namespace Business.Base
             sdtoUrlInfo urlTransacctionHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Transactions", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
             urlTransacctionHead = context.UrlInfoCollection.Add(urlTransacctionHead);
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/OpeningBalances", CreatedOn = DateTime.Now, UrlText = "Opening Balance", ParentId = 47, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
-            
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/DepositWithdrawal", CreatedOn = DateTime.Now, UrlText = "Deposit Withdrawal", ParentId = 47, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/CashReceiptPayment", CreatedOn = DateTime.Now, UrlText = "Cash Receipt Payment", ParentId = 47, IsMenu = true, MenuOrder = 3 });//urlDeposits.ParentId });
+
             /*******************************/
             /** Schedules **/
 

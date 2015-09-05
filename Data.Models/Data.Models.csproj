@@ -51,6 +51,7 @@
     <Compile Include="Accounts\Transactions\sdtoBankDepositHeader.cs" />
     <Compile Include="Accounts\Transactions\sdtoJournalDetails.cs" />
     <Compile Include="Accounts\Transactions\sdtoJournalHeader.cs" />
+    <Compile Include="Accounts\Transactions\sdtoLedgerReport.cs" />
     <Compile Include="Accounts\Transactions\sdtoReceiptDetails.cs" />
     <Compile Include="Accounts\Transactions\sdtoOpeningBalance.cs" />
     <Compile Include="Accounts\Transactions\sdtoReceiptHeader.cs" />

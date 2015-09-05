@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="LoanDBContext" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="LoanDBContext (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.LoanDBContext.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="LedgerReportTableAdapter" GeneratorDataComponentClassName="LedgerReportTableAdapter" Name="LedgerReport" UserDataComponentName="LedgerReportTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="LoanDBContext (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        '' AS TrDate, '' AS VoucherNo, AccReceiptsDetail.AccountId, AccHeads_1.AccountName AS GroupAcc, 0 AS OppAccountId, '' AS OppAccCode, 
+                         'Opening Balnce' AS OppAccName, '' AS Narration, SUM(0) AS DrAmount, - 1 * SUM(AccReceiptsDetail.Amount) AS CrAmount
+FROM            AccReceiptsDetail INNER JOIN
+                         AccReceiptsHeader ON AccReceiptsDetail.ReceiptsId = AccReceiptsHeader.Id   INNER JOIN
+                         AccountHead AS AccHeads_1 ON AccReceiptsDetail.AccountId = AccHeads_1.AccountHeadId
+WHERE        (AccReceiptsHeader.TransType = 1)
+GROUP BY AccReceiptsDetail.AccountId, AccHeads_1.AccountName</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="TrDate" DataSetColumn="TrDate" />
+              <Mapping SourceColumn="VoucherNo" DataSetColumn="VoucherNo" />
+              <Mapping SourceColumn="AccountId" DataSetColumn="AccountId" />
+              <Mapping SourceColumn="GroupAcc" DataSetColumn="GroupAcc" />
+              <Mapping SourceColumn="OppAccountId" DataSetColumn="OppAccountId" />
+              <Mapping SourceColumn="OppAccCode" DataSetColumn="OppAccCode" />
+              <Mapping SourceColumn="OppAccName" DataSetColumn="OppAccName" />
+              <Mapping SourceColumn="Narration" DataSetColumn="Narration" />
+              <Mapping SourceColumn="DrAmount" DataSetColumn="DrAmount" />
+              <Mapping SourceColumn="CrAmount" DataSetColumn="CrAmount" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="LedgerReport" msprop:Generator_TableClassName="LedgerReportDataTable" msprop:Generator_TableVarName="tableLedgerReport" msprop:Generator_TablePropName="LedgerReport" msprop:Generator_RowDeletingName="LedgerReportRowDeleting" msprop:Generator_RowChangingName="LedgerReportRowChanging" msprop:Generator_RowEvHandlerName="LedgerReportRowChangeEventHandler" msprop:Generator_RowDeletedName="LedgerReportRowDeleted" msprop:Generator_UserTableName="LedgerReport" msprop:Generator_RowChangedName="LedgerReportRowChanged" msprop:Generator_RowEvArgName="LedgerReportRowChangeEvent" msprop:Generator_RowClassName="LedgerReportRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TrDate" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnTrDate" msprop:Generator_ColumnPropNameInRow="TrDate" msprop:Generator_ColumnPropNameInTable="TrDateColumn" msprop:Generator_UserColumnName="TrDate" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="VoucherNo" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnVoucherNo" msprop:Generator_ColumnPropNameInRow="VoucherNo" msprop:Generator_ColumnPropNameInTable="VoucherNoColumn" msprop:Generator_UserColumnName="VoucherNo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AccountId" msprop:Generator_ColumnVarNameInTable="columnAccountId" msprop:Generator_ColumnPropNameInRow="AccountId" msprop:Generator_ColumnPropNameInTable="AccountIdColumn" msprop:Generator_UserColumnName="AccountId" type="xs:long" />
+              <xs:element name="GroupAcc" msprop:Generator_ColumnVarNameInTable="columnGroupAcc" msprop:Generator_ColumnPropNameInRow="GroupAcc" msprop:Generator_ColumnPropNameInTable="GroupAccColumn" msprop:Generator_UserColumnName="GroupAcc" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OppAccountId" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOppAccountId" msprop:Generator_ColumnPropNameInRow="OppAccountId" msprop:Generator_ColumnPropNameInTable="OppAccountIdColumn" msprop:Generator_UserColumnName="OppAccountId" type="xs:int" minOccurs="0" />
+              <xs:element name="OppAccCode" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOppAccCode" msprop:Generator_ColumnPropNameInRow="OppAccCode" msprop:Generator_ColumnPropNameInTable="OppAccCodeColumn" msprop:Generator_UserColumnName="OppAccCode" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OppAccName" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOppAccName" msprop:Generator_ColumnPropNameInRow="OppAccName" msprop:Generator_ColumnPropNameInTable="OppAccNameColumn" msprop:Generator_UserColumnName="OppAccName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="14" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Narration" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnNarration" msprop:Generator_ColumnPropNameInRow="Narration" msprop:Generator_ColumnPropNameInTable="NarrationColumn" msprop:Generator_UserColumnName="Narration" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DrAmount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnDrAmount" msprop:Generator_ColumnPropNameInRow="DrAmount" msprop:Generator_ColumnPropNameInTable="DrAmountColumn" msprop:Generator_UserColumnName="DrAmount" type="xs:int" minOccurs="0" />
+              <xs:element name="CrAmount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCrAmount" msprop:Generator_ColumnPropNameInRow="CrAmount" msprop:Generator_ColumnPropNameInTable="CrAmountColumn" msprop:Generator_UserColumnName="CrAmount" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

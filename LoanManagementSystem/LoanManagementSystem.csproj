@@ -166,6 +166,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\MultipleButtonAttribute.cs" />
+    <Compile Include="App_Start\HttpParamActionAttribute.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\MenuLoader.cs" />
@@ -193,12 +195,21 @@
     <Compile Include="Controllers\User\UserController.cs" />
     <Compile Include="Controllers\Settings\UserGroupController.cs" />
     <Compile Include="Controllers\UtilityController.cs" />
+    <Compile Include="DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\sdtoViewAccCashReceiptPayment.cs" />
+    <Compile Include="Models\sdtoViewAccDepositWithdrawal.cs" />
+    <Compile Include="Models\sdtoViewAccCashReceiptPaymentDetails.cs" />
+    <Compile Include="Models\sdtoViewAccDepositWithdrawalDetails.cs" />
     <Compile Include="Models\sdtoViewUserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -691,6 +702,17 @@
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\LoanLocal.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -844,6 +866,10 @@
     <Content Include="Views\Accounting\NewOpeningBalance.cshtml" />
     <Content Include="Views\Accounting\OpeningBalances.cshtml" />
     <Content Include="Views\Accounting\UpdateOpeningBalance.cshtml" />
+    <Content Include="Views\Accounting\DepositWithdrawal.cshtml" />
+    <Content Include="Views\Accounting\Action.cshtml" />
+    <Content Include="Views\Accounting\DepositWithdrawalNewRow.cshtml" />
+    <Content Include="Views\Accounting\CashReceiptPayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

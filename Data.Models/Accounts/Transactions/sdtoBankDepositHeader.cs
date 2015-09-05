@@ -33,5 +33,10 @@ namespace Data.Models.Accounts
         public TransactionType Transaction { get; set; } //0 for deposit 1 for withdrawal, 2 for "Loan Entry", 3 for "Loan repayment"
         public long TransId { get; set; }// Transaction id 
         public int Cancelled { get; set; }//0 or 1
+
+        public sdtoBankDepositHeader()
+        {
+            TransDate = DateTime.Now;
+        }
     }
 }
