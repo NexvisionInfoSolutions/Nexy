@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("JournalDetails")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccJournalDetail")]
     public class sdtoJournalDetails : sdtoBaseData
     {
         [Key]
-        public long JournalDtlId { get; set; }
+        public long Id { get; set; }
 
         [ForeignKey("JournalId")]
         public virtual sdtoJournalHeader JournalDetail { get; set; }
@@ -27,7 +27,7 @@ namespace Data.Models.Accounts
         [MaxLength(1000)]
         public string Narration { get; set; }
 
-        public float DbAmount { get; set; }
+        public float DrAmount { get; set; }
 
         public float CrAmount { get; set; }
 
