@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("JournalHeader")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccJournalHeader")]
     public class sdtoJournalHeader : sdtoBaseData
     {
         //Id, BookId, TransDate, VoucherNo, VoucherTotal, TransType, FinYear, CrTotal,   FromModule, [Transaction], TransId, Cancelled
         [Key]
-        public long JournalId { get; set; }
+        public long Id { get; set; }
 
         [ForeignKey("BookId")]
         public virtual sdtoAccountBook AccountBook { get; set; }
