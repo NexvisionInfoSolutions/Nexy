@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("BankDepositDetails")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccBankDepositDetail")]
     public class sdtoBankDepositDetails : sdtoBaseData
     {
         // Id, BankDepositId, AccountId, Narration, Amount, InstrId, InstrNo, InstrDate, Bank,  Display
         [Key]
-        public long BankTransDtlId { get; set; }
+        public long Id { get; set; }
         public long AccountId { get; set; }               
         public long BankDepositId { get; set; }
 
@@ -28,9 +28,10 @@ namespace Data.Models.Accounts
         [MaxLength(1000)]
         public string Narration { get; set; }
 
-        public float DbAmount { get; set; }
 
-        public float CrAmount { get; set; }
+        public float Amount { get; set; }
+
+        //public float CrAmount { get; set; }
 
         public Instrument Instrument { get; set; }
 
