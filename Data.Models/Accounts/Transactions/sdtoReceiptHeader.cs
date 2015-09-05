@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("ReceiptHeader")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccReceiptsHeader")]
     public class sdtoReceiptHeader : sdtoBaseData
     {
         // Id, BookId, TransDate, VoucherNo, VoucherTotal, TransType, FinYear,   FromModule, [Transaction], TransId, Cancelled
         [Key]
-        public long ReceiptId { get; set; }
+        public long Id { get; set; }
 
         public long BookId { get; set; }
 
