@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("BankDepositHeader")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccBankDepositHeader")]
     public class sdtoBankDepositHeader : sdtoBaseData
     {
         //  Id, BookId, TransDate, VoucherNo, VoucherTotal, TransType, FinYear,  Cancelled
         [Key]
-        public long BankTransId { get; set; }
+        public long Id { get; set; }
         public long BookId { get; set; }
         public long FinYear { get; set; }
         [ForeignKey("BookId")]
