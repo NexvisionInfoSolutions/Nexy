@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("ReceiptDetails")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccReceiptsDetail")]
     public class sdtoReceiptDetails : sdtoBaseData
     {
         // Id, ReceiptsId, AccountId, Narration, Amount, OppAccountId, OppAmount, Display
         [Key]
-        public long ReceiptDtlId { get; set; }
+        public long Id { get; set; }
 
-        [ForeignKey("ReceiptId")]
+        [ForeignKey("ReceiptsId")]
         public virtual sdtoReceiptHeader ReceiptDetail { get; set; }
-        public long ReceiptId { get; set; }
+        public long ReceiptsId { get; set; }
 
         [ForeignKey("AccountId")]
         public virtual sdtoAccountHead AccountDetails { get; set; }
@@ -28,9 +28,9 @@ namespace Data.Models.Accounts
         [MaxLength(1000)]
         public string Narration { get; set; }
 
-        public decimal DbAmount { get; set; }
+        public decimal Amount { get; set; }
 
-        public decimal CrAmount { get; set; }
+        //public float Amount { get; set; }
 
         public int Display { get; set; }//0 or 1
     }
