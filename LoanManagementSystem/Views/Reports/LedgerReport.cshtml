@@ -1,0 +1,76 @@
+﻿@model LoanManagementSystem.Models.sdtoViewReportFilter
+
+@{
+    ViewBag.Title = "Ledge Report";
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var datepc = $('.date-picker');
+        datepc.datepicker({
+            format: 'dd-M-yyyy',
+            buttonImageOnly: true,
+            buttonImage: "calendar.gif",
+            buttonText: "Calendar",
+            regional: ["en-US"]
+        });
+    });
+</script>
+
+@using (Html.BeginForm("LedgerReport", "Reports"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-3 form-horizontal">
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.Company)
+                @Html.DropDownListFor(m => m.CompanyId, Model.Companies, new { @class = "form-control", @placeholder = "Select a Company" })
+                @Html.ValidationMessageFor(m => m.Company)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.StartDate)
+                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control date-picker", @placeholder = "Select a start date" })
+                @Html.ValidationMessageFor(m => m.StartDate)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.EndDate)
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control date-picker", @placeholder = "Select a start date" })
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.Accounts, new { @class = "control-label" })
+                <br />
+                @Html.CheckBoxListFor(model => model.Accounts.PostedItems.AccountIds,
+                model => model.Accounts.Items,
+                fruit => fruit.Value,
+                fruit => fruit.Text,
+                model => model.Accounts.SelectedItems,
+                MvcCheckBoxList.Model.Position.Vertical, x => new { @class = "control-label" })
+                @Html.ValidationMessageFor(m => m.Accounts)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Show" />
+            </div>
+        </div>
+    </div>
+}

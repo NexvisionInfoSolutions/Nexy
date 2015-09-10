@@ -157,6 +157,8 @@ namespace Business.Base
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/OpeningBalances", CreatedOn = DateTime.Now, UrlText = "Opening Balance", ParentId = 47, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/DepositWithdrawal", CreatedOn = DateTime.Now, UrlText = "Deposit Withdrawal", ParentId = 47, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/CashReceiptPayment", CreatedOn = DateTime.Now, UrlText = "Cash Receipt Payment", ParentId = 47, IsMenu = true, MenuOrder = 3 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/ExpenseEntry", CreatedOn = DateTime.Now, UrlText = "Expense Entry", ParentId = 47, IsMenu = true, MenuOrder = 4 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/JournalEntry", CreatedOn = DateTime.Now, UrlText = "Journal Entry", ParentId = 47, IsMenu = true, MenuOrder = 5 });//urlDeposits.ParentId });
 
             /*******************************/
             /** Schedules **/

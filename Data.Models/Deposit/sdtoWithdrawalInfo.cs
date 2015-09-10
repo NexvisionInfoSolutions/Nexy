@@ -42,11 +42,15 @@ namespace Data.Models.Accounts
 
         public WithdrawalStatus Status { get; set; }
 
-        [Display(Name = "Payment Mode")]
-        public ModeOfPayment PaymentMode { get; set; }
+        [Display(Name = "Instrument")]
+        public Instrument InstrumentMode { get; set; }
 
-        [Display(Name = "Cheque Details")]
-        public string ChequeDetails { get; set; }
+        [Display(Name = "Instrument Number")]
+        public string InstrumentNo { get; set; }
+
+        [Display(Name = "Instrument Date")]
+        public DateTime? InstrumentDate { get; set; }
+        
         public string Notes { get; set; }
 
         [ForeignKey("DepositId")]

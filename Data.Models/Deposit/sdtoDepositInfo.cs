@@ -33,7 +33,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Maturity Date")]
         public DateTime? MaturityDate { get; set; }
-        
+
         [Display(Name = "Total Installments")]
         public int TotalInstallments { get; set; }
 
@@ -56,6 +56,15 @@ namespace Data.Models.Accounts
         [Display(Name = "Cheque Details")]
         public string ChequeDetails { get; set; }
 
+        [Display(Name = "Instrument")]
+        public Instrument InstrumentMode { get; set; }
+
+        [Display(Name = "Instrument Number")]
+        public string InstrumentNo { get; set; }
+
+        [Display(Name = "Instrument Date")]
+        public DateTime? InstrumentDate { get; set; }
+
         [Display(Name = "Interes Rate")]
         public float InteresRate { get; set; }
 
@@ -68,6 +77,6 @@ namespace Data.Models.Accounts
         public string Notes { get; set; }
 
         [ForeignKey("UserId")]
-        public sdtoUser Member { get; set; }       
+        public sdtoUser Member { get; set; }
     }
 }

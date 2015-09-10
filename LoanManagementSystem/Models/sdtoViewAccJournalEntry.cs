@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LoanManagementSystem.Models
 {
     [NotMapped]
-    public class sdtoViewAccDepositWithdrawal
+    public class sdtoViewAccJournalEntry
     {
         [Display(Name = "Bank Book")]
         public sdtoAccountBook Book { get; set; }
@@ -24,20 +24,18 @@ namespace LoanManagementSystem.Models
         [Display(Name = "Voucher No")]
         public string Voucher { get; set; }
 
-        [Display(Name = "Voucher Total")]
-        public decimal VoucherTotal { get; set; }
+        [Display(Name = "Debit Voucher Total")]
+        public decimal DebitVoucherTotal { get; set; }
 
-        [Display(Name = "Account Balance")]
-        public decimal AccountBalance { get; set; }
+         [Display(Name = "Credit Voucher Total")]
+        public decimal CreditVoucherTotal { get; set; }      
 
         public int SourceClick { get; set; }
 
-        public List<sdtoViewAccDepositWithdrawalDetails> Details { get; set; }
-        public sdtoViewAccDepositWithdrawal()
+        public List<sdtoViewAccJournalEntryDetails> Details { get; set; }
+        public sdtoViewAccJournalEntry()
         {
-            Details = new List<sdtoViewAccDepositWithdrawalDetails>();
+            Details = new List<sdtoViewAccJournalEntryDetails>();
         }
-
-        public bool IsDeposit { get; set; }
     }
 }

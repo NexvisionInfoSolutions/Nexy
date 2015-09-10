@@ -29,7 +29,7 @@ namespace Data.Models.Accounts
         public string VoucherNo { get; set; }
 
         public decimal VoucherTotal { get; set; }
-        
+
         public ReceiptType TransType { get; set; }//0 for Cash Receipt, 1 for Cash Payment, 
 
         public long FinYear { get; set; }

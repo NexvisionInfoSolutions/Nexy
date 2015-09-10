@@ -10,16 +10,17 @@ using System.Threading.Tasks;
 
 namespace Data.Models.Accounts
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("AccJournalHeader")]
-    public class sdtoJournalHeader : sdtoBaseData
+    [System.ComponentModel.DataAnnotations.Schema.Table("AccReceiptsHeader")]
+    public class sdtoReceiptHeader : sdtoBaseData
     {
-        //Id, BookId, TransDate, VoucherNo, VoucherTotal, TransType, FinYear, CrTotal,   FromModule, [Transaction], TransId, Cancelled
+        // Id, BookId, TransDate, VoucherNo, VoucherTotal, TransType, FinYear,   FromModule, [Transaction], TransId, Cancelled
         [Key]
         public long Id { get; set; }
 
+        public long BookId { get; set; }
+
         [ForeignKey("BookId")]
         public virtual sdtoAccountBook AccountBook { get; set; }
-        public long BookId { get; set; }
 
         [Display(Name = "Transaction Date")]
         public DateTime TransDate { get; set; }
@@ -27,19 +28,20 @@ namespace Data.Models.Accounts
         [MaxLength(100)]
         public string VoucherNo { get; set; }
 
-        public decimal VoucherTotal { get; set; }
+        public float VoucherTotal { get; set; }
+        
+        public ReceiptType TransType { get; set; }//0 for Cash Receipt, 1 for Cash Payment, 
 
-        //[MaxLength(1)]
-        //public int TransType { get; set; }//0 for Bank Deposit , 1 for Bank Withdrawal, 
+        public long FinYear { get; set; }
 
         [Display(Name = "Financial Year")]
         [ForeignKey("FinYear")]
         public sdtoFinancialPeriod FinancialYear { get; set; }
-        public long FinYear { get; set; }
+
 
         public int FromModule { get; set; } //0 for "From Accounts", 1 for "From Posting"
 
-        public int Transaction { get; set; } //0 for Bank Deposit, 1 for Withdrawal, 2 for "Loan Entry", 3 for "Loan repayment"
+        public int Transaction { get; set; } //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
 
         public long TransId { get; set; }// Transaction id 
 

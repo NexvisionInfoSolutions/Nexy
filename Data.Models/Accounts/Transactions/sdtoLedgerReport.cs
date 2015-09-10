@@ -16,11 +16,11 @@ namespace Data.Models.Accounts
         //TrDate varchar(30),VoucherNo varchar(30),AccountId int,GroupAcc varchar(2000),OppAccountId int,
 	    //OppAccCode varchar(2000),OppAccName varchar(2000) ,Narration varchar(2000),DrAmount decimal(18,2),CrAmount  decimal(18,2)
 
-        public DateTime TrDate { get; set; }
+        public string TrDate { get; set; }
         public string VoucherNo { get; set; }
-        public long AccountId { get; set; }
+        public int AccountId { get; set; }
         public string GroupAcc { get; set; }
-        public long OppAccountId { get; set; }
+        public int OppAccountId { get; set; }
         public string OppAccCode { get; set; }
         public string OppAccName { get; set; }
         public string Narration { get; set; }

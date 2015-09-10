@@ -1,0 +1,150 @@
+﻿@model LoanManagementSystem.Models.sdtoViewAccExpenseEntry
+
+@{
+    ViewBag.Title = "Expense Entry";
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+
+<script language="javascript" type="text/javascript">
+    function SetSource(val) {
+        $('#hdnSource').val(val);
+        return true;
+    }
+
+    $(document).ready(function () {
+        var datepc = $('.date-picker');
+        datepc.datepicker({
+            format: 'yyyy.M.dd',
+            startDate: '-3d',
+            //showOn: "both",
+            buttonImageOnly: true,
+            buttonImage: "calendar.gif",
+            buttonText: "Calendar",
+            regional: ["en-US"]
+        });
+    });
+</script>
+
+@using (Html.BeginForm("ExpenseEntry", "Accounting"))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.SourceClick, new { @id = "hdnSource" })
+
+    <div class="col-md-10 form-horizontal">
+        <div class="col-md-5 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.Book, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("Book", (SelectList)ViewBag.AccountBookList, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Book, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 form-horizontal">
+        <div class="col-md-5 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 form-horizontal">
+            <input type="submit" @*name="action:DepositWithdrawalNewRow"*@ value="Add Row" class="btn btn-default" onclick="return SetSource(0);" data_val="false" />
+        </div>
+    </div>
+    //using (Html.BeginForm("DepositWithdrawalNewRow", "Accounting"))
+    //{
+    <div class="col-md-12 form-horizontal">
+        <div class="col-md-2 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.Details.FirstOrDefault().AccountHead.AccountHeadId, htmlAttributes: new { @class = "control-label" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.Details.FirstOrDefault().Narration, htmlAttributes: new { @class = "control-label" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.Details.FirstOrDefault().Amount, htmlAttributes: new { @class = "control-label" })
+                </div>
+            </div>
+        </div>
+    </div>
+    if (Model != null)
+    {
+        //foreach (LoanManagementSystem.Models.sdtoViewAccDepositWithdrawalDetails detailItem in Model.Details)
+        for (int i = 0; i < Model.Details.Count; i++)
+        {
+            <div class="col-md-12 form-horizontal">
+                <hr />
+                <div class="col-md-2 form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.Details[i].AccountHead.AccountHeadId, (SelectList)ViewBag.AccountHeads, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Details[i].AccountHead.AccountHeadId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Details[i].Narration, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Details[i].Narration, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Details[i].Amount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Details[i].Amount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        //}
+    }
+    <div class="col-md-10 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" @*name="action:DepositWithdrawalSave"*@ value="Create" class="btn btn-default" onclick="return SetSource(1);" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -32,6 +32,8 @@ namespace LoanManagementSystem.Models
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
+            //modelBuilder.Entity<Data.Models.Accounts.sdtoSettings>().HasRequired(t => t.AssetSchedule).WithMany().HasForeignKey(x => x.AssetScheduleId);
+
             //modelBuilder
             //.Entity<sdtoUser>()
             //.HasOptional<sdtoAddress>(u => u.UserAddress)

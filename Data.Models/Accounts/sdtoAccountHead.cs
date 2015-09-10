@@ -51,5 +51,8 @@ namespace Data.Models.Accounts
 
         [ForeignKey("AccountTypeId")]
         public virtual sdtoAccountType AccountType { get; set; }
+
+        [ForeignKey("ScheduleId")]
+        public virtual Data.Models.Accounts.Schedules.sdtoSchedule Schedule { get; set; }
     }
 }

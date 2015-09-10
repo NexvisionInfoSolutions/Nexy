@@ -27,7 +27,7 @@ namespace Data.Models.Accounts
         [MaxLength(100)]
         public string VoucherNo { get; set; }
 
-        public decimal VoucherTotal { get; set; }
+        public float VoucherTotal { get; set; }
 
         //[MaxLength(1)]
         //public int TransType { get; set; }//0 for Bank Deposit , 1 for Bank Withdrawal, 

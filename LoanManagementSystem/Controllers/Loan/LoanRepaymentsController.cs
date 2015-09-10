@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
 using Data.Models.Enumerations;
+using Business.Reports;
 
 namespace LoanManagementSystem.Controllers.Loan
 {
@@ -164,110 +165,9 @@ namespace LoanManagementSystem.Controllers.Loan
                     db.sdtoLoanRepayments.Add(sdtoLoanRepayment);
                     db.SaveChanges();
 
-                    var loan = db.sdtoLoanInfoes.Find(sdtoLoanRepayment.LoanId);
+                    bfTransaction objTrans = new bfTransaction(db);
+                    objTrans.PostLoanRepayment(sdtoLoanRepayment);
 
-                    //Account Posting
-                    var member = db.User.Include(x => x.AccountHeadId).Where(x => x.UserID == loan.UserId).FirstOrDefault();
-                    if (member != null)
-                    {
-                        var accHead = member.AccountHead;
-                        if (accHead != null)
-                        {
-                            // Post for member cash book
-                            var accCashBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountHeadId == accHead.AccountHeadId && x.AccountBookType.UniqueName.Equals("Cash", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                            if (accCashBook != null)
-                            {
-                                var receipt = new sdtoReceiptHeader()
-                                {
-                                    BookId = accCashBook.AccountBookId,
-                                    TransDate = DateTime.Now,
-                                    VoucherTotal = sdtoLoanRepayment.RepaymentAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
-                                    TransType = ReceiptType.Payment,
-                                    FinYear = 1,
-                                    FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
-                                    Transaction = TransactionType.LoanRepayment, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
-                                    TransId = sdtoLoanRepayment.LoanRepaymentId, //Doubt: Is transaction id loan id?
-                                    Cancelled = 0
-
-                                };
-                                db.ReceiptHeader.Add(receipt);
-                                db.SaveChanges();
-
-                                receipt.VoucherNo = accCashBook.ReceiptVoucherPrefix + receipt.ReceiptId + accCashBook.ReceiptVoucherSuffix;
-                                db.Entry(receipt).State = EntityState.Modified;
-                                db.SaveChanges();
-
-                                var receiptDetailsPayment = new sdtoReceiptDetails()
-                                {
-                                    ReceiptId = receipt.ReceiptId,
-                                    AccountId = accHead.AccountHeadId,
-                                    Narration = "Loan repayment amount received",
-                                    CrAmount = sdtoLoanRepayment.RepaymentAmount - sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                    Display = 1
-                                };
-
-                                var receiptDetailsInterest = new sdtoReceiptDetails()
-                                {
-                                    ReceiptId = receipt.ReceiptId,
-                                    AccountId = accHead.AccountHeadId,
-                                    Narration = "Loan interest received",
-                                    CrAmount = sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                    Display = 1
-                                };
-
-                                db.ReceiptDetails.Add(receiptDetailsPayment);
-                                db.ReceiptDetails.Add(receiptDetailsInterest);
-                                db.SaveChanges();
-                            }
-
-                            //Post for Bank book
-                            var accBankBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountHeadId == accHead.AccountHeadId && x.AccountBookType.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                            if (accBankBook != null)
-                            {
-                                var receipt = new sdtoReceiptHeader()
-                                {
-                                    BookId = accBankBook.AccountBookId,
-                                    TransDate = DateTime.Now,
-                                    VoucherTotal = sdtoLoanRepayment.RepaymentAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
-                                    TransType = ReceiptType.Receipt,
-                                    FinYear = 1,
-                                    FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
-                                    Transaction = TransactionType.LoanRepayment, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
-                                    TransId = sdtoLoanRepayment.LoanRepaymentId, //Doubt: Is transaction id loan id?
-                                    Cancelled = 0
-
-                                };
-                                db.ReceiptHeader.Add(receipt);
-                                db.SaveChanges();
-
-                                receipt.VoucherNo = accBankBook.ReceiptVoucherPrefix + receipt.ReceiptId + accBankBook.ReceiptVoucherSuffix;
-                                db.Entry(receipt).State = EntityState.Modified;
-                                db.SaveChanges();
-
-                                var receiptDetailsPayment = new sdtoReceiptDetails()
-                                 {
-                                     ReceiptId = receipt.ReceiptId,
-                                     AccountId = accHead.AccountHeadId,
-                                     Narration = "Loan repayment amount received",
-                                     DbAmount = sdtoLoanRepayment.RepaymentAmount - sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                     Display = 1
-                                 };
-
-                                var receiptDetailsInterest = new sdtoReceiptDetails()
-                                {
-                                    ReceiptId = receipt.ReceiptId,
-                                    AccountId = accHead.AccountHeadId,
-                                    Narration = "Loan interest received",
-                                    DbAmount = sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                    Display = 1
-                                };
-
-                                db.ReceiptDetails.Add(receiptDetailsPayment);
-                                db.ReceiptDetails.Add(receiptDetailsInterest);
-                                db.SaveChanges();
-                            }
-                        }
-                    }
                     return RedirectToAction("Index", new { LoanId = sdtoLoanRepayment.LoanId });
                 }
             }
@@ -313,138 +213,9 @@ namespace LoanManagementSystem.Controllers.Loan
                 db.Entry(sdtoLoanRepayment).State = EntityState.Modified;
                 db.SaveChanges();
 
-                var loan = db.sdtoLoanInfoes.Find(sdtoLoanRepayment.LoanId);
-
-                var member = db.User.Include(x => x.AccountHeadId).Where(x => x.UserID == loan.UserId).FirstOrDefault();
-                if (member != null)
-                {
-                    var accHead = member.AccountHead;
-                    if (accHead != null)
-                    {
-                        // Post for member cash book
-                        var accCashBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountHeadId == accHead.AccountHeadId && x.AccountBookType.UniqueName.Equals("Cash", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                        if (accCashBook != null)
-                        {
-                            var header = db.ReceiptHeader.Where(x => x.IsDeleted == false && x.Cancelled == 0 && x.BookId == accCashBook.AccountBookId && x.TransId == sdtoLoanRepayment.LoanRepaymentId && x.Transaction == TransactionType.LoanRepayment).FirstOrDefault();
-
-                            header.Cancelled = 1;
-                            db.Entry(header).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-                        var accBankBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountHeadId == accHead.AccountHeadId && x.AccountBookType.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                        if (accBankBook != null)
-                        {
-                            var header = db.ReceiptHeader.Where(x => x.IsDeleted == false && x.Cancelled == 0 && x.BookId == accBankBook.AccountBookId && x.TransId == sdtoLoanRepayment.LoanRepaymentId && x.Transaction == TransactionType.LoanRepayment).FirstOrDefault();
-
-                            header.Cancelled = 1;
-                            db.Entry(header).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-                    }
-                }
-
-                //Account Posting
-                //var member = db.User.Include(x => x.AccountHeadId).Where(x => x.UserID == loan.UserId).FirstOrDefault();
-                if (member != null)
-                {
-                    var accHead = member.AccountHead;
-                    if (accHead != null)
-                    {
-                        // Post for member cash book
-                        var accCashBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountHeadId == accHead.AccountHeadId && x.AccountBookType.UniqueName.Equals("Cash", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                        if (accCashBook != null)
-                        {
-                            var receipt = new sdtoReceiptHeader()
-                            {
-                                BookId = accCashBook.AccountBookId,
-                                TransDate = DateTime.Now,
-                                VoucherTotal = sdtoLoanRepayment.RepaymentAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
-                                TransType = ReceiptType.Payment,
-                                FinYear = 1,
-                                FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
-                                Transaction = TransactionType.LoanRepayment, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
-                                TransId = sdtoLoanRepayment.LoanRepaymentId, //Doubt: Is transaction id loan id?
-                                Cancelled = 0
-
-                            };
-                            db.ReceiptHeader.Add(receipt);
-                            db.SaveChanges();
-
-                            receipt.VoucherNo = accCashBook.ReceiptVoucherPrefix + receipt.ReceiptId + accCashBook.ReceiptVoucherSuffix;
-                            db.Entry(receipt).State = EntityState.Modified;
-                            db.SaveChanges();
-
-                            var receiptDetailsPayment = new sdtoReceiptDetails()
-                            {
-                                ReceiptId = receipt.ReceiptId,
-                                AccountId = accHead.AccountHeadId,
-                                Narration = "Loan repayment amount received",
-                                CrAmount = sdtoLoanRepayment.RepaymentAmount - sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                Display = 1
-                            };
-
-                            var receiptDetailsInterest = new sdtoReceiptDetails()
-                            {
-                                ReceiptId = receipt.ReceiptId,
-                                AccountId = accHead.AccountHeadId,
-                                Narration = "Loan interest received",
-                                CrAmount = sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                Display = 1
-                            };
-
-                            db.ReceiptDetails.Add(receiptDetailsPayment);
-                            db.ReceiptDetails.Add(receiptDetailsInterest);
-                            db.SaveChanges();
-                        }
-
-                        //Post for Bank book
-                        var accBankBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountHeadId == accHead.AccountHeadId && x.AccountBookType.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                        if (accBankBook != null)
-                        {
-                            var receipt = new sdtoReceiptHeader()
-                            {
-                                BookId = accBankBook.AccountBookId,
-                                TransDate = DateTime.Now,
-                                VoucherTotal = sdtoLoanRepayment.RepaymentAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
-                                TransType = ReceiptType.Receipt,
-                                FinYear = 1,
-                                FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
-                                Transaction = TransactionType.LoanRepayment, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
-                                TransId = sdtoLoanRepayment.LoanRepaymentId, //Doubt: Is transaction id loan id?
-                                Cancelled = 0
-
-                            };
-                            db.ReceiptHeader.Add(receipt);
-                            db.SaveChanges();
-
-                            receipt.VoucherNo = accBankBook.ReceiptVoucherPrefix + receipt.ReceiptId + accBankBook.ReceiptVoucherSuffix;
-                            db.Entry(receipt).State = EntityState.Modified;
-                            db.SaveChanges();
-
-                            var receiptDetailsPayment = new sdtoReceiptDetails()
-                            {
-                                ReceiptId = receipt.ReceiptId,
-                                AccountId = accHead.AccountHeadId,
-                                Narration = "Loan repayment amount received",
-                                DbAmount = sdtoLoanRepayment.RepaymentAmount - sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                Display = 1
-                            };
-
-                            var receiptDetailsInterest = new sdtoReceiptDetails()
-                            {
-                                ReceiptId = receipt.ReceiptId,
-                                AccountId = accHead.AccountHeadId,
-                                Narration = "Loan interest received",
-                                DbAmount = sdtoLoanRepayment.InterestAmount, //Doubt: Is it debit or credit
-                                Display = 1
-                            };
-
-                            db.ReceiptDetails.Add(receiptDetailsPayment);
-                            db.ReceiptDetails.Add(receiptDetailsInterest);
-                            db.SaveChanges();
-                        }
-                    }
-                }
+                bfTransaction objTrans = new bfTransaction(db);
+                objTrans.CancelPostedLoanRepayment(sdtoLoanRepayment);
+                objTrans.PostLoanRepayment(sdtoLoanRepayment);
 
                 return RedirectToAction("Index", new { LoanId = sdtoLoanRepayment.LoanId });
             }

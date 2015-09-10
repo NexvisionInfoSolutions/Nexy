@@ -1,4 +1,5 @@
 ﻿using Business.Reports;
+using CrystalDecisions.CrystalReports.Engine;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
 using System;
@@ -13,6 +14,7 @@ namespace LoanManagementSystem.Controllers.Reports
 {
     public class ReportsController : Controller
     {
+        LoanDBContext dbContext = new LoanDBContext();
         // GET: Reports
         public ActionResult LoanSummary()
         {
@@ -24,11 +26,11 @@ namespace LoanManagementSystem.Controllers.Reports
             return View();
         }
 
-        public JsonResult LoanSummaryInfo()
+        public JsonResult LoanSummaryInfo(LoanManagementSystem.Models.sdtoViewReportFilter filter)
         {
             sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
             long CompanyId = 0;
-            if (sessionUser != null && sessionUser.CompanyId!=null)
+            if (sessionUser != null && sessionUser.CompanyId != null)
                 CompanyId = sessionUser.CompanyId.Value;
 
             DataTable dtRptParams = new DataTable();
@@ -43,7 +45,7 @@ namespace LoanManagementSystem.Controllers.Reports
             return Json(objReport.GetRptLoanSummary(CompanyId, dtRptParams), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DepositSummaryInfo()
+        public JsonResult DepositSummaryInfo(LoanManagementSystem.Models.sdtoViewReportFilter filter)
         {
             sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
             long CompanyId = 0;
@@ -64,32 +66,109 @@ namespace LoanManagementSystem.Controllers.Reports
 
         public ActionResult LedgerReport()
         {
+            sdtoViewReportFilter filter = new sdtoViewReportFilter() { };
+
+            //setup properties
+            var modelAccountHeads = new MutipleSelectionModel();
+            var selectedAccounts = new List<MutipleSelectionItem>();
+            //setup a view model
+            modelAccountHeads.Items = dbContext.AccountHeads.Select(x => new MutipleSelectionItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).ToList();
+            // model.SelectedFruits = selectedFruits;            
+            filter.Accounts = modelAccountHeads;
+
+            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            long cCompanyId = 0;
+            if (sessionUser != null && sessionUser.CompanyId != null)
+                cCompanyId = sessionUser.CompanyId.Value;
+            var cmpList = dbContext.Companies.Where(x => x.IsDeleted == false).Select(x => new { CompanyId = x.CompanyId.ToString(), CompanyName = x.CompanyName.ToString() }).ToList();
+            cmpList.Insert(0, new { CompanyId = "0", CompanyName = "Select a company" });            
+            filter.Companies = new SelectList(cmpList, "CompanyId", "CompanyName", cCompanyId);
+
+            return View(filter);
+        }
+
+        private MutipleSelectionModel GetMutipleSelectionModel(PostedMutipleSelectionItems postedItems)
+        {
+            // setup properties
+            var model = new MutipleSelectionModel();
+            var selectedItems = new List<MutipleSelectionItem>();
+            var postedItemsIds = new string[0];
+            if (postedItems == null) postedItems = new PostedMutipleSelectionItems();
+
+            // if a view model array of posted fruits ids exists
+            // and is not empty,save selected ids
+            if (postedItems.AccountIds != null && postedItems.AccountIds.Any())
+            {
+                postedItemsIds = postedItems.AccountIds;
+            }
+            var allItems = dbContext.AccountHeads.Select(x => new MutipleSelectionItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName });
+            // if there are any selected ids saved, create a list of fruits
+            if (postedItemsIds.Any())
+            {
+                selectedItems = allItems
+                 .Where(x => postedItemsIds.Any(s => x.Value.Equals(s)))
+                 .ToList();
+            }
+
+            //setup a view model
+            model.Items = allItems.ToList();
+            model.SelectedItems = selectedItems;
+            model.PostedItems = postedItems;
+            return model;
+        }
+
+        [HttpPost]
+        public ActionResult LedgerReport(sdtoViewReportFilter filter)
+        {
+            var filterModel = GetMutipleSelectionModel(filter.Accounts.PostedItems);
+
             // ledger report -> account id
             // cash book -> account id (book type cash only)
             // bank book -> account (book type bank only)
             // trial balance
-            sdtoLedgerReport sessionUser = Session["UserDetails"] as sdtoLedgerReport;
+
             long CompanyId = 0;
+            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            if (sessionUser != null)
+                CompanyId = sessionUser.CompanyId.Value;
+
+            List<int> l = new List<int>();
+            string.Join(",", l.Select(x => x));
 
             bfReport objReport = new bfReport(null);
             List<sdtoLedgerReport> lst = new List<sdtoLedgerReport>();
-            lst = objReport.GetRptLedgerReport(CompanyId, 0, DateTime.Now.Date.AddDays(-20), DateTime.Now, "1,2,3,4,5,6,7,8,9,10").ToList();
+            lst = objReport.GetRptLedgerReport(Convert.ToInt64(filter.CompanyId), filter.OperationId, filter.StartDate, filter.EndDate, string.Join(",", filter.Accounts.PostedItems.AccountIds.Select(x => x)));
+
+            //setup properties
+            var modelAccountHeads = new MutipleSelectionModel();
+            var selectedAccounts = new List<MutipleSelectionItem>();
+            //setup a view model
+            modelAccountHeads.Items = dbContext.AccountHeads.Select(x => new MutipleSelectionItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).ToList();
+            // model.SelectedFruits = selectedFruits;            
+            filter.Accounts = modelAccountHeads;
+
+            long cCompanyId = 0;
+            if (sessionUser != null && sessionUser.CompanyId != null)
+                cCompanyId = sessionUser.CompanyId.Value;
+            var cmpList = dbContext.Companies.Where(x => x.IsDeleted == false).ToList();
+            cmpList.Insert(0, new sdtoCompany() { CompanyId = 0, CompanyName = "Select a company" });
+            filter.Companies = new SelectList(cmpList, "CompanyId", "CompanyName", cCompanyId);
 
             ReportDocument rd = new ReportDocument();
             rd.Load(Path.Combine(Server.MapPath("~/Report"), "LedgerReport.rpt"));
             //rd.SetParameterValue("Heading", "Ledger Report");
-            rd.SetDatabaseLogon("sa", "TechnoCrunchLabs", @"DELL-PC\SQLEXPRESS", "LoanManagement");
+            rd.SetDatabaseLogon("sa", "saat1234", @".\SQLEXPRESS", "LoanManagement");
             rd.SetDataSource(lst);
             Response.Buffer = false;
             Response.ClearContent();
             Response.ClearHeaders();
             try
             {
-                System.IO.MemoryStream mem = (System.IO.MemoryStream)rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-                Response.Clear();
-                Response.Buffer = true;
-                Response.ContentType = "application/pdf";
-                Response.BinaryWrite(mem.ToArray());
+                //System.IO.MemoryStream mem = (System.IO.MemoryStream)rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                //Response.Clear();
+                //Response.Buffer = true;
+                //Response.ContentType = "application/pdf";
+                //Response.BinaryWrite(mem.ToArray());
 
                 Stream str = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
                 str.Seek(0, SeekOrigin.Begin);
@@ -99,41 +178,43 @@ namespace LoanManagementSystem.Controllers.Reports
             {
                 throw e.InnerException;
             }
+
+            return View(filter);
         }
 
-        public ActionResult TrialBalance()
-        {
-            sdtoLedgerReport sessionUser = Session["UserDetails"] as sdtoLedgerReport;
-            long CompanyId = 0;
+        //public ActionResult TrialBalance()
+        //{
+        //    sdtoLedgerReport sessionUser = Session["UserDetails"] as sdtoLedgerReport;
+        //    long CompanyId = 0;
 
-            bfReport objReport = new bfReport(null);
-            List<sdtoLedgerReport> lst = new List<sdtoLedgerReport>();
-            lst = objReport.GetRptLedgerReport(CompanyId, 1, DateTime.Now.Date.AddDays(-20), DateTime.Now, "1,2,3,4,5,6,7,8,9,10").ToList();
+        //    bfReport objReport = new bfReport(null);
+        //    List<sdtoLedgerReport> lst = new List<sdtoLedgerReport>();
+        //    lst = objReport.GetRptLedgerReport(CompanyId, 1, DateTime.Now.Date.AddDays(-20), DateTime.Now, "1,2,3,4,5,6,7,8,9,10").ToList();
 
-            ReportDocument rd = new ReportDocument();
-            rd.Load(Path.Combine(Server.MapPath("~/Report"), "TrailBalance.rpt"));
-            //rd.SetParameterValue("Heading", "Ledger Report");
-            rd.SetDatabaseLogon("sa", "TechnoCrunchLabs", @"DELL-PC\SQLEXPRESS", "LoanManagement");
-            rd.SetDataSource(lst);
-            Response.Buffer = false;
-            Response.ClearContent();
-            Response.ClearHeaders();
-            try
-            {
-                System.IO.MemoryStream mem = (System.IO.MemoryStream)rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-                Response.Clear();
-                Response.Buffer = true;
-                Response.ContentType = "application/pdf";
-                Response.BinaryWrite(mem.ToArray());
+        //    ReportDocument rd = new ReportDocument();
+        //    rd.Load(Path.Combine(Server.MapPath("~/Report"), "TrailBalance.rpt"));
+        //    //rd.SetParameterValue("Heading", "Ledger Report");
+        //    rd.SetDatabaseLogon("sa", "TechnoCrunchLabs", @"DELL-PC\SQLEXPRESS", "LoanManagement");
+        //    rd.SetDataSource(lst);
+        //    Response.Buffer = false;
+        //    Response.ClearContent();
+        //    Response.ClearHeaders();
+        //    try
+        //    {
+        //        System.IO.MemoryStream mem = (System.IO.MemoryStream)rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+        //        Response.Clear();
+        //        Response.Buffer = true;
+        //        Response.ContentType = "application/pdf";
+        //        Response.BinaryWrite(mem.ToArray());
 
-                Stream str = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-                str.Seek(0, SeekOrigin.Begin);
-                return File(str, "application/pdf", "TrialBalance.pdf");
-            }
-            catch (Exception e)
-            {
-                throw e.InnerException;
-            }
-        }
+        //        Stream str = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+        //        str.Seek(0, SeekOrigin.Begin);
+        //        return File(str, "application/pdf", "TrialBalance.pdf");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw e.InnerException;
+        //    }
+        //}
     }
 }

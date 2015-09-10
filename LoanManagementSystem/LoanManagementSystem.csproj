@@ -39,10 +39,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="GridMvc">
       <HintPath>..\packages\Grid.Mvc.3\GridMvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvcCheckBoxList">
+      <HintPath>..\packages\MvcCheckBoxList.1.4.4.5\lib\net45\MvcCheckBoxList.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -206,12 +212,30 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MutipleSelectionAccounts.cs" />
+    <Compile Include="Models\sdtoViewAccJournalEntry.cs" />
+    <Compile Include="Models\sdtoViewAccJournalEntryDetails.cs" />
+    <Compile Include="Models\sdtoViewAccExpenseEntry.cs" />
     <Compile Include="Models\sdtoViewAccCashReceiptPayment.cs" />
+    <Compile Include="Models\sdtoViewAccExpenseEntryDetails.cs" />
     <Compile Include="Models\sdtoViewAccDepositWithdrawal.cs" />
     <Compile Include="Models\sdtoViewAccCashReceiptPaymentDetails.cs" />
     <Compile Include="Models\sdtoViewAccDepositWithdrawalDetails.cs" />
+    <Compile Include="Models\sdtoViewReportFilter.cs" />
     <Compile Include="Models\sdtoViewUserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\LedgerReport1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LedgerReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\TrialBalance1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -869,7 +893,14 @@
     <Content Include="Views\Accounting\DepositWithdrawal.cshtml" />
     <Content Include="Views\Accounting\Action.cshtml" />
     <Content Include="Views\Accounting\DepositWithdrawalNewRow.cshtml" />
-    <Content Include="Views\Accounting\CashReceiptPayment.cshtml" />
+    <Content Include="Views\Accounting\JournalEntry.cshtml" />
+    <Content Include="Views\Accounting\ExpenseEntry.cshtml" />
+    <Content Include="Views\sdtoAccountBooks\Create.cshtml" />
+    <Content Include="Views\sdtoAccountBooks\Delete.cshtml" />
+    <Content Include="Views\sdtoAccountBooks\Details.cshtml" />
+    <Content Include="Views\sdtoAccountBooks\Edit.cshtml" />
+    <Content Include="Views\sdtoAccountBooks\Index.cshtml" />
+    <Content Include="Views\Reports\LedgerReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -893,6 +924,19 @@
       <Project>{61719ea8-290b-4efe-8e87-15d9c38ef00a}</Project>
       <Name>UtilityHelper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Report\LedgerReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LedgerReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\TrialBalance.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance1.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
