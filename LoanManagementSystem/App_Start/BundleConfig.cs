@@ -82,8 +82,23 @@ namespace LoanManagementSystem
             bundles.Add(new StyleBundle("~/Content/noskin").Include(
                       "~/Content/skins/skin-no.css"));
 
-             bundles.Add(new StyleBundle("~/Content/AnonymousCSS").Include(
-                 "~/Content/Anonymous.css"));
+            bundles.Add(new StyleBundle("~/Content/AnonymousCSS").Include(
+                "~/Content/Anonymous.css"));
+
+            bundles.Add(new StyleBundle("~/Content/Layout3").Include(
+                        "~/Content/bootstrap.css"
+                      , "~/Content/font-awesome.css"
+                      , "~/Content/css/animate.min.css"
+                      , "~/Content/css/custom.css"
+                      , "~/Content/css/maps/jquery-jvectormap-2.0.1.css"
+                      , "~/Content/css/icheck/flat/green.css"
+                      , "~/Content/css/floatexamples.css"
+                      , "~/Content/ionicons.min.css"
+                      , "~/Content/Gridmvc.css"
+                      , "~/Content/jqx.base.css"
+                      , "~/Content/jqx.web.css"
+                      , "~/Content/jqx.ui-lightness.css"
+                      ));
         }
     }
 }

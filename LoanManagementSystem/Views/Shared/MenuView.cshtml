@@ -4,12 +4,12 @@
     if (treeNode.Children.Count > 0)
     {
         <li>
-            <a href='@(string.IsNullOrWhiteSpace(treeNode.NodeElement.Url)? "javascript:void(0);" : Url.Content(treeNode.NodeElement.Url))' class="fa fa-caret-down">
-                @treeNode.NodeElement.UrlText
+            <a href='@(string.IsNullOrWhiteSpace(treeNode.NodeElement.Url)? "javascript:void(0);" : Url.Content(treeNode.NodeElement.Url))'>
+               <i class="fa fa-home"></i> @treeNode.NodeElement.UrlText <span class="fa fa-chevron-down"></span>
             </a>
 
-            <ul class=@(treeNode.ParentId == 0 ? "nav nav-third-level" : "nav nav-second-level")>
-                <li class=@(treeNode.ParentId == 0 ? "fa header" : "fa")>
+            <ul class=nav child_menu" style="display: none">
+                <li>
                     @Html.Partial("MenuView", treeNode)
                 </li>
             </ul>
@@ -18,10 +18,9 @@
     else
     {
         <li>
-            <a href="@treeNode.NodeElement.Url" class="fa">
+            <a href="@treeNode.NodeElement.Url" >
                 @treeNode.NodeElement.UrlText
             </a>
         </li>
     }
-
 }
