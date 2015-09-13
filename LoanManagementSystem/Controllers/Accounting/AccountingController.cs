@@ -79,7 +79,8 @@ namespace LoanManagementSystem.Controllers
 
         private void LoadJournalBookList(long AccBookId)
         {
-            var accHeads = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookType.UniqueName.Equals("Journal", StringComparison.InvariantCultureIgnoreCase) && x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList();
+            var journalBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Journal", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            var accHeads = db.AccountBooks.Where(x => x.AccountBookTypeId == journalBookType.AccountBookTypeId && x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList();
             accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Journal Book" });
             ViewBag.AccountBookList = new SelectList(accHeads, "Value", "Text", AccBookId);
         }
@@ -167,6 +168,8 @@ namespace LoanManagementSystem.Controllers
                         db.BankDepositDetails.Add(bankDepositDtlDb);
                         db.SaveChanges();
                     }
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
             LoadAccountHeadList(0);
@@ -179,8 +182,8 @@ namespace LoanManagementSystem.Controllers
         {
             LoadAccountHeadList(0);
             LoadAccountBookList(0);
-            sdtoViewAccDepositWithdrawal obj = new sdtoViewAccDepositWithdrawal() { Date = DateTime.Now };
-            obj.Details.Add(new sdtoViewAccDepositWithdrawalDetails() { InstrumentDate = DateTime.Now });
+            sdtoViewAccCashReceiptPayment obj = new sdtoViewAccCashReceiptPayment() { Date = DateTime.Now };
+            obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails() { });
             return View(obj);
         }
 
@@ -248,6 +251,8 @@ namespace LoanManagementSystem.Controllers
                         db.ReceiptDetails.Add(bankDepositDtlDb);
                         db.SaveChanges();
                     }
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
             LoadAccountHeadList(0);
@@ -259,11 +264,11 @@ namespace LoanManagementSystem.Controllers
         public ActionResult ExpenseEntry()
         {
             LoadAccountHeadList(0);
-            //LoadAccountBookList(0);
+            LoadAccountBookList(0);
 
             sdtoViewAccExpenseEntry obj = new sdtoViewAccExpenseEntry() { Date = DateTime.Now };
             var CashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
-            var cashBook = db.AccountBooks.Include(x => x.AccountHeadId).Where(x => x.AccountBookId == CashBookId).FirstOrDefault();
+            var cashBook = db.AccountBooks.Where(x => x.AccountBookId == CashBookId).FirstOrDefault();
             if (cashBook != null)
             {
                 obj.Book = cashBook;
@@ -295,7 +300,8 @@ namespace LoanManagementSystem.Controllers
                             CreatedBy = user.UserID,
                             FinYear = 1,
                             FromModule = 0,
-                            IsDeleted = false
+                            IsDeleted = false,
+                            TransDate = objExpenseEntry.Date
                         };
 
                         db.ReceiptHeader.Add(hdrCashReceiptPayment);
@@ -347,6 +353,8 @@ namespace LoanManagementSystem.Controllers
                         //    Display = 1
                         //};                        
                     }
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
             LoadAccountHeadList(0);
@@ -448,6 +456,8 @@ namespace LoanManagementSystem.Controllers
                         //    Display = 1
                         //};                        
                     }
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
             LoadAccountHeadList(0);

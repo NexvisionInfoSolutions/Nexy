@@ -99,7 +99,7 @@ namespace LoanManagementSystem.Models
         public virtual sdtoContact GuaranterContacts { get; set; }
 
         public long? CompanyId { get; set; }
-
+        
         public long? AccountHeadId { get; set; }
 
         [ForeignKey("AccountHeadId")]

@@ -14,6 +14,7 @@ namespace Data.Models.Accounts.Schedules
         [Key]
         public long ScheduleId { get; set; }
 
+        [Required]
         [MaxLength(100)]
         public string ScheduleName { get; set; }
 

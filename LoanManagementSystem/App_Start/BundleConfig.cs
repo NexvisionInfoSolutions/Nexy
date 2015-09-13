@@ -81,6 +81,9 @@ namespace LoanManagementSystem
 
             bundles.Add(new StyleBundle("~/Content/noskin").Include(
                       "~/Content/skins/skin-no.css"));
+
+             bundles.Add(new StyleBundle("~/Content/AnonymousCSS").Include(
+                 "~/Content/Anonymous.css"));
         }
     }
 }

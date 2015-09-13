@@ -250,6 +250,9 @@
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\images\1.png" />
+    <Content Include="Content\images\banner.jpg" />
+    <Content Include="Content\images\tick-mark.png" />
     <Content Include="Content\Layout.css" />
     <Content Include="Content\ionicons.min.css" />
     <Content Include="Content\Layout2.css" />
@@ -293,6 +296,7 @@
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\Anonymous.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -901,6 +905,8 @@
     <Content Include="Views\sdtoAccountBooks\Edit.cshtml" />
     <Content Include="Views\sdtoAccountBooks\Index.cshtml" />
     <Content Include="Views\Reports\LedgerReport.cshtml" />
+    <Content Include="Views\Accounting\CashReceiptPayment.cshtml" />
+    <Content Include="Views\Reports\TrialBalance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

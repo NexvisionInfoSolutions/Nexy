@@ -18,17 +18,22 @@ namespace Data.Models.Accounts
 
         [ForeignKey("JournalId")]
         public virtual sdtoJournalHeader JournalDetail { get; set; }
+        [Required(ErrorMessage = "Please select the Journal")]
         public long JournalId { get; set; }
 
         [ForeignKey("AccountId")]
         public virtual sdtoAccountHead AccountDetails { get; set; }
+
+        [Required(ErrorMessage = "Please select the account head for the transaction")]
         public long AccountId { get; set; }
 
         [MaxLength(1000)]
         public string Narration { get; set; }
 
+        [Range(double.MinValue, double.MaxValue)]
         public float DrAmount { get; set; }
 
+        [Range(double.MinValue, double.MaxValue)]
         public float CrAmount { get; set; }
 
     }

@@ -25,13 +25,22 @@ namespace LoanManagementSystem.Models
     public class PostedMutipleSelectionItems
     {
         //this array will be used to POST values from the form to the controller
-        public string[] AccountIds { get; set; }
+        public string[] Ids { get; set; }
+
+        public string Values { get; set; }
     }
 
-    public class MutipleSelectionModel
+    public class MultipleSelectionModel
     {
         public IEnumerable<MutipleSelectionItem> Items { get; set; }
         public IEnumerable<MutipleSelectionItem> SelectedItems { get; set; }
-        public PostedMutipleSelectionItems PostedItems { get; set; }
+        public PostedMutipleSelectionItems PostedItems { get; set; }       
+
+        public MultipleSelectionModel()
+        {
+            Items = new List<MutipleSelectionItem>();
+            SelectedItems = new List<MutipleSelectionItem>();
+            PostedItems = new PostedMutipleSelectionItems();
+        }
     }
 }

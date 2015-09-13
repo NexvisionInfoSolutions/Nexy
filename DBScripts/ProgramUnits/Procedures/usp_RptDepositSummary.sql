@@ -147,6 +147,7 @@ AND (
         OR (len(isnull(upc.Telephone1 , '')) > 0 AND upc.Telephone1 like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(upc.Mobile1 , '')) > 0 AND upc.Mobile1 like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(upc.Email1 , '')) > 0 AND upc.Email1 like '%' + pm.EntityStrVal + '%')
+        OR (cast(lf.DepositId as varchar) like '%' + pm.EntityStrVal + '%')
         )
 				AND pm.EntityType = 'M'
 			)

@@ -1,7 +1,7 @@
-﻿@model LoanManagementSystem.Models.sdtoViewAccDepositWithdrawal
+﻿@model LoanManagementSystem.Models.sdtoViewAccCashReceiptPayment
 
 @{
-    ViewBag.Title = "Bank Deposit/Withdrawal";
+    ViewBag.Title = "Cash Receipt Payment";
 }
 
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
@@ -27,7 +27,7 @@
     });
 </script>
 
-@using (Html.BeginForm("DepositWithdrawal", "Accounting"))
+@using (Html.BeginForm("CashReceiptPayment", "Accounting"))
 {
     @Html.AntiForgeryToken()
 
@@ -37,9 +37,9 @@
         <div class="col-md-5 form-horizontal">
             <div class="form-group">
                 <div class="col-md-10">
-                    @Html.LabelFor(model => model.Book, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownList("Book", (SelectList)ViewBag.AccountBookList, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Book, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Book.AccountBookId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.Book.AccountBookId, (SelectList)ViewBag.AccountBookList, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Book.AccountBookId, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-    //using (Html.BeginForm("DepositWithdrawalNewRow", "Accounting"))
+//using (Html.BeginForm("DepositWithdrawalNewRow", "Accounting"))
     //{
     <div class="col-md-12 form-horizontal">
         <div class="col-md-2 form-horizontal">
@@ -93,32 +93,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2 form-horizontal">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.Details.FirstOrDefault().InstrumentType, htmlAttributes: new { @class = "control-label" })
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 form-horizontal">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.Details.FirstOrDefault().InstrumentNo, htmlAttributes: new { @class = "control-label" })
-                </div>
-            </div>
-        </div>
         <div class="col-md-1 form-horizontal">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.Details.FirstOrDefault().InstrumentDate, htmlAttributes: new { @class = "control-label" })
-                </div>
-            </div>
-        </div>
-        <div class="col-md-1 form-horizontal">
-            <input type="submit" @*name="action:DepositWithdrawalNewRow"*@ value="Add Row" class="btn btn-default" onclick="return SetSource(0)" data_val="false" />
+            <input type="submit" value="Add Row" class="btn btn-default" onclick="return SetSource(0)" data_val="false" />
         </div>
     </div>
-    if (Model != null)
+if (Model != null)
     {
         //foreach (LoanManagementSystem.Models.sdtoViewAccDepositWithdrawalDetails detailItem in Model.Details)
         for (int i = 0; i < Model.Details.Count; i++)
@@ -149,38 +128,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-10">
-                            @Html.EnumDropDownListFor(model => model.Details[i].InstrumentType, "", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Details[i].InstrumentType, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2 form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Details[i].InstrumentNo, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Details[i].InstrumentNo, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2 form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Details[i].InstrumentDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
-                            @Html.ValidationMessageFor(model => model.Details[i].InstrumentDate, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
             </div>
-        }
+}
         //}
     }
     <div class="col-md-10 form-horizontal">
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" @*name="action:DepositWithdrawalSave"*@ value="Create" class="btn btn-default" onclick="return SetSource(1);" />
+                <input type="submit" value="Create" class="btn btn-default" onclick="return SetSource(1);" />
             </div>
         </div>
     </div>

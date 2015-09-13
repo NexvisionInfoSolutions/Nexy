@@ -1,6 +1,7 @@
 ﻿using LoanManagementSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -22,10 +23,13 @@ namespace LoanManagementSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            using (var db = new LoanDBContext())
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["RecreateDatabaseOnChange"]))
             {
-                Database.SetInitializer(new Business.Base.LoanDBInitializer());
-                db.Database.Initialize(true);
+                using (var db = new LoanDBContext())
+                {
+                    Database.SetInitializer(new Business.Base.LoanDBInitializer());
+                    db.Database.Initialize(true);
+                }
             }
 
             GlobalFilters.Filters.Add(new LoanManagementSystem.App_Start.MenuLoaderActionFilter(), 0);

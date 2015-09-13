@@ -77,15 +77,15 @@ namespace Business.Reports
         public bool CancelPostedLoanIssue(sdtoLoanInfo LoanInfo)
         {
             bool bFlag = true;
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
+            var member = AppDb.User.Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
                     //Post for Bank book
-                    var accCashBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
+                    var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
                     if (accCashBook != null)
                     {
                         var header = AppDb.ReceiptHeader.Where(x => x.IsDeleted == false && x.Cancelled == 0 && x.BookId == accCashBook.AccountBookId && x.TransId == LoanInfo.LoanId && x.Transaction == TransactionType.LoanEntry).FirstOrDefault();
@@ -110,15 +110,15 @@ namespace Business.Reports
         {
             bool bFlag = true;
             var LoanInfo = AppDb.sdtoLoanInfoes.Find(LoanRepaymentInfo.LoanId);
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
+            var member = AppDb.User.Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
                     //Post for Bank book
-                    var accCashBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
+                    var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
                     if (accCashBook != null)
                     {
                         var header = AppDb.ReceiptHeader.Where(x => x.IsDeleted == false && x.Cancelled == 0 && x.BookId == accCashBook.AccountBookId && x.TransId == LoanRepaymentInfo.LoanRepaymentId && x.Transaction == TransactionType.LoanRepayment).FirstOrDefault();
@@ -142,10 +142,10 @@ namespace Business.Reports
         public bool CancelPostedDepositIssue(sdtoDepositInfo DepositInfo)
         {
             bool bFlag = true;
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
+            var member = AppDb.User.Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
@@ -177,10 +177,10 @@ namespace Business.Reports
         {
             bool bFlag = true;
             var DepositInfo = AppDb.sdtoDepositInfoes.Find(WithdrawalInfo.DepositId);
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
+            var member = AppDb.User.Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
@@ -212,15 +212,29 @@ namespace Business.Reports
         {
             bool tranFlag = true;
 
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
+            //      var member = AppDb.User.Join(AppDb.AccountHeads, // the source table of the inner join
+            //post => post.AccountHead.AccountHeadId,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
+            //meta => meta.AccountHeadId,   // Select the foreign key (the second part of the "on" clause)
+            //(post, meta) => new { Post = post, Meta = meta }).Where(x => x.Post.UserID == LoanInfo.UserId).Select(x => new { x.Post.UserID, AccountHead = new { AccountHeadId = x.Meta.AccountHeadId, AccountCode = x.Meta.AccountCode, AccountName = x.Meta.AccountName, AccountType = x.Meta.AccountType, AccountTypeId = x.Meta.AccountTypeId } }).FirstOrDefault();
+
+            //from f in AppDb.User
+            //join b in AppDb.AccountHeads on f.AccountHeadId equals b.AccountHeadId
+            //where f.UserID == LoanInfo.UserId
+            //select new { f.UserID, AccountHead = new sdtoAccountHead() { AccountHeadId = b.AccountHeadId, AccountCode = b.AccountCode, AccountName = b.AccountName, AccountType = b.AccountType, AccountTypeId = b.AccountTypeId } };
+
+            //var member = members.FirstOrDefault();
+
+            var member = AppDb.User.Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
+
+            //var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
                     //Post for Bank book
-                    var accCashBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
+                    var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
                     if (accCashBook != null)
                     {
                         var receipt = new sdtoReceiptHeader()
@@ -276,17 +290,17 @@ namespace Business.Reports
             bool tranFlag = true;
             var LoanInfo = AppDb.sdtoLoanInfoes.Find(LoanRepaymentInfo.LoanId);
 
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
+            var member = AppDb.User.Where(x => x.UserID == LoanInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
                     var settingsInterestBookId = AppDb.GeneralSettings.FirstOrDefault().InterestBookId;
                     //Post for Bank book
-                    var accCashBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    var accInterestBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingsInterestBookId).FirstOrDefault();
+                    var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
+                    var accInterestBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingsInterestBookId).FirstOrDefault();
                     if (accCashBook != null)
                     {
                         var receipt = new sdtoReceiptHeader()
@@ -351,17 +365,17 @@ namespace Business.Reports
         {
             bool tranFlag = true;
 
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
+            var member = AppDb.User.Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
                     var settingBankBookId = AppDb.GeneralSettings.FirstOrDefault().BankBookId;
                     //Post for Bank book
-                    var accCashBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    var accBankBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingBankBookId).FirstOrDefault();
+                    var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
+                    var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingBankBookId).FirstOrDefault();
                     if (accCashBook != null && accBankBook != null)
                     {
                         var receipt = new sdtoReceiptHeader()
@@ -420,20 +434,20 @@ namespace Business.Reports
             bool tranFlag = true;
 
             var DepositInfo = AppDb.sdtoDepositInfoes.Where(x => x.DepositId == WithdrawalInfo.DepositId).FirstOrDefault();
-            var member = AppDb.User.Include(x => x.AccountHeadId).Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
+            var member = AppDb.User.Where(x => x.UserID == DepositInfo.UserId).FirstOrDefault();
             if (member != null)
             {
-                var accHeadMember = member.AccountHead;
+                var accHeadMember = AppDb.AccountHeads.Find(member.AccountHeadId);
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
                     var settingBankBookId = AppDb.GeneralSettings.FirstOrDefault().BankBookId;
                     //Post for Bank book
-                    var accCashBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    var accBankBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingBankBookId).FirstOrDefault();
+                    var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
+                    var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingBankBookId).FirstOrDefault();
 
                     var settingsInterestBookId = AppDb.GeneralSettings.FirstOrDefault().InterestBookId;
-                    var accInterestBook = AppDb.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookId == settingsInterestBookId).FirstOrDefault();
+                    var accInterestBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingsInterestBookId).FirstOrDefault();
                     if (accCashBook != null && accBankBook != null)
                     {
                         var receipt = new sdtoReceiptHeader()

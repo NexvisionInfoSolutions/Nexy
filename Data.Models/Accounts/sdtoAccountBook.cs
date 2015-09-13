@@ -16,38 +16,50 @@ namespace Data.Models.Accounts
         [Key]
         public long AccountBookId { get; set; }
 
+        [Display(Name = "Book Code")]
         [MaxLength(100)]
         public string BookCode { get; set; }
 
+        [Display(Name = "Book Name")]
         [MaxLength(100)]
         public string BookName { get; set; }
 
+        [Display(Name = "Description")]
         [MaxLength(100)]
         public string BookDescription { get; set; }
 
+        [Display(Name = "Book Type")]
+        [ForeignKey("AccountBookType")]
         public long AccountBookTypeId { get; set; }
 
+        [Display(Name = "Link Account")]
         public long AccountHeadId { get; set; }
 
+        [Display(Name = "Interest")]
         public float BankInterest { get; set; }
 
+        [Display(Name = "Bank Charge")]
         public float BankCharges { get; set; }
 
+        [Display(Name = "Receipt Voucher Prefix")]
         [StringLength(20)]
         public string ReceiptVoucherPrefix { get; set; }
 
+        [Display(Name = "Receipt Voucher Suffix")]
         [StringLength(20)]
         public string ReceiptVoucherSuffix { get; set; }
 
+        [Display(Name = "Payment Voucher Prefix")]
         [StringLength(20)]
         public string PaymentVoucherPrefix { get; set; }
 
+        [Display(Name = "Payment Voucher Suffix")]
         [StringLength(20)]
         public string PaymentVoucherSuffix { get; set; }
 
         public AccountBookStatus Status { get; set; }
 
-        [ForeignKey("AccountBookTypeId")]
+        
         public virtual sdtoAccountBookType AccountBookType { get; set; }
 
         [ForeignKey("AccountHeadId")]

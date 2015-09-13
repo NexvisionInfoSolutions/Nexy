@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
+using System.Configuration;
 
 namespace LoanManagementSystem.Controllers.Settings
 {
@@ -86,6 +87,7 @@ namespace LoanManagementSystem.Controllers.Settings
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
             ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
 
@@ -141,7 +143,7 @@ namespace LoanManagementSystem.Controllers.Settings
 
                 db.Entry(sdtoSettings).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit/" + sdtoSettings.SettingsId);
             }
 
             sdtoSettings stg = db.GeneralSettings.Find(sdtoSettings.SettingsId);

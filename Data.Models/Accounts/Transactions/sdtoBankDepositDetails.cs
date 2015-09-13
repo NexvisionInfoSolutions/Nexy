@@ -16,7 +16,7 @@ namespace Data.Models.Accounts
         // Id, BankDepositId, AccountId, Narration, Amount, InstrId, InstrNo, InstrDate, Bank,  Display
         [Key]
         public long Id { get; set; }
-        public long AccountId { get; set; }               
+        public long AccountId { get; set; }
         public long BankDepositId { get; set; }
 
         [ForeignKey("AccountId")]
@@ -28,7 +28,8 @@ namespace Data.Models.Accounts
         [MaxLength(1000)]
         public string Narration { get; set; }
 
-
+        [Required]
+        [Range(0.1, double.MaxValue)]
         public float Amount { get; set; }
 
         //public float CrAmount { get; set; }

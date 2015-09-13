@@ -37,9 +37,9 @@
         <div class="col-md-5 form-horizontal">
             <div class="form-group">
                 <div class="col-md-10">
-                    @Html.LabelFor(model => model.Book, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownList("Book", (SelectList)ViewBag.AccountBookList, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Book, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Book.AccountBookId , htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.Book.AccountBookId, (SelectList)ViewBag.AccountBookList, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Book.AccountBookId, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

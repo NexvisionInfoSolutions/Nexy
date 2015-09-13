@@ -15,20 +15,28 @@ namespace Data.Models.Accounts
         [Key]
         public long AccountHeadId { get; set; }
 
+         [Display(Name = "Account Code")]
         public string AccountCode { get; set; }
 
+        [Display(Name = "Account Name")]
         public string AccountName { get; set; }
 
+        [Display(Name = "Schedule")]
         public long ScheduleId { get; set; }
 
+        [Display(Name = "Account Type")]
         public long AccountTypeId { get; set; }
 
+        [Display(Name = "Credit Limit")]
         public decimal CreditLimit { get; set; }
 
+        [Display(Name = "Credit Days")]
         public float CreditDays { get; set; }
 
+        [Display(Name = "Contact")]
         public long ContactId { get; set; }
 
+        [Display(Name = "Address")]
         public long AddressId { get; set; }
 
         public string TIN { get; set; }

@@ -4,19 +4,75 @@
     ViewBag.Title = "Home Page - Dashboard";
 }
 
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+
 @section scripts {
     <script type="text/javascript">
+        $(document).ready(function () {
+            var datepc = $('.date-picker');
+            datepc.datepicker({
+                format: 'yyyy.M.dd',
+                startDate: '-3d',
+                //showOn: "both",
+                buttonImageOnly: true,
+                buttonImage: "calendar.gif",
+                buttonText: "Calendar",
+                regional: ["en-US"]
+            });
+        });
+
         function Search() {
             $(document).ready(function () {
                 // prepare the data
 
-                var UserIds = [];
-                var LoanIds = [];
-                var DepositIds = [];
+                var UserIds = new Array();
+                var LoanIds = new Array();
+                var DepositIds = new Array();
+                var startDate = "";
+                var endDate = "";
+                var status = new Array();
+                var MixedFilter = "";
+
+                startDate = $('#txtStartDate').val();
+                endDate = $('#txtEndDate').val();
+                MixedFilter = $('#txtMiscFilter').val();
+                var selectedMembers = $('input[type=checkbox].checkbox-list-members:checked')
+                for (i = 0; i < selectedMembers.length; i++) {
+                    UserIds.push($(selectedMembers[i]).val());
+                }
+                var selectedLoans = $('input[type=checkbox].checkbox-list-loans:checked')
+                for (i = 0; i < selectedLoans.length; i++) {
+                    LoanIds.push($(selectedLoans[i]).val());
+                }
+                var selectedDeposits = $('input[type=checkbox].checkbox-list-deposits:checked')
+                for (i = 0; i < selectedDeposits.length; i++) {
+                    DepositIds.push($(selectedDeposits[i]).val());
+                }
+                var selectedStatus = $('input[type=checkbox].checkbox-list-status:checked')
+                for (i = 0; i < selectedStatus.length; i++) {
+                    status.push($(selectedStatus[i]).val());
+                }
+
+                var postData = {
+                    CompanyId: "1",
+                    StartDate: startDate,
+                    EndDate: endDate,
+                    MemberIds: UserIds.toString(),
+                    StatusIds: status.toString(),
+                    DepositIds: DepositIds.toString(),
+                    LoanIds: LoanIds.toString(),
+                    MiscFilter: MixedFilter,
+                    Members: { PostedItems: { Ids: UserIds, Values: UserIds.toString() } }
+                };
+
+                console.log(postData);
 
                 var source =
                 {
-                    dataType: "json",
+                    dataType: 'json',
+                    //traditional:true,
+                    contentType: 'application/json',
                     dataFields: [
                         { name: 'DepositId', type: 'number' },
                         { name: 'UserId', type: 'number' },
@@ -45,13 +101,9 @@
                         { name: 'PermanentMobile', type: 'string' },
                         { name: 'PermanentEmail', type: 'string' }
                     ],
-                    id: 'LoanId',
+                    id: 'DepositId',
                     url: '/Reports/DepositSummaryInfo',
-                    data: {
-                        CompanyId: "1",
-                        StartDate: "25-06-2015",
-                        EndDate: "25-06-2015",
-                    }
+                    data: postData
                 };
 
                 var linkDeposit = function (row, column, value) {
@@ -64,7 +116,8 @@
                 {
                     width: 450,
                     source: dataAdapter,
-                    theme: 'arctic',
+                    //theme: 'arctic',
+                    theme: 'energyblue',
                     pageSize: 5,
                     sortable: true,
                     filterable: true,
@@ -84,7 +137,9 @@
                 // prepare the data
                 var source =
                 {
-                    dataType: "json",
+                    dataType: 'json',
+                    //traditional:true,
+                    contentType: 'application/json',
                     dataFields: [
                         { name: 'LoanId', type: 'number' },
                         { name: 'InstallmentAmount', type: 'number' },
@@ -98,6 +153,7 @@
                         { name: 'FirstName', type: 'string' },
                         { name: 'LastName', type: 'string' },
                     ],
+                    data: postData,
                     id: 'LoanId',
                     url: '/Reports/LoanSummaryInfo'
                 };
@@ -140,6 +196,8 @@
                     ]
                 });
             });
+
+            return false;
         }
     </script>
 }
@@ -147,15 +205,105 @@
  @using (Html.BeginForm("Index", "Home"))
 {
     @Html.AntiForgeryToken()
-@Html.
-
+    @Html.HiddenFor(x=>x.CompanyId) 
+<div class="col-md-12">
     <div class="col-md-3 form-horizontal">
         @Html.ValidationSummary(true)
         <div class="form-group">
             <div class="col-md-10">
+                @Html.LabelFor(m => m.Members, new { @class = "control-label" })
+                <br />
+                @Html.CheckBoxListFor(model => model.Members.PostedItems.Ids,
+                model => model.Members.Items,
+                fruit => fruit.Value,
+                fruit => fruit.Text,
+                model => model.Members.SelectedItems,
+                MvcCheckBoxList.Model.Position.Vertical, x => new { @id = "cblMembers", @class = "control-label checkbox-list-members" })
+                @Html.ValidationMessageFor(m => m.Members)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.Status, new { @class = "control-label" })
+                <br />
+                @Html.CheckBoxListFor(model => model.Status.PostedItems.Ids,
+                model => model.Status.Items,
+                fruit => fruit.Value,
+                fruit => fruit.Text,
+                model => model.Status.SelectedItems,
+                MvcCheckBoxList.Model.Position.Vertical, x => new { @id = "cblStatus", @class = "control-label checkbox-list-status" })
+                @Html.ValidationMessageFor(m => m.Members)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.Loans, new { @class = "control-label" })
+                <br />
+                @Html.CheckBoxListFor(model => model.Loans.PostedItems.Ids,
+                model => model.Loans.Items,
+                fruit => fruit.Value,
+                fruit => fruit.Text,
+                model => model.Loans.SelectedItems,
+                MvcCheckBoxList.Model.Position.Vertical, x => new { @id = "cblLoans", @class = "control-label checkbox-list-loans" })
+                @Html.ValidationMessageFor(m => m.Loans)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.Deposits, new { @class = "control-label" })
+                <br />
+                @Html.CheckBoxListFor(model => model.Deposits.PostedItems.Ids,
+                model => model.Deposits.Items,
+                fruit => fruit.Value,
+                fruit => fruit.Text,
+                model => model.Deposits.SelectedItems,
+                MvcCheckBoxList.Model.Position.Vertical, x => new { @id = "cblDeposits", @class = "control-label checkbox-list-deposits" })
+                @Html.ValidationMessageFor(m => m.Deposits)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.StartDate)
+                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control date-picker", @placeholder = "Select a start date", @id = "txtStartDate" })
+                @Html.ValidationMessageFor(m => m.StartDate)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.EndDate)
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control date-picker", @placeholder = "Select a end date", @id = "txtEndDate" })
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(m => m.MiscFilter)
+                @Html.TextBoxFor(m => m.MiscFilter, new { @class = "form-control", @placeholder = "Enter a value", @id = "txtMiscFilter" })
+                @Html.ValidationMessageFor(m => m.MiscFilter)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
                 @Html.LabelFor(m => m.Accounts, new { @class = "control-label" })
                 <br />
-                @Html.CheckBoxListFor(model => model.Accounts.PostedItems.AccountIds,
+                @Html.CheckBoxListFor(model => model.Accounts.PostedItems.Ids,
                 model => model.Accounts.Items,
                 fruit => fruit.Value,
                 fruit => fruit.Text,
@@ -165,64 +313,37 @@
             </div>
         </div>
     </div>
-<div class="col-md-3 form-horizontal">
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.LabelFor(m => m.StartDate)
-                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control date-picker", @placeholder = "Select a start date" })
-                @Html.ValidationMessageFor(m => m.StartDate)
-        </div>
-    </div>
-</div>
-<div class="col-md-3 form-horizontal">
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.LabelFor(m => m.EndDate)
-                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control date-picker", @placeholder = "Select a start date" })
-                @Html.ValidationMessageFor(m => m.EndDate)
-        </div>
-    </div>
-</div>
-<div class="col-md-3 form-horizontal">
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.LabelFor(m => m.Accounts, new { @class = "control-label" })
-                <br />
-            @Html.CheckBoxListFor(model => model.Accounts.PostedItems.AccountIds,
-                model => model.Accounts.Items,
-                fruit => fruit.Value,
-                fruit => fruit.Text,
-                model => model.Accounts.SelectedItems,
-                MvcCheckBoxList.Model.Position.Vertical, x => new { @class = "control-label checkbox-list-loans" })
-                @Html.ValidationMessageFor(m => m.Accounts)
-        </div>
-    </div>
-</div>
-<div class="col-md-3 form-horizontal">
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Show" />
+    <div class="col-md-3 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Show" onclick="return Search()" />
+            </div>
         </div>
     </div>
 </div>
 }
-<div class="col-md-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Loan Summary</h4>
-        </div>
-        <div class="panel-body">
-            <div id="dataTableLoan" style="width: 300px; overflow-x: scroll"></div>
+<div class="col-md-12">
+    <hr />
+    <div class="col-md-6">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Loan Summary</h4>
+            </div>
+            <div class="panel-body">
+                <div id="dataTableLoan" style="width: 300px; overflow-x: scroll"></div>
+            </div>
         </div>
     </div>
-</div>
-<div class="col-md-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Deposit Summary</h4>
-        </div>
-        <div class="panel-body">
-            <div id="dataTableDeposit" style="width: 300px; overflow-x: scroll"></div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Deposit Summary</h4>
+            </div>
+            <div class="panel-body">
+                <div id="dataTableDeposit" style="width: 300px; overflow-x: scroll"></div>
+            </div>
         </div>
     </div>
 </div>

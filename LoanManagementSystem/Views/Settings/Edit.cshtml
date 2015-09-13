@@ -49,31 +49,32 @@
             </div>
         </div>
     </div>
-    <div class="col-md-10 form-horizontal">
-        <h4>Accounts Settings</h4>
-        <hr />
-        <div class="col-md-5 form-horizontal">
-            @*<div class="form-group">
-                    <div class="col-md-10">
-                        @Html.LabelFor(model => model.SalesAccountId, htmlAttributes: new { @class = "control-label" })
+<div class="col-md-10 form-horizontal">
+    <h4>Accounts Settings</h4>
+    <hr />
+    <div class="col-md-5 form-horizontal">
+        @*<div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.SalesAccountId, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(model => model.SalesAccountId, (SelectList)ViewBag.AccountList, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.SalesAccountId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-10">
-                        @Html.LabelFor(model => model.PurchaseAccountId, htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.PurchaseAccountId, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(model => model.PurchaseAccountId, (SelectList)ViewBag.AccountList, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.PurchaseAccountId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-10">
-                        @Html.LabelFor(model => model.DiscountAccountId, htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.DiscountAccountId, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(model => model.DiscountAccountId, (SelectList)ViewBag.AccountList, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.DiscountAccountId, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+            </div>
+        </div>
+        *@
             <div class="form-group">
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.SundryDebtorAccountId, htmlAttributes: new { @class = "control-label" })
@@ -81,13 +82,14 @@
                     @Html.ValidationMessageFor(model => model.SundryDebtorAccountId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @*<div class="form-group">
-                    <div class="col-md-10">
-                        @Html.LabelFor(model => model.SalesJournalId, htmlAttributes: new { @class = "control-label" })
+        @*<div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.SalesJournalId, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(model => model.SalesJournalId, (SelectList)ViewBag.BookList, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.SalesJournalId, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+            </div>
+        </div>
+        *@
             <div class="form-group">
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.PLExpenseScheduleId, htmlAttributes: new { @class = "control-label" })
@@ -95,68 +97,76 @@
                     @Html.ValidationMessageFor(model => model.PLExpenseScheduleId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.TradingExpenseScheduleId, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.TradingExpenseScheduleId, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(model => model.TradingExpenseScheduleId, (SelectList)ViewBag.ScheduleList, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.TradingExpenseScheduleId, "", new { @class = "text-danger" })
-                </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.CashBookId, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.CashBookId, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(model => model.CashBookId, (SelectList)ViewBag.BookList, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.CashBookId, "", new { @class = "text-danger" })
-                </div>
             </div>
         </div>
-        <div class="col-md-5 form-horizontal">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.SundryCreditorAccountId, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-5 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.SundryCreditorAccountId, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(model => model.SundryCreditorAccountId, (SelectList)ViewBag.AccountList, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SundryCreditorAccountId, "", new { @class = "text-danger" })
-                </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PLIncomeScheduleId, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.PLIncomeScheduleId, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(model => model.PLIncomeScheduleId, (SelectList)ViewBag.ScheduleList, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.PLIncomeScheduleId, "", new { @class = "text-danger" })
-                </div>
             </div>
-           
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.TradingIncomeScheduleId, htmlAttributes: new { @class = "control-label" })
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.TradingIncomeScheduleId, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(model => model.TradingIncomeScheduleId, (SelectList)ViewBag.ScheduleList, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.TradingIncomeScheduleId, "", new { @class = "text-danger" })
-                </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.BankBookId, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.BankBookId, htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownListFor(model => model.BankBookId, (SelectList)ViewBag.BookList, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.BankBookId, "", new { @class = "text-danger" })
-                </div>
             </div>
-            @*<div class="form-group">
-                    <div class="col-md-10">
-                        @Html.LabelFor(model => model.PurchaseJournalId, htmlAttributes: new { @class = "control-label" })
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.InterestBookId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.InterestBookId, (SelectList)ViewBag.BookList, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.InterestBookId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.PurchaseJournalId, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(model => model.PurchaseJournalId, (SelectList)ViewBag.BookList, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.PurchaseJournalId, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-        </div>
-    </div>
-    <div class="col-md-10 form-horizontal">
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
+        *@
     </div>
+</div>
+<div class="col-md-10 form-horizontal">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>

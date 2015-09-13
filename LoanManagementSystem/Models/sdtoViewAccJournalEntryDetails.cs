@@ -19,9 +19,11 @@ namespace LoanManagementSystem.Models
         [Display(Name = "Narration")]
         public string Narration { get; set; }
 
+        [Range(double.MinValue, double.MaxValue)]
         [Display(Name = "Debit Amount")]
         public float DebitAmount { get; set; }
 
+        [Range(double.MinValue, double.MaxValue)]
         [Display(Name = "Credit Amount")]
         public float CreditAmount { get; set; }
     }

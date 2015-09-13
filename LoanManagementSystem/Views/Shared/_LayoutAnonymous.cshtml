@@ -4,17 +4,25 @@
     <meta charset="utf-8" />
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Erise Login Form Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+    Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
 
     <title>@ViewBag.Title - Loan Management System</title>
-    @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/skin")
+    @*@Styles.Render("~/Content/css")*@
+    @Styles.Render("~/Content/AnonymousCSS")
+    @*@Styles.Render("~/Content/skin")*@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("/bundles/jqwidgets")
     @Scripts.Render("~/bundles/grid")
-    @Scripts.Render("~/bundles/layout")
+    @*@Scripts.Render("~/bundles/layout")*@
     @RenderSection("scripts", required: false)
+
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,6 +30,7 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link href='//fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 </head>
 <body>
     @{
@@ -31,27 +40,21 @@
             UserDetails = new LoanManagementSystem.Models.sdtoUser();
         }
     }
-    <div id="wrapper">
-        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Loan Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    
+    <div class="main">
+        <h1>Loan Management System</h1>
+        <div class="main-info">
+            <div class="main-pos">
+                <span></span>
             </div>
-        </nav>
-        <!-- /. SIDEBAR MENU (navbar-side) -->
-        <div id="page-wrapper" class="wrapper-cls">
-            <div id="page-inner">
+            <div class="main-info1">
                 @if (ViewBag.ShowHeaderInfo != null && ViewBag.ShowHeaderInfo == true)
                 {
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info">
-                                @*<h4><i class="fa fa-info"></i> Note:</h4>*@
+                                @*<h4><i class="fa fa-info"></i>Note:</h4>
+                                *@
                                 @ViewBag.Message
                             </div>
                         </div>
@@ -61,7 +64,7 @@
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                @ViewBag.Title
+                                @*@ViewBag.Title*@
                             </div>
                             <div class="panel-body">
                                 @RenderBody()
@@ -70,14 +73,35 @@
                     </div>
                 </div>
             </div>
-            <!-- /. PAGE INNER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
+        @*<div class="main-info2">
+            <h3>Sign In</h3>
+            <div class="in-form">
+                <form>
+                    <input type="text" placeholder="Username" required=" ">
+                    <input type="password" placeholder="Password" required=" ">
+                </form>
+                <div class="ckeck-bg">
+                    <div class="checkbox-form">
+                        <div class="check">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox" checked=""><i> </i>Remember my Password</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="check-sub">
+                    <form>
+                        <input type="submit" value="Login">
+                    </form>
+                </div>
+            </div>
+        </div>
+        *@
+        <div class="copy-right">
+            <footer>
+                &copy; 2015 YourCompany | By : <a href="http://www.designbootstrap.com/" target="_blank">DesignBootstrap</a>
+            </footer>
+        </div>
     </div>
-
-    <!-- /. WRAPPER  -->
-    <footer>
-        &copy; 2015 YourCompany | By : <a href="http://www.designbootstrap.com/" target="_blank">DesignBootstrap</a>
-    </footer>
 </body>
 </html>

@@ -27,9 +27,9 @@
         @Html.ValidationSummary(true)
         <div class="form-group">
             <div class="col-md-10">
-                @Html.LabelFor(m => m.Company)
+                @Html.LabelFor(m => m.CompanyId)
                 @Html.DropDownListFor(m => m.CompanyId, Model.Companies, new { @class = "form-control", @placeholder = "Select a Company" })
-                @Html.ValidationMessageFor(m => m.Company)
+                @Html.ValidationMessageFor(m => m.CompanyId)
             </div>
         </div>
     </div>
@@ -56,7 +56,7 @@
             <div class="col-md-10">
                 @Html.LabelFor(m => m.Accounts, new { @class = "control-label" })
                 <br />
-                @Html.CheckBoxListFor(model => model.Accounts.PostedItems.AccountIds,
+                @Html.CheckBoxListFor(model => model.Accounts.PostedItems.Ids,
                 model => model.Accounts.Items,
                 fruit => fruit.Value,
                 fruit => fruit.Text,

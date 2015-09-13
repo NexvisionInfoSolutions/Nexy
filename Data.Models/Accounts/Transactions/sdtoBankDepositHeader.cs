@@ -16,10 +16,13 @@ namespace Data.Models.Accounts
         //  Id, BookId, TransDate, VoucherNo, VoucherTotal, TransType, FinYear,  Cancelled
         [Key]
         public long Id { get; set; }
+        [Required]
         public long BookId { get; set; }
+        [Required(ErrorMessage = "Please select the financial year")]
         public long FinYear { get; set; }
         [ForeignKey("BookId")]
         public virtual sdtoAccountBook AccountBook { get; set; }
+        [Required(ErrorMessage = "Please enter the transaction date")]
         [Display(Name = "Transaction Date")]
         public DateTime TransDate { get; set; }
         [MaxLength(100)]

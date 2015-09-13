@@ -142,6 +142,9 @@ namespace Business.Base
             urlReports = context.UrlInfoCollection.Add(urlReports);
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/LoanSummary", CreatedOn = DateTime.Now, UrlText = "Loan Summary", ParentId = 42, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/DepositSummary", CreatedOn = DateTime.Now, UrlText = "Deposit Summary", ParentId = 42, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/LedgerReport", CreatedOn = DateTime.Now, UrlText = "Ledger Report", ParentId = 42, IsMenu = true, MenuOrder = 3 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/TrialBalance", CreatedOn = DateTime.Now, UrlText = "Trial Balance", ParentId = 42, IsMenu = true, MenuOrder = 4 });//urlDeposits.ParentId });
+
 
             //45
             sdtoUrlInfo exportPalm = new sdtoUrlInfo() { Url = "/Loan/ExportView", CreatedOn = DateTime.Now, UrlText = "Export", ParentId = 30, IsMenu = true, MenuOrder = 5 };//urlAccounts.ParentId };
@@ -151,14 +154,14 @@ namespace Business.Base
             sdtoUrlInfo importPalm = new sdtoUrlInfo() { Url = "/Loan/ImportView", CreatedOn = DateTime.Now, UrlText = "Import", ParentId = 30, IsMenu = true, MenuOrder = 6 };//urlAccounts.ParentId };
             importPalm = context.UrlInfoCollection.Add(importPalm);
 
-            //47
-            sdtoUrlInfo urlTransacctionHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Transactions", ParentId = 30, IsMenu = true, MenuOrder = 1 };//urlAccounts.ParentId };
+            //49
+            sdtoUrlInfo urlTransacctionHead = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Transactions", ParentId = 30, IsMenu = true, MenuOrder = 5 };//urlAccounts.ParentId };
             urlTransacctionHead = context.UrlInfoCollection.Add(urlTransacctionHead);
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/OpeningBalances", CreatedOn = DateTime.Now, UrlText = "Opening Balance", ParentId = 47, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/DepositWithdrawal", CreatedOn = DateTime.Now, UrlText = "Deposit Withdrawal", ParentId = 47, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/CashReceiptPayment", CreatedOn = DateTime.Now, UrlText = "Cash Receipt Payment", ParentId = 47, IsMenu = true, MenuOrder = 3 });//urlDeposits.ParentId });
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/ExpenseEntry", CreatedOn = DateTime.Now, UrlText = "Expense Entry", ParentId = 47, IsMenu = true, MenuOrder = 4 });//urlDeposits.ParentId });
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/JournalEntry", CreatedOn = DateTime.Now, UrlText = "Journal Entry", ParentId = 47, IsMenu = true, MenuOrder = 5 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/OpeningBalances", CreatedOn = DateTime.Now, UrlText = "Opening Balance", ParentId = 49, IsMenu = true, MenuOrder = 1 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/DepositWithdrawal", CreatedOn = DateTime.Now, UrlText = "Deposit Withdrawal", ParentId = 49, IsMenu = true, MenuOrder = 2 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/CashReceiptPayment", CreatedOn = DateTime.Now, UrlText = "Cash Receipt Payment", ParentId = 49, IsMenu = true, MenuOrder = 3 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/ExpenseEntry", CreatedOn = DateTime.Now, UrlText = "Expense Entry", ParentId = 49, IsMenu = true, MenuOrder = 4 });//urlDeposits.ParentId });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/JournalEntry", CreatedOn = DateTime.Now, UrlText = "Journal Entry", ParentId = 49, IsMenu = true, MenuOrder = 5 });//urlDeposits.ParentId });
 
             /*******************************/
             /** Schedules **/
