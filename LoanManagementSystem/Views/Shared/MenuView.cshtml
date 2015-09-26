@@ -4,7 +4,7 @@
     if (treeNode.Children.Count > 0)
     {
         <li>
-            <a href='@(string.IsNullOrWhiteSpace(treeNode.NodeElement.Url)? "javascript:void(0);" : Url.Content(treeNode.NodeElement.Url))'>
+            <a href='@(string.IsNullOrWhiteSpace(treeNode.NodeElement.Url)? "javascript:void(0);" : treeNode.NodeElement.Url)'>
                <i class="fa fa-home"></i> @treeNode.NodeElement.UrlText <span class="fa fa-chevron-down"></span>
             </a>
 

@@ -12,6 +12,7 @@ namespace Data.Models.Accounts.Schedules
     public class sdtoSchedule
     {
         [Key]
+        [Display(Name = "Schedule Id")]
         public long ScheduleId { get; set; }
 
         [Required]

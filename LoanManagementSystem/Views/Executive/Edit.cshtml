@@ -5,6 +5,33 @@
 
 }
 
+<script language="javascript" type="text/javascript">
+    function loadCountryStates(selectedValue, ddlUserAddressState) {
+        $.ajax({
+            url: '@Url.Action("StateInfo","Settings", new {CountryId = 0 })' + selectedValue,
+            type: 'GET',
+            //data: { someValue: value },
+            success: function (result) {
+                // when the AJAX succeeds refresh the dropdown list with
+                // the JSON values returned from the controller action
+
+                var selectedDeviceModel = $('#' + ddlUserAddressState);
+                selectedDeviceModel.empty();
+                $.each(result, function (index, item) {
+                    selectedDeviceModel.append(
+                        $('<option/>', {
+                            value: item.StateId,
+                            text: item.StateName
+                        })
+                    );
+                });
+            }
+        });
+        return false;
+    }
+
+</script>
+
 @*<h2>Edit Executives</h2>*@
 
 @using (Html.BeginForm())
@@ -97,10 +124,68 @@
             </div>
 
             <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.Address1, "Address1", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.UserAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address Line 1" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.Address1)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.Address2, "Address2", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.UserAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.Address2)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.Place, "Place", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.UserAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.Place)
+                </div>
+            </div>
+            <div class="form-group">
 
                 <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.Address1, "Address", htmlAttributes: new { @class = "control-label" })
-                    @Html.TextAreaFor(model => model.UserAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address" })
+                    @Html.LabelFor(model => model.UserAddress.Post, "PO", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.UserAddress.Post, new { @class = "form-control", @placeholder = "Enter PO" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.Post)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.District, new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.UserAddress.District, new { @class = "form-control", @placeholder = "Enter District" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.District)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.Taluk, new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.UserAddress.Taluk, new { @class = "form-control", @placeholder = "Enter sub-division" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.Taluk)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.Village, new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.UserAddress.Village, new { @class = "form-control", @placeholder = "Enter sub-division" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.Village)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.CountryId, "Country", new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.UserAddress.CountryId, (SelectList)ViewBag.UserAddressCountryList, htmlAttributes: new { @class = "form-control", @ID = "ddlUserAddressCountry", onchange = "return loadCountryStates(this.options[this.selectedIndex].value, 'ddlUserAddressState');" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.CountryId)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.UserAddress.StateId, "State", new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.UserAddress.StateId, (SelectList)ViewBag.StateList, htmlAttributes: new { @class = "form-control", @ID = "ddlUserAddressState" })
+                    @Html.ValidationMessageFor(model => model.UserAddress.StateId)
                 </div>
             </div>
 

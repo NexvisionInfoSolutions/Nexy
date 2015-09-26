@@ -42,6 +42,6 @@ namespace Data.Models
 
         public enum Instrument { Cash = 0, Cheque = 1, CreditCard = 2 }
 
-        public enum TransactionType { CashReceipt = 0, CashPayment = 1, LoanEntry = 2, LoanRepayment = 3, DepositEntry = 4, DepositWithdrawal = 5 }
+        public enum TransactionType { CashReceipt = 0, CashPayment = 1, LoanEntry = 2, LoanRepayment = 3, DepositEntry = 4, DepositWithdrawal = 5, BankDeposit = 6, BankWithdrawal = 7, JournalEntry }
     }
 }

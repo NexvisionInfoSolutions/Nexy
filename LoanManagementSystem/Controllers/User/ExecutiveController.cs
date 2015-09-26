@@ -19,12 +19,12 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Index()
         {
             var user = db.User.Include(s => s.UserAddress).Include(s => s.Contacts).Include(s => s.UserGroup);
-     
-            return View(user.Where(s=> s.UserType==UserType.Executive).ToList());
+
+            return View(user.Where(s => s.UserType == UserType.Executive).ToList());
         }
         public JsonResult ExecutiveInfo()
         {
-            var dbResult = db.User.Include(s => s.UserAddress).Include(s => s.Contacts).Where(s => s.UserType == UserType.Executive).ToList();
+            var dbResult = db.User.Include(s => s.UserAddress).Include(x => x.UserAddress.StateDetails).Include(x => x.UserAddress.Country).Include(s => s.Contacts).Where(s => s.UserType == UserType.Executive).ToList();
             var Users = (from users in dbResult
                          select new
                          {
@@ -34,7 +34,7 @@ namespace LoanManagementSystem.Controllers
                              users.Designation,
                              users.Code,
                              ExecutiveInfo = users.UserID,
-                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode),                             
+                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode, users.UserAddress.Taluk, users.UserAddress.Village, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
                              UserContactPhone = users.Contacts.Telephone1,
                              UserContactMobile = users.Contacts.Mobile1
                          });
@@ -62,6 +62,11 @@ namespace LoanManagementSystem.Controllers
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1");
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName");
             ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name");
+
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View();
         }
 
@@ -98,6 +103,10 @@ namespace LoanManagementSystem.Controllers
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             //ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View(sdtouser);
         }
 
@@ -116,6 +125,10 @@ namespace LoanManagementSystem.Controllers
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View(sdtouser);
         }
 
@@ -131,7 +144,7 @@ namespace LoanManagementSystem.Controllers
                 sdtouser.UserType = UserType.Executive;
                 if (sdtouser.UserAddress != null)
                 {
-                    sdtouser.UserAddress.ModifiedOn = DateTime.Now;  
+                    sdtouser.UserAddress.ModifiedOn = DateTime.Now;
                 }
 
                 if (sdtouser.Contacts != null)
@@ -140,12 +153,18 @@ namespace LoanManagementSystem.Controllers
                 }
                 db.User.Attach(sdtouser);
                 db.Entry(sdtouser).State = EntityState.Modified;
+                db.Entry(sdtouser.UserAddress).State = EntityState.Modified;
+                db.Entry(sdtouser.Contacts).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.UserContactId);
             //ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View(sdtouser);
         }
 

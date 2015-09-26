@@ -32,7 +32,7 @@
                                       //}
                                       //var format = { target: '"_blank"' };
                                       //var html = $.jqx.dataFormat.formatlink(value, format);
-                                      var html = '<b><a href="/AccountBooks/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/AccountBooks/Details/' + value + '">Details</a>'
+                                      var html = '<b><a href="/AccountBooks/Edit/' + value + '">Edit</a>'//|<a id="lnpayment" href="/AccountBooks/Details/' + value + '">Details</a>'
                                                 + ' | <a href="/AccountBooks/Delete/' + value + '">Delete</a>';
 
                                       return html;
@@ -44,19 +44,19 @@
                                       width: 1050,
                                       source: dataAdapter,
                                       theme: 'arctic',
-                                      pageSize: 5,
+                                      pageSize: 10,
                                       sortable: true,
                                       filterable: true,
                                       pageable: true,
                                       columns: [
-                                        { text: 'Account BookId', dataField: 'AccountBookId', width: 120 },
+                                        //{ text: 'Account BookId', dataField: 'AccountBookId', width: 120 },
                                         { text: 'Account BookType', dataField: 'AccountBookType', width: 200 },
                                         { text: 'Bank Charges', dataField: 'BankCharges', width: 150 },
                                         { text: 'Bank Interest', dataField: 'BankInterest', width: 150 },
                                         { text: 'Book Code', dataField: 'BookCode', width: 200 },
                                         { text: 'Book Name', dataField: 'BookName', width: 200 },
                                         {
-                                            text: 'Edit', dataField: 'AccountBooksInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                                            text: 'Edit', dataField: 'AccountBookId', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
                                             cellsRenderer: linkrenderer
                                         }
                                       ]

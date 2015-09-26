@@ -13,25 +13,32 @@ namespace Data.Models.Accounts
     public class sdtoAccountHead : sdtoBaseData
     {
         [Key]
+        [Display(Name = "Account Id")]
         public long AccountHeadId { get; set; }
 
-         [Display(Name = "Account Code")]
+        [Required(ErrorMessage = "Please enter an account code")]
+        [Display(Name = "Account Code")]
         public string AccountCode { get; set; }
 
+        [Required(ErrorMessage = "Please enter an account name")]
         [Display(Name = "Account Name")]
         public string AccountName { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Please select an account schedule")]
         [Display(Name = "Schedule")]
         public long ScheduleId { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Please select an account type")]
         [Display(Name = "Account Type")]
         public long AccountTypeId { get; set; }
 
+        [Range(double.MinValue, double.MaxValue)]
         [Display(Name = "Credit Limit")]
-        public decimal CreditLimit { get; set; }
+        public decimal? CreditLimit { get; set; }
 
+        [Range(float.MinValue, float.MaxValue)]
         [Display(Name = "Credit Days")]
-        public float CreditDays { get; set; }
+        public float? CreditDays { get; set; }
 
         [Display(Name = "Contact")]
         public long ContactId { get; set; }

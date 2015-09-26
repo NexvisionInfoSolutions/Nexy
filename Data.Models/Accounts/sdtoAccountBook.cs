@@ -14,6 +14,7 @@ namespace Data.Models.Accounts
     public class sdtoAccountBook : sdtoBaseData
     {
         [Key]
+        [Display(Name = "Account Book Id")]
         public long AccountBookId { get; set; }
 
         [Display(Name = "Book Code")]
@@ -35,11 +36,13 @@ namespace Data.Models.Accounts
         [Display(Name = "Link Account")]
         public long AccountHeadId { get; set; }
 
+        [Range(float.MinValue, float.MaxValue)]
         [Display(Name = "Interest")]
-        public float BankInterest { get; set; }
+        public float? BankInterest { get; set; }
 
+        [Range(float.MinValue, float.MaxValue)]
         [Display(Name = "Bank Charge")]
-        public float BankCharges { get; set; }
+        public float? BankCharges { get; set; }
 
         [Display(Name = "Receipt Voucher Prefix")]
         [StringLength(20)]

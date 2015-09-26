@@ -4,7 +4,7 @@
     @Html.AntiForgeryToken()
 if (Request.IsAuthenticated)
         {
-            LoanManagementSystem.Models.sdtoUser UserDetails = HttpContext.Current.Session["UserDetails"] as LoanManagementSystem.Models.sdtoUser;
+            LoanManagementSystem.Models.sdtoUser UserDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as LoanManagementSystem.Models.sdtoUser;
             if (UserDetails == null)
             {
                 UserDetails = new LoanManagementSystem.Models.sdtoUser();
@@ -12,7 +12,16 @@ if (Request.IsAuthenticated)
 <li class="">
 
     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <img src="~/Utility/ProfileImage?UserId=@UserDetails.UserID" class="img-circle profile_img" alt="User Image" />@UserDetails.FirstName @UserDetails.LastName                                   
+@if(Request.IsAuthenticated)
+                                            {
+                                                <img src="~/Utility/ProfileImage?UserId=@UserDetails.UserID" class="img-circle" alt="User Image" />
+@*@UserDetails.FirstName @UserDetails.LastName*@
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Content/Images/session-out.jpe" class="img-circle profile_img" alt="User Image" />
+                                            }
+        
                                                     <span class=" fa fa-angle-down"></span>
     </a>
     <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">

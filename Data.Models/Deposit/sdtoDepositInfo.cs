@@ -14,6 +14,7 @@ namespace Data.Models.Accounts
     public class sdtoDepositInfo : sdtoBaseData
     {
         [Key]
+        [Display(Name = "Deposit Id")]
         public long DepositId { get; set; }
         /// <summary>
         /// User Id of the member

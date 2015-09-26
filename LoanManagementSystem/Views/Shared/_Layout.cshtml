@@ -26,7 +26,7 @@
 <body class="skin-green sidebar-mini">
     <div class="wrapper">
         @{
-            LoanManagementSystem.Models.sdtoUser UserDetails = HttpContext.Current.Session["UserDetails"] as LoanManagementSystem.Models.sdtoUser;
+            LoanManagementSystem.Models.sdtoUser UserDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as LoanManagementSystem.Models.sdtoUser;
             if (UserDetails == null)
             {
                 UserDetails = new LoanManagementSystem.Models.sdtoUser();

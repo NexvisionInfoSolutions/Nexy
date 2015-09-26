@@ -35,7 +35,7 @@ namespace LoanManagementSystem.Controllers.Reports
             Filter.MemberIds = GetList(Filter.MemberIds.FirstOrDefault());
             Filter.StatusIds = GetList(Filter.StatusIds.FirstOrDefault());
 
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long CompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 CompanyId = sessionUser.CompanyId.Value;
@@ -98,7 +98,7 @@ namespace LoanManagementSystem.Controllers.Reports
             Filter.MemberIds = GetList(Filter.MemberIds.FirstOrDefault());
             Filter.StatusIds = GetList(Filter.StatusIds.FirstOrDefault());
 
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long CompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 CompanyId = sessionUser.CompanyId.Value;
@@ -156,7 +156,7 @@ namespace LoanManagementSystem.Controllers.Reports
             // model.SelectedFruits = selectedFruits;            
             filter.Accounts = modelAccountHeads;
 
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long cCompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 cCompanyId = sessionUser.CompanyId.Value;
@@ -208,7 +208,7 @@ namespace LoanManagementSystem.Controllers.Reports
             // trial balance
 
             long CompanyId = 0;
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             if (sessionUser != null)
                 CompanyId = sessionUser.CompanyId.Value;
 
@@ -280,7 +280,7 @@ namespace LoanManagementSystem.Controllers.Reports
             // model.SelectedFruits = selectedFruits;            
             filter.Accounts = modelAccountHeads;
 
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long cCompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 cCompanyId = sessionUser.CompanyId.Value;
@@ -294,7 +294,7 @@ namespace LoanManagementSystem.Controllers.Reports
         [HttpPost]
         public ActionResult TrialBalance(sdtoViewReportFilter filter)
         {
-            //sdtoLedgerReport sessionUser = Session["UserDetails"] as sdtoLedgerReport;
+            //sdtoLedgerReport sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoLedgerReport;
             //long CompanyId = 0;
 
             //bfReport objReport = new bfReport(null);
@@ -334,7 +334,7 @@ namespace LoanManagementSystem.Controllers.Reports
             // trial balance
 
             long CompanyId = 0;
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             if (sessionUser != null)
                 CompanyId = sessionUser.CompanyId.Value;
 

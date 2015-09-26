@@ -12,9 +12,11 @@ using System.Web.Security;
 using System.IO;
 using Data.Models.Accounts;
 using LoanManagementSystem.App_Start;
+using Business.Reports;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize()]
     public class AccountingController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
@@ -70,9 +72,9 @@ namespace LoanManagementSystem.Controllers
             ViewBag.AccountHeads = new SelectList(accHeads, "Value", "Text", AccHeadId);
         }
 
-        private void LoadAccountBookList(long AccBookId)
+        private void LoadAccountBookList(long AccBookId, long AccBookTypeId)
         {
-            var accHeads = db.AccountBooks.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList();
+            var accHeads = db.AccountBooks.Where(x => x.IsDeleted == false && (AccBookTypeId == 0 || AccBookTypeId == x.AccountBookTypeId)).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList();
             accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Account Book" });
             ViewBag.AccountBookList = new SelectList(accHeads, "Value", "Text", AccBookId);
         }
@@ -85,18 +87,95 @@ namespace LoanManagementSystem.Controllers
             ViewBag.AccountBookList = new SelectList(accHeads, "Value", "Text", AccBookId);
         }
 
-        public ActionResult DepositWithdrawal()
+        public ActionResult BankDeposit(long? HeaderId)
         {
+            var bankBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
             LoadAccountHeadList(0);
-            LoadAccountBookList(0);
+            LoadAccountBookList(0, bankBookType.AccountBookTypeId);
             sdtoViewAccDepositWithdrawal obj = new sdtoViewAccDepositWithdrawal() { Date = DateTime.Now };
             obj.Details.Add(new sdtoViewAccDepositWithdrawalDetails() { InstrumentDate = DateTime.Now });
+
+            if (HeaderId != null && HeaderId.Value > 0)
+            {
+                var header = db.BankDepositHeader.Find(HeaderId);
+                if (header != null)
+                {
+                    obj = new sdtoViewAccDepositWithdrawal()
+                    {
+                        VoucherTotal = header.VoucherTotal,
+                        Book = new sdtoAccountBook() { AccountBookId = header.BookId },
+                        Date = header.TransDate,
+                        HeaderId = HeaderId.Value,
+                        PreviousVoucherTotal = header.VoucherTotal,
+                        Voucher = header.VoucherNo
+                    };
+
+                    var headerSubList = db.BankDepositDetails.Where(x => x.IsDeleted == false && x.BankDepositId == obj.HeaderId);
+                    if (headerSubList != null)
+                    {
+                        foreach (sdtoBankDepositDetails dtl in headerSubList)
+                        {
+                            obj.Details.Add(new sdtoViewAccDepositWithdrawalDetails()
+                            {
+                                AccountHeadId = dtl.AccountId,
+                                Amount = -1 * dtl.Amount,
+                                Narration = dtl.Narration
+                            });
+                        }
+                    }
+                }
+            }
+
+            return View(obj);
+        }
+
+        public ActionResult BankWithdrawal(long? HeaderId)
+        {
+            var bankBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
+            LoadAccountHeadList(0);
+            LoadAccountBookList(0, bankBookType.AccountBookTypeId);
+            sdtoViewAccDepositWithdrawal obj = new sdtoViewAccDepositWithdrawal() { Date = DateTime.Now };
+            obj.Details.Add(new sdtoViewAccDepositWithdrawalDetails() { InstrumentDate = DateTime.Now });
+
+            if (HeaderId != null && HeaderId.Value > 0)
+            {
+                var header = db.BankDepositHeader.Find(HeaderId);
+                if (header != null)
+                {
+                    obj = new sdtoViewAccDepositWithdrawal()
+                    {
+                        VoucherTotal = header.VoucherTotal,
+                        Book = new sdtoAccountBook() { AccountBookId = header.BookId },
+                        Date = header.TransDate,
+                        HeaderId = HeaderId.Value,
+                        PreviousVoucherTotal = header.VoucherTotal,
+                        Voucher = header.VoucherNo
+                    };
+
+                    var headerSubList = db.BankDepositDetails.Where(x => x.IsDeleted == false && x.BankDepositId == obj.HeaderId);
+                    if (headerSubList != null)
+                    {
+                        foreach (sdtoBankDepositDetails dtl in headerSubList)
+                        {
+                            obj.Details.Add(new sdtoViewAccDepositWithdrawalDetails()
+                            {
+                                AccountHeadId = dtl.AccountId,
+                                Amount = -1 * dtl.Amount,
+                                Narration = dtl.Narration
+                            });
+                        }
+                    }
+                }
+            }
+
             return View(obj);
         }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult DepositWithdrawal(sdtoViewAccDepositWithdrawal objDepositWithdrawal)
+        public ActionResult BankWithdrawal(sdtoViewAccDepositWithdrawal objDepositWithdrawal)
         {
             if (objDepositWithdrawal.SourceClick == 0)
                 objDepositWithdrawal.Details.Add(new sdtoViewAccDepositWithdrawalDetails());
@@ -104,92 +183,137 @@ namespace LoanManagementSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    sdtoUser user = Session["UserDetails"] as sdtoUser;
-                    var settingCashBookId = db.GeneralSettings.FirstOrDefault().BankBookId;
-                    //Post for Bank book
-                    var accBankBook = db.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    if (accBankBook != null)
-                    {
-                        sdtoBankDepositHeader hdrBankDeposit = new sdtoBankDepositHeader()
-                        {
-                            BookId = objDepositWithdrawal.Book.AccountBookId,
-                            Cancelled = 0,
-                            CreatedOn = DateTime.Now,
-                            CreatedBy = user.UserID,
-                            TransDate = objDepositWithdrawal.Date,
-                            FinYear = 1,
-                            FromModule = 0,
-                            IsDeleted = false,
-                            VoucherNo = objDepositWithdrawal.Voucher,
-                            VoucherTotal = objDepositWithdrawal.VoucherTotal
-                        };
+                    bfTransaction objTransaction = new bfTransaction(db);
+                    if (objDepositWithdrawal.HeaderId > 0)
+                        objTransaction.CancelBankAccountHeader(objDepositWithdrawal.HeaderId);
 
-                        db.BankDepositHeader.Add(hdrBankDeposit);
-                        db.SaveChanges();
-
-                        //hdrBankDeposit.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrBankDeposit.BankTransId + accBankBook.ReceiptVoucherSuffix;
-                        //db.Entry(hdrBankDeposit).State = EntityState.Modified;
-                        //db.SaveChanges();
-
-                        foreach (sdtoViewAccDepositWithdrawalDetails dtl in objDepositWithdrawal.Details)
-                        {
-                            sdtoBankDepositDetails bankDepositDtlCr = new sdtoBankDepositDetails()
-                            {
-                                BankDepositId = hdrBankDeposit.Id,
-                                AccountId = dtl.AccountHead.AccountHeadId,
-                                Narration = dtl.Narration,
-                                Amount = -1 * dtl.Amount,
-                                CreatedBy = user.UserID,
-                                CreatedOn = DateTime.Now,
-                                Display = 1,
-                                IsDeleted = false,
-                                Instrument = dtl.InstrumentType,
-                                InstrumentNo = dtl.InstrumentNo,
-                                InstrumentDate = dtl.InstrumentDate
-                            };
-                            db.BankDepositDetails.Add(bankDepositDtlCr);
-                        }
-
-                        sdtoBankDepositDetails bankDepositDtlDb = new sdtoBankDepositDetails()
-                        {
-                            BankDepositId = hdrBankDeposit.Id,
-                            AccountId = accBankBook.AccountHeadId,
-                            Narration = "Bank deposit/withdrawal",
-                            Amount = objDepositWithdrawal.Details.Sum(x => x.Amount),
-                            CreatedBy = user.UserID,
-                            CreatedOn = DateTime.Now,
-                            Display = 1,
-                            IsDeleted = false,
-                            Instrument = objDepositWithdrawal.Details.FirstOrDefault().InstrumentType,
-                            InstrumentNo = objDepositWithdrawal.Details.FirstOrDefault().InstrumentNo,
-                            InstrumentDate = objDepositWithdrawal.Details.FirstOrDefault().InstrumentDate
-                        };
-
-                        db.BankDepositDetails.Add(bankDepositDtlDb);
-                        db.SaveChanges();
-                    }
-
-                    return RedirectToAction("Index", "Home");
+                    objTransaction.AddBankWithdrawal(objDepositWithdrawal);
+                    return RedirectToAction("ListBankDepositWithdrawal");
                 }
             }
+            var bankBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
             LoadAccountHeadList(0);
-            LoadAccountBookList(objDepositWithdrawal.Book != null ? objDepositWithdrawal.Book.AccountBookId : 0);
+            LoadAccountBookList(objDepositWithdrawal.Book != null ? objDepositWithdrawal.Book.AccountBookId : 0, bankBookType.AccountBookTypeId);
 
             return View(objDepositWithdrawal);
         }
 
-        public ActionResult CashReceiptPayment()
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult BankDeposit(sdtoViewAccDepositWithdrawal objDepositWithdrawal)
         {
+            if (objDepositWithdrawal.SourceClick == 0)
+                objDepositWithdrawal.Details.Add(new sdtoViewAccDepositWithdrawalDetails());
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    bfTransaction objTransaction = new bfTransaction(db);
+                    objTransaction.AddBankDeposit(objDepositWithdrawal);
+
+                    if (objDepositWithdrawal.HeaderId > 0)
+                        objTransaction.CancelBankAccountHeader(objDepositWithdrawal.HeaderId);
+
+                    return RedirectToAction("ListBankDepositWithdrawal");
+                }
+            }
+
+            var bankBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Bank", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
             LoadAccountHeadList(0);
-            LoadAccountBookList(0);
+            LoadAccountBookList(objDepositWithdrawal.Book != null ? objDepositWithdrawal.Book.AccountBookId : 0, bankBookType.AccountBookTypeId);
+
+            return View(objDepositWithdrawal);
+        }
+
+        public ActionResult CashPayment(long? HeaderId)
+        {
+            var cashBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Cash", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
+            LoadAccountHeadList(0);
+            LoadAccountBookList(0, cashBookType.AccountBookTypeId);
             sdtoViewAccCashReceiptPayment obj = new sdtoViewAccCashReceiptPayment() { Date = DateTime.Now };
             obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails() { });
+
+            if (HeaderId != null && HeaderId.Value > 0)
+            {
+                var header = db.ReceiptHeader.Find(HeaderId);
+                if (header != null)
+                {
+                    obj = new sdtoViewAccCashReceiptPayment()
+                    {
+                        VoucherTotal = header.VoucherTotal,
+                        Book = new sdtoAccountBook() { AccountBookId = header.BookId },
+                        Date = header.TransDate,
+                        HeaderId = HeaderId.Value,
+                        PreviousVoucherTotal = header.VoucherTotal,
+                        Voucher = header.VoucherNo
+                    };
+
+                    var headerSubList = db.ReceiptDetails.Where(x => x.IsDeleted == false && x.ReceiptsId == obj.HeaderId);
+                    if (headerSubList != null)
+                    {
+                        foreach (sdtoReceiptDetails dtl in headerSubList)
+                        {
+                            obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails()
+                            {
+                                AccountHeadId = dtl.AccountId,
+                                Amount = -1 * dtl.Amount,
+                                Narration = dtl.Narration
+                            });
+                        }
+                    }
+                }
+            }
+            return View(obj);
+        }
+
+        public ActionResult CashReceipt(long? HeaderId)
+        {
+            var cashBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Cash", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
+            LoadAccountHeadList(0);
+            LoadAccountBookList(0, cashBookType.AccountBookTypeId);
+            sdtoViewAccCashReceiptPayment obj = new sdtoViewAccCashReceiptPayment() { Date = DateTime.Now };
+            obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails() { });
+
+            if (HeaderId != null && HeaderId.Value > 0)
+            {
+                var header = db.ReceiptHeader.Find(HeaderId);
+                if (header != null)
+                {
+                    obj = new sdtoViewAccCashReceiptPayment()
+                    {
+                        VoucherTotal = header.VoucherTotal,
+                        Book = new sdtoAccountBook() { AccountBookId = header.BookId },
+                        Date = header.TransDate,
+                        HeaderId = HeaderId.Value,
+                        PreviousVoucherTotal = header.VoucherTotal,
+                        Voucher = header.VoucherNo
+                    };
+
+                    var headerSubList = db.ReceiptDetails.Where(x => x.IsDeleted == false && x.ReceiptsId == obj.HeaderId);
+                    if (headerSubList != null)
+                    {
+                        foreach (sdtoReceiptDetails dtl in headerSubList)
+                        {
+                            obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails()
+                            {
+                                AccountHeadId = dtl.AccountId,
+                                Amount = -1 * dtl.Amount,
+                                Narration = dtl.Narration
+                            });
+                        }
+                    }
+                }
+            }
             return View(obj);
         }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult CashReceiptPayment(sdtoViewAccCashReceiptPayment objCashReceiptPayment)
+        public ActionResult CashReceipt(sdtoViewAccCashReceiptPayment objCashReceiptPayment)
         {
             if (objCashReceiptPayment.SourceClick == 0)
                 objCashReceiptPayment.Details.Add(new sdtoViewAccCashReceiptPaymentDetails());
@@ -197,83 +321,64 @@ namespace LoanManagementSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    sdtoUser user = Session["UserDetails"] as sdtoUser;
-                    var settingCashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
-                    //Post for Bank book
-                    var accBankBook = db.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    if (accBankBook != null)
-                    {
-                        sdtoReceiptHeader hdrBankDeposit = new sdtoReceiptHeader()
-                        {
-                            BookId = objCashReceiptPayment.Book.AccountBookId,
-                            Cancelled = 0,
-                            CreatedOn = DateTime.Now,
-                            CreatedBy = user.UserID,
-                            TransDate = objCashReceiptPayment.Date,
-                            FinYear = 1,
-                            FromModule = 0,
-                            IsDeleted = false,
-                            VoucherNo = objCashReceiptPayment.Voucher,
-                            VoucherTotal = objCashReceiptPayment.Details.Sum(x => x.Amount)
-                        };
+                    bfTransaction objTransaction = new bfTransaction(db);
+                    if (objCashReceiptPayment.HeaderId > 0)
+                        objTransaction.CancelCashAccountHeader(objCashReceiptPayment.HeaderId);
 
-                        db.ReceiptHeader.Add(hdrBankDeposit);
-                        db.SaveChanges();
+                    objTransaction.AddCashReceipt(objCashReceiptPayment);
 
-                        foreach (sdtoViewAccCashReceiptPaymentDetails dtl in objCashReceiptPayment.Details)
-                        {
-                            sdtoReceiptDetails bankDepositDtlCr = new sdtoReceiptDetails()
-                            {
-                                ReceiptsId = hdrBankDeposit.Id,
-                                AccountId = dtl.AccountHead.AccountHeadId,
-                                Narration = dtl.Narration,
-                                Amount = -1 * dtl.Amount,
-                                CreatedBy = user.UserID,
-                                CreatedOn = DateTime.Now,
-                                Display = 1,
-                                IsDeleted = false,
-                            };
-                            db.ReceiptDetails.Add(bankDepositDtlCr);
-                        }
-
-                        sdtoReceiptDetails bankDepositDtlDb = new sdtoReceiptDetails()
-                        {
-                            ReceiptsId = hdrBankDeposit.Id,
-                            AccountId = accBankBook.AccountHeadId,
-                            Narration = "Bank deposit/withdrawal",
-                            Amount = objCashReceiptPayment.Details.Sum(x => x.Amount),
-                            CreatedBy = user.UserID,
-                            CreatedOn = DateTime.Now,
-                            Display = 1,
-                            IsDeleted = false
-                        };
-
-                        db.ReceiptDetails.Add(bankDepositDtlDb);
-                        db.SaveChanges();
-                    }
-
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("ListCashReceiptPayment");
                 }
             }
+
+            var cashBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Cash", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
             LoadAccountHeadList(0);
-            LoadAccountBookList(objCashReceiptPayment.Book != null ? objCashReceiptPayment.Book.AccountBookId : 0);
+            LoadAccountBookList(objCashReceiptPayment.Book != null ? objCashReceiptPayment.Book.AccountBookId : 0, cashBookType.AccountBookTypeId);
+
+            return View(objCashReceiptPayment);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult CashPayment(sdtoViewAccCashReceiptPayment objCashReceiptPayment)
+        {
+            if (objCashReceiptPayment.SourceClick == 0)
+                objCashReceiptPayment.Details.Add(new sdtoViewAccCashReceiptPaymentDetails());
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    bfTransaction objTransaction = new bfTransaction(db);
+                    if (objCashReceiptPayment.HeaderId > 0)
+                        objTransaction.CancelCashAccountHeader(objCashReceiptPayment.HeaderId);
+
+                    objTransaction.AddCashPayment(objCashReceiptPayment);
+                    return RedirectToAction("ListCashReceiptPayment");
+                }
+            }
+
+            var cashBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Cash", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
+            LoadAccountHeadList(0);
+            LoadAccountBookList(objCashReceiptPayment.Book != null ? objCashReceiptPayment.Book.AccountBookId : 0, cashBookType.AccountBookTypeId);
 
             return View(objCashReceiptPayment);
         }
 
         public ActionResult ExpenseEntry()
         {
-            LoadAccountHeadList(0);
-            LoadAccountBookList(0);
+            //LoadAccountHeadList(0);
+            //LoadAccountBookList(0);
 
-            sdtoViewAccExpenseEntry obj = new sdtoViewAccExpenseEntry() { Date = DateTime.Now };
-            var CashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
-            var cashBook = db.AccountBooks.Where(x => x.AccountBookId == CashBookId).FirstOrDefault();
-            if (cashBook != null)
-            {
-                obj.Book = cashBook;
-            }
-            return View(obj);
+            //sdtoViewAccExpenseEntry obj = new sdtoViewAccExpenseEntry() { Date = DateTime.Now };
+            //var CashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
+            //var cashBook = db.AccountBooks.Where(x => x.AccountBookId == CashBookId).FirstOrDefault();
+            //if (cashBook != null)
+            //{
+            //    obj.Book = cashBook;
+            //}
+            return View();
         }
 
         [HttpPost]
@@ -286,97 +391,127 @@ namespace LoanManagementSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    sdtoUser user = Session["UserDetails"] as sdtoUser;
-                    var settingCashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
-                    //Post for Bank book
-                    var accBankBook = db.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    if (accBankBook != null)
-                    {
-                        sdtoReceiptHeader hdrCashReceiptPayment = new sdtoReceiptHeader()
-                        {
-                            BookId = objExpenseEntry.Book.AccountBookId,
-                            Cancelled = 0,
-                            CreatedOn = DateTime.Now,
-                            CreatedBy = user.UserID,
-                            FinYear = 1,
-                            FromModule = 0,
-                            IsDeleted = false,
-                            TransDate = objExpenseEntry.Date
-                        };
+                    //sdtoUser user = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+                    //var settingCashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
+                    ////Post for Bank book
+                    //var accBankBook = db.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
+                    //if (accBankBook != null)
+                    //{
+                    //    sdtoReceiptHeader hdrCashReceiptPayment = new sdtoReceiptHeader()
+                    //    {
+                    //        BookId = objExpenseEntry.Book.AccountBookId,
+                    //        Cancelled = 0,
+                    //        CreatedOn = DateTime.Now,
+                    //        CreatedBy = user.UserID,
+                    //        FinancialYearId = CurrentUser.UserSession.FinancialYearId.Value,
+                    //        FromModule = 0,
+                    //        IsDeleted = false,
+                    //        TransDate = objExpenseEntry.Date
+                    //    };
 
-                        db.ReceiptHeader.Add(hdrCashReceiptPayment);
-                        db.SaveChanges();
+                    //    db.ReceiptHeader.Add(hdrCashReceiptPayment);
+                    //    db.SaveChanges();
 
-                        //hdrBankDeposit.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrBankDeposit.BankTransId + accBankBook.ReceiptVoucherSuffix;
-                        //db.Entry(hdrBankDeposit).State = EntityState.Modified;
-                        //db.SaveChanges();
+                    //    //hdrBankDeposit.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrBankDeposit.BankTransId + accBankBook.ReceiptVoucherSuffix;
+                    //    //db.Entry(hdrBankDeposit).State = EntityState.Modified;
+                    //    //db.SaveChanges();
 
-                        foreach (sdtoViewAccExpenseEntryDetails dtl in objExpenseEntry.Details)
-                        {
-                            sdtoReceiptDetails bankDepositDtlCr = new sdtoReceiptDetails()
-                            {
-                                ReceiptsId = hdrCashReceiptPayment.Id,
-                                AccountId = dtl.AccountHead.AccountHeadId,
-                                Narration = dtl.Narration,
-                                Amount = dtl.Amount,
-                                CreatedBy = user.UserID,
-                                CreatedOn = DateTime.Now,
-                                Display = 1,
-                                IsDeleted = false
-                            };
+                    //    foreach (sdtoViewAccExpenseEntryDetails dtl in objExpenseEntry.Details)
+                    //    {
+                    //        sdtoReceiptDetails bankDepositDtlCr = new sdtoReceiptDetails()
+                    //        {
+                    //            ReceiptsId = hdrCashReceiptPayment.Id,
+                    //            AccountId = dtl.AccountHead.AccountHeadId,
+                    //            Narration = dtl.Narration,
+                    //            Amount = dtl.Amount,
+                    //            CreatedBy = user.UserID,
+                    //            CreatedOn = DateTime.Now,
+                    //            Display = 1,
+                    //            IsDeleted = false
+                    //        };
 
-                            sdtoReceiptDetails bankDepositDtlDb = new sdtoReceiptDetails()
-                            {
-                                ReceiptsId = hdrCashReceiptPayment.Id,
-                                AccountId = accBankBook.AccountHeadId,
-                                Narration = dtl.Narration,
-                                Amount = dtl.Amount,
-                                CreatedBy = user.UserID,
-                                CreatedOn = DateTime.Now,
-                                Display = 1,
-                                IsDeleted = false,
-                            };
+                    //        sdtoReceiptDetails bankDepositDtlDb = new sdtoReceiptDetails()
+                    //        {
+                    //            ReceiptsId = hdrCashReceiptPayment.Id,
+                    //            AccountId = accBankBook.AccountHeadId,
+                    //            Narration = dtl.Narration,
+                    //            Amount = dtl.Amount,
+                    //            CreatedBy = user.UserID,
+                    //            CreatedOn = DateTime.Now,
+                    //            Display = 1,
+                    //            IsDeleted = false,
+                    //        };
 
-                            db.ReceiptDetails.Add(bankDepositDtlCr);
-                            db.ReceiptDetails.Add(bankDepositDtlDb);
-                        }
+                    //        db.ReceiptDetails.Add(bankDepositDtlCr);
+                    //        db.ReceiptDetails.Add(bankDepositDtlDb);
+                    //    }
 
-                        if (db.BankDepositDetails.Count() > 0)
-                            db.SaveChanges();
+                    //    if (db.BankDepositDetails.Count() > 0)
+                    //        db.SaveChanges();
 
-                        //var receiptDetails = new sdtoReceiptDetails()
-                        //{
-                        //    ReceiptId = receipt.ReceiptId,
-                        //    AccountId = accHead.AccountHeadId,
-                        //    Narration = "Loan dispatched",
-                        //    CrAmount = sdtoLoanInfo.LoanAmount, //Doubt: Is it debit or credit
-                        //    Display = 1
-                        //};                        
-                    }
+                    //    //var receiptDetails = new sdtoReceiptDetails()
+                    //    //{
+                    //    //    ReceiptId = receipt.ReceiptId,
+                    //    //    AccountId = accHead.AccountHeadId,
+                    //    //    Narration = "Loan dispatched",
+                    //    //    CrAmount = sdtoLoanInfo.LoanAmount, //Doubt: Is it debit or credit
+                    //    //    Display = 1
+                    //    //};                        
+                    //}
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("ListBankDepositWithdrawal");
                 }
             }
-            LoadAccountHeadList(0);
-            LoadAccountBookList(objExpenseEntry.Book != null ? objExpenseEntry.Book.AccountBookId : 0);
+
+            // LoadAccountHeadList(0);
+            // LoadAccountBookList(objExpenseEntry.Book != null ? objExpenseEntry.Book.AccountBookId : 0);
 
             return View(objExpenseEntry);
         }
 
-        public ActionResult JournalEntry()
+        public ActionResult JournalEntry(long? HeaderId)
         {
             LoadAccountHeadList(0);
             LoadJournalBookList(0);
             //LoadAccountBookList(0);
             //var accJournalBookAccHeadId = db.GeneralSettings.FirstOrDefault().PurchaseJournalId;
             //var accBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookType.UniqueName.Equals("Journal", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
             sdtoViewAccJournalEntry obj = new sdtoViewAccJournalEntry() { Date = DateTime.Now };
-            //var CashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
-            //var cashBook = db.AccountBooks.Include(x => x.AccountHeadId).Where(x => x.AccountBookId == CashBookId).FirstOrDefault();
-            //if (cashBook != null)
-            //{
-            //    obj.Book = cashBook;
-            //}
+            obj.Details.Add(new sdtoViewAccJournalEntryDetails() { AccountHead = new sdtoAccountHead() { } });
+
+            if (HeaderId != null && HeaderId.Value > 0)
+            {
+                var header = db.JournalHeader.Find(HeaderId);
+                if (header != null)
+                {
+                    obj = new sdtoViewAccJournalEntry()
+                    {
+                        Balance = header.VoucherTotal,
+                        Book = new sdtoAccountBook() { AccountBookId = header.BookId },
+                        Date = header.TransDate.Value,
+                        HeaderId = HeaderId.Value,
+                        PreviousVoucherTotal = header.VoucherTotal,
+                        Voucher = header.VoucherNo
+                    };
+
+                    var headerSubList = db.JournalDetails.Where(x => x.IsDeleted == false && x.JournalId == obj.HeaderId);
+                    if (headerSubList != null)
+                    {
+                        foreach (sdtoJournalDetails dtl in headerSubList)
+                        {
+                            obj.Details.Add(new sdtoViewAccJournalEntryDetails()
+                            {
+                                AccountHead = new sdtoAccountHead() { AccountHeadId = dtl.AccountId },
+                                DebitAmount = -1 * dtl.DrAmount,
+                                CreditAmount = -1 * dtl.CrAmount,
+                                Narration = dtl.Narration
+                            });
+                        }
+                    }
+                }
+            }
+
             return View(obj);
         }
 
@@ -390,78 +525,16 @@ namespace LoanManagementSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    sdtoUser user = Session["UserDetails"] as sdtoUser;
-                    var settingCashBookId = db.GeneralSettings.FirstOrDefault().CashBookId;
-                    //Post for Bank book
-                    var accBankBook = db.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    if (accBankBook != null)
-                    {
-                        sdtoJournalHeader hdrCashReceiptPayment = new sdtoJournalHeader()
-                        {
-                            BookId = objCashReceiptPayment.Book.AccountBookId,
-                            Cancelled = 0,
-                            CreatedOn = DateTime.Now,
-                            CreatedBy = user.UserID,
-                            FinYear = 1,
-                            FromModule = 0,
-                            IsDeleted = false,
-                            VoucherNo = objCashReceiptPayment.Voucher,
-                            VoucherTotal = objCashReceiptPayment.CreditVoucherTotal + objCashReceiptPayment.DebitVoucherTotal
-                        };
+                    bfTransaction objTransaction = new bfTransaction(db);
+                    if (objCashReceiptPayment.HeaderId > 0)
+                        objTransaction.CancelJournalAccountHeader(objCashReceiptPayment.HeaderId);
 
-                        db.JournalHeader.Add(hdrCashReceiptPayment);
-                        db.SaveChanges();
-
-                        //hdrBankDeposit.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrBankDeposit.BankTransId + accBankBook.ReceiptVoucherSuffix;
-                        //db.Entry(hdrBankDeposit).State = EntityState.Modified;
-                        //db.SaveChanges();
-
-                        foreach (sdtoViewAccJournalEntryDetails dtl in objCashReceiptPayment.Details)
-                        {
-                            sdtoJournalDetails bankDepositDtlCr = new sdtoJournalDetails()
-                            {
-                                JournalId = hdrCashReceiptPayment.Id,
-                                AccountId = dtl.AccountHead.AccountHeadId,
-                                Narration = dtl.Narration,
-                                CrAmount = dtl.CreditAmount,
-                                CreatedBy = user.UserID,
-                                CreatedOn = DateTime.Now,
-                                IsDeleted = false
-                            };
-
-                            sdtoJournalDetails bankDepositDtlDb = new sdtoJournalDetails()
-                            {
-                                JournalId = hdrCashReceiptPayment.Id,
-                                AccountId = accBankBook.AccountHeadId,
-                                Narration = dtl.Narration,
-                                DrAmount = dtl.DebitAmount,
-                                CreatedBy = user.UserID,
-                                CreatedOn = DateTime.Now,
-                                IsDeleted = false,
-                            };
-
-                            db.JournalDetails.Add(bankDepositDtlCr);
-                            db.JournalDetails.Add(bankDepositDtlDb);
-                        }
-
-                        if (db.JournalDetails.Count() > 0)
-                            db.SaveChanges();
-
-                        //var receiptDetails = new sdtoReceiptDetails()
-                        //{
-                        //    ReceiptId = receipt.ReceiptId,
-                        //    AccountId = accHead.AccountHeadId,
-                        //    Narration = "Loan dispatched",
-                        //    CrAmount = sdtoLoanInfo.LoanAmount, //Doubt: Is it debit or credit
-                        //    Display = 1
-                        //};                        
-                    }
-
-                    return RedirectToAction("Index", "Home");
+                    objTransaction.AddJournalEntry(objCashReceiptPayment);
+                    return RedirectToAction("ListJournalEntry");
                 }
             }
             LoadAccountHeadList(0);
-            LoadAccountBookList(objCashReceiptPayment.Book != null ? objCashReceiptPayment.Book.AccountBookId : 0);
+            LoadJournalBookList(objCashReceiptPayment.Book != null ? objCashReceiptPayment.Book.AccountBookId : 0);
 
             return View(objCashReceiptPayment);
         }
@@ -481,7 +554,7 @@ namespace LoanManagementSystem.Controllers
         public ActionResult DepositWithdrawalSave(sdtoViewAccDepositWithdrawal DepositWithdrawal)
         {
             LoadAccountHeadList(0);
-            LoadAccountBookList(DepositWithdrawal != null && DepositWithdrawal.Book != null ? DepositWithdrawal.Book.AccountBookId : 0);
+            LoadAccountBookList(DepositWithdrawal != null && DepositWithdrawal.Book != null ? DepositWithdrawal.Book.AccountBookId : 0, 0);
             return View(DepositWithdrawal);
         }
 
@@ -509,7 +582,7 @@ namespace LoanManagementSystem.Controllers
             //    TempData["PrevItems"] = objDepositWithdrawal.Details;
             //}
             LoadAccountHeadList(0);
-            LoadAccountBookList(objDepositWithdrawal.Book != null ? objDepositWithdrawal.Book.AccountBookId : 0);
+            LoadAccountBookList(objDepositWithdrawal.Book != null ? objDepositWithdrawal.Book.AccountBookId : 0, 0);
 
             return View(objDepositWithdrawal);
         }
@@ -531,7 +604,7 @@ namespace LoanManagementSystem.Controllers
                 }
 
                 OpeningBalance.CreatedOn = DateTime.Now;
-                sdtoUser session = Session["UserDetails"] as sdtoUser;
+                sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
                 if (session != null)
                     OpeningBalance.CreatedBy = session.UserID;
                 OpeningBalance.IsDeleted = false;
@@ -566,7 +639,7 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                sdtoUser session = Session["UserDetails"] as sdtoUser;
+                sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
                 if (session != null)
                     OpeningBalance.ModifiedBy = session.UserID;
                 OpeningBalance.ModifiedOn = DateTime.Now;
@@ -586,6 +659,63 @@ namespace LoanManagementSystem.Controllers
             return View();
         }
 
+        public ActionResult ListBankDepositWithdrawal()
+        {
+            return View();
+        }
+
+        public JsonResult BankDepositWithdrawalInfo()
+        {
+            long CompanyId = 0;
+            sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+            if (session != null)
+                CompanyId = session.CompanyId.Value;
+
+            bfReport objReport = new bfReport(db);
+            var Deposits = objReport.GetBankDepositWithdrawal(CompanyId, string.Empty);
+            return Json(Deposits, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ListCashReceiptPayment()
+        {
+            return View();
+        }
+
+        public JsonResult CashReceiptPaymentInfo()
+        {
+            long CompanyId = 0;
+            sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+            if (session != null)
+                CompanyId = session.CompanyId.Value;
+
+            bfReport objReport = new bfReport(db);
+            var CashReceiptPayments = objReport.GetCashReceiptPayments(CompanyId, string.Empty);
+            return Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ListJournalEntry()
+        {
+            return View();
+        }
+
+        public JsonResult JournalEntryInfo()
+        {
+            long CompanyId = 0;
+            sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+            if (session != null)
+                CompanyId = session.CompanyId.Value;
+
+            bfReport objReport = new bfReport(db);
+            var CashReceiptPayments = objReport.GetJournalEntries(CompanyId, string.Empty);
+            return Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetBookAccountDetails(long AccountBookId, string TransType)
+        {
+            bfTransaction objReport = new bfTransaction(db);
+            var accDetails = objReport.GetAccountDetails(AccountBookId, TransType);
+            return Json(accDetails, JsonRequestBehavior.AllowGet);
+        }
 
         protected override void Dispose(bool disposing)
         {

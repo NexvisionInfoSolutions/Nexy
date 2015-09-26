@@ -15,7 +15,7 @@ namespace LoanManagementSystem.Models
         [Display(Name = "Company ID")]
         public long CompanyId { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string Code { get; set; }
 
         [MaxLength(100)]

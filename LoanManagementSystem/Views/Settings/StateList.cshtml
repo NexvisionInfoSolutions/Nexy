@@ -1,0 +1,88 @@
+﻿@model IEnumerable<LoanManagementSystem.Models.sdtoState>
+
+@{
+    ViewBag.Title = "State List";
+    
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //var datepc = $('.date-picker');
+            //if (datepc != null)
+            //    datepc.datepicker({
+            //        format: 'yyyy.M.dd',
+            //        startDate: '-3d',
+            //        //showOn: "both",
+            //        buttonImageOnly: true,
+            //        buttonImage: "calendar.gif",
+            //        buttonText: "Calendar",
+            //        regional: ["en-US"]
+            //    });
+
+            Search();
+        });
+
+        function Search() {
+
+            // prepare the data
+            var source =
+            {
+                dataType: 'json',
+                //traditional:true,
+                contentType: 'application/json',
+                dataFields: [
+                    { name: 'StateId', type: 'number' },
+                    { name: 'CountryId', type: 'number' },
+                    { name: 'CountryName', type: 'string' },
+                    { name: 'CountryAbbr', type: 'string' },
+                    { name: 'StateName', type: 'string' },
+                    { name: 'StateAbbr', type: 'string' },
+                ],
+                id: 'Id',
+                url: '/Settings/StateInfo?CountryId='+@ViewBag.CountryId
+            };
+
+            var LinkId = function (row, column, value, rowData) {                
+                var html = '<b><a target="_blank" href="/Settings/SaveState?CountryId=' + rowData.CountryId + '&StateId=' + rowData.StateId + '">' + value + '</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTableLoan").jqxDataTable(
+            {            
+                width:1000,    
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 10,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'State Name', dataField: 'StateName', cellsRenderer: LinkId },
+                  { text: 'State Abbr', dataField: 'StateAbbr' },
+                  //{ text: 'Country Name', dataField: 'CountryName' },
+                  //{ text: 'Country Abbr', dataField: 'CountryAbbr' }
+                ]
+            });
+
+            return false;
+        }
+    </script>
+}
+  
+
+  <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+@if(ViewBag.CountryId!= "0"){
+               @Html.ActionLink("Add State", "SaveState", new { @CountryId=@ViewBag.CountryId })
+}
+
+@Html.DropDownList("CountryId", (SelectList)ViewBag.CountryList, htmlAttributes: new {  @ID = "ddlCountry", onchange = "document.location.href = '/Settings/StateList?CountryId=' + this.options[this.selectedIndex].value;" })
+            </div>
+            <div class="panel-body">
+                <div id="dataTableLoan" style="width: 300px; overflow-x: scroll"></div>
+            </div>
+        </div>
+    </div>

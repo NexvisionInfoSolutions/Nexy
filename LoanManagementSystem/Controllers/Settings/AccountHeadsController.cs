@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Data.Models.Accounts;
 using LoanManagementSystem.Models;
+using Data.Models.Accounts.Schedules;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -56,8 +57,18 @@ namespace LoanManagementSystem.Controllers
         // GET: AccountHeads/Create
         public ActionResult Create()
         {
-            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", 0);
-            ViewBag.AccountTypeList = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType");
+            var schedules = db.Schedules.ToList();
+            schedules.Insert(0, new sdtoSchedule() { ScheduleId = 0, ScheduleName = "Select a Schedule" });
+            ViewBag.ScheduleList = new SelectList(schedules, "ScheduleId", "ScheduleName", 0);
+
+            var accountTypes = db.AccountTypes.ToList();
+            accountTypes.Insert(0, new sdtoAccountType() { AccountTypeId = 0, AccountType = "Select an Account Type" });
+            ViewBag.AccountTypeList = new SelectList(accountTypes, "AccountTypeId", "AccountType", 0);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
+
             return View();
         }
 
@@ -72,7 +83,7 @@ namespace LoanManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 long? userCreatedBy = null;
-                var userSession = Session["UserDetails"] as sdtoUser;
+                var userSession = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
                 if (userSession != null)
                     userCreatedBy = userSession.UserID;
 
@@ -114,8 +125,17 @@ namespace LoanManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ScheduleList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", accHead.ScheduleId);
-            ViewBag.AccountTypeList = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", accHead.AccountTypeId);
+            var schedules = db.Schedules.ToList();
+            schedules.Insert(0, new sdtoSchedule() { ScheduleId = 0, ScheduleName = "Select a Schedule" });
+            ViewBag.ScheduleList = new SelectList(schedules, "ScheduleId", "ScheduleName", 0);
+
+            var accountTypes = db.AccountTypes.ToList();
+            accountTypes.Insert(0, new sdtoAccountType() { AccountTypeId = 0, AccountType = "Select an Account Type" });
+            ViewBag.AccountTypeList = new SelectList(accountTypes, "AccountTypeId", "AccountType", 0);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
 
             return View(accHead);
         }
@@ -132,8 +152,19 @@ namespace LoanManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SchedulesList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoAccountHead.ScheduleId);
-            ViewBag.AccountTypeId = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
+
+            var schedules = db.Schedules.ToList();
+            schedules.Insert(0, new sdtoSchedule() { ScheduleId = 0, ScheduleName = "Select a Schedule" });
+            ViewBag.ScheduleList = new SelectList(schedules, "ScheduleId", "ScheduleName", sdtoAccountHead.ScheduleId);
+
+            var accountTypes = db.AccountTypes.ToList();
+            accountTypes.Insert(0, new sdtoAccountType() { AccountTypeId = 0, AccountType = "Select an Account Type" });
+            ViewBag.AccountTypeList = new SelectList(accountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
+
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtoAccountHead.AddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtoAccountHead.ContactId);
             return View(sdtoAccountHead);
@@ -149,7 +180,7 @@ namespace LoanManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 long? userCreatedBy = null;
-                var userSession = Session["UserDetails"] as sdtoUser;
+                var userSession = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
                 if (userSession != null)
                     userCreatedBy = userSession.UserID;
 
@@ -171,8 +202,17 @@ namespace LoanManagementSystem.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.SchedulesList = new SelectList(db.Schedules, "ScheduleId", "ScheduleName", sdtoAccountHead.ScheduleId);
-            ViewBag.AccountTypeId = new SelectList(db.AccountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
+            var schedules = db.Schedules.ToList();
+            schedules.Insert(0, new sdtoSchedule() { ScheduleId = 0, ScheduleName = "Select a Schedule" });
+            ViewBag.ScheduleList = new SelectList(schedules, "ScheduleId", "ScheduleName", sdtoAccountHead.ScheduleId);
+
+            var accountTypes = db.AccountTypes.ToList();
+            accountTypes.Insert(0, new sdtoAccountType() { AccountTypeId = 0, AccountType = "Select an Account Type" });
+            ViewBag.AccountTypeList = new SelectList(accountTypes, "AccountTypeId", "AccountType", sdtoAccountHead.AccountTypeId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtoAccountHead.AddressId);
             ViewBag.ContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtoAccountHead.ContactId);
             return View(sdtoAccountHead);
@@ -186,6 +226,9 @@ namespace LoanManagementSystem.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             sdtoAccountHead sdtoAccountHead = db.AccountHeads.Find(id);
+            var createdUser = db.User.Find(sdtoAccountHead.CreatedBy);
+            if (createdUser != null)
+                sdtoAccountHead.CreatedByUser = createdUser;
             if (sdtoAccountHead == null)
             {
                 return HttpNotFound();

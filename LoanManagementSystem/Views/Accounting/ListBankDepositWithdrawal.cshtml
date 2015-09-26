@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Bank Deposit Withdrawal";
+}
+
+@*<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+*@
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //var datepc = $('.date-picker');
+            //if (datepc != null)
+            //    datepc.datepicker({
+            //        format: 'yyyy.M.dd',
+            //        startDate: '-3d',
+            //        //showOn: "both",
+            //        buttonImageOnly: true,
+            //        buttonImage: "calendar.gif",
+            //        buttonText: "Calendar",
+            //        regional: ["en-US"]
+            //    });
+
+            Search();
+        });
+
+        function Search() {
+
+            // prepare the data
+            var source =
+            {
+                dataType: 'json',
+                //traditional:true,
+                contentType: 'application/json',
+                dataFields: [
+                    { name: 'Id', type: 'number' },
+                    { name: 'VoucherNo', type: 'string' },
+                    { name: 'VoucherTotal', type: 'number' },
+                    { name: 'FromModule', type: 'string' },
+                    { name: 'Transaction', type: 'string' },
+                    { name: 'TransDate', type: 'date' },
+                    { name: 'TransId', type: 'number' },
+                    { name: 'Narration', type: 'string' },
+                    { name: 'Amount', type: 'Amount' },
+                    { name: 'Instrument', type: 'string' },
+                    { name: 'InstrumentNo', type: 'string' },
+                    { name: 'InstrumentDate', type: 'date' },
+                    { name: 'PeriodName', type: 'string' },
+                    { name: 'BookName', type: 'string' },
+                    { name: 'AccountName', type: 'string' },
+                    { name: 'AccountCode', type: 'string' },
+                    { name: 'AccountType', type: 'string' },
+                ],
+                id: 'Id',
+                url: '/Accounting/BankDepositWithdrawalInfo'
+            };
+
+            var LinkId = function (row, column, value) {
+                var html = '<b><a target="_blank" href="/LoanRepayments/Index?LoanId=' + value + '">' + value + '</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTableLoan").jqxDataTable(
+            {
+                width: 1000,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 10,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  //{ text: 'User Id', dataField: 'UserID', width: 120 },
+                  { text: 'Id', dataField: 'Id', width: 120, cellsRenderer: LinkId },
+                  { text: 'Voucher No', dataField: 'VoucherNo', width: 160 },
+                  { text: 'Voucher Total', dataField: 'VoucherTotal', width: 160 },
+                  { text: 'Module', dataField: 'FromModule', width: 150 },
+                  { text: 'Transaction Type', dataField: 'Transaction', width: 150 },
+                  { text: 'Date', dataField: 'TransDate', width: 150, format: 'd' },
+                  { text: 'Transaction Id', dataField: 'TransId', width: 150 },
+                  { text: 'Narration', dataField: 'Narration', width: 150 },
+                  { text: 'Amount', dataField: 'Amount', width: 150 },
+                  { title: 'Instrument', text: 'Instrument', dataField: 'Instrument', width: 150 },
+                  { text: 'InstrumentNo', dataField: 'InstrumentNo', width: 150 },
+                  { text: 'InstrumentDate', dataField: 'InstrumentDate', width: 150 },
+                  { text: 'PeriodName', dataField: 'PeriodName', width: 150 },
+                  { text: 'BookName', dataField: 'BookName', width: 150 },
+                  { text: 'AccountName', dataField: 'AccountName', width: 150 },
+                  { text: 'AccountCode', dataField: 'AccountCode', width: 150 },
+                  { text: 'AccountType', dataField: 'AccountType', width: 150 }
+                ]
+            });
+
+
+            return false;
+        }
+    </script>
+}
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("Add Bank Deposit","BankDeposit","Accounting") @Html.ActionLink("Add Bank Withdrawal","BankWithdrawal","Accounting")
+            </div>
+            <div class="panel-body">
+                <div id="dataTableLoan" style="width: 300px; overflow-x: scroll"></div>
+            </div>
+        </div>
+    </div>

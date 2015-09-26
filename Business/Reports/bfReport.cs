@@ -16,6 +16,84 @@ namespace Business.Reports
     {
         public bfReport(DbContext dbConnection) : base(dbConnection) { }
 
+        public List<sdtoBankDepositWithdrawal> GetBankDepositWithdrawal(long CompanyId, string FilterValue)
+        {
+            List<sdtoBankDepositWithdrawal> rptCollection = new List<sdtoBankDepositWithdrawal>();
+            try
+            {
+                AppDb.Database.Connection.Open();
+                SqlParameter pm = new SqlParameter("@vFilterValue", SqlDbType.VarChar);
+                pm.Value = FilterValue;                
+                DbRawSqlQuery<sdtoBankDepositWithdrawal> result = AppDb.Database.SqlQuery<sdtoBankDepositWithdrawal>("usp_GetBankDepositWithdrawal @vFilterValue, @vCompanyId",
+                    pm,
+                    new SqlParameter("@vCompanyId", CompanyId));
+
+                if (result != null)
+                    rptCollection = result.ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                AppDb.Database.Connection.Close();
+            }
+            return rptCollection;
+        }
+
+        public List<sdtoCashReceiptPayment> GetCashReceiptPayments(long CompanyId, string FilterValue)
+        {
+            List<sdtoCashReceiptPayment> rptCollection = new List<sdtoCashReceiptPayment>();
+            try
+            {
+                AppDb.Database.Connection.Open();
+                SqlParameter pm = new SqlParameter("@vFilterValue", SqlDbType.VarChar);
+                pm.Value = FilterValue;
+                DbRawSqlQuery<sdtoCashReceiptPayment> result = AppDb.Database.SqlQuery<sdtoCashReceiptPayment>("usp_GetCashReceiptPayment @vFilterValue, @vCompanyId",
+                    pm,
+                    new SqlParameter("@vCompanyId", CompanyId));
+
+                if (result != null)
+                    rptCollection = result.ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                AppDb.Database.Connection.Close();
+            }
+            return rptCollection;
+        }
+
+        public List<sdtoJournalEntries> GetJournalEntries(long CompanyId, string FilterValue)
+        {
+            List<sdtoJournalEntries> rptCollection = new List<sdtoJournalEntries>();
+            try
+            {
+                AppDb.Database.Connection.Open();
+                SqlParameter pm = new SqlParameter("@vFilterValue", SqlDbType.VarChar);
+                pm.Value = FilterValue;
+                DbRawSqlQuery<sdtoJournalEntries> result = AppDb.Database.SqlQuery<sdtoJournalEntries>("usp_GetJournalEntries @vFilterValue, @vCompanyId",
+                    pm,
+                    new SqlParameter("@vCompanyId", CompanyId));
+
+                if (result != null)
+                    rptCollection = result.ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                AppDb.Database.Connection.Close();
+            }
+            return rptCollection;
+        }
+
         public List<sdtoRptLoanSummary> GetRptLoanSummary(long CompanyId, DataTable dtParameters)
         {
             List<sdtoRptLoanSummary> rptCollection = new List<sdtoRptLoanSummary>();

@@ -1,6 +1,7 @@
 ﻿using Business.Base;
 using Data.Models.Accounts;
 using Data.Models.Enumerations;
+using LoanManagementSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -243,7 +244,7 @@ namespace Business.Reports
                             TransDate = DateTime.Now,
                             VoucherTotal = LoanInfo.LoanAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
                             TransType = ReceiptType.Receipt,
-                            FinYear = 1,
+                            FinancialYearId = CurrentUser.UserSession.FinancialYearId.Value,
                             FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
                             Transaction = TransactionType.LoanEntry, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
                             TransId = LoanInfo.LoanId, //Doubt: Is transaction id loan id?
@@ -297,10 +298,10 @@ namespace Business.Reports
                 if (accHeadMember != null)
                 {
                     var settingCashBookId = AppDb.GeneralSettings.FirstOrDefault().CashBookId;
-                    var settingsInterestBookId = AppDb.GeneralSettings.FirstOrDefault().InterestBookId;
+                    var settingsInterestAccountId = AppDb.GeneralSettings.FirstOrDefault().InterestAccountId;
                     //Post for Bank book
                     var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
-                    var accInterestBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingsInterestBookId).FirstOrDefault();
+                    var accInterest = AppDb.AccountHeads.Where(x => x.AccountHeadId == settingsInterestAccountId).FirstOrDefault();
                     if (accCashBook != null)
                     {
                         var receipt = new sdtoReceiptHeader()
@@ -309,7 +310,7 @@ namespace Business.Reports
                             TransDate = DateTime.Now,
                             VoucherTotal = LoanInfo.LoanAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
                             TransType = ReceiptType.Receipt,
-                            FinYear = 1,
+                            FinancialYearId = CurrentUser.UserSession.FinancialYearId.Value,
                             FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
                             Transaction = TransactionType.LoanRepayment, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
                             TransId = LoanRepaymentInfo.LoanRepaymentId, //Doubt: Is transaction id loan id?
@@ -345,7 +346,7 @@ namespace Business.Reports
                         var receiptDetailsDbInt = new sdtoReceiptDetails()
                         {
                             ReceiptsId = receipt.Id,
-                            AccountId = accInterestBook.AccountHeadId,
+                            AccountId = accInterest.AccountHeadId,
                             Narration = "Loan Repayment received",
                             Amount = LoanRepaymentInfo.InterestAmount,
                             Display = 1
@@ -384,7 +385,7 @@ namespace Business.Reports
                             TransDate = DateTime.Now,
                             VoucherTotal = DepositInfo.DepositAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
                             TransType = ReceiptType.Receipt,
-                            FinYear = 1,
+                            FinancialYearId = CurrentUser.UserSession.FinancialYearId.Value,
                             FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
                             Transaction = TransactionType.DepositEntry, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
                             TransId = DepositInfo.DepositId, //Doubt: Is transaction id loan id?
@@ -446,8 +447,8 @@ namespace Business.Reports
                     var accCashBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingCashBookId).FirstOrDefault();
                     var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingBankBookId).FirstOrDefault();
 
-                    var settingsInterestBookId = AppDb.GeneralSettings.FirstOrDefault().InterestBookId;
-                    var accInterestBook = AppDb.AccountBooks.Where(x => x.AccountBookId == settingsInterestBookId).FirstOrDefault();
+                    var settingsInterestAccId = AppDb.GeneralSettings.FirstOrDefault().InterestAccountId;
+                    var accInterest = AppDb.AccountHeads.Where(x => x.AccountHeadId == settingsInterestAccId).FirstOrDefault();
                     if (accCashBook != null && accBankBook != null)
                     {
                         var receipt = new sdtoReceiptHeader()
@@ -456,7 +457,7 @@ namespace Business.Reports
                             TransDate = DateTime.Now,
                             VoucherTotal = WithdrawalInfo.WithdrawalAmount, //Doubt: Voucher total should be loan amount or loan amount + additional value from user
                             TransType = ReceiptType.Receipt,
-                            FinYear = 1,
+                            FinancialYearId = CurrentUser.UserSession.FinancialYearId.Value,
                             FromModule = 1,  //Doubt: 0 for "From Accounts", 1 for "From Posting"
                             Transaction = TransactionType.DepositWithdrawal, //Doubt: //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"
                             TransId = WithdrawalInfo.WithdrawalId, //Doubt: Is transaction id loan id?
@@ -495,7 +496,7 @@ namespace Business.Reports
                         var receiptDetailsCrInt = new sdtoReceiptDetails()
                         {
                             ReceiptsId = receipt.Id,
-                            AccountId = accInterestBook.AccountHeadId,
+                            AccountId = accInterest.AccountHeadId,
                             Narration = "Deposit Amount Withdrawn",
                             Amount = -1 * WithdrawalInfo.InterestAmount,
                             Display = 1
@@ -510,6 +511,580 @@ namespace Business.Reports
             }
 
             return tranFlag;
+        }
+
+        public sdtoTransactionAccountDetails GetAccountDetails(long AccountBookId, string TranType)
+        {
+            sdtoTransactionAccountDetails rptCollection = new sdtoTransactionAccountDetails();
+            try
+            {
+                AppDb.Database.Connection.Open();
+                DbRawSqlQuery<sdtoTransactionAccountDetails> result = AppDb.Database.SqlQuery<sdtoTransactionAccountDetails>("usp_GetAccountDetails @vAccountBookId, @vTranType, @vSessionKey",
+                    new SqlParameter("@vAccountBookId", AccountBookId)
+                    , new SqlParameter("@vTranType", TranType)
+                    , new SqlParameter("@vSessionKey", CurrentUser.UserSession.SessionKey));
+
+                if (result != null)
+                    rptCollection = result.ToList().FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                AppDb.Database.Connection.Close();
+            }
+            return rptCollection;
+        }
+
+        public bool AddCashPayment(sdtoViewAccCashReceiptPayment objCashReceiptPayment)
+        {
+            var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == objCashReceiptPayment.Book.AccountBookId).FirstOrDefault();
+            if (accBankBook != null)
+            {
+                sdtoReceiptHeader hdrBankDeposit = new sdtoReceiptHeader()
+                {
+                    BookId = accBankBook.AccountBookId,
+                    Cancelled = 0,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = CurrentUser.UserID,
+                    TransDate = objCashReceiptPayment.Date,
+                    FinancialYearId = CurrentUser.UserSession.FinancialYearId.Value,
+                    FromModule = 0,
+                    IsDeleted = false,
+                    // VoucherNo = objCashReceiptPayment.Voucher,
+                    VoucherTotal = objCashReceiptPayment.Details.Sum(x => x.Amount),
+                    Transaction = TransactionType.CashPayment,
+                    TransType = ReceiptType.Payment
+                };
+
+                AppDb.ReceiptHeader.Add(hdrBankDeposit);
+                AppDb.SaveChanges();
+
+                hdrBankDeposit.VoucherNo = accBankBook.PaymentVoucherPrefix + hdrBankDeposit.Id + accBankBook.PaymentVoucherSuffix;
+                AppDb.Entry(hdrBankDeposit).State = EntityState.Modified;
+                AppDb.SaveChanges();
+
+                foreach (sdtoViewAccCashReceiptPaymentDetails dtl in objCashReceiptPayment.Details)
+                {
+                    sdtoReceiptDetails bankDepositDtlCr = new sdtoReceiptDetails()
+                    {
+                        ReceiptsId = hdrBankDeposit.Id,
+                        AccountId = dtl.AccountHeadId,
+                        Narration = dtl.Narration,
+                        Amount = dtl.Amount,
+                        CreatedBy = CurrentUser.UserID,
+                        CreatedOn = DateTime.Now,
+                        Display = 1,
+                        IsDeleted = false,
+                    };
+
+                    UpdateClosingBalance(dtl.AccountHeadId, CurrentUser.UserSession.FinancialYearId.Value, bankDepositDtlCr.Amount);
+                    UpdateDayBookBalance(dtl.AccountHeadId, CurrentUser.UserSession.FinancialYearId.Value, objCashReceiptPayment.Date, bankDepositDtlCr.Amount, TransactionType.CashPayment);
+                    AppDb.ReceiptDetails.Add(bankDepositDtlCr);
+                }
+
+                sdtoReceiptDetails bankDepositDtlDb = new sdtoReceiptDetails()
+                {
+                    ReceiptsId = hdrBankDeposit.Id,
+                    AccountId = accBankBook.AccountHeadId,
+                    Narration = "Cash Receipt - " + hdrBankDeposit.VoucherNo,
+                    Amount = -1 * objCashReceiptPayment.Details.Sum(x => x.Amount),
+                    CreatedBy = CurrentUser.UserID,
+                    CreatedOn = DateTime.Now,
+                    Display = 1,
+                    IsDeleted = false
+                };
+                UpdateClosingBalance(accBankBook.AccountHeadId, CurrentUser.UserSession.FinancialYearId.Value, bankDepositDtlDb.Amount);
+                UpdateDayBookBalance(accBankBook.AccountHeadId, CurrentUser.UserSession.FinancialYearId.Value, objCashReceiptPayment.Date, bankDepositDtlDb.Amount, TransactionType.CashPayment);
+                AppDb.ReceiptDetails.Add(bankDepositDtlDb);
+                AppDb.SaveChanges();
+            }
+            return true;
+        }
+
+        public bool AddCashReceipt(sdtoViewAccCashReceiptPayment objCashReceiptPayment)
+        {
+            var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == objCashReceiptPayment.Book.AccountBookId).FirstOrDefault();
+            if (accBankBook != null)
+            {
+                sdtoReceiptHeader hdrBankDeposit = new sdtoReceiptHeader()
+                {
+                    BookId = accBankBook.AccountBookId,
+                    Cancelled = 0,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = CurrentUser.UserID,
+                    TransDate = objCashReceiptPayment.Date,
+                    FinancialYearId = CurrentUser.UserSession.FinancialYearId.Value,
+                    FromModule = 0,
+                    IsDeleted = false,
+                    //VoucherNo = objCashReceiptPayment.Voucher,
+                    VoucherTotal = objCashReceiptPayment.Details.Sum(x => x.Amount),
+                    Transaction = TransactionType.CashReceipt,
+                    TransType = ReceiptType.Receipt
+                };
+
+                AppDb.ReceiptHeader.Add(hdrBankDeposit);
+                AppDb.SaveChanges();
+
+                hdrBankDeposit.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrBankDeposit.Id + accBankBook.ReceiptVoucherSuffix;
+                AppDb.Entry(hdrBankDeposit).State = EntityState.Modified;
+                AppDb.SaveChanges();
+
+                foreach (sdtoViewAccCashReceiptPaymentDetails dtl in objCashReceiptPayment.Details)
+                {
+                    sdtoReceiptDetails bankDepositDtlCr = new sdtoReceiptDetails()
+                    {
+                        ReceiptsId = hdrBankDeposit.Id,
+                        AccountId = dtl.AccountHeadId,
+                        Narration = dtl.Narration,
+                        Amount = -1 * dtl.Amount,
+                        CreatedBy = CurrentUser.UserID,
+                        CreatedOn = DateTime.Now,
+                        Display = 1,
+                        IsDeleted = false,
+                    };
+                    UpdateClosingBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, bankDepositDtlCr.Amount);
+                    UpdateDayBookBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, objCashReceiptPayment.Date, bankDepositDtlCr.Amount, TransactionType.CashReceipt);
+                    AppDb.ReceiptDetails.Add(bankDepositDtlCr);
+                }
+
+                sdtoReceiptDetails bankDepositDtlDb = new sdtoReceiptDetails()
+                {
+                    ReceiptsId = hdrBankDeposit.Id,
+                    AccountId = accBankBook.AccountHeadId,
+                    Narration = "Cash Receipt - " + hdrBankDeposit.VoucherNo,
+                    Amount = objCashReceiptPayment.Details.Sum(x => x.Amount),
+                    CreatedBy = CurrentUser.UserID,
+                    CreatedOn = DateTime.Now,
+                    Display = 1,
+                    IsDeleted = false
+                };
+
+                UpdateClosingBalance(bankDepositDtlDb.AccountId, CurrentUser.UserSession.FinancialYearId.Value, bankDepositDtlDb.Amount);
+                UpdateDayBookBalance(bankDepositDtlDb.AccountId, CurrentUser.UserSession.FinancialYearId.Value, objCashReceiptPayment.Date, bankDepositDtlDb.Amount, TransactionType.CashReceipt);
+                AppDb.ReceiptDetails.Add(bankDepositDtlDb);
+                AppDb.SaveChanges();
+            }
+            return true;
+        }
+
+        public bool UpdateClosingBalance(long AccountId, long FinancialYearId, decimal amount)
+        {
+            var openingBalance = AppDb.OpeningBalance.Where(x => x.AccountHeadId == AccountId && x.FinancialYearId == FinancialYearId).FirstOrDefault();
+            if (openingBalance != null)
+            {
+                openingBalance.ClosingBalance += amount;
+                AppDb.Entry<sdtoOpeningBalance>(openingBalance).State = EntityState.Modified;
+                AppDb.SaveChanges();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool UpdateDayBookBalance(long AccountId, long FinancialYearId, DateTime transactionDate, decimal Amount, TransactionType transType)
+        {
+            var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == AccountId && x.IsDeleted == false && x.Date.Date == transactionDate.Date && x.FinancialYearId == FinancialYearId).FirstOrDefault();
+            if (dayBookEntry == null)
+            {
+                dayBookEntry = new sdtoDayBook() { AccountHeadId = AccountId, CreatedBy = CurrentUser.UserID, CreatedOn = DateTime.Now, Date = transactionDate, FinancialYearId = FinancialYearId };
+                AppDb.DayBook.Add(dayBookEntry);
+                AppDb.SaveChanges();
+            }
+
+            if (dayBookEntry != null)
+            {
+                switch (transType)
+                {
+                    case TransactionType.CashPayment:
+                        dayBookEntry.Payment += Amount;
+                        break;
+                    case TransactionType.CashReceipt:
+                        dayBookEntry.Receipt += Amount;
+                        break;
+                    case TransactionType.BankDeposit:
+                        break;
+                    case TransactionType.BankWithdrawal:
+                        break;
+                    case TransactionType.DepositEntry:
+                        dayBookEntry.Payment += Amount;
+                        break;
+                    case TransactionType.DepositWithdrawal:
+                        dayBookEntry.Receipt += Amount;
+                        break;
+                    case TransactionType.LoanEntry:
+                        dayBookEntry.Receipt += Amount;
+                        break;
+                    case TransactionType.LoanRepayment:
+                        dayBookEntry.Payment += Amount;
+                        break;
+                }
+                dayBookEntry.ClosingBalance += Amount;
+                AppDb.Entry(dayBookEntry).State = EntityState.Modified;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool CancelCashAccountHeader(long AccountHeaderId)
+        {
+            var accHeaderEntry = AppDb.ReceiptHeader.Find(AccountHeaderId);
+            if (accHeaderEntry != null)
+            {
+                var accHeaderSub = AppDb.ReceiptDetails.Where(x => x.ReceiptsId == AccountHeaderId);
+                if (accHeaderSub != null)
+                {
+                    foreach (sdtoReceiptDetails dtl in accHeaderSub)
+                    {
+                        dtl.IsDeleted = false;
+                        AppDb.Entry(dtl).State = EntityState.Modified;
+
+                        var openingBal = AppDb.OpeningBalance.Where(x => x.AccountHeadId == dtl.AccountId && x.IsDeleted == false && x.FinancialYearId == accHeaderEntry.FinancialYearId).FirstOrDefault();
+                        if (openingBal != null)
+                        {
+                            openingBal.ClosingBalance += -1 * dtl.Amount;
+                            AppDb.Entry<sdtoOpeningBalance>(openingBal).State = EntityState.Modified;
+                        }
+
+                        var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == dtl.AccountId && x.IsDeleted == false && x.Date.Date == accHeaderEntry.TransDate.Date && x.FinancialYearId == accHeaderEntry.FinancialYearId).FirstOrDefault();
+                        if (dayBookEntry != null)
+                        {
+                            switch (accHeaderEntry.Transaction)
+                            {
+                                case TransactionType.CashPayment:
+                                    dayBookEntry.Payment += -1 * dtl.Amount;
+                                    break;
+                                case TransactionType.CashReceipt:
+                                    dayBookEntry.Receipt += -1 * dtl.Amount;
+                                    break;
+                                case TransactionType.BankDeposit:
+                                    break;
+                                case TransactionType.BankWithdrawal:
+                                    break;
+                            }
+                            dayBookEntry.ClosingBalance += -1 * dtl.Amount;
+                            AppDb.Entry(dayBookEntry).State = EntityState.Modified;
+                        }
+                    }
+                    AppDb.SaveChanges();
+                }
+
+                accHeaderEntry.Cancelled = 1;
+                AppDb.Entry<sdtoReceiptHeader>(accHeaderEntry).State = EntityState.Modified;
+                AppDb.SaveChanges();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool AddBankWithdrawal(sdtoViewAccDepositWithdrawal objDepositWithdrawal)
+        {
+            //sdtoUser user = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+            //var settingCashBookId = db.GeneralSettings.FirstOrDefault().BankBookId;
+            //Post for Bank book
+            var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == objDepositWithdrawal.Book.AccountBookId).FirstOrDefault();
+            if (accBankBook != null)
+            {
+                sdtoBankDepositHeader hdrBankDeposit = new sdtoBankDepositHeader()
+                {
+                    BookId = accBankBook.AccountBookId,
+                    Cancelled = 0,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = CurrentUser.UserID,
+                    TransDate = objDepositWithdrawal.Date,
+                    FinYear = 1,
+                    FromModule = 0,
+                    IsDeleted = false,
+                    VoucherNo = objDepositWithdrawal.Voucher,
+                    VoucherTotal = objDepositWithdrawal.VoucherTotal
+                };
+
+                AppDb.BankDepositHeader.Add(hdrBankDeposit);
+                AppDb.SaveChanges();
+
+                hdrBankDeposit.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrBankDeposit.Id + accBankBook.ReceiptVoucherSuffix;
+                AppDb.Entry(hdrBankDeposit).State = EntityState.Modified;
+                AppDb.SaveChanges();
+
+                foreach (sdtoViewAccDepositWithdrawalDetails dtl in objDepositWithdrawal.Details)
+                {
+                    sdtoBankDepositDetails bankDepositDtlCr = new sdtoBankDepositDetails()
+                    {
+                        BankDepositId = hdrBankDeposit.Id,
+                        AccountId = dtl.AccountHeadId,
+                        Narration = dtl.Narration,
+                        Amount = dtl.Amount,
+                        CreatedBy = CurrentUser.UserID,
+                        CreatedOn = DateTime.Now,
+                        Display = 1,
+                        IsDeleted = false,
+                        Instrument = dtl.InstrumentType,
+                        InstrumentNo = dtl.InstrumentNo,
+                        InstrumentDate = dtl.InstrumentDate
+                    };
+                    UpdateClosingBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, Convert.ToDecimal(bankDepositDtlCr.Amount));
+                    UpdateDayBookBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, objDepositWithdrawal.Date, Convert.ToDecimal(bankDepositDtlCr.Amount), TransactionType.BankWithdrawal);
+                    AppDb.BankDepositDetails.Add(bankDepositDtlCr);
+                }
+
+                sdtoBankDepositDetails bankDepositDtlDb = new sdtoBankDepositDetails()
+                {
+                    BankDepositId = hdrBankDeposit.Id,
+                    AccountId = accBankBook.AccountHeadId,
+                    Narration = "Bank deposit/withdrawal",
+                    Amount = -1 * objDepositWithdrawal.Details.Sum(x => x.Amount),
+                    CreatedBy = CurrentUser.UserID,
+                    CreatedOn = DateTime.Now,
+                    Display = 1,
+                    IsDeleted = false,
+                    Instrument = objDepositWithdrawal.Details.FirstOrDefault().InstrumentType,
+                    InstrumentNo = objDepositWithdrawal.Details.FirstOrDefault().InstrumentNo,
+                    InstrumentDate = objDepositWithdrawal.Details.FirstOrDefault().InstrumentDate
+                };
+
+                UpdateClosingBalance(bankDepositDtlDb.AccountId, CurrentUser.UserSession.FinancialYearId.Value, Convert.ToDecimal(bankDepositDtlDb.Amount));
+                UpdateDayBookBalance(bankDepositDtlDb.AccountId, CurrentUser.UserSession.FinancialYearId.Value, objDepositWithdrawal.Date, Convert.ToDecimal(bankDepositDtlDb.Amount), TransactionType.BankWithdrawal);
+                AppDb.BankDepositDetails.Add(bankDepositDtlDb);
+                AppDb.SaveChanges();
+
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool AddBankDeposit(sdtoViewAccDepositWithdrawal objDepositWithdrawal)
+        {
+            var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == objDepositWithdrawal.Book.AccountBookId).FirstOrDefault();
+            if (accBankBook != null)
+            {
+                sdtoBankDepositHeader hdrBankDeposit = new sdtoBankDepositHeader()
+                {
+                    BookId = objDepositWithdrawal.Book.AccountBookId,
+                    Cancelled = 0,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = CurrentUser.UserID,
+                    TransDate = objDepositWithdrawal.Date,
+                    FinYear = 1,
+                    FromModule = 0,
+                    IsDeleted = false,
+                    VoucherNo = objDepositWithdrawal.Voucher,
+                    VoucherTotal = objDepositWithdrawal.VoucherTotal
+                };
+
+                AppDb.BankDepositHeader.Add(hdrBankDeposit);
+                AppDb.SaveChanges();
+
+                hdrBankDeposit.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrBankDeposit.Id + accBankBook.ReceiptVoucherSuffix;
+                AppDb.Entry(hdrBankDeposit).State = EntityState.Modified;
+                AppDb.SaveChanges();
+
+                foreach (sdtoViewAccDepositWithdrawalDetails dtl in objDepositWithdrawal.Details)
+                {
+                    sdtoBankDepositDetails bankDepositDtlCr = new sdtoBankDepositDetails()
+                    {
+                        BankDepositId = hdrBankDeposit.Id,
+                        AccountId = dtl.AccountHeadId,
+                        Narration = dtl.Narration,
+                        Amount = -1 * dtl.Amount,
+                        CreatedBy = CurrentUser.UserID,
+                        CreatedOn = DateTime.Now,
+                        Display = 1,
+                        IsDeleted = false,
+                        Instrument = dtl.InstrumentType,
+                        InstrumentNo = dtl.InstrumentNo,
+                        InstrumentDate = dtl.InstrumentDate
+                    };
+                    UpdateClosingBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, Convert.ToDecimal(bankDepositDtlCr.Amount));
+                    UpdateDayBookBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, objDepositWithdrawal.Date, Convert.ToDecimal(bankDepositDtlCr.Amount), TransactionType.BankDeposit);
+                    AppDb.BankDepositDetails.Add(bankDepositDtlCr);
+                }
+                AppDb.SaveChanges();
+
+                sdtoBankDepositDetails bankDepositDtlDb = new sdtoBankDepositDetails()
+                {
+                    BankDepositId = hdrBankDeposit.Id,
+                    AccountId = accBankBook.AccountHeadId,
+                    Narration = "Bank deposit/withdrawal",
+                    Amount = objDepositWithdrawal.Details.Sum(x => x.Amount),
+                    CreatedBy = CurrentUser.UserID,
+                    CreatedOn = DateTime.Now,
+                    Display = 1,
+                    IsDeleted = false,
+                    Instrument = objDepositWithdrawal.Details.FirstOrDefault().InstrumentType,
+                    InstrumentNo = objDepositWithdrawal.Details.FirstOrDefault().InstrumentNo,
+                    InstrumentDate = objDepositWithdrawal.Details.FirstOrDefault().InstrumentDate
+                };
+
+                UpdateClosingBalance(bankDepositDtlDb.AccountId, CurrentUser.UserSession.FinancialYearId.Value, Convert.ToDecimal(bankDepositDtlDb.Amount));
+                AppDb.BankDepositDetails.Add(bankDepositDtlDb);
+                AppDb.SaveChanges();
+
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool CancelBankAccountHeader(long AccountHeaderId)
+        {
+            var accHeaderEntry = AppDb.BankDepositHeader.Find(AccountHeaderId);
+            if (accHeaderEntry != null)
+            {
+                var accHeaderSub = AppDb.BankDepositDetails.Where(x => x.BankDepositId == AccountHeaderId);
+                if (accHeaderSub != null)
+                {
+                    foreach (sdtoBankDepositDetails dtl in accHeaderSub)
+                    {
+                        dtl.IsDeleted = false;
+                        AppDb.Entry(dtl).State = EntityState.Modified;
+
+                        var openingBal = AppDb.OpeningBalance.Where(x => x.AccountHeadId == dtl.AccountId && x.IsDeleted == false && x.FinancialYearId == accHeaderEntry.FinYear).FirstOrDefault();
+                        if (openingBal != null)
+                        {
+                            openingBal.ClosingBalance += -1 * Convert.ToDecimal(dtl.Amount);
+                            AppDb.Entry<sdtoOpeningBalance>(openingBal).State = EntityState.Modified;
+                        }
+
+                        //var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == dtl.AccountId && x.IsDeleted == false && x.Date.Date == accHeaderEntry.TransDate.Date && x.FinancialYearId == accHeaderEntry.FinYear).FirstOrDefault();
+                        //if (dayBookEntry != null)
+                        //{
+                        //    switch (accHeaderEntry.Transaction)
+                        //    {
+                        //        case TransactionType.CashPayment:
+                        //            dayBookEntry.Payment += -1 * Convert.ToDecimal(dtl.Amount);
+                        //            break;
+                        //        case TransactionType.CashReceipt:
+                        //            dayBookEntry.Receipt += -1 * Convert.ToDecimal(dtl.Amount);
+                        //            break;
+                        //        case TransactionType.BankDeposit:
+                        //            break;
+                        //        case TransactionType.BankWithdrawal:
+                        //            break;
+                        //    }
+                        //    dayBookEntry.ClosingBalance += -1 * Convert.ToDecimal(dtl.Amount);
+                        //    AppDb.Entry(dayBookEntry).State = EntityState.Modified;
+                        //}
+                    }
+                    AppDb.SaveChanges();
+                }
+
+                accHeaderEntry.Cancelled = 1;
+                AppDb.Entry<sdtoBankDepositHeader>(accHeaderEntry).State = EntityState.Modified;
+                AppDb.SaveChanges();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool CancelJournalAccountHeader(long AccountHeaderId)
+        {
+            var accHeaderEntry = AppDb.JournalHeader.Find(AccountHeaderId);
+            if (accHeaderEntry != null)
+            {
+                var accHeaderSub = AppDb.JournalDetails.Where(x => x.JournalId == AccountHeaderId);
+                if (accHeaderSub != null)
+                {
+                    foreach (sdtoJournalDetails dtl in accHeaderSub)
+                    {
+                        dtl.IsDeleted = false;
+                        AppDb.Entry(dtl).State = EntityState.Modified;
+
+                        var openingBal = AppDb.OpeningBalance.Where(x => x.AccountHeadId == dtl.AccountId && x.IsDeleted == false && x.FinancialYearId == accHeaderEntry.FinancialYearId).FirstOrDefault();
+                        if (openingBal != null)
+                        {
+                            openingBal.ClosingBalance += -1 * Convert.ToDecimal(dtl.CrAmount + dtl.DrAmount);
+                            AppDb.Entry<sdtoOpeningBalance>(openingBal).State = EntityState.Modified;
+                        }
+
+                        var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == dtl.AccountId && x.IsDeleted == false && x.Date.Date == accHeaderEntry.TransDate.Value.Date && x.FinancialYearId == accHeaderEntry.FinancialYearId).FirstOrDefault();
+                        if (dayBookEntry != null)
+                        {
+                            switch (accHeaderEntry.Transaction)
+                            {
+                                case TransactionType.CashPayment:
+                                    dayBookEntry.Payment += -1 * Convert.ToDecimal(dtl.CrAmount + dtl.DrAmount);
+                                    break;
+                                case TransactionType.CashReceipt:
+                                    dayBookEntry.Receipt += -1 * Convert.ToDecimal(dtl.CrAmount + dtl.DrAmount);
+                                    break;
+                                case TransactionType.BankDeposit:
+                                    break;
+                                case TransactionType.BankWithdrawal:
+                                    break;
+                            }
+                            dayBookEntry.ClosingBalance += -1 * Convert.ToDecimal(dtl.CrAmount + dtl.DrAmount);
+                            AppDb.Entry(dayBookEntry).State = EntityState.Modified;
+                        }
+                    }
+                    AppDb.SaveChanges();
+                }
+
+                accHeaderEntry.Cancelled = 1;
+                AppDb.Entry<sdtoJournalHeader>(accHeaderEntry).State = EntityState.Modified;
+                AppDb.SaveChanges();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool AddJournalEntry(sdtoViewAccJournalEntry objJournalEntry)
+        {
+            sdtoUser user = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+            var accBankBook = AppDb.AccountBooks.Where(x => x.AccountBookId == objJournalEntry.Book.AccountBookId).FirstOrDefault();
+            if (accBankBook != null)
+            {
+                sdtoJournalHeader hdrCashReceiptPayment = new sdtoJournalHeader()
+                {
+                    BookId = accBankBook.AccountBookId,
+                    Cancelled = 0,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = user.UserID,
+                    FinancialYearId = 1,
+                    FromModule = 0,
+                    IsDeleted = false,
+                    VoucherNo = objJournalEntry.Voucher,
+                    VoucherTotal = objJournalEntry.CreditVoucherTotal + objJournalEntry.DebitVoucherTotal
+                };
+
+                AppDb.JournalHeader.Add(hdrCashReceiptPayment);
+                AppDb.SaveChanges();
+
+                hdrCashReceiptPayment.VoucherNo = accBankBook.ReceiptVoucherPrefix + hdrCashReceiptPayment.Id + accBankBook.ReceiptVoucherSuffix;
+                AppDb.Entry(hdrCashReceiptPayment).State = EntityState.Modified;
+                AppDb.SaveChanges();
+
+                foreach (sdtoViewAccJournalEntryDetails dtl in objJournalEntry.Details)
+                {
+                    sdtoJournalDetails bankDepositDtlCr = new sdtoJournalDetails()
+                    {
+                        JournalId = hdrCashReceiptPayment.Id,
+                        AccountId = dtl.AccountHead.AccountHeadId,
+                        Narration = dtl.Narration,
+                        CrAmount = dtl.CreditAmount,
+                        DrAmount = dtl.DebitAmount,
+                        CreatedBy = user.UserID,
+                        CreatedOn = DateTime.Now,
+                        IsDeleted = false
+                    };
+
+                    UpdateClosingBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, Convert.ToDecimal(bankDepositDtlCr.CrAmount + bankDepositDtlCr.DrAmount));
+                    UpdateDayBookBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, objJournalEntry.Date, Convert.ToDecimal(bankDepositDtlCr.CrAmount + bankDepositDtlCr.DrAmount), TransactionType.JournalEntry);
+                    AppDb.JournalDetails.Add(bankDepositDtlCr);
+                }
+
+                AppDb.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

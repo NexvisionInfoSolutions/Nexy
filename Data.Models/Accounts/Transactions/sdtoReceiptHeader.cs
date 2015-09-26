@@ -32,13 +32,13 @@ namespace Data.Models.Accounts
 
         public ReceiptType TransType { get; set; }//0 for Cash Receipt, 1 for Cash Payment, 
 
-        public long FinYear { get; set; }
+        [Column("FinYear")]
+        public long FinancialYearId { get; set; }
 
         [Display(Name = "Financial Year")]
-        [ForeignKey("FinYear")]
+        [ForeignKey("FinancialYearId")]
         public sdtoFinancialPeriod FinancialYear { get; set; }
-
-
+        
         public int FromModule { get; set; } //0 for "From Accounts", 1 for "From Posting"
 
         public TransactionType Transaction { get; set; } //0 for Cash Receipt, 1 for Cash Payment, 2 for "Loan Entry", 3 for "Loan repayment"

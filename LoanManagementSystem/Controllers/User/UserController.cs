@@ -38,6 +38,11 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Login()
         {
             FormsAuthentication.SignOut();
+
+            var accFY = db.FinancialPeriod.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.FinancialPeriodId.ToString(), Text = x.PeriodName }).ToList();
+            accFY.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Period Name" });
+            ViewBag.FinancialYears = new SelectList(accFY, "Value", "Text", 0);
+
             return View("Login");
         }
 
@@ -47,28 +52,50 @@ namespace LoanManagementSystem.Controllers
         {
             FormsAuthentication.SignOut();
             // this action is for handle post (login)
-            if (ModelState.IsValid) // this is check validity
+            //if (ModelState.IsValid) // this is check validity
             {
-                using (LoanDBContext dc = new LoanDBContext())
+                if ((u.FinancialYearId != null && u.FinancialYearId > 0))
                 {
-                    var v = dc.User.Where(a => a.UserName.Equals(u.UserName) && a.Password.Equals(u.Password)).FirstOrDefault();
-                    if (v != null)
+                    using (LoanDBContext dc = new LoanDBContext())
                     {
-                        FormsAuthentication.SetAuthCookie(u.UserName, false);
-                        Session["UserDetails"] = v;
-                        //Session["LogedUserFullname"] = v.FirstName.ToString() + " " + v.LastName.ToString();
-                        return RedirectToAction("Index", "Home");
+                        var v = dc.User.Where(a => a.UserName.Equals(u.UserName) && a.Password.Equals(u.Password)).FirstOrDefault();
+                        if (v != null)
+                        {
+                            var userSession = new sdtoUserSession() { UserId = v.UserID, CompanyId = v.CompanyId, StartTime = DateTime.Now, FinancialYearId = u.FinancialYearId, Browser = UtilityHelper.UtilityHelper.GetBrowser(), SessionKey = System.Guid.NewGuid().ToString("N"), IPAddress = Request.ServerVariables["REMOTE_ADDR"] };
+                            db.UserSessions.Add(userSession);
+                            db.SaveChanges();
+                            v.UserSession = userSession;
+                            FormsAuthentication.SetAuthCookie(u.UserName, false);
+                            UtilityHelper.UserSession.SetSession(UtilityHelper.UserSession.LoggedInUser, v);
+                            //Session["LogedUserFullname"] = v.FirstName.ToString() + " " + v.LastName.ToString();
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                            ModelState.AddModelError("", "Invalid login attempt.");
                     }
-                    else
-                        ModelState.AddModelError("", "Invalid login attempt.");
                 }
+                else
+                    ModelState.AddModelError("", "Please select a financial period.");
+
             }
+            var accFY = db.FinancialPeriod.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.FinancialPeriodId.ToString(), Text = x.PeriodName }).ToList();
+            accFY.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Period Name" });
+            ViewBag.FinancialYears = new SelectList(accFY, "Value", "Text", 0);
             return View();
         }
 
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
+
+            sdtoUser user = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (user != null && user.UserSession != null)
+            {
+                user.UserSession.EndTime = DateTime.Now;                
+                db.Entry<sdtoUserSession>(user.UserSession).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Login");
         }
 
@@ -113,8 +140,9 @@ namespace LoanManagementSystem.Controllers
         // GET: /User/Create
         public ActionResult Create()
         {
+            sdtoUser user = new sdtoUser() { CompanyId = 1 };
             ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code");
-            return View();
+            return View(user);
         }
 
         // POST: /User/Create
@@ -134,11 +162,12 @@ namespace LoanManagementSystem.Controllers
                                             "image/png"
                                         };
 
-                if (ProfileImage == null || ProfileImage.ContentLength == 0)
-                {
-                    ModelState.AddModelError("ProfileImage", "This field is required");
-                }
-                else if (ProfileImage != null && !validImageTypes.Contains(ProfileImage.ContentType))
+                //if (ProfileImage == null || ProfileImage.ContentLength == 0)
+                //{
+                //    ModelState.AddModelError("ProfileImage", "This field is required");
+                //}
+                //else 
+                if (ProfileImage != null && !validImageTypes.Contains(ProfileImage.ContentType))
                 {
                     ModelState.AddModelError("ProfileImage", "Please choose either a GIF, JPG or PNG image");
                 }

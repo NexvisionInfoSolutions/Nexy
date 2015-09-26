@@ -213,7 +213,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             deposit.InteresRate = db.GeneralSettings.FirstOrDefault().BankInterest;
             deposit.Duration = 30;
             deposit.IsDeleted = false;
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             deposit.CreatedBy = sessionUser != null ? sessionUser.UserID : 0;
             deposit.CreatedOn = DateTime.Now;
 
@@ -235,7 +235,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             sdtoDepositInfo depositInfo)
         {
             depositInfo.DepositType = Data.Models.Enumerations.DepositType.Fixed;
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             depositInfo.IsDeleted = false;
             depositInfo.CreatedBy = sessionUser != null ? sessionUser.UserID : 0;
             depositInfo.CreatedOn = DateTime.Now;
@@ -282,7 +282,7 @@ namespace LoanManagementSystem.Controllers.Deposit
         public ActionResult Edit(//[Bind(Include = "DepositId,UserId,Duration,DepositType,MaturityDate,TotalInstallments,DepositAmount,MatureAmount,InstallmentAmount,ClosedDate,RecurringDepositDate,Status,ChequeDetails,InteresRate,ApprovedDate,ApprovedBy,Notes,CreatedOn,ModifiedOn,CreatedBy,ModifiedBy,IsDeleted,DeletedBy,DeletedOn")] 
             sdtoDepositInfo depositInfo)
         {
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             depositInfo.ModifiedBy = sessionUser != null ? sessionUser.UserID : 0;
             depositInfo.ModifiedOn = DateTime.Now;
             depositInfo.MatureAmount = depositInfo.DepositAmount + ((depositInfo.DepositAmount * Convert.ToDecimal(depositInfo.InteresRate / 100) * depositInfo.Duration) / 365);

@@ -62,7 +62,7 @@ namespace LoanManagementSystem.Controllers.Loan
 
         public ActionResult ExportView()
         {
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long CompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 CompanyId = sessionUser.CompanyId.Value;
@@ -158,7 +158,7 @@ namespace LoanManagementSystem.Controllers.Loan
             }
             reader.Close();
 
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long CompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 CompanyId = sessionUser.CompanyId.Value;
@@ -180,7 +180,7 @@ namespace LoanManagementSystem.Controllers.Loan
         public FileStreamResult Export()
         {
             //var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).Where(x => x.IsDeleted == false && x.Status == LoanStatus.Active);
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long CompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 CompanyId = sessionUser.CompanyId.Value;

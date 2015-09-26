@@ -25,9 +25,9 @@ namespace Data.Models.Accounts
 
         [ForeignKey("CompanyId")]
         public virtual sdtoCompany Company { get; set; }
-        
+
         public long? AssetScheduleId { get; set; }
-        
+
         //[Association("FK_Settings_MemberSchedule", "AssetScheduleId", "ScheduleId", IsForeignKey = true)]
         [ForeignKey("AssetScheduleId")]
         public Data.Models.Accounts.Schedules.sdtoSchedule AssetSchedule { get; set; }
@@ -48,54 +48,74 @@ namespace Data.Models.Accounts
         //public sdtoAccountHead DiscountAccount { get; set; }
 
         [Display(Name = "Round Off Account")]
+        [ForeignKey("RoundOffAccount")]
         public long? RoundOffAccountId { get; set; }
-        [Association("FK_Settings_RoundOffAccount", "RoundOffAccountId", "AccountHeadId", IsForeignKey = true)]
+        //[Association("FK_Settings_RoundOffAccount", "RoundOffAccountId", "AccountHeadId", IsForeignKey = true)]
+        //[InverseProperty("AccountHeadId")]
         public sdtoAccountHead RoundOffAccount { get; set; }
 
-        [Display(Name = "Sundry Debtor Account")]
+        [Display(Name = "Sundry Debtor")]
+        [ForeignKey("SundryDebtorAccount")]
         public long? SundryDebtorAccountId { get; set; }
-        [Association("FK_Settings_SundryDebtorAccount", "SundryDebtorAccountId", "AccountHeadId", IsForeignKey = true)]
-        public sdtoAccountHead SundryDebtorAccount { get; set; }
+        //[Association("FK_Settings_SundryDebtorAccount", "SundryDebtorAccountId", "AccountHeadId", IsForeignKey = true)]
+        //[InverseProperty("AccountHeadId")]
+        public sdtoSchedule SundryDebtorAccount { get; set; }
 
-        [Display(Name = "Sundry Creditor Account")]
+        [Display(Name = "Sundry Creditor")]
+        [ForeignKey("SundryCreditorAccount")]
         public long? SundryCreditorAccountId { get; set; }
-        [Association("FK_Settings_SundryCreditorAccount", "SundryCreditorAccountId", "AccountHeadId", IsForeignKey = true)]
-        public sdtoAccountHead SundryCreditorAccount { get; set; }
+        //[Association("FK_Settings_SundryCreditorAccount", "SundryCreditorAccountId", "AccountHeadId", IsForeignKey = true)]
+        //[InverseProperty("AccountHeadId")]
+        public sdtoSchedule SundryCreditorAccount { get; set; }
 
         [Display(Name = "P & L Expense Schedule")]
+        [ForeignKey("PLExpenseSchedule")]
         public long? PLExpenseScheduleId { get; set; }
-        [Association("FK_Settings_PLExpenseSchedule", "PLExpenseScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[Association("FK_Settings_PLExpenseSchedule", "PLExpenseScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[InverseProperty("ScheduleId")]
         public sdtoSchedule PLExpenseSchedule { get; set; }
 
         [Display(Name = "P & L Income Schedule")]
+        [ForeignKey("PLIncomeSchedule")]
         public long? PLIncomeScheduleId { get; set; }
-        [Association("FK_Settings_PLIncomeSchedule", "PLIncomeScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[Association("FK_Settings_PLIncomeSchedule", "PLIncomeScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[InverseProperty("ScheduleId")]
         public sdtoSchedule PLIncomeSchedule { get; set; }
 
         [Display(Name = "Trading Expense Schedule")]
+        [ForeignKey("TradingExpenseSchedule")]
         public long? TradingExpenseScheduleId { get; set; }
-        [Association("FK_Settings_TradingExpenseSchedule", "TradingExpenseScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[Association("FK_Settings_TradingExpenseSchedule", "TradingExpenseScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[InverseProperty("ScheduleId")]
         public sdtoSchedule TradingExpenseSchedule { get; set; }
 
         [Display(Name = "Trading Income Schedule")]
+        [ForeignKey("TradingIncomeSchedule")]
         public long? TradingIncomeScheduleId { get; set; }
-        [Association("FK_Settings_TradingIncomeSchedule", "TradingIncomeScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[Association("FK_Settings_TradingIncomeSchedule", "TradingIncomeScheduleId", "ScheduleId", IsForeignKey = true)]
+        //[InverseProperty("ScheduleId")]
         public sdtoSchedule TradingIncomeSchedule { get; set; }
 
         [Display(Name = "Cash Book")]
+        [ForeignKey("CashBook")]
         public long? CashBookId { get; set; }
-        [Association("FK_Settings_CashBook", "CashBookId", "AccountBookId", IsForeignKey = true)]
+        //[Association("FK_Settings_CashBook", "CashBookId", "AccountBookId", IsForeignKey = true)]
+        //[InverseProperty("AccountBookId")]
         public sdtoAccountBook CashBook { get; set; }
 
         [Display(Name = "Bank Book")]
+        [ForeignKey("BankBook")]
         public long? BankBookId { get; set; }
-        [Association("FK_Settings_BankBook", "BankBookId", "AccountBookId", IsForeignKey = true)]
+        //[Association("FK_Settings_BankBook", "BankBookId", "AccountBookId", IsForeignKey = true)]
+        //[InverseProperty("AccountBookId")]
         public sdtoAccountBook BankBook { get; set; }
 
         [Display(Name = "Interest Book")]
-        public long? InterestBookId { get; set; }
-        [Association("FK_Settings_InterestBook", "InterestBookId", "AccountBookId", IsForeignKey = true)]
-        public sdtoAccountBook InterestBook { get; set; }
+        [ForeignKey("InterestAccount")]
+        public long? InterestAccountId { get; set; }
+        //[Association("FK_Settings_InterestBook", "InterestBookId", "AccountBookId", IsForeignKey = true)]
+        //[InverseProperty("AccountHeadId")]
+        public sdtoAccountHead InterestAccount { get; set; }
 
         //[Display(Name = "Journal")]
         //public long SalesJournalId { get; set; }

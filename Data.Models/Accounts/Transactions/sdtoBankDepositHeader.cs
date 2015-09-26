@@ -15,6 +15,7 @@ namespace Data.Models.Accounts
     {
         //  Id, BookId, TransDate, VoucherNo, VoucherTotal, TransType, FinYear,  Cancelled
         [Key]
+        [Display(Name = "Id")]
         public long Id { get; set; }
         [Required]
         public long BookId { get; set; }

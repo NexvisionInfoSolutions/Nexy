@@ -22,7 +22,7 @@ namespace Data.Models.Accounts
         public long BookId { get; set; }
 
         [Display(Name = "Transaction Date")]
-        public DateTime TransDate { get; set; }
+        public DateTime? TransDate { get; set; }
 
         [MaxLength(100)]
         public string VoucherNo { get; set; }
@@ -33,13 +33,15 @@ namespace Data.Models.Accounts
         //public int TransType { get; set; }//0 for Bank Deposit , 1 for Bank Withdrawal, 
 
         [Display(Name = "Financial Year")]
-        [ForeignKey("FinYear")]
+        [ForeignKey("FinancialYearId")]
         public sdtoFinancialPeriod FinancialYear { get; set; }
-        public long FinYear { get; set; }
+
+        [Column("FinYear")]
+        public long FinancialYearId { get; set; }
 
         public int FromModule { get; set; } //0 for "From Accounts", 1 for "From Posting"
 
-        public int Transaction { get; set; } //0 for Bank Deposit, 1 for Withdrawal, 2 for "Loan Entry", 3 for "Loan repayment"
+        public TransactionType Transaction { get; set; } //0 for Bank Deposit, 1 for Withdrawal, 2 for "Loan Entry", 3 for "Loan repayment"
 
         public long TransId { get; set; }// Transaction id 
 

@@ -118,7 +118,7 @@
                     source: dataAdapter,
                     //theme: 'arctic',
                     theme: 'energyblue',
-                    pageSize: 5,
+                    pageSize: 10,
                     sortable: true,
                     filterable: true,
                     pageable: true,
@@ -169,7 +169,7 @@
                     width: 450,
                     source: dataAdapter,
                     theme: 'arctic',
-                    pageSize: 5,
+                    pageSize: 10,
                     sortable: true,
                     filterable: true,
                     pageable: true,
@@ -204,11 +204,12 @@
 
  @using (Html.BeginForm("Index", "Home"))
 {
+    @Html.ValidationSummary(true)
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x=>x.CompanyId) 
 <div class="col-md-12">
     <div class="col-md-3 form-horizontal">
-        @Html.ValidationSummary(true)
+        
         <div class="form-group">
             <div class="col-md-10">
                 @Html.LabelFor(m => m.Members, new { @class = "control-label" })

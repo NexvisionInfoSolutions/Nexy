@@ -14,6 +14,7 @@ namespace Data.Models.Accounts
     public class sdtoLoanRepayment : sdtoBaseData
     {
         [Key]
+        [Display(Name = "Repayment Id")]
         public long LoanRepaymentId { get; set; }
 
         [Display(Name = "Loan ID")]
@@ -36,6 +37,9 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Repayment Amount")]
         public decimal RepaymentAmount { get; set; }
+
+        [Display(Name = "Previous Payment Due Amount")]
+        public decimal PreviousPaymentDueAmount { get; set; }
 
         [Display(Name = "Pending Principal Amount")]
         public decimal PendingPrincipalAmount { get; set; }

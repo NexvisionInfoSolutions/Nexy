@@ -78,6 +78,10 @@ namespace LoanManagementSystem.Models
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoReceiptDetails> ReceiptDetails { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoReceiptHeader> ReceiptHeader { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoOpeningBalance> OpeningBalance { get; set; }
+        public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoDayBook> DayBook { get; set; }
         public System.Data.Entity.DbSet<Data.Models.Accounts.sdtoFinancialPeriod> FinancialPeriod { get; set; }
+        public System.Data.Entity.DbSet<sdtoCountry> Countries { get; set; }
+        public System.Data.Entity.DbSet<sdtoState> States { get; set; }
+        public System.Data.Entity.DbSet<sdtoUserSession> UserSessions { get; set; }
     }
 }

@@ -96,14 +96,19 @@ namespace LoanManagementSystem.Controllers.Loan
                 var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == LoanId).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
                 var repaymentInterest = loanInterest;
                 var repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+                var lastRepaymentDate = loandetails.RepaymentStartDate.Value;
 
                 if (loanRepayment != null && loanRepayment.LoanRepaymentId > 0)
                 {
+                    lastRepaymentDate = loanRepayment.RepaymentDate.Value;
+                    var days = (DateTime.Now.Date - lastRepaymentDate).Days;
+                    days = days == 0 ? 1 : days;
+
                     loanPendingAmt = loanRepayment.PendingPrincipalAmount;
                     loanPendingInstallments = loanRepayment.PendingInstallments;
                     repaymentInterest = loanRepayment.InterestRate;
 
-                    repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+                    repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100) * days) / 365;
                     repay.RepaymentCode = loanRepayment.RepaymentCode;
                 }
 
@@ -116,7 +121,7 @@ namespace LoanManagementSystem.Controllers.Loan
                 repay.Status = Data.Models.Enumerations.RepaymentStatus.Paid;
                 repay.PaymentMode = ModeOfPayment.Cash;
 
-                repay.RepaymentAmount = loandetails.InstallmentAmount + repay.InterestAmount;
+                repay.RepaymentAmount = loandetails.InstallmentAmount + repay.InterestAmount + repay.PreviousPaymentDueAmount;
             }
 
             return View(repay);
@@ -143,19 +148,28 @@ namespace LoanManagementSystem.Controllers.Loan
                     var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == sdtoLoanRepayment.LoanId).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
                     var repaymentInterest = loanInterest;
                     var repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+                    var lastRepaymentDate = loandetails.RepaymentStartDate.Value;
 
                     if (loanRepayment != null && loanRepayment.LoanRepaymentId > 0)
                     {
+                        lastRepaymentDate = loanRepayment.RepaymentDate.Value;
+                        var days = (sdtoLoanRepayment.RepaymentDate.Value - lastRepaymentDate).Days;
+                        days = days == 0 ? 1 : days;
+
                         loanPendingAmt = loanRepayment.PendingPrincipalAmount;
                         loanPendingInstallments = loanRepayment.PendingInstallments;
                         repaymentInterest = loanRepayment.InterestRate;
 
-                        repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
+                        repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100) * days) / 365;
                         sdtoLoanRepayment.RepaymentCode = loanRepayment.RepaymentCode;
+
+                        decimal paymentBalance = sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt - loandetails.InstallmentAmount;
+                        decimal previousDue = paymentBalance > 0 ? (loanRepayment.PreviousPaymentDueAmount - paymentBalance) : (loanRepayment.PreviousPaymentDueAmount + paymentBalance);
+                        sdtoLoanRepayment.PreviousPaymentDueAmount = previousDue;
                     }
 
                     sdtoLoanRepayment.InterestAmount = Math.Round(repaymentInterestAmt, 2);
-                    sdtoLoanRepayment.PendingPrincipalAmount = loanPendingAmt - (sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt);
+                    sdtoLoanRepayment.PendingPrincipalAmount = loanPendingAmt - loandetails.InstallmentAmount; //(sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt);                    
                     sdtoLoanRepayment.PendingInstallments -= Convert.ToInt32(Math.Floor(sdtoLoanRepayment.PendingPrincipalAmount / loandetails.InstallmentAmount));
                     sdtoLoanRepayment.PrincipalAmount = loandetails.LoanAmount;
 
@@ -210,6 +224,36 @@ namespace LoanManagementSystem.Controllers.Loan
         {
             if (ModelState.IsValid)
             {
+                var loandetails = db.sdtoLoanInfoes.Find(sdtoLoanRepayment.LoanId);
+                var lastRepaymentDate = loandetails.RepaymentStartDate.Value;
+                var pendingPrincipalAmount = loandetails.LoanAmount;
+                decimal previousDue = 0;
+
+                var previousLoanRepayment1 = db.sdtoLoanRepayments.Where(x => x.LoanId == sdtoLoanRepayment.LoanId && x.LoanRepaymentId != sdtoLoanRepayment.LoanRepaymentId).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
+                if (previousLoanRepayment1 != null && previousLoanRepayment1.LoanRepaymentId > 0)
+                {
+                    lastRepaymentDate = previousLoanRepayment1.RepaymentDate.Value;
+                    pendingPrincipalAmount = previousLoanRepayment1.PendingPrincipalAmount;
+                    previousDue = previousLoanRepayment1.PreviousPaymentDueAmount;
+                }
+                var loanRepayment1 = db.sdtoLoanRepayments.Where(x => x.LoanRepaymentId == sdtoLoanRepayment.LoanRepaymentId).FirstOrDefault();
+
+                if (loanRepayment1 != null && loanRepayment1.LoanRepaymentId > 0)
+                {
+                    var days = (sdtoLoanRepayment.RepaymentDate.Value - lastRepaymentDate).Days;
+                    days = days == 0 ? 1 : days;
+                    var repaymentInterestAmt = (pendingPrincipalAmount * Convert.ToDecimal(sdtoLoanRepayment.InterestRate / 100) * days) / 365;
+
+                    sdtoLoanRepayment.InterestAmount = Math.Round(repaymentInterestAmt, 2);
+
+                    decimal paymentBalance = sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt - loandetails.InstallmentAmount;
+                    sdtoLoanRepayment.PreviousPaymentDueAmount = paymentBalance > 0 ? (previousDue - paymentBalance) : (previousDue + paymentBalance);
+
+                    sdtoLoanRepayment.PendingPrincipalAmount = pendingPrincipalAmount - loandetails.InstallmentAmount; //(sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt);                    
+                    sdtoLoanRepayment.PendingInstallments -= Convert.ToInt32(Math.Floor(sdtoLoanRepayment.PendingPrincipalAmount / loandetails.InstallmentAmount));
+                    sdtoLoanRepayment.PrincipalAmount = loandetails.LoanAmount;
+                }
+
                 db.Entry(sdtoLoanRepayment).State = EntityState.Modified;
                 db.SaveChanges();
 

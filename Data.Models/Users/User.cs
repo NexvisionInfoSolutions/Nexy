@@ -11,11 +11,12 @@ namespace LoanManagementSystem.Models
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("Users")]
     public class sdtoUser : sdtoBaseData
-    {       
+    {
         [Key]
+        [Display(Name = "User Id")]
         public long UserID { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string Code { get; set; }
 
         [Display(Name = "First Name")]
@@ -33,11 +34,17 @@ namespace LoanManagementSystem.Models
         [MaxLength(200)]
         public string UserName { get; set; }
 
-        [MaxLength(100)]        
+        [MaxLength(100)]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [NotMapped]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
 
         public string Description { get; set; }
 
@@ -88,7 +95,7 @@ namespace LoanManagementSystem.Models
         [ForeignKey("PermanentAddressId")]
         public virtual sdtoAddress PermanentAddress { get; set; }
 
-         [Display(Name = "Guaranter Address")]
+        [Display(Name = "Guaranter Address")]
         [ForeignKey("GuaranterAddressId")]
         public virtual sdtoAddress GuaranterAddress { get; set; }
 
@@ -99,10 +106,18 @@ namespace LoanManagementSystem.Models
         public virtual sdtoContact GuaranterContacts { get; set; }
 
         public long? CompanyId { get; set; }
-        
+
         public long? AccountHeadId { get; set; }
 
         [ForeignKey("AccountHeadId")]
         public virtual sdtoAccountHead AccountHead { get; set; }
+
+        [NotMapped]
+        public virtual sdtoUserSession UserSession { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Financial Period")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a financial period")]
+        public long? FinancialYearId { get; set; }
     }
 }

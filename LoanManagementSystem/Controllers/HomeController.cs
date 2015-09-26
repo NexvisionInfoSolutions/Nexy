@@ -17,7 +17,7 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Index()
         {
-            sdtoUser sessionUser = Session["UserDetails"] as sdtoUser;
+            sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
             long cCompanyId = 0;
             if (sessionUser != null && sessionUser.CompanyId != null)
                 cCompanyId = sessionUser.CompanyId.Value;

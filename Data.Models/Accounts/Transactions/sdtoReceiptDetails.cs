@@ -28,6 +28,8 @@ namespace Data.Models.Accounts
         [MaxLength(1000)]
         public string Narration { get; set; }
 
+        [Required]
+        [Range(double.MinValue, double.MaxValue)]
         public decimal Amount { get; set; }
 
         //public float Amount { get; set; }

@@ -10,6 +10,7 @@ using LoanManagementSystem.Models;
 using Data.Models.Enumerations;
 using System.IO;
 using Business.Reports;
+using Data.Models.Accounts;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -47,7 +48,8 @@ namespace LoanManagementSystem.Controllers
 
         public JsonResult MemberInfo()
         {
-            var dbResult = db.User.Include(s => s.UserAddress).Include(s => s.PermanentAddress).Include(s => s.Contacts).Where(s => s.UserType == UserType.Member).ToList();
+            //db.Set<sdtoUser>().Include("UserAddress").Include("PermanentAddress").Include(
+            var dbResult = db.Set<sdtoUser>().Include(s => s.UserAddress).Include(s => s.PermanentAddress).Include(s => s.Contacts).Include(x => x.PermanentAddress.Country).Include(x => x.UserAddress.Country).Include(x => x.UserAddress.StateDetails).Include(x => x.PermanentAddress.StateDetails).Where(s => s.UserType == UserType.Member).ToList();
             var Users = (from users in dbResult
                          select new
                          {
@@ -57,8 +59,8 @@ namespace LoanManagementSystem.Controllers
                              users.FatherName,
                              users.Code,
                              MemberInfo = users.UserID,
-                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode),
-                             PermanentAddress = UtilityHelper.UtilityHelper.FormatAddress(users.PermanentAddress.Address1, users.PermanentAddress.Address2, users.PermanentAddress.Place, users.PermanentAddress.Post, users.PermanentAddress.District, users.PermanentAddress.Zipcode),
+                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode, users.UserAddress.Taluk, users.UserAddress.Village, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
+                             PermanentAddress = UtilityHelper.UtilityHelper.FormatAddress(users.PermanentAddress.Address1, users.PermanentAddress.Address2, users.PermanentAddress.Place, users.PermanentAddress.Post, users.PermanentAddress.District, users.PermanentAddress.Zipcode, users.PermanentAddress.Taluk, users.PermanentAddress.Village, users.PermanentAddress.StateDetails.StateName, users.PermanentAddress.Country.CountryName),
                              UserContactPhone = users.Contacts.Telephone1,
                              UserContactMobile = users.Contacts.Mobile1
                          });
@@ -90,6 +92,23 @@ namespace LoanManagementSystem.Controllers
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1");
             ViewBag.PermanentContactId = new SelectList(db.Contacts, "ContactId", "ContactName");
             ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name");
+
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
+
+            sdtoSettings settings = db.GeneralSettings.Where(x => x.SettingsId == 1).FirstOrDefault();
+            if (settings == null || settings.AssetScheduleId == null)
+            {
+                TempData["ShowHeaderInfo"] = true;
+                TempData["ViewMessage"] = "Please configure the system setting before member is created";
+
+                return RedirectToAction("Edit", "Settings", new { id = 1 });
+            }
+
             return View();
         }
 
@@ -100,6 +119,7 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(sdtoUser sdtouser, HttpPostedFileBase ProfileImage)//[Bind(Include="UserID,Code,Name,Description,UserGroupId,IsActive,Designation,UserType,ContactId,AddressId,PermanentAddressId,GuaranterAddressId,PermanentContactId,GuaranterContactId,FatherName,CreatedOn")]
         {
+            sdtouser.ConfirmPassword = sdtouser.Password;
             if (string.IsNullOrEmpty(sdtouser.Code))
                 ModelState.AddModelError("", "Code cannot be empty");
             else if (string.IsNullOrEmpty(sdtouser.FirstName))
@@ -108,6 +128,8 @@ namespace LoanManagementSystem.Controllers
                 ModelState.AddModelError("", "LastName cannot be empty");
             else if (string.IsNullOrEmpty(sdtouser.UserAddress.Address1))
                 ModelState.AddModelError("", "Communication Address cannot be empty");
+            else if (string.IsNullOrWhiteSpace(sdtouser.PermanentAddress.Address1))
+                ModelState.AddModelError("", "Permanent Address cannot be empty");
             else if (ModelState.IsValid)
             {
                 var validImageTypes = new string[]
@@ -118,11 +140,7 @@ namespace LoanManagementSystem.Controllers
                                             "image/png"
                                         };
 
-                if (ProfileImage == null || ProfileImage.ContentLength == 0)
-                {
-                    ModelState.AddModelError("", "ProfileImage is required");
-                }
-                else if (ProfileImage != null && !validImageTypes.Contains(ProfileImage.ContentType))
+                if (ProfileImage != null && !validImageTypes.Contains(ProfileImage.ContentType))
                 {
                     ModelState.AddModelError("", "Please choose either a GIF, JPG or PNG image for ProfileImage");
                 }
@@ -193,6 +211,12 @@ namespace LoanManagementSystem.Controllers
             ViewBag.GuaranterContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.GuaranterContactId);
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.PermanentAddressId);
             ViewBag.PermanentContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.PermanentContactId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.UserAddress.CountryId);
+            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.GuaranterAddress.CountryId);
+            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.PermanentAddress.CountryId);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             //ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
             return View(sdtouser);
         }
@@ -223,6 +247,12 @@ namespace LoanManagementSystem.Controllers
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.PermanentAddressId);
             ViewBag.PermanentContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.PermanentContactId);
             ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.UserAddress.CountryId);
+            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.GuaranterAddress.CountryId);
+            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.PermanentAddress.CountryId);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View(sdtouser);
         }
 
@@ -233,6 +263,7 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(sdtoUser sdtouser, HttpPostedFileBase ProfileImage)
         {
+            sdtouser.Password = sdtouser.ConfirmPassword;
             if (ModelState.IsValid)
             {
                 //var user  = db.User.Find(sdtouser.UserID);
@@ -264,7 +295,6 @@ namespace LoanManagementSystem.Controllers
                     sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
                 }
 
-
                 //sdtouser.UserAddress.AddressId = user.UserAddressId;
                 //sdtouser.PermanentAddress = db.Address.Find(sdtouser.PermanentAddressId);
                 //sdtouser.GuaranterAddress = db.Address.Find(sdtouser.GuaranterAddressId);
@@ -274,6 +304,12 @@ namespace LoanManagementSystem.Controllers
                 //db.User.Attach(user);
 
                 db.Entry(sdtouser).State = EntityState.Modified;
+                db.Entry(sdtouser.PermanentAddress).State = EntityState.Modified;
+                db.Entry(sdtouser.UserAddress).State = EntityState.Modified;
+                db.Entry(sdtouser.GuaranterAddress).State = EntityState.Modified;
+                db.Entry(sdtouser.Contacts).State = EntityState.Modified;
+                db.Entry(sdtouser.GuaranterContacts).State = EntityState.Modified;
+                db.Entry(sdtouser.PermanentContacts).State = EntityState.Modified;
                 db.SaveChanges();
 
                 if (ProfileImage != null)
@@ -293,6 +329,12 @@ namespace LoanManagementSystem.Controllers
             ViewBag.GuaranterContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.GuaranterContactId);
             ViewBag.PermanentAddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.PermanentAddressId);
             ViewBag.PermanentContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.PermanentContactId);
+            var countries = db.Countries.ToList();
+            countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.UserAddress.CountryId);
+            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.GuaranterAddress.CountryId);
+            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.PermanentAddress.CountryId);
+            ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View(sdtouser);
         }
 

@@ -14,6 +14,7 @@ namespace Data.Models.Accounts
     public class sdtoLoanInfo : sdtoBaseData
     {
         [Key]
+        [Display(Name = "Loan Id")]
         public long LoanId { get; set; }
         /// <summary>
         /// User Id of the member

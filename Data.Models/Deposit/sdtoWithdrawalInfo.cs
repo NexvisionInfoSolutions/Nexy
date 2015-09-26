@@ -14,6 +14,7 @@ namespace Data.Models.Accounts
     public class sdtoWithdrawalInfo : sdtoBaseData
     {
         [Key]
+        [Display(Name = "Withdrawal Id")]
         public long WithdrawalId { get; set; }
 
         [Display(Name = "Deposit Id")]

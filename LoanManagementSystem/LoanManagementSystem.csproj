@@ -213,14 +213,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MutipleSelectionAccounts.cs" />
-    <Compile Include="Models\sdtoViewAccJournalEntry.cs" />
-    <Compile Include="Models\sdtoViewAccJournalEntryDetails.cs" />
-    <Compile Include="Models\sdtoViewAccExpenseEntry.cs" />
-    <Compile Include="Models\sdtoViewAccCashReceiptPayment.cs" />
-    <Compile Include="Models\sdtoViewAccExpenseEntryDetails.cs" />
-    <Compile Include="Models\sdtoViewAccDepositWithdrawal.cs" />
-    <Compile Include="Models\sdtoViewAccCashReceiptPaymentDetails.cs" />
-    <Compile Include="Models\sdtoViewAccDepositWithdrawalDetails.cs" />
     <Compile Include="Models\sdtoViewReportFilter.cs" />
     <Compile Include="Models\sdtoViewUserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -354,6 +346,7 @@
     <Content Include="Content\images\prod3.jpg" />
     <Content Include="Content\images\prod4.jpg" />
     <Content Include="Content\images\prod5.jpg" />
+    <Content Include="Content\images\session-out.jpe" />
     <Content Include="Content\images\sort_asc.png" />
     <Content Include="Content\images\sort_asc_disabled.png" />
     <Content Include="Content\images\sort_both.png" />
@@ -959,6 +952,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Accounting.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1620,7 +1614,7 @@
     <Content Include="Views\Accounting\NewOpeningBalance.cshtml" />
     <Content Include="Views\Accounting\OpeningBalances.cshtml" />
     <Content Include="Views\Accounting\UpdateOpeningBalance.cshtml" />
-    <Content Include="Views\Accounting\DepositWithdrawal.cshtml" />
+    <Content Include="Views\Accounting\BankWithdrawal.cshtml" />
     <Content Include="Views\Accounting\Action.cshtml" />
     <Content Include="Views\Accounting\DepositWithdrawalNewRow.cshtml" />
     <Content Include="Views\Accounting\JournalEntry.cshtml" />
@@ -1631,9 +1625,17 @@
     <Content Include="Views\sdtoAccountBooks\Edit.cshtml" />
     <Content Include="Views\sdtoAccountBooks\Index.cshtml" />
     <Content Include="Views\Reports\LedgerReport.cshtml" />
-    <Content Include="Views\Accounting\CashReceiptPayment.cshtml" />
+    <Content Include="Views\Accounting\CashPayment.cshtml" />
     <Content Include="Views\Reports\TrialBalance.cshtml" />
     <Content Include="Views\Shared\_Layout3.cshtml" />
+    <Content Include="Views\Accounting\CashReceipt.cshtml" />
+    <Content Include="Views\Accounting\BankDeposit.cshtml" />
+    <Content Include="Views\Accounting\ListBankDepositWithdrawal.cshtml" />
+    <Content Include="Views\Accounting\ListCashReceiptPayment.cshtml" />
+    <Content Include="Views\Accounting\ListJournalEntry.cshtml" />
+    <Content Include="Views\Settings\StateList.cshtml" />
+    <Content Include="Views\Settings\CountryList.cshtml" />
+    <Content Include="Views\Settings\SaveState.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

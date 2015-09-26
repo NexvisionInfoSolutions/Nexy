@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -22,9 +23,17 @@ namespace LoanManagementSystem.Models
         [MaxLength(100)]
         public string City { get; set; }
 
-        public string State { get; set; }
+        [Display(Name = "State")]
+        [ForeignKey("StateDetails")]
+        public long? StateId { get; set; }
 
-        public string Country { get; set; }
+        [Display(Name = "Country")]
+        public long? CountryId { get; set; }
+
+        public sdtoState StateDetails { get; set; }
+
+        [ForeignKey("CountryId")]
+        public sdtoCountry Country { get; set; }
 
         [Display(Name = "Zip code")]
         public string Zipcode { get; set; }
@@ -34,13 +43,7 @@ namespace LoanManagementSystem.Models
         public string Post { get; set; }
 
         public string District { get; set; }
-
-        //public DateTime CreatedOn { get; set; }
-
-        //public long CreatedBy { get; set; }
-
-        //public DateTime ModifiedOn { get; set; }
-
-        //public long ModifiedBy { get; set; }
+        public string Taluk { get; set; }
+        public string Village { get; set; }
     }
 }

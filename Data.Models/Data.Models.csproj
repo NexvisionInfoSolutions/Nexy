@@ -41,22 +41,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\sdtoAccountBookDetails.cs" />
+    <Compile Include="Accounts\sdtoTransactionAccountDetails.cs" />
+    <Compile Include="Accounts\sdtoJournalEntries.cs" />
+    <Compile Include="Accounts\sdtoCashReceiptPayment.cs" />
     <Compile Include="Accounts\sdtoFinancialPeriod.cs" />
     <Compile Include="Accounts\Schedules\sdtoSchedule.cs" />
     <Compile Include="Accounts\sdtoAccountBook.cs" />
     <Compile Include="Accounts\sdtoAccountBookType.cs" />
     <Compile Include="Accounts\sdtoAccountType.cs" />
     <Compile Include="Accounts\sdtoAccountHead.cs" />
+    <Compile Include="Accounts\sdtoBankDepositWithdrawal.cs" />
+    <Compile Include="Accounts\sdtoViewAccCashReceiptPayment.cs" />
+    <Compile Include="Accounts\sdtoViewAccCashReceiptPaymentDetails.cs" />
+    <Compile Include="Accounts\sdtoViewAccDepositWithdrawal.cs" />
+    <Compile Include="Accounts\sdtoViewAccDepositWithdrawalDetails.cs" />
+    <Compile Include="Accounts\sdtoViewAccExpenseEntry.cs" />
+    <Compile Include="Accounts\sdtoViewAccExpenseEntryDetails.cs" />
+    <Compile Include="Accounts\sdtoViewAccJournalEntry.cs" />
+    <Compile Include="Accounts\sdtoViewAccJournalEntryDetails.cs" />
     <Compile Include="Accounts\Transactions\sdtoBankDepositDetails.cs" />
     <Compile Include="Accounts\Transactions\sdtoBankDepositHeader.cs" />
     <Compile Include="Accounts\Transactions\sdtoJournalDetails.cs" />
     <Compile Include="Accounts\Transactions\sdtoJournalHeader.cs" />
     <Compile Include="Accounts\Transactions\sdtoLedgerReport.cs" />
+    <Compile Include="Accounts\Transactions\sdtoDayBook.cs" />
     <Compile Include="Accounts\Transactions\sdtoReceiptDetails.cs" />
     <Compile Include="Accounts\Transactions\sdtoOpeningBalance.cs" />
     <Compile Include="Accounts\Transactions\sdtoReceiptHeader.cs" />
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
+    <Compile Include="Address\State.cs" />
+    <Compile Include="Address\Country.cs" />
     <Compile Include="Base\BaseData.cs" />
     <Compile Include="Deposit\sdtoWithdrawalInfo.cs" />
     <Compile Include="Deposit\sdtoDepositInfo.cs" />
@@ -71,6 +87,7 @@
     <Compile Include="Common\Enumerations.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users\sdtoUserSession.cs" />
     <Compile Include="Users\User.cs">
       <SubType>
       </SubType>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<LoanManagementSystem.Models.sdtoCountry>
+
+@{
+    ViewBag.Title = "Country List";
+    
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //var datepc = $('.date-picker');
+            //if (datepc != null)
+            //    datepc.datepicker({
+            //        format: 'yyyy.M.dd',
+            //        startDate: '-3d',
+            //        //showOn: "both",
+            //        buttonImageOnly: true,
+            //        buttonImage: "calendar.gif",
+            //        buttonText: "Calendar",
+            //        regional: ["en-US"]
+            //    });
+
+            Search();
+        });
+
+        function Search() {
+
+            // prepare the data
+            var source =
+            {
+                dataType: 'json',
+                //traditional:true,
+                contentType: 'application/json',
+                dataFields: [                   
+                    { name: 'CountryId', type: 'number' },
+                    { name: 'CountryName', type: 'string' },
+                    { name: 'CountryAbbr', type: 'string' }                   
+                ],
+                id: 'Id',
+                url: '/Settings/CountryInfo'
+            };
+
+            var LinkId = function (row, column, value, rowData) {                
+                var html = '<b><a target="_blank" href="/Settings/SaveCountry?CountryId=' + rowData.CountryId + '">' + value + '</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTableLoan").jqxDataTable(
+            {
+                width:1000,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 10,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'Country Name', dataField: 'CountryName', cellsRenderer: LinkId },
+                  { text: 'Country Abbr', dataField: 'CountryAbbr' }
+                ]
+            });
+
+            return false;
+        }
+    </script>
+}
+  
+
+  <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+               @Html.ActionLink("Add Country", "SaveCountry")
+            </div>
+            <div class="panel-body">
+                <div id="dataTableLoan" style="width: 300px; overflow-x: scroll"></div>
+            </div>
+        </div>
+    </div>

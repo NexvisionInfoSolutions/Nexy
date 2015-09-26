@@ -34,7 +34,7 @@
 </head>
 <body>
     @{
-        LoanManagementSystem.Models.sdtoUser UserDetails = HttpContext.Current.Session["UserDetails"] as LoanManagementSystem.Models.sdtoUser;
+        LoanManagementSystem.Models.sdtoUser UserDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as LoanManagementSystem.Models.sdtoUser;
         if (UserDetails == null)
         {
             UserDetails = new LoanManagementSystem.Models.sdtoUser();
@@ -44,9 +44,9 @@
     <div class="main">
         <h1>Loan Management System</h1>
         <div class="main-info">
-            <div class="main-pos">
+            @*<div class="main-pos">
                 <span></span>
-            </div>
+            </div>*@
             <div class="main-info1">
                 @if (ViewBag.ShowHeaderInfo != null && ViewBag.ShowHeaderInfo == true)
                 {
