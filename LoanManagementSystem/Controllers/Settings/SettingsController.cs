@@ -12,6 +12,7 @@ using System.Configuration;
 
 namespace LoanManagementSystem.Controllers.Settings
 {
+    [Authorize()]
     public class SettingsController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
@@ -70,6 +71,56 @@ namespace LoanManagementSystem.Controllers.Settings
             return View();
         }
 
+        public ActionResult DistrictList(long? CountryId, long? StateId)
+        {
+            sdtoState state = new sdtoState() { CountryId = CountryId == null ? 0 : CountryId.Value, StateId = StateId == null ? 0 : StateId.Value };
+            ViewBag.StateId = state.StateId;
+            ViewBag.CountryId = state.CountryId;
+            return View(state);
+        }
+
+        public ActionResult TalukList(long? CountryId, long? StateId, long? DistrictId)
+        {
+            sdtoDistrict district = new sdtoDistrict() { StateDetails = new sdtoState() { CountryId = CountryId == null ? 0 : CountryId.Value, StateId = StateId == null ? 0 : StateId.Value }, StateId = StateId == null ? 0 : StateId.Value, DistrictId = DistrictId == null ? 0 : DistrictId.Value };
+            ViewBag.StateId = district.StateId;
+            ViewBag.CountryId = district.StateDetails.CountryId;
+            return View(district);
+        }
+
+        public ActionResult VillageList(long? TalukId)
+        {
+            sdtoTaluk taluk = db.Taluks.Find(TalukId);
+            ViewBag.TalukId = 0;
+            ViewBag.DistrictId = 0;
+            ViewBag.StateId = 0;
+            ViewBag.CountryId = 0;
+            if (taluk != null)
+            {
+                var district = db.Districts.Find(taluk.DistrictId);
+                var state = db.States.Find(district.StateId);
+
+                taluk.DistrictDetails = district;
+                taluk.DistrictDetails.StateDetails = state;
+
+                ViewBag.TalukId = taluk.TalukId;
+                ViewBag.DistrictId = taluk.DistrictId;
+                ViewBag.StateId = district.StateId;
+                ViewBag.CountryId = state.CountryId;
+            }
+            else
+            {
+                taluk = new sdtoTaluk()
+                {
+                    DistrictDetails = new sdtoDistrict()
+                    {
+                        StateDetails = new sdtoState()
+                    }
+                };
+            }
+
+            return View(taluk);
+        }
+
         public ActionResult SaveState(long CountryId, long StateId = 0)
         {
             sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
@@ -81,9 +132,9 @@ namespace LoanManagementSystem.Controllers.Settings
             ViewBag.CountryId = CountryId;
             sdtoState state = db.States.Find(StateId);
             if (state == null)
-                state = new sdtoState() { CountryId = country.CountryId, Country = country };
+                state = new sdtoState() { CountryId = country.CountryId, CountryDetails = country };
             else
-                state.Country = country;
+                state.CountryDetails = country;
             return View(state);
         }
 
@@ -119,8 +170,200 @@ namespace LoanManagementSystem.Controllers.Settings
             sdtoCountry country = db.Countries.Find(state.CountryId);
             ViewBag.CountryList = new SelectList(db.Countries, "CountryId", "CountryName", state.CountryId);
             ViewBag.CountryId = state.CountryId;
-            state.Country = country;
+            state.CountryDetails = country;
             return View(state);
+        }
+
+        public ActionResult SaveDistrict(long CountryId, long StateId, long DistrictId = 0)
+        {
+            sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (userDetails == null)
+                userDetails = new sdtoUser();
+            sdtoDistrict district = new sdtoDistrict();
+
+            ViewBag.CountryId = CountryId;
+            sdtoState parent = db.States.Find(StateId);
+            if (parent != null)
+            {
+                ViewBag.ParentId = parent.StateId;
+                district = db.Districts.Find(DistrictId);
+                if (district == null)
+                    district = new sdtoDistrict() { StateId = parent.StateId, StateDetails = parent };
+                else
+                    district.StateDetails = parent;
+            }
+            return View(district);
+        }
+
+        [HttpPost]
+        public ActionResult SaveDistrict(sdtoDistrict district)
+        {
+            sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (userDetails == null)
+                userDetails = new sdtoUser();
+
+            if (ModelState.IsValid)
+            {
+                if (db.Districts.Count(x => x.DistrictName.Equals(district.DistrictName.Trim(), StringComparison.InvariantCultureIgnoreCase) && x.StateId == district.StateId && x.DistrictId != district.DistrictId) == 0)
+                {
+                    if (district.DistrictId == 0)
+                    {
+                        db.Districts.Add(new sdtoDistrict() { StateId = district.StateId, DistrictName = district.DistrictName, DistrictAbbr = district.DistrictAbbr, CreatedBy = userDetails.UserID, CreatedOn = DateTime.Now });
+                    }
+                    else
+                    {
+                        district.ModifiedBy = userDetails.UserID;
+                        district.ModifiedOn = DateTime.Now;
+                        db.Entry(district).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+
+                    var cn = db.States.Find(district.StateId);
+                    return RedirectToAction("DistrictList", new { StateId = district.StateId, CountryId = cn.CountryId });
+                }
+                else
+                    ModelState.AddModelError("DistrictName", "District already exists!!!");
+            }
+
+            var state = db.States.Find(district.StateId);
+            ViewBag.CountryId = state.CountryId;
+            return View(district);
+        }
+
+        public ActionResult SaveTaluk(long CountryId, long StateId, long DistrictId, long TalukId = 0)
+        {
+            sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (userDetails == null)
+                userDetails = new sdtoUser();
+            sdtoTaluk taluk = new sdtoTaluk()
+            {
+                DistrictId = DistrictId
+            };
+
+            ViewBag.CountryId = CountryId;
+            ViewBag.StateId = StateId;
+            ViewBag.DistrictId = DistrictId;
+            sdtoDistrict parent = db.Districts.Find(DistrictId);
+            if (parent != null)
+            {
+                ViewBag.ParentId = parent.DistrictId;
+                taluk = db.Taluks.Find(TalukId);
+                if (taluk == null)
+                    taluk = new sdtoTaluk() { DistrictId = parent.DistrictId, DistrictDetails = parent };
+                else
+                    taluk.DistrictDetails = parent;
+            }
+            return View(taluk);
+        }
+
+        [HttpPost]
+        public ActionResult SaveTaluk(sdtoTaluk taluk)
+        {
+            sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (userDetails == null)
+                userDetails = new sdtoUser();
+
+            if (ModelState.IsValid)
+            {
+                if (db.Taluks.Count(x => x.TalukName.Equals(taluk.TalukName.Trim(), StringComparison.InvariantCultureIgnoreCase) && x.DistrictId == taluk.DistrictId && x.TalukId != taluk.TalukId) == 0)
+                {
+                    if (taluk.TalukId == 0)
+                    {
+                        db.Taluks.Add(new sdtoTaluk() { DistrictId = taluk.DistrictId, TalukName = taluk.TalukName, TalukAbbr = taluk.TalukAbbr, CreatedBy = userDetails.UserID, CreatedOn = DateTime.Now });
+                    }
+                    else
+                    {
+                        taluk.ModifiedBy = userDetails.UserID;
+                        taluk.ModifiedOn = DateTime.Now;
+                        db.Entry(taluk).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+
+                    var district = db.Districts.Find(taluk.DistrictId);
+                    var state = db.States.Find(district.StateId);
+                    return RedirectToAction("TalukList", new { StateId = district.StateId, CountryId = state.CountryId, DistrictId = taluk.DistrictId });
+                }
+                else
+                    ModelState.AddModelError("TalukName", "Taluk already exists!!!");
+            }
+
+            var districtst = db.Districts.Find(taluk.DistrictId);
+            var statecn = db.States.Find(districtst.StateId);
+            ViewBag.CountryId = statecn.CountryId;
+            ViewBag.StateId = districtst.StateId;
+            ViewBag.DistrictId = taluk.DistrictId;
+            return View(taluk);
+        }
+
+        public ActionResult SaveVillage(long TalukId, long VillageId = 0)
+        {
+            sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (userDetails == null)
+                userDetails = new sdtoUser();
+
+            sdtoTaluk taluk = db.Taluks.Find(TalukId);
+            var district = db.Districts.Find(taluk.DistrictId);
+            var state = db.States.Find(district.StateId);
+
+            sdtoVillage village = new sdtoVillage()
+            {
+                TalukId = taluk.TalukId
+            };
+
+            ViewBag.CountryId = state.CountryId;
+            ViewBag.StateId = district.StateId;
+            ViewBag.DistrictId = taluk.DistrictId;
+            ViewBag.TalukId = taluk.TalukId;
+            sdtoTaluk parent = db.Taluks.Find(taluk.TalukId);
+            if (parent != null)
+            {
+                ViewBag.ParentId = parent.TalukId;
+                village = db.Villages.Find(VillageId);
+                if (village == null)
+                    village = new sdtoVillage() { TalukId = parent.TalukId, TalukDetails = parent };
+                else
+                    village.TalukDetails = parent;
+            }
+            return View(village);
+        }
+
+        [HttpPost]
+        public ActionResult SaveVillage(sdtoVillage village)
+        {
+            sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
+            if (userDetails == null)
+                userDetails = new sdtoUser();
+
+            if (ModelState.IsValid)
+            {
+                if (db.Villages.Count(x => x.VillageName.Equals(village.VillageName.Trim(), StringComparison.InvariantCultureIgnoreCase) && x.TalukId == village.TalukId && x.VillageId != village.VillageId) == 0)
+                {
+                    if (village.VillageId == 0)
+                    {
+                        db.Villages.Add(new sdtoVillage() { TalukId = village.TalukId, VillageName = village.VillageName, VillageAbbr = village.VillageAbbr, CreatedBy = userDetails.UserID, CreatedOn = DateTime.Now });
+                    }
+                    else
+                    {
+                        village.ModifiedBy = userDetails.UserID;
+                        village.ModifiedOn = DateTime.Now;
+                        db.Entry(village).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+
+                    return RedirectToAction("VillageList", new { TalukId = village.TalukId });
+                }
+                else
+                    ModelState.AddModelError("VillageName", "Village already exists!!!");
+            }
+
+            sdtoTaluk taluk = db.Taluks.Find(village.TalukId);
+            var district = db.Districts.Find(taluk.DistrictId);
+            var state = db.States.Find(district.StateId);
+            ViewBag.CountryId = state.CountryId;
+            ViewBag.StateId = district.StateId;
+            ViewBag.DistrictId = taluk.DistrictId;
+            ViewBag.TalukId = taluk.TalukId;
+            return View(village);
         }
 
         // GET: Settings
@@ -279,12 +522,15 @@ namespace LoanManagementSystem.Controllers.Settings
             {
                 Settings.CreatedOn = DateTime.Now;
                 Settings.ModifiedOn = DateTime.Now;
+                if (Settings.InterestAccountId == 0)
+                    Settings.InterestAccountId = null;
 
                 db.Entry(Settings).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
             
+
             sdtoSettings sdtoSettings = db.GeneralSettings.Find(Settings.SettingsId);
             ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
 
@@ -375,7 +621,31 @@ namespace LoanManagementSystem.Controllers.Settings
         {
             //var list = db.States.Include(x => x.CountryId).Where(x => x.CountryId == CountryId).ToList();
 
-            var list = db.Set<sdtoState>().Include("Country").Where(x => x.CountryId == CountryId).ToList().Select(x => new { x.Country.CountryName, x.Country.CountryAbbr, x.StateId, x.CountryId, x.StateName, x.StateAbbr });
+            var list = db.Set<sdtoState>().Include("CountryDetails").Where(x => x.CountryId == CountryId).ToList().Select(x => new { x.CountryDetails.CountryName, x.CountryDetails.CountryAbbr, x.StateId, x.CountryId, x.StateName, x.StateAbbr });
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DistrictInfo(long StateId)
+        {
+            //var list = db.States.Include(x => x.CountryId).Where(x => x.CountryId == CountryId).ToList();
+
+            var list = db.Set<sdtoDistrict>().Include("StateDetails").Where(x => x.StateId == StateId).ToList().Select(x => new { x.StateDetails.StateName, x.StateDetails.StateAbbr, x.StateId, x.DistrictId, x.DistrictName, x.DistrictAbbr });
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult TalukInfo(long DistrictId)
+        {
+            //var list = db.States.Include(x => x.CountryId).Where(x => x.CountryId == CountryId).ToList();
+
+            var list = db.Set<sdtoTaluk>().Include("DistrictDetails").Where(x => x.DistrictId == DistrictId).ToList().Select(x => new { x.DistrictDetails.DistrictName, x.DistrictDetails.DistrictAbbr, x.DistrictId, x.TalukId, x.TalukName, x.TalukAbbr });
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult VillageInfo(long TalukId)
+        {
+            //var list = db.States.Include(x => x.CountryId).Where(x => x.CountryId == CountryId).ToList();
+
+            var list = db.Set<sdtoVillage>().Include("TalukDetails").Where(x => x.TalukId == TalukId).ToList().Select(x => new { x.TalukDetails.TalukName, x.TalukDetails.TalukAbbr, x.TalukId, x.VillageId, x.VillageName, x.VillageAbbr });
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
