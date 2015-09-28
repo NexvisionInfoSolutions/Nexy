@@ -13,6 +13,7 @@ using Business.Reports;
 
 namespace LoanManagementSystem.Controllers.Loan
 {
+    [Authorize()]
     public class LoanRepaymentsController : Controller
     {
         private LoanDBContext db = new LoanDBContext();

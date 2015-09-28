@@ -10,15 +10,16 @@
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
         var datepc = $('.datepicker');
-        datepc.datepicker({
+        datepc.datepicker({ format: 'dd-M-yyyy' });
+        /*{
             format: 'mm-dd-yyyy',
             startDate: '-3d',
-           // showOn: "both",
+            //showOn: "both",
             buttonImageOnly: true,
             buttonImage: "calendar.gif",
             buttonText: "Calendar",
             regional: ["en-US"]
-        });
+        });*/
     });
 </script>
 
@@ -33,7 +34,7 @@
         @Html.HiddenFor(model => model.Status)
         @Html.HiddenFor(model => model.CreatedBy)
         @Html.HiddenFor(model => model.CreatedOn)
-        @Html.HiddenFor(model => model.IsDeleted)
+        @Html.HiddenFor(model => model.IsDeleted)        
         @Html.HiddenFor(model => model.SanctionedBy)
         @Html.HiddenFor(model=>model.SanctionedDate)
 
@@ -49,8 +50,19 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RepaymentStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.RepaymentStartDate, new { @class = "datepicker datefield", placeholder = "Enter Repayment date here..." })
+                @Html.TextBoxFor(model => model.RepaymentStartDate, new { @class = "datepicker datefield", placeholder = "Enter Repayment date here...", @value = Model.RepaymentStartDate.Value.ToString("dd-MMM-yyyy") })
                 @Html.ValidationMessageFor(model => model.RepaymentStartDate)
+
+                @*@Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "datepicker datefield", @type = "date" } })
+                @Html.ValidationMessageFor(model => model.RepaymentStartDate, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TransactionDate, new { @class = "datepicker datefield", placeholder = "Enter Transaction date here...", @value = Model.TransactionDate.Value.ToString("dd-MMM-yyyy") })
+                @Html.ValidationMessageFor(model => model.TransactionDate)
 
                 @*@Html.EditorFor(model => model.RepaymentStartDate, new { htmlAttributes = new { @class = "datepicker datefield", @type = "date" } })
                 @Html.ValidationMessageFor(model => model.RepaymentStartDate, "", new { @class = "text-danger" })*@

@@ -182,6 +182,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Accounting\AccountingController.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\Deposit\DepositController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Controllers\User\CompanyController.cs" />
@@ -953,6 +954,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Accounting.js" />
+    <Content Include="Scripts\Address.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1475,6 +1477,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Utility.js" />
     <Content Include="Scripts\themes\d.png" />
     <Content Include="Scripts\themes\dots_rtl.gif" />
     <Content Include="Scripts\themes\style.css" />
@@ -1636,6 +1639,13 @@
     <Content Include="Views\Settings\StateList.cshtml" />
     <Content Include="Views\Settings\CountryList.cshtml" />
     <Content Include="Views\Settings\SaveState.cshtml" />
+    <Content Include="Views\Settings\SaveCountry.cshtml" />
+    <Content Include="Views\Settings\SaveDistrict.cshtml" />
+    <Content Include="Views\Settings\DistrictList.cshtml" />
+    <Content Include="Views\Settings\SaveTaluk.cshtml" />
+    <Content Include="Views\Settings\TalukList.cshtml" />
+    <Content Include="Views\Settings\VillageList.cshtml" />
+    <Content Include="Views\Settings\SaveVillage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

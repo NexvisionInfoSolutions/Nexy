@@ -11,7 +11,8 @@ using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Controllers.Settings
 {
-    public class AccountBooksController : Controller
+    [Authorize()]
+    public class AccountBooksController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
@@ -23,7 +24,7 @@ namespace LoanManagementSystem.Controllers.Settings
         }
         public JsonResult AccountBooksInfo()
         {
-            var dbResult = db.AccountBooks.Include(s => s.AccountBookType).Include(s => s.AccountHead).ToList();
+            var dbResult = db.AccountBooks.Include(s => s.AccountBookType).Include(s => s.AccountHead).Where(x => x.IsDeleted == false).ToList();
             var AccountBooks = (from AccountBook in dbResult
                                 select new
                                 {
@@ -33,7 +34,7 @@ namespace LoanManagementSystem.Controllers.Settings
                                     AccountBook.BankInterest,
                                     AccountBook.BookCode,
                                     AccountBook.BookName,
-
+                                    AccountBook.AccountHead.AccountName,
                                     AccountBooksInfo = AccountBook.AccountBookId
                                 });
             return Json(AccountBooks, JsonRequestBehavior.AllowGet);
@@ -80,6 +81,8 @@ namespace LoanManagementSystem.Controllers.Settings
                 AccountBook.ModifiedOn = null;
                 db.AccountBooks.Add(AccountBook);
                 db.SaveChanges();
+
+                SetDisplayMessage("Account Book is created successfully");
                 return RedirectToAction("Index");
             }
 
@@ -118,6 +121,8 @@ namespace LoanManagementSystem.Controllers.Settings
                 sdtoAccountBook.ModifiedOn = DateTime.Now;
                 db.Entry(sdtoAccountBook).State = EntityState.Modified;
                 db.SaveChanges();
+
+                SetDisplayMessage("Account Book is saved successfully");
                 return RedirectToAction("Index");
             }
             ViewBag.AccountBookTypeId = new SelectList(db.AccountBookTypes, "AccountBookTypeId", "AccountBookType", sdtoAccountBook.AccountBookTypeId);
@@ -146,7 +151,8 @@ namespace LoanManagementSystem.Controllers.Settings
         public ActionResult DeleteConfirmed(long id)
         {
             sdtoAccountBook sdtoAccountBook = db.AccountBooks.Find(id);
-            db.AccountBooks.Remove(sdtoAccountBook);
+            sdtoAccountBook.IsDeleted = true;
+            db.Entry(sdtoAccountBook).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

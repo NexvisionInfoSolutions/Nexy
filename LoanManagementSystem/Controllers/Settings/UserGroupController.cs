@@ -10,24 +10,25 @@ using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Controllers
 {
-    public class UserGroupController : Controller
+    [Authorize()]
+    public class UserGroupController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
         // GET: /UserGroup/
         public ActionResult Index()
         {
-            return View(db.Usergroup.ToList());
+            return View(db.Usergroup.Where(x => x.IsDeleted == false).ToList());
         }
         public JsonResult UsergroupInfo()
         {
-            var dbResult = db.Usergroup.ToList();
+            var dbResult = db.Usergroup.Where(x => x.IsDeleted == false).ToList();
             var Users = (from users in dbResult
                          select new
                          {
                              users.UserGroupId,
                              users.Code,
-                             users.Description, 
+                             users.Description,
                              UsergroupInfo = users.UserGroupId
                          });
             return Json(Users, JsonRequestBehavior.AllowGet);
@@ -58,12 +59,14 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ID,Code,Description")] sdtoUserGroup usergroup)
+        public ActionResult Create([Bind(Include = "ID,Code,Description")] sdtoUserGroup usergroup)
         {
             if (string.IsNullOrEmpty(usergroup.Code))
-                ModelState.AddModelError("","Code cannot be empty");
-            else if(ModelState.IsValid)
+                ModelState.AddModelError("", "Code cannot be empty");
+            else if (ModelState.IsValid)
             {
+                usergroup.CreatedOn = DateTime.Now;
+                usergroup.CreatedBy = CurrentUserSession.UserId;
                 db.Usergroup.Add(usergroup);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -92,10 +95,12 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( sdtoUserGroup usergroup)
+        public ActionResult Edit(sdtoUserGroup usergroup)
         {
             if (ModelState.IsValid)
             {
+                usergroup.ModifiedOn = DateTime.Now;
+                usergroup.ModifiedBy = CurrentUserSession.UserId;
                 db.Entry(usergroup).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -124,7 +129,10 @@ namespace LoanManagementSystem.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             sdtoUserGroup usergroup = db.Usergroup.Find(id);
-            db.Usergroup.Remove(usergroup);
+            usergroup.IsDeleted = true;
+            usergroup.DeletedBy = CurrentUserSession.UserId;
+            usergroup.DeletedOn = DateTime.Now;
+            db.Entry(usergroup).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -15,20 +15,21 @@ using Business.Reports;
 
 namespace LoanManagementSystem.Controllers.Loan
 {
-    public class LoanController : Controller
+    [Authorize()]
+    public class LoanController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
         // GET: Loan
         public ActionResult Index()
         {
-            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser);
+            var sdtoLoanInfoes = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).Where(x => x.IsDeleted == false);
             return View(sdtoLoanInfoes.ToList());
         }
 
         public JsonResult LoansInfo()
         {
-            var dbResult = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).ToList();
+            var dbResult = db.sdtoLoanInfoes.Include(s => s.CreatedByUser).Include(s => s.DeletedByUser).Include(s => s.Member).Include(s => s.ModifiedByUser).Where(x => x.IsDeleted == false).ToList();
             var loans = (from loan in dbResult
                          select new
                          {
@@ -36,7 +37,7 @@ namespace LoanManagementSystem.Controllers.Loan
                              loan.Member.FirstName,
                              loan.Member.LastName,
                              loan.LoanAmount,
-                             loan.CreatedOn,
+                             CreatedOn = loan.TransactionDate,
                              loan.InstallmentAmount,
                              loan.InteresRate,
                              loan.Notes,
@@ -220,10 +221,13 @@ namespace LoanManagementSystem.Controllers.Loan
 
             loan.InteresRate = db.GeneralSettings.FirstOrDefault().BankInterest;
 
-            var listUsers = db.User.Where(x => x.UserType == UserType.Member && (UserId == null || UserId.Value == 0 || x.UserID == UserId));
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && x.IsDeleted == false && (UserId == null || UserId.Value == 0 || x.UserID == UserId));
 
             if (listUsers == null || listUsers.Count(x => x.UserID > 0) == 0)
+            {
+                SetDisplayMessage("Please create a loan member first");
                 return RedirectToAction("Create", "Member");
+            }
 
             var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
@@ -241,16 +245,20 @@ namespace LoanManagementSystem.Controllers.Loan
             if (ModelState.IsValid)
             {
                 LoanInfo.InstallmentAmount = LoanInfo.LoanAmount / LoanInfo.TotalInstallments;
+                LoanInfo.CreatedOn = DateTime.Now;
+                LoanInfo.CreatedBy = CurrentUserSession.UserId;
                 db.sdtoLoanInfoes.Add(LoanInfo);
                 db.SaveChanges();
 
                 bfTransaction objTrans = new bfTransaction(db);
                 objTrans.PostLoanIssue(LoanInfo);
 
+                SetDisplayMessage("Loan is created successfully");
+
                 return RedirectToAction("Index");
             }
 
-            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && x.IsDeleted == false);
             var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
             ViewBag.UserList = new SelectList(users, "Value", "Text");
@@ -270,7 +278,7 @@ namespace LoanManagementSystem.Controllers.Loan
                 return HttpNotFound();
             }
 
-            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && x.IsDeleted == false);
             var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
             //ViewBag.UserList = new SelectList(users, "Value", "Text");
@@ -289,6 +297,8 @@ namespace LoanManagementSystem.Controllers.Loan
             if (ModelState.IsValid)
             {
                 LoanInfo.InstallmentAmount = LoanInfo.LoanAmount / LoanInfo.TotalInstallments;
+                LoanInfo.ModifiedBy = CurrentUserSession.UserId;
+                LoanInfo.ModifiedOn = DateTime.Now;
                 db.Entry(LoanInfo).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -296,10 +306,11 @@ namespace LoanManagementSystem.Controllers.Loan
                 objTrans.CancelPostedLoanIssue(LoanInfo);
                 objTrans.PostLoanIssue(LoanInfo);
 
+                SetDisplayMessage("Loan is saved successfully");
                 return RedirectToAction("Index");
             }
 
-            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && x.IsDeleted == false);
             var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
             ViewBag.UserList = new SelectList(users, "Value", "Text");
@@ -327,8 +338,12 @@ namespace LoanManagementSystem.Controllers.Loan
         public ActionResult DeleteConfirmed(long id)
         {
             sdtoLoanInfo sdtoLoanInfo = db.sdtoLoanInfoes.Find(id);
-            db.sdtoLoanInfoes.Remove(sdtoLoanInfo);
+            sdtoLoanInfo.DeletedBy = CurrentUserSession.UserId;
+            sdtoLoanInfo.DeletedOn = DateTime.Now;
+            sdtoLoanInfo.IsDeleted = true;
+            db.Entry(sdtoLoanInfo).State = EntityState.Modified;
             db.SaveChanges();
+            SetDisplayMessage("Loan is deleted successfully");
             return RedirectToAction("Index");
         }
 

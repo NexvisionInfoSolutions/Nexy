@@ -47,13 +47,13 @@
                 @Html.ValidationMessageFor(model => model.Password)
             </div>
         </div>
-        @*<div class="form-group">
+        <div class="form-group">
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.ConfirmPassword)
-                    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Enter Confirm Password" })
+                    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Enter Confirm Password", @value = @Model.Password })
                     @Html.ValidationMessageFor(model => model.ConfirmPassword)
                 </div>
-            </div>*@
+            </div>
         <div class="form-group">
             <div class="col-md-10">
                 @Html.LabelFor(model => model.UserGroupId)

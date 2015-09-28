@@ -33,7 +33,7 @@
                 //}
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
-                var html = '<b><a href="/UserGroup/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/UserGroup/Details/' + value + '">Details</a>'
+                var html = '<b><a href="/UserGroup/Edit/' + value + '">Edit</a>' //'|<a id="lnpayment" href="/UserGroup/Details/' + value + '">Details</a>'
                           + ' | <a href="/UserGroup/Delete/' + value + '">Delete</a>';
                 return html;
             }
@@ -49,12 +49,11 @@
                 filterable: true,
                 pageable: true,
                 columns: [
-                  { text: 'UserGroup ID', dataField: 'UserGroupId', width: 120 },
+                  //{ text: 'UserGroup ID', dataField: 'UserGroupId', width: 120 },
                   { text: 'Code', dataField: 'Code', width: 120 },
-                  { text: 'Description', dataField: 'Description', width: 250 },   
-
+                  { text: 'Description', dataField: 'Description', width: 250 },
                   {
-                      text: 'Edit', dataField: 'UserGroupInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 360,
+                      text: 'Edit', dataField: 'UserGroupId', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 360,
                       cellsRenderer: linkrenderer
                   }
                 ]

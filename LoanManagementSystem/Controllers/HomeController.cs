@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize()]
     public class HomeController : Controller
     {
         LoanDBContext db = new LoanDBContext();

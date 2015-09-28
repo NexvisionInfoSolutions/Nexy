@@ -13,6 +13,7 @@ using Business.Reports;
 
 namespace LoanManagementSystem.Controllers.Deposit
 {
+    [Authorize()]
     public class DepositController : Controller
     {
         private LoanDBContext db = new LoanDBContext();

@@ -13,6 +13,7 @@ using Data.Models.SysBase.Tree;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize()]
     public class ScheduleSettingsController : Controller
     {
         private LoanDBContext db = new LoanDBContext();

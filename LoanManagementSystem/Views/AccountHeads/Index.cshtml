@@ -21,7 +21,7 @@
                     { name: 'CreditDays', type: 'number' },
                     { name: 'CreditLimit', type: 'number' },
                     { name: 'AccountCode', type: 'string' },
-
+                    { name: 'AccountType', type: 'string' }
                 ],
                 id: 'AccountHeadId',
                 url: '/AccountHeads/AccountHeadInfo'
@@ -33,7 +33,7 @@
                 //}
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
-                var html = '<b><a href="/AccountHeads/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/AccountHeads/Details/' + value + '">Details</a>'
+                var html = '<b><a href="/AccountHeads/Edit/' + value + '">Edit</a>' //'|<a id="lnpayment" href="/AccountHeads/Details/' + value + '">Details</a>'
                           + ' | <a href="/AccountHeads/Delete/' + value + '">Delete</a>';
 
                 return html;
@@ -52,9 +52,10 @@
                 columns: [
                   //{ text: 'Account Head ID', dataField: 'AccountHeadId', width: 120 },
                   { text: 'Account Name', dataField: 'AccountName', width: 200 },
-                  { text: 'Credit Days', dataField: 'CreditDays', width: 150 },
-                  { text: 'Credit Limit', dataField: 'CreditLimit', width: 150 },
+                  //{ text: 'Credit Days', dataField: 'CreditDays', width: 150 },
+                  //{ text: 'Credit Limit', dataField: 'CreditLimit', width: 150 },
                   { text: 'Account Code', dataField: 'AccountCode', width: 200 },
+                  { text: 'Account Type', dataField: 'AccountType', width: 200 },
                   {
                       text: 'Edit', dataField: 'AccountHeadId', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
                       cellsRenderer: linkrenderer

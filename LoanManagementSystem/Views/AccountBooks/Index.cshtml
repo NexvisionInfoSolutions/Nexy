@@ -20,7 +20,7 @@
                                           { name: 'BankInterest', type: 'number' },
                                           { name: 'BookCode', type: 'string' },
                                           { name: 'BookName', type: 'string' },
-
+                                          { name: 'AccountName', type:'string' }
                                       ],
                                       id: 'AccountBookId',
                                       url: '/AccountBooks/AccountBooksInfo'
@@ -49,12 +49,14 @@
                                       filterable: true,
                                       pageable: true,
                                       columns: [
-                                        //{ text: 'Account BookId', dataField: 'AccountBookId', width: 120 },
-                                        { text: 'Account BookType', dataField: 'AccountBookType', width: 200 },
-                                        { text: 'Bank Charges', dataField: 'BankCharges', width: 150 },
-                                        { text: 'Bank Interest', dataField: 'BankInterest', width: 150 },
                                         { text: 'Book Code', dataField: 'BookCode', width: 200 },
                                         { text: 'Book Name', dataField: 'BookName', width: 200 },
+                                        //{ text: 'Account BookId', dataField: 'AccountBookId', width: 120 },
+                                        { text: 'Account BookType', dataField: 'AccountBookType', width: 200 },
+                                        //{ text: 'Bank Charges', dataField: 'BankCharges', width: 150 },
+                                        //{ text: 'Bank Interest', dataField: 'BankInterest', width: 150 },
+                                        { text: 'Account Name', dataField: 'AccountName', width: 200 },
+                                        
                                         {
                                             text: 'Edit', dataField: 'AccountBookId', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
                                             cellsRenderer: linkrenderer

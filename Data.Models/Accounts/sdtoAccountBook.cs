@@ -61,7 +61,6 @@ namespace Data.Models.Accounts
         public string PaymentVoucherSuffix { get; set; }
 
         public AccountBookStatus Status { get; set; }
-
         
         public virtual sdtoAccountBookType AccountBookType { get; set; }
 

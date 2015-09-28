@@ -11,6 +11,7 @@ using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize()]
     public class AccountTypesController : Controller
     {
         private LoanDBContext db = new LoanDBContext();

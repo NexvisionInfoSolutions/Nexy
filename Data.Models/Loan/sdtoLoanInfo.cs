@@ -25,6 +25,9 @@ namespace Data.Models.Accounts
         [Display(Name = "Repayment Start Date")]
         public DateTime? RepaymentStartDate { get; set; }
 
+        [Display(Name = "Transaction Date")]
+        public DateTime? TransactionDate { get; set; }
+
         [Display(Name = "Repayment Interval")]
         public RepaymentInterval RePaymentInterval { get; set; }
 

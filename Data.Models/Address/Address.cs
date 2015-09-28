@@ -42,8 +42,17 @@ namespace LoanManagementSystem.Models
 
         public string Post { get; set; }
 
-        public string District { get; set; }
-        public string Taluk { get; set; }
-        public string Village { get; set; }
+        [ForeignKey("DistrictDetails")]
+        [Display(Name = "District")]
+        public long? DistrictId { get; set; }
+        [ForeignKey("TalukDetails")]
+        [Display(Name = "Taluk")]
+        public long? TalukId { get; set; }
+        [ForeignKey("VillageDetails")]
+        [Display(Name = "Village")]
+        public long? VillageId { get; set; }
+        public sdtoDistrict DistrictDetails { get; set; }
+        public sdtoTaluk TalukDetails { get; set; }
+        public sdtoVillage VillageDetails { get; set; }
     }
 }

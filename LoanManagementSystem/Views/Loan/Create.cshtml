@@ -9,7 +9,8 @@
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
         var datepc = $('.datepicker');
-        datepc.datepicker({
+        datepc.datepicker({ format: 'dd-M-yyyy' });
+        /*{
             format: 'mm-dd-yyyy',
             startDate: '-3d',
             //showOn: "both",
@@ -17,7 +18,7 @@
             buttonImage: "calendar.gif",
             buttonText: "Calendar",
             regional: ["en-US"]
-        });
+        });*/
 
         //$(".dpicker").jqxDateTimeInput({ width: '300px', height: '25px' });
 
@@ -51,6 +52,14 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.RepaymentStartDate, new { @class = "datepicker datefield", placeholder = "Enter Repayment date here..." })
                 @Html.ValidationMessageFor(model => model.RepaymentStartDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TransactionDate, new { @class = "datepicker datefield", placeholder = "Enter Transaction date here..." })
+                @Html.ValidationMessageFor(model => model.TransactionDate)                
             </div>
         </div>
 

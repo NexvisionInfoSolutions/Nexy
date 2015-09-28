@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace LoanManagementSystem.Controllers.Reports
 {
+    [Authorize()]
     public class ReportsController : Controller
     {
         LoanDBContext dbContext = new LoanDBContext();

@@ -12,7 +12,8 @@ using Data.Models.Accounts.Schedules;
 
 namespace LoanManagementSystem.Controllers
 {
-    public class AccountHeadsController : Controller
+    [Authorize()]
+    public class AccountHeadsController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
@@ -24,13 +25,13 @@ namespace LoanManagementSystem.Controllers
         }
         public JsonResult AccountHeadInfo()
         {
-            var dbResult = db.AccountHeads.Include(s => s.AccountType).Include(s => s.Address).Include(s => s.Contacts).ToList();
+            var dbResult = db.AccountHeads.Include(s => s.AccountType).Include(s => s.Address).Include(s => s.Contacts).Where(x => x.IsDeleted == false).ToList();
             var AccountHeads = (from AccountHead in dbResult
                                 select new
                                 {
                                     AccountHead.AccountHeadId,
                                     AccountHead.AccountName,
-                                    AccountHead.AccountType,
+                                    AccountHead.AccountType.AccountType,
                                     AccountHead.CreditDays,
                                     AccountHead.CreditLimit,
                                     AccountHead.AccountCode,
@@ -68,7 +69,11 @@ namespace LoanManagementSystem.Controllers
             countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
             ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
             ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
-
+                        
+            sdtoAccountHead accHead = new sdtoAccountHead()
+            {
+                Address = new sdtoAddress() { CountryId = 1 }
+            };
             return View();
         }
 
@@ -101,6 +106,15 @@ namespace LoanManagementSystem.Controllers
                     accHead.Contacts.CreatedOn = accHead.CreatedOn;
                 }
 
+                if (accHead.Address != null)
+                {
+                    accHead.Address.CountryId = accHead.Address.CountryId == 0 ? null : accHead.Address.CountryId;
+                    accHead.Address.StateId = accHead.Address.StateId == 0 ? null : accHead.Address.StateId;
+                    accHead.Address.DistrictId = accHead.Address.DistrictId == 0 ? null : accHead.Address.DistrictId;
+                    accHead.Address.TalukId = accHead.Address.TalukId == 0 ? null : accHead.Address.TalukId;
+                    accHead.Address.VillageId = accHead.Address.VillageId == 0 ? null : accHead.Address.VillageId;
+                }
+
                 accHead.Contacts = db.Contacts.Add(accHead.Contacts);
                 accHead.Address = db.Address.Add(accHead.Address);
                 db.AccountHeads.Add(accHead);
@@ -121,6 +135,8 @@ namespace LoanManagementSystem.Controllers
 
                 db.OpeningBalance.Add(memberOpeniningBalance);
                 db.SaveChanges();
+
+                SetDisplayMessage("The account head is created successfully");
 
                 return RedirectToAction("Index");
             }
@@ -187,6 +203,15 @@ namespace LoanManagementSystem.Controllers
                 sdtoAccountHead.ModifiedOn = DateTime.Now;
                 sdtoAccountHead.ModifiedBy = userCreatedBy;
 
+                if (sdtoAccountHead.Address != null)
+                {
+                    sdtoAccountHead.Address.CountryId = sdtoAccountHead.Address.CountryId == 0 ? null : sdtoAccountHead.Address.CountryId;
+                    sdtoAccountHead.Address.StateId = sdtoAccountHead.Address.StateId == 0 ? null : sdtoAccountHead.Address.StateId;
+                    sdtoAccountHead.Address.DistrictId = sdtoAccountHead.Address.DistrictId == 0 ? null : sdtoAccountHead.Address.DistrictId;
+                    sdtoAccountHead.Address.TalukId = sdtoAccountHead.Address.TalukId == 0 ? null : sdtoAccountHead.Address.TalukId;
+                    sdtoAccountHead.Address.VillageId = sdtoAccountHead.Address.VillageId == 0 ? null : sdtoAccountHead.Address.VillageId;
+                }
+
                 db.Entry(sdtoAccountHead).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -199,6 +224,8 @@ namespace LoanManagementSystem.Controllers
                     db.Entry(accOpeningBalance).State = EntityState.Modified;
                     db.SaveChanges();
                 }
+
+                SetDisplayMessage("The account head is saved successfully");
 
                 return RedirectToAction("Index");
             }
@@ -242,8 +269,19 @@ namespace LoanManagementSystem.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             sdtoAccountHead sdtoAccountHead = db.AccountHeads.Find(id);
-            db.AccountHeads.Remove(sdtoAccountHead);
-            db.SaveChanges();
+
+            if (db.ReceiptDetails.Count(x => x.AccountId == id && x.IsDeleted == false) == 0 && db.BankDepositDetails.Count(x => x.AccountId == id && x.IsDeleted == false) == 0 && db.JournalDetails.Count(x => x.AccountId == id && x.IsDeleted == false) == 0)
+            {
+                var accountHd = db.AccountHeads.Find(id);
+                if (accountHd != null)
+                    accountHd.IsDeleted = true;
+                db.Entry(accountHd).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            else
+            {
+                SetDisplayMessage("The account head cannot be deleted!!!");
+            }
             return RedirectToAction("Index");
         }
 

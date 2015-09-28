@@ -12,6 +12,7 @@ namespace LoanManagementSystem.Models
     public class sdtoState : sdtoBaseData
     {
         [Key]
+        [Display(Name="State")]
         public long StateId { get; set; }
 
         [MaxLength(150)]
@@ -19,11 +20,11 @@ namespace LoanManagementSystem.Models
 
         [MaxLength(50)]
         public string StateAbbr { get; set; }
-        
-        [Column("StateCountryId")]
+
+        [Display(Name = "Country")]
         public long? CountryId { get; set; }
 
         [ForeignKey("CountryId")]
-        public sdtoCountry Country { get; set; }
+        public sdtoCountry CountryDetails { get; set; }
     }
 }

@@ -5,6 +5,92 @@
 
 }
 
+<script src="~/Scripts/Address.js"></script>
+<script language="javascript" type="text/javascript">
+    var ddlUserAddressCountry = "ddlUserAddressCountry";
+    var hdnUserAddressCountry = "hdnUserAddressCountry";
+
+    var ddlUserAddressState = "ddlUserAddressState";
+    var hdnUserAddressState = "hdnUserAddressState";
+
+    var ddlUserAddressDistrict = "ddlUserAddressDistrict";
+    var hdnUserAddressDistrict = "hdnUserAddressDistrict";
+
+    var ddlUserAddressTaluk = "ddlUserAddressTaluk";
+    var hdnUserAddressTaluk = "hdnUserAddressTaluk";
+
+    var ddlUserAddressVillage = "ddlUserAddressVillage";
+    var hdnUserAddressVillage = "hdnUserAddressVillage";
+
+    $(document).ready(function () {
+        LoadComboBox('@Url.Action("CountryInfo", "Settings")'
+                     , "CountryId"
+                     , "CountryName"
+                     , $('#' + hdnUserAddressCountry).val()
+                     , ddlUserAddressCountry);
+
+        $("#" + ddlUserAddressCountry).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressCountry).val(item.value);
+                LoadComboBox('@Url.Action("StateInfo", "Settings", new { CountryId = 0 })' + $('#' + hdnUserAddressCountry).val()
+                     , "StateId"
+                     , "StateName"
+                     , $('#' + hdnUserAddressState).val()
+                     , ddlUserAddressState)
+            }
+        });
+
+        $("#" + ddlUserAddressState).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressState).val(item.value);
+                LoadComboBox('@Url.Action("DistrictInfo", "Settings", new { StateId = 0 })' + $('#' + hdnUserAddressState).val()
+                     , "DistrictId"
+                     , "DistrictName"
+                     , $('#' + hdnUserAddressDistrict).val()
+                     , ddlUserAddressDistrict)
+            }
+        });
+
+        $("#" + ddlUserAddressDistrict).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressDistrict).val(item.value);
+                LoadComboBox('@Url.Action("TalukInfo", "Settings", new { DistrictId = 0 })' + $('#' + hdnUserAddressDistrict).val()
+                     , "TalukId"
+                     , "TalukName"
+                     , $('#' + hdnUserAddressTaluk).val()
+                     , ddlUserAddressTaluk)
+            }
+        });
+
+        $("#" + ddlUserAddressTaluk).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressTaluk).val(item.value);
+                LoadComboBox('@Url.Action("VillageInfo", "Settings", new { TalukId = 0 })' + $('#' + hdnUserAddressTaluk).val()
+                     , "VillageId"
+                     , "VillageName"
+                     , $('#' + hdnUserAddressVillage).val()
+                     , ddlUserAddressVillage)
+            }
+        });
+
+        $("#" + ddlUserAddressVillage).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressVillage).val(item.value);
+            }
+        });
+    });
+</script>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -118,7 +204,6 @@
         </div>
     </div>
     <div class="form-group">
-
         <div class="col-md-10">
             @Html.LabelFor(model => model.Address.Post, "PO", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.Address.Post, new { @class = "form-control", @placeholder = "Enter PO" })
@@ -127,35 +212,44 @@
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            @Html.LabelFor(model => model.Address.Taluk , new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.Address.Taluk, new { @class = "form-control", @placeholder = "Enter Taluk" })
-                        @Html.ValidationMessageFor(model => model.Address.Taluk)
+            @Html.LabelFor(model => model.Address.CountryId, new { @class = "control-label" })
+            <div id='ddlUserAddressCountry' class="form-control"></div>
+            @Html.HiddenFor(model => model.Address.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressCountry" })
+            @Html.ValidationMessageFor(model => model.Address.CountryId)
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            @Html.LabelFor(model => model.Address.Village, new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.Address.Village, new { @class = "form-control", @placeholder = "Enter Village" })
-            @Html.ValidationMessageFor(model => model.Address.Village)
+            @Html.LabelFor(model => model.Address.StateId, new { @class = "control-label" })
+            <div id='ddlUserAddressState' class="form-control"></div>
+            @Html.HiddenFor(model => model.Address.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressState" })
+            @Html.ValidationMessageFor(model => model.Address.StateId)
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            @Html.LabelFor(model => model.Address.CountryId , "Country", new { @class = "control-label" })
-                        @Html.DropDownListFor(model=>model.Address.CountryId, (SelectList)ViewBag.UserAddressCountryList, htmlAttributes: new { @class = "form-control",  @ID = "ddlUserAddressCountry" , onchange = "return loadCountryStates(this.options[this.selectedIndex].value, 'ddlUserAddressState');" })
-                        @Html.ValidationMessageFor(model => model.Address.CountryId)
+            @Html.LabelFor(model => model.Address.DistrictId, new { @class = "control-label" })
+            <div id='ddlUserAddressDistrict' class="form-control"></div>
+            @Html.HiddenFor(model => model.Address.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressDistrict" })
+            @Html.ValidationMessageFor(model => model.Address.DistrictId)
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            @Html.LabelFor(model => model.Address.StateId , "State", new { @class = "control-label" })
-                        @Html.DropDownListFor(model=>model.Address.StateId, (SelectList)ViewBag.StateList, htmlAttributes: new { @class = "form-control",  @ID = "ddlUserAddressState" })
-                        @Html.ValidationMessageFor(model => model.Address.StateId)
+            @Html.LabelFor(model => model.Address.TalukId, new { @class = "control-label" })
+            <div id='ddlUserAddressTaluk' class="form-control"></div>
+            @Html.HiddenFor(model => model.Address.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressTaluk" })
+            @Html.ValidationMessageFor(model => model.Address.TalukId)
         </div>
     </div>
-
-
-
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.LabelFor(model => model.Address.VillageId, new { @class = "control-label" })
+            <div id='ddlUserAddressVillage' class="form-control"></div>
+            @Html.HiddenFor(model => model.Address.VillageId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressVillage" })
+            @Html.ValidationMessageFor(model => model.Address.VillageId)
+        </div>
+    </div>    
     <div class="form-group">
 
         <div class="col-md-10">

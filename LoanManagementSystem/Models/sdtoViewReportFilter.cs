@@ -16,11 +16,14 @@ namespace LoanManagementSystem.Models
         public int OperationId { get; set; }
 
         [Required(ErrorMessage="Please enter the start date")]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Please enter the end date")]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
+        [Display(Name="Misc Filter")]
         public string MiscFilter { get; set; }
 
         public List<string> MemberIds { get; set; }

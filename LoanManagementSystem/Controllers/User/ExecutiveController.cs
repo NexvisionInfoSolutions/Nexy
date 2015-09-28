@@ -11,6 +11,7 @@ using Data.Models.Enumerations;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize()]
     public class ExecutiveController : Controller
     {
         private LoanDBContext db = new LoanDBContext();
@@ -24,7 +25,7 @@ namespace LoanManagementSystem.Controllers
         }
         public JsonResult ExecutiveInfo()
         {
-            var dbResult = db.User.Include(s => s.UserAddress).Include(x => x.UserAddress.StateDetails).Include(x => x.UserAddress.Country).Include(s => s.Contacts).Where(s => s.UserType == UserType.Executive).ToList();
+            var dbResult = db.Set<sdtoUser>().Include("UserAddress").Include("UserAddress.StateDetails").Include("UserAddress.Country").Include("Contacts").Include("UserAddress.DistrictDetails").Include("UserAddress.TalukDetails").Include("UserAddress.VillageDetails").Where(s => s.UserType == UserType.Executive).ToList();
             var Users = (from users in dbResult
                          select new
                          {
@@ -34,7 +35,7 @@ namespace LoanManagementSystem.Controllers
                              users.Designation,
                              users.Code,
                              ExecutiveInfo = users.UserID,
-                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode, users.UserAddress.Taluk, users.UserAddress.Village, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
+                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.DistrictDetails.DistrictName, users.UserAddress.Zipcode, users.UserAddress.TalukDetails.TalukName, users.UserAddress.VillageDetails.VillageName, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
                              UserContactPhone = users.Contacts.Telephone1,
                              UserContactMobile = users.Contacts.Mobile1
                          });

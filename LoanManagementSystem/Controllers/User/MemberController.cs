@@ -14,7 +14,8 @@ using Data.Models.Accounts;
 
 namespace LoanManagementSystem.Controllers
 {
-    public class MemberController : Controller
+    [Authorize()]
+    public class MemberController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
@@ -39,17 +40,16 @@ namespace LoanManagementSystem.Controllers
         // GET: /Member/
         public ActionResult Index()
         {
-            var user = db.User.Where(s => s.UserType == UserType.Member); //.Include(s => s.UserAddress).Include(s => s.Contacts).Include(s => s.GuaranterAddress).Include(s => s.GuaranterContacts).Include(s => s.PermanentAddress).Include(s => s.PermanentContacts).Include(s => s.UserGroup);
+            var user = db.User.Where(s => s.UserType == UserType.Member && s.IsDeleted == false); //.Include(s => s.UserAddress).Include(s => s.Contacts).Include(s => s.GuaranterAddress).Include(s => s.GuaranterContacts).Include(s => s.PermanentAddress).Include(s => s.PermanentContacts).Include(s => s.UserGroup);
             return View(user);
             //return View(user.Where(s => s.UserType == UserType.Member).ToList());
         }
 
-
-
         public JsonResult MemberInfo()
         {
             //db.Set<sdtoUser>().Include("UserAddress").Include("PermanentAddress").Include(
-            var dbResult = db.Set<sdtoUser>().Include(s => s.UserAddress).Include(s => s.PermanentAddress).Include(s => s.Contacts).Include(x => x.PermanentAddress.Country).Include(x => x.UserAddress.Country).Include(x => x.UserAddress.StateDetails).Include(x => x.PermanentAddress.StateDetails).Where(s => s.UserType == UserType.Member).ToList();
+            var dbResult = db.Set<sdtoUser>().Include("UserAddress").Include("UserAddress.StateDetails").Include("UserAddress.Country").Include("Contacts").Include("UserAddress.DistrictDetails").Include("UserAddress.TalukDetails").Include("UserAddress.VillageDetails")
+                .Include("PermanentAddress").Include("PermanentAddress.StateDetails").Include("PermanentAddress.Country").Include("PermanentAddress.DistrictDetails").Include("PermanentAddress.TalukDetails").Include("PermanentAddress.VillageDetails").Where(s => s.UserType == UserType.Member && s.IsDeleted == false).ToList();
             var Users = (from users in dbResult
                          select new
                          {
@@ -59,8 +59,8 @@ namespace LoanManagementSystem.Controllers
                              users.FatherName,
                              users.Code,
                              MemberInfo = users.UserID,
-                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.District, users.UserAddress.Zipcode, users.UserAddress.Taluk, users.UserAddress.Village, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
-                             PermanentAddress = UtilityHelper.UtilityHelper.FormatAddress(users.PermanentAddress.Address1, users.PermanentAddress.Address2, users.PermanentAddress.Place, users.PermanentAddress.Post, users.PermanentAddress.District, users.PermanentAddress.Zipcode, users.PermanentAddress.Taluk, users.PermanentAddress.Village, users.PermanentAddress.StateDetails.StateName, users.PermanentAddress.Country.CountryName),
+                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.DistrictDetails.DistrictName, users.UserAddress.Zipcode, users.UserAddress.TalukDetails.TalukName, users.UserAddress.VillageDetails.VillageName, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
+                             PermanentAddress = UtilityHelper.UtilityHelper.FormatAddress(users.PermanentAddress.Address1, users.PermanentAddress.Address2, users.PermanentAddress.Place, users.PermanentAddress.Post, users.PermanentAddress.DistrictDetails.DistrictName, users.PermanentAddress.Zipcode, users.PermanentAddress.TalukDetails.TalukName, users.PermanentAddress.VillageDetails.VillageName, users.PermanentAddress.StateDetails.StateName, users.PermanentAddress.Country.CountryName),
                              UserContactPhone = users.Contacts.Telephone1,
                              UserContactMobile = users.Contacts.Mobile1
                          });
@@ -177,6 +177,7 @@ namespace LoanManagementSystem.Controllers
                     }
 
                     sdtouser.CreatedOn = DateTime.Now;
+                    sdtouser.CreatedBy = CurrentUserSession.UserId;
                     sdtouser.UserAddress = db.Address.Add(sdtouser.UserAddress);
                     sdtouser.Contacts = db.Contacts.Add(sdtouser.Contacts);
 
@@ -201,6 +202,7 @@ namespace LoanManagementSystem.Controllers
                     bfTransaction objAccTransaction = new bfTransaction(db);
                     objAccTransaction.InitiateMemberAccounts(sdtouser);
 
+                    SetDisplayMessage("Member is created successfully");
                     return RedirectToAction("Index");
                 }
             }
@@ -303,6 +305,8 @@ namespace LoanManagementSystem.Controllers
                 //sdtouser.GuaranterContacts = db.Contacts.Find(sdtouser.GuaranterContactId);
                 //db.User.Attach(user);
 
+                sdtouser.ModifiedBy = CurrentUserSession.UserId;
+                sdtouser.ModifiedOn = DateTime.Now;
                 db.Entry(sdtouser).State = EntityState.Modified;
                 db.Entry(sdtouser.PermanentAddress).State = EntityState.Modified;
                 db.Entry(sdtouser.UserAddress).State = EntityState.Modified;
@@ -321,6 +325,7 @@ namespace LoanManagementSystem.Controllers
                     fInfo.Delete();
                 }
 
+                SetDisplayMessage("Member is saved successfully");
                 return RedirectToAction("Index");
             }
             ViewBag.AddressId = new SelectList(db.Address, "AddressId", "Address1", sdtouser.UserAddressId);

@@ -71,6 +71,9 @@
     <Compile Include="Accounts\Transactions\sdtoReceiptHeader.cs" />
     <Compile Include="Address\Contact.cs" />
     <Compile Include="Address\Address.cs" />
+    <Compile Include="Address\District.cs" />
+    <Compile Include="Address\Taluk.cs" />
+    <Compile Include="Address\Village.cs" />
     <Compile Include="Address\State.cs" />
     <Compile Include="Address\Country.cs" />
     <Compile Include="Base\BaseData.cs" />

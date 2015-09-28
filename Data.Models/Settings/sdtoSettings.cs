@@ -27,7 +27,7 @@ namespace Data.Models.Accounts
         public virtual sdtoCompany Company { get; set; }
 
         public long? AssetScheduleId { get; set; }
-
+        [Range(1,int.MaxValue,ErrorMessage="Please select a schedule")]
         //[Association("FK_Settings_MemberSchedule", "AssetScheduleId", "ScheduleId", IsForeignKey = true)]
         [ForeignKey("AssetScheduleId")]
         public Data.Models.Accounts.Schedules.sdtoSchedule AssetSchedule { get; set; }
@@ -56,6 +56,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Sundry Debtor")]
         [ForeignKey("SundryDebtorAccount")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a Sundry Debtor")]
         public long? SundryDebtorAccountId { get; set; }
         //[Association("FK_Settings_SundryDebtorAccount", "SundryDebtorAccountId", "AccountHeadId", IsForeignKey = true)]
         //[InverseProperty("AccountHeadId")]
@@ -63,6 +64,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Sundry Creditor")]
         [ForeignKey("SundryCreditorAccount")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a Sundry Creditor")]
         public long? SundryCreditorAccountId { get; set; }
         //[Association("FK_Settings_SundryCreditorAccount", "SundryCreditorAccountId", "AccountHeadId", IsForeignKey = true)]
         //[InverseProperty("AccountHeadId")]
@@ -70,6 +72,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "P & L Expense Schedule")]
         [ForeignKey("PLExpenseSchedule")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a P & L Expense Schedule")]
         public long? PLExpenseScheduleId { get; set; }
         //[Association("FK_Settings_PLExpenseSchedule", "PLExpenseScheduleId", "ScheduleId", IsForeignKey = true)]
         //[InverseProperty("ScheduleId")]
@@ -77,6 +80,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "P & L Income Schedule")]
         [ForeignKey("PLIncomeSchedule")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a P & L Income Schedule")]
         public long? PLIncomeScheduleId { get; set; }
         //[Association("FK_Settings_PLIncomeSchedule", "PLIncomeScheduleId", "ScheduleId", IsForeignKey = true)]
         //[InverseProperty("ScheduleId")]
@@ -84,6 +88,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Trading Expense Schedule")]
         [ForeignKey("TradingExpenseSchedule")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a Trading Expense Schedule")]
         public long? TradingExpenseScheduleId { get; set; }
         //[Association("FK_Settings_TradingExpenseSchedule", "TradingExpenseScheduleId", "ScheduleId", IsForeignKey = true)]
         //[InverseProperty("ScheduleId")]
@@ -91,6 +96,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Trading Income Schedule")]
         [ForeignKey("TradingIncomeSchedule")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a Trading Income Schedule")]
         public long? TradingIncomeScheduleId { get; set; }
         //[Association("FK_Settings_TradingIncomeSchedule", "TradingIncomeScheduleId", "ScheduleId", IsForeignKey = true)]
         //[InverseProperty("ScheduleId")]
@@ -98,6 +104,7 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Cash Book")]
         [ForeignKey("CashBook")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a Cash Book")]
         public long? CashBookId { get; set; }
         //[Association("FK_Settings_CashBook", "CashBookId", "AccountBookId", IsForeignKey = true)]
         //[InverseProperty("AccountBookId")]
@@ -105,13 +112,15 @@ namespace Data.Models.Accounts
 
         [Display(Name = "Bank Book")]
         [ForeignKey("BankBook")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a Bank Book")]
         public long? BankBookId { get; set; }
         //[Association("FK_Settings_BankBook", "BankBookId", "AccountBookId", IsForeignKey = true)]
         //[InverseProperty("AccountBookId")]
         public sdtoAccountBook BankBook { get; set; }
 
-        [Display(Name = "Interest Book")]
+        [Display(Name = "Interest Account")]
         [ForeignKey("InterestAccount")]
+        //[Range(1, int.MaxValue, ErrorMessage = "Please select a Interest Account")]
         public long? InterestAccountId { get; set; }
         //[Association("FK_Settings_InterestBook", "InterestBookId", "AccountBookId", IsForeignKey = true)]
         //[InverseProperty("AccountHeadId")]

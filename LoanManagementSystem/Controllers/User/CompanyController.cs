@@ -11,6 +11,7 @@ using System.IO;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize()]
     public class CompanyController : Controller
     {
         private LoanDBContext db = new LoanDBContext();

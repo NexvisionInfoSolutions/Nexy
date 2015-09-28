@@ -11,6 +11,7 @@ using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Controllers.Settings
 {
+    [Authorize()]
     public class MenuController : Controller
     {
         private LoanDBContext db = new LoanDBContext();

@@ -74,11 +74,11 @@ Select distinct lf.LoanId, lf.UserId, lf.LoanAmount, lf.TotalInstallments, lf.In
 ,u.UserType
 ,u.FatherName
 ,u.GuaranterName
-, isnull(uaddr.Address1, '') + '<br />' + isnull(uaddr.Address2, '') + '<br />' + isnull(uaddr.Place, '') + '<br />' + isnull(uaddr.Post, '') + '<br />' + isnull(uaddr.District, '') + '<br />' as UserAddress
+, isnull(uaddr.Address1, '') + '<br />' + isnull(uaddr.Address2, '') + '<br />' + isnull(uaddr.Place, '') + '<br />' + isnull(uaddr.Post, '') + '<br />' + isnull(uaddrDist.DistrictName, '') + '<br />' + isnull(uaddrTaluk.TalukName, '') + '<br />' + isnull(uaddrVillage.VillageName, '') + '<br />' as UserAddress
 , uc.Telephone1 as UserPhone
 , uc.Mobile1 as UserMobile
 , uc.Email1 as UserEmail
-, isnull(upAddr.Address1, '') + '<br />' + isnull(upAddr.Address2, '') + '<br />' + isnull(upAddr.Place, '') + '<br />' + isnull(upAddr.Post, '') + '<br />' + isnull(upAddr.District, '') + '<br />' as UserPermanentAddress
+, isnull(upAddr.Address1, '') + '<br />' + isnull(upAddr.Address2, '') + '<br />' + isnull(upAddr.Place, '') + '<br />' + isnull(upAddr.Post, '') + '<br />' + isnull(upAddrDist.DistrictName, '') + '<br />' + isnull(upAddrTaluk.TalukName, '') + '<br />' + isnull(upAddrVillage.VillageName, '') + '<br />' as UserPermanentAddress
 , upc.Telephone1 as PermanentPhone
 , upc.Mobile1 as PermanentMobile
 , upc.Email1 as PermanentEmail
@@ -86,7 +86,13 @@ from LoanInfo lf
 left join LoanRepayment lr on lr.LoanId = lf.LoanId and lr.Status <> 4 and isnull(lr.IsDeleted, 0) = 0
 left join Users u on u.UserID = lf.UserId and u.UserType = 3 -- Members only
 left join Address uaddr on uaddr.AddressId = u.UserAddressId
+left join District uaddrDist on uaddrDist.DistrictId = uaddr.DistrictId
+left join Taluk uaddrTaluk on uaddrTaluk.TalukId = uaddr.TalukId
+left join Village uaddrVillage on uaddrVillage.VillageId = uaddr.VillageId
 left join Address upAddr on upAddr.AddressId = u.PermanentAddressId
+left join District upAddrDist on upAddrDist.DistrictId = upAddr.DistrictId
+left join Taluk upAddrTaluk on upAddrTaluk.TalukId = upAddr.TalukId
+left join Village upAddrVillage on upAddrVillage.VillageId = upAddr.VillageId
 left join Contact uc on uc.ContactId = u.UserContactId
 left join contact upc on upc.ContactId = u.PermanentContactId
 where isnull(lf.IsDeleted, 0) = 0
@@ -137,8 +143,14 @@ AND (
         OR (len(isnull(uaddr.Address1, '')) > 0 AND uaddr.Address1 like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(uaddr.Address2, '')) > 0 AND uaddr.Address2 like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(uaddr.Place , '')) > 0 AND uaddr.Place like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uaddrDist.DistrictName, '')) > 0 AND uaddrDist.DistrictName like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uaddrTaluk.TalukName, '')) > 0 AND uaddrTaluk.TalukName like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(uaddrVillage.VillageName, '')) > 0 AND uaddrVillage.VillageName like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(upAddr.Address1, '')) > 0 AND upAddr.Address1 like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(upAddr.Address2, '')) > 0 AND upAddr.Address2 like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upAddrDist.DistrictName, '')) > 0 AND upAddrDist.DistrictName like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upAddrTaluk.TalukName, '')) > 0 AND upAddrTaluk.TalukName like '%' + pm.EntityStrVal + '%')
+        OR (len(isnull(upAddrVillage.VillageName, '')) > 0 AND upAddrVillage.VillageName like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(upAddr.Place , '')) > 0 AND upAddr.Place like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(uc.Telephone1 , '')) > 0 AND uc.Telephone1 like '%' + pm.EntityStrVal + '%')
         OR (len(isnull(uc.Mobile1 , '')) > 0 AND uc.Mobile1 like '%' + pm.EntityStrVal + '%')

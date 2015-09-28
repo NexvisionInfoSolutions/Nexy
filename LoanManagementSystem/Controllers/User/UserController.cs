@@ -13,7 +13,8 @@ using System.IO;
 
 namespace LoanManagementSystem.Controllers
 {
-    public class UserController : Controller
+    //[Authorize()]
+    public class UserController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
@@ -91,7 +92,7 @@ namespace LoanManagementSystem.Controllers
             sdtoUser user = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
             if (user != null && user.UserSession != null)
             {
-                user.UserSession.EndTime = DateTime.Now;                
+                user.UserSession.EndTime = DateTime.Now;
                 db.Entry<sdtoUserSession>(user.UserSession).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -102,13 +103,13 @@ namespace LoanManagementSystem.Controllers
         // GET: /User/
         public ActionResult Index()
         {
-            var user = db.User.Include(u => u.UserGroup).Where(s => s.UserType == UserType.User);
+            var user = db.User.Include(u => u.UserGroup).Where(s => s.UserType == UserType.User && s.IsDeleted == false);
             return View(user);
         }
 
         public JsonResult UserInfo()
         {
-            var dbResult = db.User.Include(u => u.UserGroup).Where(s => s.UserType == UserType.User).ToList();
+            var dbResult = db.User.Include(u => u.UserGroup).Where(s => s.UserType == UserType.User && s.IsDeleted == false).ToList();
             var Users = (from users in dbResult
                          select new
                          {
@@ -178,6 +179,9 @@ namespace LoanManagementSystem.Controllers
                 else
                 {
                     user.UserType = UserType.User;
+                    user.CreatedOn = DateTime.Now;
+                    if (CurrentUserSession != null && CurrentUserSession.UserId > 0)
+                        user.CreatedBy = CurrentUserSession.UserId;
                     if (user.UserAddress != null)
                         user.UserAddress = db.Address.Add(user.UserAddress);
                     if (user.Contacts != null)
@@ -196,7 +200,10 @@ namespace LoanManagementSystem.Controllers
                     }
 
                     if (User.Identity.IsAuthenticated)
+                    {
+                        SetDisplayMessage("User is created successfully");
                         return RedirectToAction("Index");
+                    }
                     else
                         return RedirectToAction("Login");
                 }
@@ -218,6 +225,7 @@ namespace LoanManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+            user.ConfirmPassword = user.Password;
             ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
             return View(user);
         }
@@ -232,6 +240,8 @@ namespace LoanManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 user.UserType = UserType.User;
+                user.ModifiedBy = CurrentUserSession.UserId;
+                user.ModifiedOn = DateTime.Now;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -244,6 +254,7 @@ namespace LoanManagementSystem.Controllers
                     fInfo.Delete();
                 }
 
+                SetDisplayMessage("User is saved successfully");
                 return RedirectToAction("Index");
             }
             ViewBag.UserGroupList = new SelectList(db.Usergroup, "UserGroupId", "Code", user.UserGroupId);
@@ -271,8 +282,14 @@ namespace LoanManagementSystem.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             sdtoUser user = db.User.Find(id);
-            db.User.Remove(user);
+            user.ConfirmPassword = user.Password;
+            user.IsDeleted = true;
+            user.DeletedBy = CurrentUserSession.UserId;
+            user.DeletedOn = DateTime.Now;
+            db.Entry(user).State = EntityState.Modified;
+
             db.SaveChanges();
+            SetDisplayMessage("User is deleted successfully");
             return RedirectToAction("Index");
         }
 

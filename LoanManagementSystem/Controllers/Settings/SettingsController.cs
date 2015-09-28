@@ -530,24 +530,22 @@ namespace LoanManagementSystem.Controllers.Settings
                 return RedirectToAction("Index", "Home");
             }
             
-
-            sdtoSettings sdtoSettings = db.GeneralSettings.Find(Settings.SettingsId);
             ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
 
             var assetSchedule = db.Schedules.Where(x => x.ShortName == "AS").FirstOrDefault();
-            var SelectListAsset = db.Schedules.Where(x => x.BaseScheduleId == assetSchedule.ScheduleId).ToList();
+            var SelectListAsset = db.Schedules.Where(x => x.BaseScheduleId == assetSchedule.ScheduleId || x.ScheduleId == assetSchedule.ScheduleId).ToList();
             ViewBag.AssetScheduleList = new SelectList(SelectListAsset, "ScheduleId", "ScheduleName", 0);
 
             var liabilitySchedule = db.Schedules.Where(x => x.ShortName == "LY").FirstOrDefault();
-            var SelectListLiability = db.Schedules.Where(x => x.BaseScheduleId == liabilitySchedule.ScheduleId).ToList();
+            var SelectListLiability = db.Schedules.Where(x => x.BaseScheduleId == liabilitySchedule.ScheduleId || x.ScheduleId == liabilitySchedule.ScheduleId).ToList();
             ViewBag.LiabilityScheduleList = new SelectList(SelectListLiability, "ScheduleId", "ScheduleName", 0);
 
             var expenditureSchedule = db.Schedules.Where(x => x.ShortName == "EX").FirstOrDefault();
-            var SelectListExpenditure = db.Schedules.Where(x => x.BaseScheduleId == expenditureSchedule.ScheduleId).ToList();
+            var SelectListExpenditure = db.Schedules.Where(x => x.BaseScheduleId == expenditureSchedule.ScheduleId || x.ScheduleId == expenditureSchedule.ScheduleId).ToList();
             ViewBag.ExpenditureScheduleList = new SelectList(SelectListExpenditure, "ScheduleId", "ScheduleName", 0);
 
             var incomeSchedule = db.Schedules.Where(x => x.ShortName == "IC").FirstOrDefault();
-            var SelectListIncome = db.Schedules.Where(x => x.BaseScheduleId == incomeSchedule.ScheduleId).ToList();
+            var SelectListIncome = db.Schedules.Where(x => x.BaseScheduleId == incomeSchedule.ScheduleId || x.ScheduleId == incomeSchedule.ScheduleId).ToList();
             ViewBag.IncomeScheduleList = new SelectList(SelectListIncome, "ScheduleId", "ScheduleName", 0);
 
             var AccountList = db.AccountBooks.Where(x => x.IsDeleted == false).ToList();

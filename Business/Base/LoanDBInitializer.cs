@@ -133,9 +133,12 @@ namespace Business.Base
             //context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/JournalEntry", CreatedOn = DateTime.Now, UrlText = "Journal Entry", ParentId = 6, IsMenu = true, MenuOrder = 6 });//urlDeposits.ParentId });
             //context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Accounting/ExpenseEntry", CreatedOn = DateTime.Now, UrlText = "Expense Entry", ParentId = 6, IsMenu = true, MenuOrder = 7 });//urlDeposits.ParentId });
 
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/StateList", CreatedOn = DateTime.Now, UrlText = "List of States", ParentId = 5, IsMenu = true, MenuOrder = 5 });
-            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/CountryList", CreatedOn = DateTime.Now, UrlText = "List of Country", ParentId = 5, IsMenu = true, MenuOrder = 6 });
-
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/DistrictList", CreatedOn = DateTime.Now, UrlText = "List of Districts", ParentId = 5, IsMenu = true, MenuOrder = 5 });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/TalukList", CreatedOn = DateTime.Now, UrlText = "List of Taluks", ParentId = 5, IsMenu = true, MenuOrder = 6 });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/VillageList", CreatedOn = DateTime.Now, UrlText = "List of Villages", ParentId = 5, IsMenu = true, MenuOrder = 7 });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/StateList", CreatedOn = DateTime.Now, UrlText = "List of States", ParentId = 5, IsMenu = true, MenuOrder = 8 });
+            context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/CountryList", CreatedOn = DateTime.Now, UrlText = "List of Country", ParentId = 5, IsMenu = true, MenuOrder = 9 });
+            
             /*******************************/
             /** Schedules **/
 
