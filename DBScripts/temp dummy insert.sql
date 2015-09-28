@@ -2,8 +2,6 @@
 ALTER DATABASE [LoanManagement] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 USE [master];
 DROP DATABASE [LoanManagement];
-
-GO*/
 Truncate table Village;
 truncate table Taluk;
 truncate table District;
@@ -11,6 +9,8 @@ truncate table State;
 truncate table Country;
 truncate table Address;
 truncate table Contact;
+GO*/
+
 
 select * from Country
 

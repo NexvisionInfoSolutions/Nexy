@@ -1,0 +1,84 @@
+﻿@model LoanManagementSystem.Models.sdtoTaluk
+
+@{
+    ViewBag.Title = "Taluk";
+}
+
+<script src="~/Scripts/Address.js"></script>
+<script language="javascript" type="text/javascript">
+    var ddlUserAddressDistrict = "ddlUserAddressDistrict";
+    var hdnUserAddressDistrict = "hdnUserAddressDistrict";
+    $(document).ready(function () {
+        LoadComboBox('@Url.Action("DistrictInfo", "Settings", new { StateId = 0 })' + '@ViewBag.StateId'
+                 , "DistrictId"
+                 , "DistrictName"
+                 , $('#' + hdnUserAddressDistrict).val()
+                 , ddlUserAddressDistrict)
+
+        $("#" + ddlUserAddressDistrict).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressDistrict).val(item.value);
+            }
+        });
+    });
+
+    function Validate() {
+        if ($("#" + hdnUserAddressDistrict).val() == "0") {
+            alert('Please select a district');
+            return false;
+        }
+        else
+            return true;
+    }
+
+
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TalukId, new { htmlAttributes = new { } })
+        @Html.HiddenFor(model => model.CreatedBy, new { htmlAttributes = new { } })
+        @Html.HiddenFor(model => model.CreatedOn, new { htmlAttributes = new { } })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DistrictId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div id='ddlUserAddressDistrict' class="form-control"></div>
+                @Html.HiddenFor(model => model.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressDistrict" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TalukName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TalukName, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.TalukName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TalukAbbr, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TalukAbbr, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.TalukAbbr, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" onclick="return Validate();" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "TalukList", new { StateId = ViewBag.StateId, CountryId = ViewBag.CountryId, DistrictId = ViewBag.ParentId })
+</div>

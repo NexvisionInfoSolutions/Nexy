@@ -1,0 +1,84 @@
+﻿@model LoanManagementSystem.Models.sdtoDistrict
+
+@{
+    ViewBag.Title = "District";
+}
+
+<script src="~/Scripts/Address.js"></script>
+<script language="javascript" type="text/javascript">
+    var ddlUserAddressState = "ddlUserAddressState";
+    var hdnUserAddressState = "hdnUserAddressState";
+    $(document).ready(function () {
+        LoadComboBox('@Url.Action("StateInfo", "Settings", new { CountryId = 0 })' + '@ViewBag.CountryId'
+                         , "StateId"
+                         , "StateName"
+                         , $('#' + hdnUserAddressState).val()
+                         , ddlUserAddressState)
+
+        $("#" + ddlUserAddressState).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressState).val(item.value);
+            }
+        });
+    });
+
+    function Validate() {
+        if ($("#" + hdnUserAddressState).val() == "0") {
+            alert('Please select a state');
+            return false;
+        }
+        else
+            return true;
+    }
+
+
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DistrictId, new { htmlAttributes = new { } })
+        @Html.HiddenFor(model => model.CreatedBy, new { htmlAttributes = new { } })
+        @Html.HiddenFor(model => model.CreatedOn, new { htmlAttributes = new { } })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div id='ddlUserAddressState' class="form-control"></div>
+                @Html.HiddenFor(model => model.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressState" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DistrictName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DistrictName, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.DistrictName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DistrictAbbr, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DistrictAbbr, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.DistrictAbbr, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" onclick="return Validate();" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "DistrictList", new { StateId = ViewBag.ParentId, CountryId = ViewBag.CountryId })
+</div>

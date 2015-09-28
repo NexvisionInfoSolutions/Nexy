@@ -1,0 +1,81 @@
+﻿@model LoanManagementSystem.Models.sdtoVillage
+
+@{
+    ViewBag.Title = "Village";
+}
+
+<script src="~/Scripts/Address.js"></script>
+<script language="javascript" type="text/javascript">
+    var ddlUserAddressTaluk = "ddlUserAddressTaluk";
+    var hdnUserAddressTaluk = "hdnUserAddressTaluk";
+    $(document).ready(function () {             
+        LoadComboBox('@Url.Action("TalukInfo", "Settings", new { DistrictId = 0 })' + '@ViewBag.TalukId'
+                     , "TalukId"
+                     , "TalukName"
+                     , $('#' + hdnUserAddressTaluk).val()
+                     , ddlUserAddressTaluk)
+
+        $("#" + ddlUserAddressTaluk).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressTaluk).val(item.value);
+            }
+        });
+    });
+
+    function Validate() {
+        if ($("#" + hdnUserAddressTaluk).val() == "0") {
+            alert('Please select a taluk');
+            return false;
+        }
+        else
+            return true;
+    }
+
+
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TalukId, new { htmlAttributes = new { } })
+        @Html.HiddenFor(model => model.CreatedBy, new { htmlAttributes = new { } })
+        @Html.HiddenFor(model => model.CreatedOn, new { htmlAttributes = new { } })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TalukId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div id='ddlUserAddressTaluk' class="form-control"></div>
+                @Html.HiddenFor(model => model.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressTaluk" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.VillageName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.VillageName, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.VillageName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.VillageAbbr, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.VillageAbbr, new { htmlAttributes = new { } })
+                @Html.ValidationMessageFor(model => model.VillageAbbr, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" onclick="return Validate();" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "VillageList", new { StateId = ViewBag.StateId, CountryId = ViewBag.CountryId, DistrictId = ViewBag.DistrictId, TalukId = ViewBag.ParentId })
+</div>

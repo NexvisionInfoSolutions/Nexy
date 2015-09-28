@@ -1,0 +1,142 @@
+﻿@model LoanManagementSystem.Models.sdtoState
+
+@{
+    ViewBag.Title = "District List";
+
+}
+
+@section scripts {
+    <script src="~/Scripts/Address.js"></script>
+    <script type="text/javascript">
+        var ddlUserAddressCountry = "ddlUserAddressCountry";
+        var hdnUserAddressCountry = "hdnUserAddressCountry";
+
+        var ddlUserAddressState = "ddlUserAddressState";
+        var hdnUserAddressState = "hdnUserAddressState";
+
+        $(document).ready(function () {
+            //var datepc = $('.date-picker');
+            //if (datepc != null)
+            //    datepc.datepicker({
+            //        format: 'yyyy.M.dd',
+            //        startDate: '-3d',
+            //        //showOn: "both",
+            //        buttonImageOnly: true,
+            //        buttonImage: "calendar.gif",
+            //        buttonText: "Calendar",
+            //        regional: ["en-US"]
+            //    });
+
+            LoadComboBox('@Url.Action("CountryInfo", "Settings")'
+                     , "CountryId"
+                     , "CountryName"
+                     , $('#' + hdnUserAddressCountry).val()
+                     , ddlUserAddressCountry);
+
+            $("#" + ddlUserAddressCountry).on('change', function (event) {
+                var args = event.args;
+                if (args) {
+                    var item = args.item;
+                    $("#" + hdnUserAddressCountry).val(item.value);
+                    LoadComboBox('@Url.Action("StateInfo", "Settings", new { CountryId = 0 })' + $('#' + hdnUserAddressCountry).val()
+                             , "StateId"
+                             , "StateName"
+                             , $('#' + hdnUserAddressState).val()
+                             , ddlUserAddressState)
+                }
+            });
+
+            $("#" + ddlUserAddressState).on('change', function (event) {
+                var args = event.args;
+                if (args) {
+                    var item = args.item;
+                    $("#" + hdnUserAddressState).val(item.value);
+
+                    var BASE_URL = '@Url.Action("SaveDistrict", "Settings")';
+
+                    $('#hlnkAdd').attr("href", BASE_URL + "?CountryId="+$('#' + hdnUserAddressCountry).val()+"&StateId="+$("#" + hdnUserAddressState).val())
+                }
+                Search();
+            });            
+        });
+
+        function Search() {
+            // prepare the data
+            var source =
+            {
+                dataType: 'json',
+                //traditional:true,
+                contentType: 'application/json',
+                dataFields: [
+                    { name: 'StateId', type: 'number' },
+                    { name: 'DistrictId', type: 'number' },
+                    { name: 'StateName', type: 'string' },
+                    { name: 'StateAbbr', type: 'string' },
+                    { name: 'DistrictName', type: 'string' },
+                    { name: 'DistrictAbbr', type: 'string' },
+                ],
+                id: 'DistrictId',
+                url: '/Settings/DistrictInfo?StateId=' + $("#" + hdnUserAddressState).val()
+                };
+
+            var LinkId = function (row, column, value, rowData) {
+                var html = '<b><a target="_blank" href="/Settings/SaveDistrict?CountryId=' + $('#' + hdnUserAddressCountry).val() + '&StateId=' + $("#" + hdnUserAddressState).val() + '&DistrictId=' + rowData.DistrictId + '">' + value + '</a>';
+                return html;
+            }
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            var gridInfo = $("#dataTableLoan").jqxDataTable(
+            {
+                width:1000,
+                source: dataAdapter,
+                theme: 'arctic',
+                pageSize: 10,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                  { text: 'District', dataField: 'DistrictName', cellsRenderer: LinkId },
+                  { text: 'District Abbr', dataField: 'DistrictAbbr' },
+                  //{ text: 'Country Name', dataField: 'CountryName' },
+                  //{ text: 'Country Abbr', dataField: 'CountryAbbr' }
+                ]
+            });
+
+            return false;
+        }
+    </script>
+}
+
+
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a id="hlnkAdd">Add District</a>
+        </div>
+        <div class="panel-body">
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.CountryId, new { @class = "control-label" })
+                        <div id='ddlUserAddressCountry' class="form-control"></div>
+                        @Html.HiddenFor(model => model.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressCountry" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.StateId, new { @class = "control-label" })
+                        <div id='ddlUserAddressState' class="form-control"></div>
+                        @Html.HiddenFor(model => model.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressState" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr />
+                <div id="dataTableLoan" style="width: 300px; overflow-x: scroll"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,204 @@
+﻿@model LoanManagementSystem.Models.sdtoTaluk
+
+@{
+    ViewBag.Title = "Village List";
+
+}
+
+@section scripts {
+    <script src="~/Scripts/Address.js"></script>
+    <script type="text/javascript">
+    var ddlUserAddressCountry = "ddlUserAddressCountry";
+    var hdnUserAddressCountry = "hdnUserAddressCountry";
+
+    var ddlUserAddressState = "ddlUserAddressState";
+    var hdnUserAddressState = "hdnUserAddressState";
+
+    var ddlUserAddressDistrict = "ddlUserAddressDistrict";
+    var hdnUserAddressDistrict = "hdnUserAddressDistrict";
+
+    var ddlUserAddressTaluk = "ddlUserAddressTaluk";
+    var hdnUserAddressTaluk = "hdnUserAddressTaluk";
+
+    $(document).ready(function () {
+        //var datepc = $('.date-picker');
+        //if (datepc != null)
+        //    datepc.datepicker({
+        //        format: 'yyyy.M.dd',
+        //        startDate: '-3d',
+        //        //showOn: "both",
+        //        buttonImageOnly: true,
+        //        buttonImage: "calendar.gif",
+        //        buttonText: "Calendar",
+        //        regional: ["en-US"]
+        //    });
+
+        LoadComboBox('@Url.Action("CountryInfo", "Settings")'
+                 , "CountryId"
+                 , "CountryName"
+                 , $('#' + hdnUserAddressCountry).val()
+                 , ddlUserAddressCountry);
+
+        $("#" + ddlUserAddressCountry).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressCountry).val(item.value);
+                LoadComboBox('@Url.Action("StateInfo", "Settings", new { CountryId = 0 })' + $('#' + hdnUserAddressCountry).val()
+                         , "StateId"
+                         , "StateName"
+                         , $('#' + hdnUserAddressState).val()
+                         , ddlUserAddressState)
+            }
+        });
+
+        $("#" + ddlUserAddressState).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                if ($('#' + hdnUserAddressState).val() != item.value)
+                    $('#' + hdnUserAddressDistrict).val("0")
+
+                $("#" + hdnUserAddressState).val(item.value);
+
+
+
+                LoadComboBox('@Url.Action("DistrictInfo", "Settings", new { StateId = 0 })' + $('#' + hdnUserAddressState).val()
+                 , "DistrictId"
+                 , "DistrictName"
+                 , $('#' + hdnUserAddressDistrict).val()
+                 , ddlUserAddressDistrict)
+            }
+        });
+
+        $("#" + ddlUserAddressDistrict).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+
+                if ($('#' + ddlUserAddressDistrict).val() != item.value)
+                    $('#' + hdnUserAddressTaluk).val("0")
+
+                $("#" + hdnUserAddressDistrict).val(item.value);
+
+                LoadComboBox('@Url.Action("TalukInfo", "Settings", new { DistrictId = 0 })' + $('#' + hdnUserAddressDistrict).val()
+                     , "TalukId"
+                     , "TalukName"
+                     , $('#' + hdnUserAddressTaluk).val()
+                     , ddlUserAddressTaluk)
+            }
+
+        });
+
+        $("#" + ddlUserAddressTaluk).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnUserAddressTaluk).val(item.value);
+                var BASE_URL = '@Url.Action("SaveVillage", "Settings")';
+
+                $('#hlnkAdd').attr("href", BASE_URL + "?CountryId=" + $('#' + hdnUserAddressCountry).val() + "&StateId=" + $("#" + hdnUserAddressState).val() + "&DistrictId=" + $("#" + hdnUserAddressDistrict).val() + "&TalukId=" + $("#" + hdnUserAddressTaluk).val())
+            }
+            Search();
+        });
+
+    });
+
+    function Search() {
+        // prepare the data
+        var source =
+        {
+            dataType: 'json',
+            //traditional:true,
+            contentType: 'application/json',
+            dataFields: [
+                { name: 'VillageId', type: 'number' },
+                { name: 'TalukId', type: 'number' },
+                { name: 'TalukName', type: 'string' },
+                { name: 'TalukAbbr', type: 'string' },
+                { name: 'VillageName', type: 'string' },
+                { name: 'VillageAbbr', type: 'string' },
+            ],
+            id: 'TalukId',
+            url: '/Settings/VillageInfo?TalukId=' + $("#" + hdnUserAddressTaluk).val()
+        };
+
+        var LinkId = function (row, column, value, rowData) {
+            var html = '<b><a target="_blank" href="/Settings/SaveVillage?CountryId=' + $('#' + hdnUserAddressCountry).val() + '&StateId=' + $("#" + hdnUserAddressState).val() + '&DistrictId=' + $("#" + hdnUserAddressDistrict).val() + '&TalukId=' + $("#" + hdnUserAddressTaluk).val() + '&VillageId=' + rowData.VillageId + '">' + value + '</a>';
+            return html;
+        }
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        // create Tree Grid
+        var gridInfo = $("#dataTableLoan").jqxDataTable(
+        {
+            width: 1000,
+            source: dataAdapter,
+            theme: 'arctic',
+            pageSize: 10,
+            sortable: true,
+            filterable: true,
+            pageable: true,
+            columns: [
+              { text: 'Village', dataField: 'VillageName', cellsRenderer: LinkId },
+              { text: 'Village Abbr', dataField: 'VillageAbbr' },
+              //{ text: 'Country Name', dataField: 'CountryName' },
+              //{ text: 'Country Abbr', dataField: 'CountryAbbr' }
+            ]
+        });
+
+        return false;
+    }
+</script>
+}
+
+
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a id="hlnkAdd">Add Taluk</a>
+        </div>
+        <div class="panel-body">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.DistrictDetails.StateDetails.CountryId, new { @class = "control-label" })
+                        <div id='ddlUserAddressCountry' class="form-control"></div>
+                        @Html.HiddenFor(model => model.DistrictDetails.StateDetails.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressCountry" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.DistrictDetails.StateDetails.StateId, new { @class = "control-label" })
+                        <div id='ddlUserAddressState' class="form-control"></div>
+                        @Html.HiddenFor(model => model.DistrictDetails.StateDetails.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressState" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.DistrictId, new { @class = "control-label" })
+                        <div id='ddlUserAddressDistrict' class="form-control"></div>
+                        @Html.HiddenFor(model => model.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressDistrict" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.TalukId, new { @class = "control-label" })
+                        <div id='ddlUserAddressTaluk' class="form-control"></div>
+                        @Html.HiddenFor(model => model.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressTaluk" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr />
+                <div id="dataTableLoan" style="width: 300px; overflow-x: scroll"></div>
+            </div>
+        </div>
+    </div>
+</div>
