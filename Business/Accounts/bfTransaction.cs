@@ -96,11 +96,15 @@ namespace Business.Reports
                             AppDb.Entry(header).State = EntityState.Modified;
                             AppDb.SaveChanges();
 
-                            var dtls = AppDb.ReceiptDetails.Where(x => x.ReceiptsId == header.Id && x.IsDeleted == false).ToList();
-                            dtls.ForEach(x => x.IsDeleted = true);
+                            var dtls = AppDb.ReceiptDetails.Where(x => x.ReceiptsId == header.Id && x.IsDeleted == false).FirstOrDefault();//.ToList();
+                           // dtls.ForEach(x => x.IsDeleted = true);
 
-                            AppDb.Entry(dtls).State = EntityState.Modified;
-                            AppDb.SaveChanges();
+                            //if (dtls.Count > 0)
+                            //{
+                                AppDb.Entry(dtls).State = EntityState.Modified; 
+                                //AppDb.Entry("sdtoReceiptDetails").State = EntityState.Modified; 
+                                //AppDb.SaveChanges();
+                            //}
                         }
                     }
                 }
