@@ -690,7 +690,7 @@ namespace Business.Reports
 
         public bool UpdateDayBookBalance(long AccountId, long FinancialYearId, DateTime transactionDate, decimal Amount, TransactionType transType)
         {
-            var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == AccountId && x.IsDeleted == false && x.Date.Date == transactionDate.Date && x.FinancialYearId == FinancialYearId).FirstOrDefault();
+            var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == AccountId && x.IsDeleted == false && x.FinancialYearId == FinancialYearId).FirstOrDefault(); //x.Date.Date == transactionDate.Date &&
             if (dayBookEntry == null)
             {
                 dayBookEntry = new sdtoDayBook() { AccountHeadId = AccountId, CreatedBy = CurrentUser.UserID, CreatedOn = DateTime.Now, Date = transactionDate, FinancialYearId = FinancialYearId };
