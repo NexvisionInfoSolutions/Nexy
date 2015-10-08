@@ -6,6 +6,7 @@
 
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/Accounting.js"></script>
 
 <script language="javascript" type="text/javascript">
     function SetSource(val) {
@@ -16,13 +17,12 @@
     $(document).ready(function () {
         var datepc = $('.date-picker');
         datepc.datepicker({
-            format: 'yyyy.M.dd',
-            startDate: '-3d',
-            //showOn: "both",
-            buttonImageOnly: true,
-            buttonImage: "calendar.gif",
-            buttonText: "Calendar",
-            regional: ["en-US"]
+            format: 'dd.M.yyyy'           
+        });
+
+        var datepcinner = $('.date-picker-inner');
+        datepcinner.datepicker({
+            format: 'dd.M.yyyy'
         });
     });
 </script>
@@ -39,8 +39,8 @@
         <div class="col-md-5 form-horizontal">
             <div class="form-group">
                 <div class="col-md-10">
-                    @Html.LabelFor(model => model.Book.AccountBookId, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownListFor(model => model.Book.AccountBookId, (SelectList)ViewBag.AccountBookList, htmlAttributes: new { @class = "form-control" })
+                    @Html.LabelFor(model => model.Book.AccountBookId, htmlAttributes: new { @class = "control-label" })                    
+                    @Html.DropDownListFor(model => model.Book.AccountBookId, (SelectList)ViewBag.AccountBookList, htmlAttributes: new { @id = "ddlAccountBookId", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Book.AccountBookId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -48,7 +48,7 @@
             <div class="form-group">
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.Balance, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.Balance, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.LabelForModel(Model.Balance.ToString(), new { @id = "lblBookBalance", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Balance, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -65,7 +65,7 @@
             <div class="form-group">
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.Voucher, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.Voucher, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.LabelForModel(Model.Voucher + " ", new { @id = "txtVoucherNo", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Voucher, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -77,7 +77,7 @@
         <div class="col-md-2 form-horizontal">
             <div class="form-group">
                 <div class="col-md-10">
-                    @Html.LabelFor(model => model.Details.FirstOrDefault().AccountHead.AccountHeadId, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Details.FirstOrDefault().AccountHeadId, htmlAttributes: new { @class = "control-label" })
                 </div>
             </div>
         </div>
@@ -112,7 +112,7 @@
         <div class="col-md-1 form-horizontal">
             <div class="form-group">
                 <div class="col-md-10">
-                    @Html.LabelFor(model => model.Details.FirstOrDefault().InstrumentDate, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Details.FirstOrDefault().InstrumentDate, htmlAttributes: new { @class = "control-label date-picker" })
                 </div>
             </div>
         </div>
@@ -130,8 +130,8 @@
                 <div class="col-md-2 form-horizontal">
                     <div class="form-group">
                         <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.Details[i].AccountHead.AccountHeadId, (SelectList)ViewBag.AccountHeads, htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Details[i].AccountHead.AccountHeadId, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(model => model.Details[i].AccountHeadId, new SelectList(ViewBag.AccountHeads, "Value", "Text", Model.Details[i].AccountHeadId), htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Details[i].AccountHeadId, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                 <div class="col-md-2 form-horizontal">
                     <div class="form-group">
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Details[i].InstrumentDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                            @Html.EditorFor(model => model.Details[i].InstrumentDate, new { htmlAttributes = new { @class = "form-control date-picker-inner" } })
                             @Html.ValidationMessageFor(model => model.Details[i].InstrumentDate, "", new { @class = "text-danger" })
                         </div>
                     </div>

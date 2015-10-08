@@ -18,7 +18,7 @@ namespace Data.Models.Accounts
         public long LoanRepaymentId { get; set; }
 
         [Display(Name = "Loan ID")]
-        public long LoanId { get; set; }       
+        public long LoanId { get; set; }
 
         [Display(Name = "Repayment Code")]
         public string RepaymentCode { get; set; }
@@ -56,5 +56,8 @@ namespace Data.Models.Accounts
         public string Notes { get; set; }
         [ForeignKey("LoanId")]
         public sdtoLoanInfo LoanDetails { get; set; }
+
+        [NotMapped]
+        public bool Checked { get; set; }
     }
 }

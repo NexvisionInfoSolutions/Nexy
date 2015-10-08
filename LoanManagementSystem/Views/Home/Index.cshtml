@@ -12,7 +12,7 @@
         $(document).ready(function () {
             //var datepc = $('.date-picker');
             //datepc.datepicker({
-            //    format: 'yyyy.M.dd',
+            //    format: 'dd.M.yyyy',
             //    startDate: '-3d',
             //    //showOn: "both",
             //    buttonImageOnly: true,
@@ -72,71 +72,73 @@
 
             console.log(postData);
 
-            var source =
-            {
-                dataType: 'json',
-                //traditional:true,
-                contentType: 'application/json',
-                dataFields: [
-                    { name: 'DepositId', type: 'number' },
-                    { name: 'UserId', type: 'number' },
-                    { name: 'DepositAmount', type: 'number' },
-                    { name: 'InteresRate', type: 'number' },
-                    //{ name: 'InstallmentAmount', type: 'number' },
-                    { name: 'MaturityDate', type: 'date' },
-                    { name: 'MatureAmount', type: 'number' },
-                    { name: 'TotalWithdrawnAmountPerDeposit', type: 'number' },
-                    { name: 'TotalWithdrawnAmountPerUser', type: 'number' },
-                    { name: 'BalanceDepositAmount', type: 'number' },
-                    //{ name: 'BalanceLoanInstallments', type: 'number' },
-                    { name: 'TotalInterestPaidAmountPerDeposit', type: 'number' },
-                    { name: 'TotalInterestPaidAmountPerUser', type: 'number' },
-                    //{ name: 'TotalInstallments', type: 'number' },
-                    { name: 'FirstName', type: 'string' },
-                    { name: 'LastName', type: 'string' },
-                    { name: 'FatherName', type: 'string' },
-                    { name: 'GuaranterName', type: 'string' },
-                    { name: 'UserAddress', type: 'string' },
-                    { name: 'UserPhone', type: 'string' },
-                    { name: 'UserMobile', type: 'string' },
-                    { name: 'UserEmail', type: 'string' },
-                    { name: 'UserPermanentAddress', type: 'string' },
-                    { name: 'PermanentPhone', type: 'string' },
-                    { name: 'PermanentMobile', type: 'string' },
-                    { name: 'PermanentEmail', type: 'string' }
-                ],
-                id: 'DepositId',
-                url: '/Reports/DepositSummaryInfo',
-                data: postData
-            };
+            //var source =
+            //{
+            //    dataType: 'json',
+            //    //traditional:true,
+            //    contentType: 'application/json',
+            //    dataFields: [
+            //        { name: 'DepositId', type: 'number' },
+            //        { name: 'UserId', type: 'number' },
+            //        { name: 'DepositAmount', type: 'number' },
+            //        { name: 'InteresRate', type: 'number' },
+            //        //{ name: 'InstallmentAmount', type: 'number' },
+            //        { name: 'MaturityDate', type: 'date' },
+            //        { name: 'MatureAmount', type: 'number' },
+            //        { name: 'TotalWithdrawnAmountPerDeposit', type: 'number' },
+            //        { name: 'TotalWithdrawnAmountPerUser', type: 'number' },
+            //        { name: 'BalanceDepositAmount', type: 'number' },
+            //        //{ name: 'BalanceLoanInstallments', type: 'number' },
+            //        { name: 'TotalInterestPaidAmountPerDeposit', type: 'number' },
+            //        { name: 'TotalInterestPaidAmountPerUser', type: 'number' },
+            //        //{ name: 'TotalInstallments', type: 'number' },
+            //        { name: 'FirstName', type: 'string' },
+            //        { name: 'LastName', type: 'string' },
+            //        { name: 'FatherName', type: 'string' },
+            //        { name: 'GuaranterName', type: 'string' },
+            //        { name: 'UserAddress', type: 'string' },
+            //        { name: 'UserPhone', type: 'string' },
+            //        { name: 'UserMobile', type: 'string' },
+            //        { name: 'UserEmail', type: 'string' },
+            //        { name: 'UserPermanentAddress', type: 'string' },
+            //        { name: 'PermanentPhone', type: 'string' },
+            //        { name: 'PermanentMobile', type: 'string' },
+            //        { name: 'PermanentEmail', type: 'string' }
+            //    ],
+            //    id: 'DepositId',
+            //    url: '/Reports/DepositSummaryInfo',
+            //    data: postData
+            //};
 
-            var linkDeposit = function (row, column, value) {
-                var html = '<b><a target="_blank" href="/Deposit/Withdrawals?DepositId=' + value + '">' + value + '</a>';
-                return html;
-            }
-            var dataAdapter = new $.jqx.dataAdapter(source);
-            // create Tree Grid
-            var gridInfo = $("#dataTableDeposit").jqxDataTable(
-            {
-                width: 980,
-                source: dataAdapter,
-                //theme: 'arctic',
-                theme: 'energyblue',
-                pageSize: 10,
-                sortable: true,
-                filterable: true,
-                pageable: true,
-                columns: [
-                  //{ text: 'User Id', dataField: 'UserID', width: 120 },
-                  { text: 'Deposit#', dataField: 'DepositId', width: 120, cellsRenderer: linkDeposit },
-                  { text: 'First Name', dataField: 'FirstName', width: 160 },
-                  { text: 'Last Name', dataField: 'LastName', width: 160 },
-                  { text: 'Total Amount Paid On Deposit', dataField: 'TotalWithdrawnAmountPerDeposit', width: 150 },
-                  { text: 'Total Amount Paid By User', dataField: 'TotalWithdrawnAmountPerUser', width: 150 },
-                  { text: 'Total Interest Amount Paid On Loan', dataField: 'TotalInterestPaidAmountPerDeposit', width: 150 },
-                  { text: 'Total Interest Amount Paid By User', dataField: 'TotalInterestPaidAmountPerUser', width: 150 }
-                ]
-            });
+            //var linkDeposit = function (row, column, value) {
+            //    var html = '<b><a target="_blank" href="/Deposit/Withdrawals?DepositId=' + value + '">' + value + '</a>';
+            //    return html;
+            //}
+            //var dataAdapter = new $.jqx.dataAdapter(source);
+            //// create Tree Grid
+            //var gridInfo = $("#dataTableDeposit").jqxDataTable(
+            //{
+            //    width: 980,
+            //    source: dataAdapter,
+            //    //theme: 'arctic',
+            //    theme: 'energyblue',
+            //    pageSize: 10,
+            //    sortable: true,
+            //    filterable: true,
+            //    pageable: true,
+            //    columns: [
+            //      //{ text: 'User Id', dataField: 'UserID', width: 120 },
+            //      { text: 'Deposit#', dataField: 'DepositId', width: 120, cellsRenderer: linkDeposit },
+            //      { text: 'First Name', dataField: 'FirstName', width: 160 },
+            //      { text: 'Last Name', dataField: 'LastName', width: 160 },
+            //      { text: 'Total Amount Paid On Deposit', dataField: 'TotalWithdrawnAmountPerDeposit', width: 150 },
+            //      { text: 'Total Amount Paid By User', dataField: 'TotalWithdrawnAmountPerUser', width: 150 },
+            //      { text: 'Total Interest Amount Paid On Loan', dataField: 'TotalInterestPaidAmountPerDeposit', width: 150 },
+            //      { text: 'Total Interest Amount Paid By User', dataField: 'TotalInterestPaidAmountPerUser', width: 150 }
+            //    ]
+            //});
+
+            
 
             // prepare the data
             var source =
@@ -326,7 +328,7 @@
                 <div class="form-group">
                     <div class="col-md-10">
                         @Html.LabelFor(m => m.MiscFilter, "")
-                        <input type="submit" value="Filter" onclick="return Search()" class="button" style="width:100px" />
+                        <input type="submit" value="Filter" onclick="return Search()"  style="width:100px" />
                     </div>
                 </div>
             </div>
@@ -347,7 +349,7 @@
         </div>
     </div>
 
-    <div class="col-md-12">
+    @*<div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Deposit Summary</h4>
@@ -356,5 +358,5 @@
                 <div id="dataTableDeposit" style="width: 300px; overflow-x: scroll"></div>
             </div>
         </div>
-    </div>
+    </div>*@
 </div>

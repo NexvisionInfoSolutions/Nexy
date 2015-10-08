@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@ViewBag.Title - Loan Management System</title>
+    <title>@ViewBag.Title - Pallikunnel Bankers</title>
     @Styles.Render("~/Content/Layout3")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -33,6 +33,9 @@
     {
         UserDetails = new LoanManagementSystem.Models.sdtoUser();
     }
+    //else{
+    //    Context.Response.RedirectPermanent(Url.Action("Login", "Login"), true);
+    //}
 }
 
 <body class="nav-md">
@@ -47,7 +50,7 @@
 
                     <div class="navbar nav_title" style="border: 0;">
                         @*<i class="fa fa-paw"></i>*@<span>
-                            <img src="~/favicon.ico" style="width: 25px; height: 25px;" />@Html.ActionLink("Loan Management", "Index", "Home", new { area = "" }, new { @class = "logo site_title" })
+                            <img src="~/favicon.ico" style="width: 25px; height: 25px;" />@Html.ActionLink("Pallikunnel Bankers", "Index", "Home", new { area = "" }, new { @class = "logo site_title" })
                         </span>
                     </div>
                     <div class="clearfix"></div>
@@ -333,9 +336,8 @@
                         <p class="pull-right">
                             Developed by <a>
                                 <img src="~/Content/images/technocrunch.logo.png" style="width: 100px; height: 25px;" />
-                            </a>. |
-
-                            <span class="lead"><i class="fa "></i>TechnoCrunch Lab!</span>
+                            </a>
+                            @*<span class="lead"><i class="fa "></i>TechnoCrunch Lab!</span>*@
                         </p>
                     </div>
                     <div class="clearfix"></div>

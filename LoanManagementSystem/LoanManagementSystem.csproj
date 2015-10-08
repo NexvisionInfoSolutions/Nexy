@@ -199,6 +199,7 @@
     <Compile Include="Controllers\Settings\ScheduleSettingsController.cs" />
     <Compile Include="Controllers\Settings\AccountBookTypesController.cs" />
     <Compile Include="Controllers\Settings\SettingsController.cs" />
+    <Compile Include="Controllers\User\LoginController.cs" />
     <Compile Include="Controllers\User\UserController.cs" />
     <Compile Include="Controllers\Settings\UserGroupController.cs" />
     <Compile Include="Controllers\UtilityController.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ContentUpload\User\Profile\1.logo" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -331,6 +333,7 @@
     <Content Include="Content\images\bootstrap-colorpicker\hue.png" />
     <Content Include="Content\images\bootstrap-colorpicker\saturation.png" />
     <Content Include="Content\images\data.png" />
+    <Content Include="Content\images\dummy-profile.png" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\forward_disabled.png" />
     <Content Include="Content\images\forward_enabled.png" />
@@ -1592,7 +1595,7 @@
     <Content Include="Views\LoanRepayments\Details.cshtml" />
     <Content Include="Views\LoanRepayments\Edit.cshtml" />
     <Content Include="Views\LoanRepayments\Index.cshtml" />
-    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\User\LogOff.cshtml" />
     <Content Include="Views\Loan\LoanCancellation.cshtml" />
     <Content Include="Views\Loan\LoanRecall.cshtml" />
@@ -1646,6 +1649,7 @@
     <Content Include="Views\Settings\TalukList.cshtml" />
     <Content Include="Views\Settings\VillageList.cshtml" />
     <Content Include="Views\Settings\SaveVillage.cshtml" />
+    <Content Include="Views\LoanRepayments\CancelLoanRepayments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

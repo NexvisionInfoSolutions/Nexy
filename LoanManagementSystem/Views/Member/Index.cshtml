@@ -38,7 +38,7 @@
                 //}
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
-                var html = '<b><a href="/Member/Edit/' + value + '">Edit</a>' //|<a id="lnpayment" href="/Member/Details/' + value + '">Details</a>'
+                var html = '<b><a href="/Member/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/Loan/Create?UserId=' + value + '">Add Loan</a>'
                           + ' | <a href="/Member/Delete/' + value + '">Delete</a>';
                 return html;
             }
@@ -54,6 +54,10 @@
                 filterable: true,
                 pageable: true,
                 columns: [
+                    {
+                        text: 'Edit', dataField: 'MemberInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
+                        cellsRenderer: linkrenderer
+                    },
                   //{ text: 'Memeber Id', dataField: 'UserID', width: 120 },
                   { text: 'Code', dataField: 'Code', width: 120 },
                   { text: 'First Name', dataField: 'FirstName', width: 200 },
@@ -61,12 +65,8 @@
                   { text: 'Fathers Name', dataField: 'FatherName', width: 150 },
                   { text: 'Address', dataField: 'UserAddress', width: 160 },
                   { text: 'Permanent Address', dataField: 'PermanentAddress', width: 160 },
-                  { text: 'Phone', dataField: 'UserContactPhone', width: 160 },
+                  { text: 'Phone', dataField: 'UserContactPhone', width: 160 }
                   //{ text: 'Mobile', dataField: 'UserContactMobile', width: 160 },                  
-                  {
-                      text: 'Edit', dataField: 'MemberInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
-                      cellsRenderer: linkrenderer
-                  }
                 ]
             });
         });

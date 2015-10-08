@@ -303,6 +303,27 @@
                         @Html.ValidationMessageFor(model => model.Description)
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.NomineeName, "Nominee Name", new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.NomineeName, new { @class = "form-control", @placeholder = "Enter Nominee Name" })
+                        @Html.ValidationMessageFor(model => model.NomineeName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.NomineeAddress, "Nominee Address", new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.NomineeAddress, new { @class = "form-control", @placeholder = "Enter Nominee Address" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.NomineeRelationship, "Nominee Relationship", new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.NomineeRelationship, new { @class = "form-control", @placeholder = "Enter Nominee Relationship" })
+                        @Html.ValidationMessageFor(model => model.NomineeRelationship)
+                    </div>
+                </div>
 
                 @*<div class="form-group">
                     @Html.LabelFor(model => model.UserGroupId, "UserGroupId", new { @class = "control-label col-md-2" })

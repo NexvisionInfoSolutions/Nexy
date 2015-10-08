@@ -21,9 +21,9 @@ function LoanAccountDetails(bookIdVal) {
         success: function (result) {
             $('#lblBookBalance').html(result.ClosingBalance)
             if (TransactionType == "DEBIT")
-                $('#txtVoucherNo').val(result.ReceiptVoucherPrefix + result.VoucherNo + result.ReceiptVoucherSuffix)
+                $('#txtVoucherNo').html(result.ReceiptVoucherPrefix + result.VoucherNo + result.ReceiptVoucherSuffix)
             else
-                $('#txtVoucherNo').val(result.PaymentVoucherPrefix + result.VoucherNo + result.PaymentVoucherSuffix)
+                $('#txtVoucherNo').html(result.PaymentVoucherPrefix + result.VoucherNo + result.PaymentVoucherSuffix)
         }
     });
 

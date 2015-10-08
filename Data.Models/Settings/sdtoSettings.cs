@@ -19,9 +19,9 @@ namespace Data.Models.Accounts
 
         public long? CompanyId { get; set; }
 
-        public float BankInterest { get; set; }
+        public decimal? BankInterest { get; set; }
 
-        public float BankCharges { get; set; }
+        public decimal?  BankCharges { get; set; }
 
         [ForeignKey("CompanyId")]
         public virtual sdtoCompany Company { get; set; }

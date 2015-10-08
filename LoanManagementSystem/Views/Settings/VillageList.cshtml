@@ -24,7 +24,7 @@
         //var datepc = $('.date-picker');
         //if (datepc != null)
         //    datepc.datepicker({
-        //        format: 'yyyy.M.dd',
+        //        format: 'dd.M.yyyy',
         //        startDate: '-3d',
         //        //showOn: "both",
         //        buttonImageOnly: true,
@@ -119,12 +119,12 @@
                 { name: 'VillageName', type: 'string' },
                 { name: 'VillageAbbr', type: 'string' },
             ],
-            id: 'TalukId',
+            id: 'VillageId',
             url: '/Settings/VillageInfo?TalukId=' + $("#" + hdnUserAddressTaluk).val()
         };
 
         var LinkId = function (row, column, value, rowData) {
-            var html = '<b><a target="_blank" href="/Settings/SaveVillage?CountryId=' + $('#' + hdnUserAddressCountry).val() + '&StateId=' + $("#" + hdnUserAddressState).val() + '&DistrictId=' + $("#" + hdnUserAddressDistrict).val() + '&TalukId=' + $("#" + hdnUserAddressTaluk).val() + '&VillageId=' + rowData.VillageId + '">' + value + '</a>';
+            var html = '<b><a href="/Settings/SaveVillage?CountryId=' + $('#' + hdnUserAddressCountry).val() + '&StateId=' + $("#" + hdnUserAddressState).val() + '&DistrictId=' + $("#" + hdnUserAddressDistrict).val() + '&TalukId=' + $("#" + hdnUserAddressTaluk).val() + '&VillageId=' + rowData.VillageId + '">' + value + '</a>';
             return html;
         }
         var dataAdapter = new $.jqx.dataAdapter(source);
@@ -155,7 +155,7 @@
 <div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a id="hlnkAdd">Add Taluk</a>
+            <a id="hlnkAdd">Add Village</a>
         </div>
         <div class="panel-body">
 

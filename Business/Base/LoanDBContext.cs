@@ -85,6 +85,7 @@ namespace LoanManagementSystem.Models
         public System.Data.Entity.DbSet<sdtoVillage> Villages { get; set; }
         public System.Data.Entity.DbSet<sdtoTaluk> Taluks { get; set; }
         public System.Data.Entity.DbSet<sdtoDistrict> Districts { get; set; }
-        public System.Data.Entity.DbSet<sdtoUserSession> UserSessions { get; set; }
+        public System.Data.Entity.DbSet<sdtoUserSession> UserSessions { get; set; }       
+        public System.Data.Entity.DbSet<sdtoSysCode> SysCodes { get; set; }
     }
 }

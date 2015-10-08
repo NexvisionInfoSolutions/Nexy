@@ -33,7 +33,7 @@ namespace LoanManagementSystem.Controllers.Settings
         }
 
         [HttpPost]
-        public ActionResult SaveCountry(sdtoCountry country)
+        public ActionResult SaveCountry([Bind(Include = "CountryName, CountryAbbr")] sdtoCountry country)
         {
             sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
             if (userDetails == null)
@@ -302,8 +302,21 @@ namespace LoanManagementSystem.Controllers.Settings
                 userDetails = new sdtoUser();
 
             sdtoTaluk taluk = db.Taluks.Find(TalukId);
-            var district = db.Districts.Find(taluk.DistrictId);
-            var state = db.States.Find(district.StateId);
+            if (taluk == null)
+                taluk = new sdtoTaluk();
+            var district = new sdtoDistrict();
+            var state = new sdtoState();
+            if (taluk != null)
+                district = db.Districts.Find(taluk.DistrictId);
+
+            if (district == null)
+                district = new sdtoDistrict();
+
+            if (district != null)
+                state = db.States.Find(district.StateId);
+
+            if (state == null)
+                state = new sdtoState();
 
             sdtoVillage village = new sdtoVillage()
             {
@@ -529,7 +542,7 @@ namespace LoanManagementSystem.Controllers.Settings
                 db.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
-            
+
             ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
 
             var assetSchedule = db.Schedules.Where(x => x.ShortName == "AS").FirstOrDefault();

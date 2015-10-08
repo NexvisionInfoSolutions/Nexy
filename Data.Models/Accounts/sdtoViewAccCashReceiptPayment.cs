@@ -40,6 +40,7 @@ namespace LoanManagementSystem.Models
         public sdtoViewAccCashReceiptPayment()
         {
             Details = new List<sdtoViewAccCashReceiptPaymentDetails>();
+            Voucher = string.Empty;
         }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="Accounts\sdtoViewAccCashReceiptPayment.cs" />
     <Compile Include="Accounts\sdtoViewAccCashReceiptPaymentDetails.cs" />
     <Compile Include="Accounts\sdtoViewAccDepositWithdrawal.cs" />
+    <Compile Include="Accounts\sdtoViewOpeningBalance.cs" />
     <Compile Include="Accounts\sdtoViewAccDepositWithdrawalDetails.cs" />
     <Compile Include="Accounts\sdtoViewAccExpenseEntry.cs" />
     <Compile Include="Accounts\sdtoViewAccExpenseEntryDetails.cs" />
@@ -77,8 +78,11 @@
     <Compile Include="Address\State.cs" />
     <Compile Include="Address\Country.cs" />
     <Compile Include="Base\BaseData.cs" />
+    <Compile Include="Common\sdtoSysCode.cs" />
     <Compile Include="Deposit\sdtoWithdrawalInfo.cs" />
     <Compile Include="Deposit\sdtoDepositInfo.cs" />
+    <Compile Include="Loan\sdtoViewLoanRepayment.cs" />
+    <Compile Include="Loan\sdtoViewLoanRepayments.cs" />
     <Compile Include="Loan\sdtoLoanRepayment.cs" />
     <Compile Include="Loan\sdtoLoanInfo.cs" />
     <Compile Include="Reports\sdtoRptDepositSummary.cs" />

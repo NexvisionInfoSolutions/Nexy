@@ -126,7 +126,7 @@ namespace LoanManagementSystem.Controllers.Loan
                                         var loanInterest = loandetails.InteresRate;
                                         var loanPendingInstallments = loandetails.TotalInstallments;
 
-                                        var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == repayment.LoanId).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
+                                        var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == repayment.LoanId && x.IsDeleted == false && x.Status != RepaymentStatus.Cancelled).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
                                         var repaymentInterest = loanInterest;
                                         var repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100)) / 365;
 
@@ -219,7 +219,10 @@ namespace LoanManagementSystem.Controllers.Loan
             loan.RePaymentInterval = Data.Models.Enumerations.RepaymentInterval.Monthly;
             loan.Status = Data.Models.Enumerations.LoanStatus.Active;
 
-            loan.InteresRate = db.GeneralSettings.FirstOrDefault().BankInterest;
+            bfReport objReport = new bfReport(db);
+
+            var bankInterest = db.GeneralSettings.FirstOrDefault().BankInterest;
+            loan.InteresRate = Convert.ToSingle(bankInterest == null ? 0 : bankInterest.Value);
 
             var listUsers = db.User.Where(x => x.UserType == UserType.Member && x.IsDeleted == false && (UserId == null || UserId.Value == 0 || x.UserID == UserId));
 
@@ -228,6 +231,8 @@ namespace LoanManagementSystem.Controllers.Loan
                 SetDisplayMessage("Please create a loan member first");
                 return RedirectToAction("Create", "Member");
             }
+
+            loan.LoanCode = objReport.GenerateCode("LoanInfo");
 
             var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
@@ -246,7 +251,10 @@ namespace LoanManagementSystem.Controllers.Loan
             {
                 LoanInfo.InstallmentAmount = LoanInfo.LoanAmount / LoanInfo.TotalInstallments;
                 LoanInfo.CreatedOn = DateTime.Now;
+                bfReport objReport = new bfReport(db);
+
                 LoanInfo.CreatedBy = CurrentUserSession.UserId;
+                LoanInfo.LoanCode = objReport.GenerateCode("LoanInfo");
                 db.sdtoLoanInfoes.Add(LoanInfo);
                 db.SaveChanges();
 
@@ -353,7 +361,7 @@ namespace LoanManagementSystem.Controllers.Loan
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            sdtoLoanRepayment repay = db.sdtoLoanRepayments.Where(x => x.LoanId == id).FirstOrDefault();
+            sdtoLoanRepayment repay = db.sdtoLoanRepayments.Where(x => x.LoanId == id && x.IsDeleted == false && x.Status != RepaymentStatus.Cancelled).FirstOrDefault();
             ViewData["PaidAmount"] = repay.RepaymentAmount;
             ViewData["BalaceAmount"] = repay.PendingPrincipalAmount;
 
@@ -383,7 +391,7 @@ namespace LoanManagementSystem.Controllers.Loan
 
         public ActionResult LoanRecall(long? id)
         {
-            sdtoLoanRepayment repay = db.sdtoLoanRepayments.Where(x => x.LoanId == id).FirstOrDefault();
+            sdtoLoanRepayment repay = db.sdtoLoanRepayments.Where(x => x.LoanId == id && x.IsDeleted == false && x.Status != RepaymentStatus.Cancelled).FirstOrDefault();
             ViewData["PaidAmount"] = repay.RepaymentAmount;
             ViewData["BalaceAmount"] = repay.PendingPrincipalAmount;
             if (id == null)

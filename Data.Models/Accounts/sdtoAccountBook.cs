@@ -34,7 +34,7 @@ namespace Data.Models.Accounts
         public long AccountBookTypeId { get; set; }
 
         [Display(Name = "Link Account")]
-        public long AccountHeadId { get; set; }
+        public long? AccountHeadId { get; set; }
 
         [Range(float.MinValue, float.MaxValue)]
         [Display(Name = "Interest")]

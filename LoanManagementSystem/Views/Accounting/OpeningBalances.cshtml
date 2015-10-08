@@ -46,17 +46,17 @@
                   { text: 'Debit Opening Balance', dataField: 'DebitOpeningBalance', width: 160 },
                   { text: 'Credit Opening Balance', dataField: 'CreditOpeningBalance', width: 150 },
                   { text: 'Closing Balance', dataField: 'ClosingBalance', width: 150 },
-                  {
+                  /*{
                       text: 'Edit', dataField: 'OpeningBalanceIdInfo', cellsAlign: 'center', align: "center", editable: false, sortable: false, width: 300,
                       cellsRenderer: linkrenderer
-                  }
+                  }*/
                 ]
             });
         });
     </script>
 }
 <p>
-    @Html.ActionLink("Create New", "NewOpeningBalance")
+    @Html.ActionLink("Edit Opening Balance", "NewOpeningBalance")
 </p>
 
 <div id="dataTable"></div>

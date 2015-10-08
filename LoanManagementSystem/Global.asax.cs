@@ -23,14 +23,14 @@ namespace LoanManagementSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            if (Convert.ToBoolean(ConfigurationManager.AppSettings["RecreateDatabaseOnChange"]))
-            {
-                using (var db = new LoanDBContext())
-                {
-                    Database.SetInitializer(new Business.Base.LoanDBInitializer());
-                    db.Database.Initialize(true);
-                }
-            }
+            //if (Convert.ToBoolean(ConfigurationManager.AppSettings["RecreateDatabaseOnChange"]))
+            //{
+            //    using (var db = new LoanDBContext())
+            //    {
+            //        Database.SetInitializer(new Business.Base.LoanDBInitializer());
+            //        db.Database.Initialize(true);
+            //    }
+            //}
 
             GlobalFilters.Filters.Add(new LoanManagementSystem.App_Start.MenuLoaderActionFilter(), 0);
         }

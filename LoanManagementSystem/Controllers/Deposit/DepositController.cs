@@ -207,11 +207,11 @@ namespace LoanManagementSystem.Controllers.Deposit
         // GET: sdtoDepositInfoes/Create
         public ActionResult Create(long? UserId)
         {
-
+            var bankInterest = db.GeneralSettings.FirstOrDefault().BankInterest;
             var deposit = new sdtoDepositInfo();
             deposit.DepositType = Data.Models.Enumerations.DepositType.Fixed;
             deposit.Status = Data.Models.Enumerations.DepositStatus.Active;
-            deposit.InteresRate = db.GeneralSettings.FirstOrDefault().BankInterest;
+            deposit.InteresRate = Convert.ToSingle(bankInterest == null ? 0 : bankInterest.Value);
             deposit.Duration = 30;
             deposit.IsDeleted = false;
             sdtoUser sessionUser = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;

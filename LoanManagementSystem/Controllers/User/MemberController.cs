@@ -47,7 +47,6 @@ namespace LoanManagementSystem.Controllers
 
         public JsonResult MemberInfo()
         {
-            //db.Set<sdtoUser>().Include("UserAddress").Include("PermanentAddress").Include(
             var dbResult = db.Set<sdtoUser>().Include("UserAddress").Include("UserAddress.StateDetails").Include("UserAddress.Country").Include("Contacts").Include("UserAddress.DistrictDetails").Include("UserAddress.TalukDetails").Include("UserAddress.VillageDetails")
                 .Include("PermanentAddress").Include("PermanentAddress.StateDetails").Include("PermanentAddress.Country").Include("PermanentAddress.DistrictDetails").Include("PermanentAddress.TalukDetails").Include("PermanentAddress.VillageDetails").Where(s => s.UserType == UserType.Member && s.IsDeleted == false).ToList();
             var Users = (from users in dbResult
@@ -59,10 +58,10 @@ namespace LoanManagementSystem.Controllers
                              users.FatherName,
                              users.Code,
                              MemberInfo = users.UserID,
-                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.DistrictDetails.DistrictName, users.UserAddress.Zipcode, users.UserAddress.TalukDetails.TalukName, users.UserAddress.VillageDetails.VillageName, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
-                             PermanentAddress = UtilityHelper.UtilityHelper.FormatAddress(users.PermanentAddress.Address1, users.PermanentAddress.Address2, users.PermanentAddress.Place, users.PermanentAddress.Post, users.PermanentAddress.DistrictDetails.DistrictName, users.PermanentAddress.Zipcode, users.PermanentAddress.TalukDetails.TalukName, users.PermanentAddress.VillageDetails.VillageName, users.PermanentAddress.StateDetails.StateName, users.PermanentAddress.Country.CountryName),
-                             UserContactPhone = users.Contacts.Telephone1,
-                             UserContactMobile = users.Contacts.Mobile1
+                             UserAddress = users.UserAddress == null ? string.Empty : UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.DistrictDetails == null ? "" : users.UserAddress.DistrictDetails.DistrictName, users.UserAddress.Zipcode, users.UserAddress.TalukDetails == null ? "" : users.UserAddress.TalukDetails.TalukName, users.UserAddress.VillageDetails == null ? "" : users.UserAddress.VillageDetails.VillageName, users.UserAddress.StateDetails == null ? "" : users.UserAddress.StateDetails.StateName, users.UserAddress.Country == null ? "" : users.UserAddress.Country.CountryName),
+                             PermanentAddress = UtilityHelper.UtilityHelper.FormatAddress(users.PermanentAddress.Address1, users.PermanentAddress.Address2, users.PermanentAddress.Place, users.PermanentAddress.Post, users.PermanentAddress.DistrictDetails == null ? "" : users.PermanentAddress.DistrictDetails.DistrictName, users.PermanentAddress.Zipcode, users.PermanentAddress.TalukDetails == null ? "" : users.PermanentAddress.TalukDetails.TalukName, users.PermanentAddress.VillageDetails == null ? "" : users.PermanentAddress.VillageDetails.VillageName, users.PermanentAddress.StateDetails == null ? "" : users.PermanentAddress.StateDetails.StateName, users.PermanentAddress.Country == null ? "" : users.PermanentAddress.Country.CountryName),
+                             UserContactPhone = users.Contacts == null ? string.Empty : users.Contacts.Telephone1,
+                             UserContactMobile = users.Contacts == null ? string.Empty : users.Contacts.Mobile1
                          });
             return Json(Users, JsonRequestBehavior.AllowGet);
         }
@@ -126,9 +125,15 @@ namespace LoanManagementSystem.Controllers
                 ModelState.AddModelError("", "FirstName cannot be empty");
             else if (string.IsNullOrEmpty(sdtouser.LastName))
                 ModelState.AddModelError("", "LastName cannot be empty");
-            else if (string.IsNullOrEmpty(sdtouser.UserAddress.Address1))
-                ModelState.AddModelError("", "Communication Address cannot be empty");
-            else if (string.IsNullOrWhiteSpace(sdtouser.PermanentAddress.Address1))
+            //else if (string.IsNullOrEmpty(sdtouser.UserAddress.Address1))
+            //    ModelState.AddModelError("", "Communication Address cannot be empty");
+            else if (string.IsNullOrWhiteSpace(sdtouser.PermanentAddress.Address1)
+                || string.IsNullOrWhiteSpace(sdtouser.PermanentAddress.Address2)
+                || sdtouser.PermanentAddress.CountryId == 0
+                || sdtouser.PermanentAddress.StateId == 0
+                || sdtouser.PermanentAddress.DistrictId == 0
+                || sdtouser.PermanentAddress.TalukId == 0
+                || sdtouser.PermanentAddress.VillageId == 0)
                 ModelState.AddModelError("", "Permanent Address cannot be empty");
             else if (ModelState.IsValid)
             {
@@ -178,6 +183,34 @@ namespace LoanManagementSystem.Controllers
 
                     sdtouser.CreatedOn = DateTime.Now;
                     sdtouser.CreatedBy = CurrentUserSession.UserId;
+
+                    if (sdtouser.UserAddress != null)
+                    {
+                        sdtouser.UserAddress.CountryId = sdtouser.UserAddress.CountryId == 0 ? null : sdtouser.UserAddress.CountryId;
+                        sdtouser.UserAddress.StateId = sdtouser.UserAddress.StateId == 0 ? null : sdtouser.UserAddress.StateId;
+                        sdtouser.UserAddress.DistrictId = sdtouser.UserAddress.DistrictId == 0 ? null : sdtouser.UserAddress.DistrictId;
+                        sdtouser.UserAddress.TalukId = sdtouser.UserAddress.TalukId == 0 ? null : sdtouser.UserAddress.TalukId;
+                        sdtouser.UserAddress.VillageId = sdtouser.UserAddress.VillageId == 0 ? null : sdtouser.UserAddress.VillageId;
+                    }
+
+                    if (sdtouser.PermanentAddress != null)
+                    {
+                        sdtouser.PermanentAddress.CountryId = sdtouser.PermanentAddress.CountryId == 0 ? null : sdtouser.PermanentAddress.CountryId;
+                        sdtouser.PermanentAddress.StateId = sdtouser.PermanentAddress.StateId == 0 ? null : sdtouser.PermanentAddress.StateId;
+                        sdtouser.PermanentAddress.DistrictId = sdtouser.PermanentAddress.DistrictId == 0 ? null : sdtouser.PermanentAddress.DistrictId;
+                        sdtouser.PermanentAddress.TalukId = sdtouser.PermanentAddress.TalukId == 0 ? null : sdtouser.PermanentAddress.TalukId;
+                        sdtouser.PermanentAddress.VillageId = sdtouser.PermanentAddress.VillageId == 0 ? null : sdtouser.PermanentAddress.VillageId;
+                    }
+
+                    if (sdtouser.GuaranterAddress != null)
+                    {
+                        sdtouser.GuaranterAddress.CountryId = sdtouser.GuaranterAddress.CountryId == 0 ? null : sdtouser.GuaranterAddress.CountryId;
+                        sdtouser.GuaranterAddress.StateId = sdtouser.GuaranterAddress.StateId == 0 ? null : sdtouser.GuaranterAddress.StateId;
+                        sdtouser.GuaranterAddress.DistrictId = sdtouser.GuaranterAddress.DistrictId == 0 ? null : sdtouser.GuaranterAddress.DistrictId;
+                        sdtouser.GuaranterAddress.TalukId = sdtouser.GuaranterAddress.TalukId == 0 ? null : sdtouser.GuaranterAddress.TalukId;
+                        sdtouser.GuaranterAddress.VillageId = sdtouser.GuaranterAddress.VillageId == 0 ? null : sdtouser.GuaranterAddress.VillageId;
+                    }
+
                     sdtouser.UserAddress = db.Address.Add(sdtouser.UserAddress);
                     sdtouser.Contacts = db.Contacts.Add(sdtouser.Contacts);
 
@@ -197,6 +230,15 @@ namespace LoanManagementSystem.Controllers
                         System.IO.FileInfo fInfo = new FileInfo(ViewBag.UserProfileAvatar);
                         fInfo.CopyTo(Path.Combine(fInfo.Directory.FullName, sdtouser.UserID + ".logo"), true);
                         fInfo.Delete();
+                    }
+                    else
+                    {
+                        DirectoryInfo dirUser = new DirectoryInfo(HttpContext.Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\ContentUpload\\User\\Profile");
+                        if (!dirUser.Exists)
+                            dirUser.Create();
+
+                        FileInfo objFile = new FileInfo(Path.Combine(HttpContext.Server.MapPath("~/").Trim("\\/ ".ToCharArray()) + "\\Content\\Images", "dummy-profile.png"));
+                        objFile.CopyTo(Path.Combine(dirUser.FullName, sdtouser.UserID + ".logo"), true);
                     }
 
                     bfTransaction objAccTransaction = new bfTransaction(db);
@@ -266,6 +308,23 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Edit(sdtoUser sdtouser, HttpPostedFileBase ProfileImage)
         {
             sdtouser.Password = sdtouser.ConfirmPassword;
+            if (string.IsNullOrEmpty(sdtouser.Code))
+                ModelState.AddModelError("", "Code cannot be empty");
+            else if (string.IsNullOrEmpty(sdtouser.FirstName))
+                ModelState.AddModelError("", "FirstName cannot be empty");
+            else if (string.IsNullOrEmpty(sdtouser.LastName))
+                ModelState.AddModelError("", "LastName cannot be empty");
+            //else if (string.IsNullOrEmpty(sdtouser.UserAddress.Address1))
+            //    ModelState.AddModelError("", "Communication Address cannot be empty");
+            else if (string.IsNullOrWhiteSpace(sdtouser.PermanentAddress.Address1)
+                || string.IsNullOrWhiteSpace(sdtouser.PermanentAddress.Address2)
+                || sdtouser.PermanentAddress.CountryId == 0
+                || sdtouser.PermanentAddress.StateId == 0
+                || sdtouser.PermanentAddress.DistrictId == 0
+                || sdtouser.PermanentAddress.TalukId == 0
+                || sdtouser.PermanentAddress.VillageId == 0)
+                ModelState.AddModelError("", "Permanent Address cannot be empty");
+
             if (ModelState.IsValid)
             {
                 //var user  = db.User.Find(sdtouser.UserID);
@@ -297,6 +356,36 @@ namespace LoanManagementSystem.Controllers
                     sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
                 }
 
+                if (sdtouser.UserAddress != null)
+                {
+                    sdtouser.UserAddress.AddressId = sdtouser.UserAddressId == null ? 0 : sdtouser.UserAddressId.Value;
+                    sdtouser.UserAddress.CountryId = sdtouser.UserAddress.CountryId == 0 ? null : sdtouser.UserAddress.CountryId;
+                    sdtouser.UserAddress.StateId = sdtouser.UserAddress.StateId == 0 ? null : sdtouser.UserAddress.StateId;
+                    sdtouser.UserAddress.DistrictId = sdtouser.UserAddress.DistrictId == 0 ? null : sdtouser.UserAddress.DistrictId;
+                    sdtouser.UserAddress.TalukId = sdtouser.UserAddress.TalukId == 0 ? null : sdtouser.UserAddress.TalukId;
+                    sdtouser.UserAddress.VillageId = sdtouser.UserAddress.VillageId == 0 ? null : sdtouser.UserAddress.VillageId;
+                }
+
+                if (sdtouser.PermanentAddress != null)
+                {
+                    sdtouser.PermanentAddress.AddressId = sdtouser.PermanentAddressId == null ? 0 : sdtouser.PermanentAddressId.Value;
+                    sdtouser.PermanentAddress.CountryId = sdtouser.PermanentAddress.CountryId == 0 ? null : sdtouser.PermanentAddress.CountryId;
+                    sdtouser.PermanentAddress.StateId = sdtouser.PermanentAddress.StateId == 0 ? null : sdtouser.PermanentAddress.StateId;
+                    sdtouser.PermanentAddress.DistrictId = sdtouser.PermanentAddress.DistrictId == 0 ? null : sdtouser.PermanentAddress.DistrictId;
+                    sdtouser.PermanentAddress.TalukId = sdtouser.PermanentAddress.TalukId == 0 ? null : sdtouser.PermanentAddress.TalukId;
+                    sdtouser.PermanentAddress.VillageId = sdtouser.PermanentAddress.VillageId == 0 ? null : sdtouser.PermanentAddress.VillageId;
+                }
+
+                if (sdtouser.GuaranterAddress != null)
+                {
+                    sdtouser.GuaranterAddress.AddressId = sdtouser.GuaranterAddressId == null ? 0 : sdtouser.GuaranterAddressId.Value;
+                    sdtouser.GuaranterAddress.CountryId = sdtouser.GuaranterAddress.CountryId == 0 ? null : sdtouser.GuaranterAddress.CountryId;
+                    sdtouser.GuaranterAddress.StateId = sdtouser.GuaranterAddress.StateId == 0 ? null : sdtouser.GuaranterAddress.StateId;
+                    sdtouser.GuaranterAddress.DistrictId = sdtouser.GuaranterAddress.DistrictId == 0 ? null : sdtouser.GuaranterAddress.DistrictId;
+                    sdtouser.GuaranterAddress.TalukId = sdtouser.GuaranterAddress.TalukId == 0 ? null : sdtouser.GuaranterAddress.TalukId;
+                    sdtouser.GuaranterAddress.VillageId = sdtouser.GuaranterAddress.VillageId == 0 ? null : sdtouser.GuaranterAddress.VillageId;
+                }
+
                 //sdtouser.UserAddress.AddressId = user.UserAddressId;
                 //sdtouser.PermanentAddress = db.Address.Find(sdtouser.PermanentAddressId);
                 //sdtouser.GuaranterAddress = db.Address.Find(sdtouser.GuaranterAddressId);
@@ -307,13 +396,13 @@ namespace LoanManagementSystem.Controllers
 
                 sdtouser.ModifiedBy = CurrentUserSession.UserId;
                 sdtouser.ModifiedOn = DateTime.Now;
-                db.Entry(sdtouser).State = EntityState.Modified;
                 db.Entry(sdtouser.PermanentAddress).State = EntityState.Modified;
                 db.Entry(sdtouser.UserAddress).State = EntityState.Modified;
                 db.Entry(sdtouser.GuaranterAddress).State = EntityState.Modified;
                 db.Entry(sdtouser.Contacts).State = EntityState.Modified;
                 db.Entry(sdtouser.GuaranterContacts).State = EntityState.Modified;
                 db.Entry(sdtouser.PermanentContacts).State = EntityState.Modified;
+                db.Entry(sdtouser).State = EntityState.Modified;
                 db.SaveChanges();
 
                 if (ProfileImage != null)

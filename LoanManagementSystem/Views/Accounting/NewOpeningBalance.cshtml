@@ -1,77 +1,131 @@
-﻿@model Data.Models.Accounts.sdtoOpeningBalance
+﻿@model LoanManagementSystem.Models.sdtoViewOpeningBalance
 
 @{
-    ViewBag.Title = "Create Opening Balance";
+    ViewBag.Title = "Opening Balance";
 }
+
+<script src="~/Scripts/Address.js"></script>
+<script language="javascript" type="text/javascript">
+    var ddlSchedule = "ddlSchedule";
+    var hdnSchedule = "hdnSchedule";
+
+    var ddlAccount = "ddlAccount";
+    var hdnAccount = "hdnAccount"
+
+    $(document).ready(function () {
+        for(i=0;i<@Model.OpeningBalances.Count();i++){
+            LoadComboBox('@Url.Action("BaseSchedulesInfo", "Accounting")'
+                         , "ScheduleId"
+                         , "ScheduleName"
+                         , $('#' + hdnSchedule + i).val()
+                         , ddlSchedule+i);
+
+            $("#" + ddlSchedule + i).on('change', function (event) {
+
+                var hdnschedule = $(this).attr("data-hdn-schedule-id");
+                var ddlaccount = $(this).attr("data-ddl-account-id");
+                var hdnaccount = $(this).attr("data-hdn-account-id");
+                var args = event.args;
+                if (args) {
+                    var item = args.item;
+                    $("#" + hdnSchedule + i).val(item.value);
+                    LoadComboBox('@Url.Action("ScheduleAccountInfo", "Accounting", new { ScheduleId = 0 })' + $('#' + hdnschedule).val()
+                         , "AccountHeadId"
+                         , "AccountName"
+                         , $('#' + hdnaccount).val()
+                         , ddlaccount)
+                }
+            });
+        }
+    });
+</script>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
-    <div class="col-md-5 form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-
-            <div class="col-md-10">
-                @Html.LabelFor(model => model.AccountHeadId, "AccountHeadId", htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.DropDownList("AccountHeadId", (SelectList)ViewBag.AccountHeads, htmlAttributes: new { @class = "form-control" })
-                @if (((SelectList)ViewBag.AccountHeads) == null || ((SelectList)ViewBag.AccountHeads).Count() == 1)
-                {
-                    @Html.ActionLink("Create Account Header", "Create", "AccountHeads")
-                }
-                @Html.ValidationMessageFor(model => model.AccountHeadId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            <div class="col-md-10">
-                @Html.LabelFor(model => model.ScheduleId, "ScheduleId", htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.DropDownList("ScheduleId", (SelectList)ViewBag.AccountSchedules, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ScheduleId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            <div class="col-md-10">
-                @Html.LabelFor(model => model.DebitOpeningBalance, htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.EditorFor(model => model.DebitOpeningBalance, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DebitOpeningBalance, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
-    <div class="col-md-5 form-horizontal">
-        <div class="form-group">
-
-            <div class="col-md-10">
-                @Html.LabelFor(model => model.CreditOpeningBalance, htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.EditorFor(model => model.CreditOpeningBalance, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreditOpeningBalance, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*<div class="form-group">
-
-                <div class="col-md-10">@Html.LabelFor(model => model.ClosingBalance, htmlAttributes: new { @class = "control-label col-md-2" })
-                    @Html.EditorFor(model => model.ClosingBalance, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ClosingBalance, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    if (Model != null)
+    {
+        <div class="col-md-12 form-horizontal">
+            <div class="form-group">
+                <div class="col-md-3">
+                    @Html.Label("ScheduleId", "Schedule", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.DropDownListFor(x => x.ScheduleId, new SelectList(ViewBag.AccountSchedules, "Value", "Text"), htmlAttributes: new { @id = "ddlSchedule", @class = "form-control", onchange = "document.location.href = '/Accounting/NewOpeningBalance?ScheduleId=' + this.options[this.selectedIndex].value;" })
+                    @Html.ValidationMessage("ScheduleId", "", new { @class = "text-danger" })
                 </div>
-            </div>*@
-
-        <div class="form-group">
-
-            <div class="col-md-10">
-                @Html.LabelFor(model => model.FinancialYearId, "FinancialYearId", htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.DropDownList("FinancialYearId", (SelectList)ViewBag.FinancialYears, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.FinancialYearId, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+        <div class="col-md-12 form-horizontal">
+            <hr />
+            <div class="col-md-3 form-horizontal">
+                @Html.LabelFor(model => model.OpeningBalances.FirstOrDefault().AccountHead.AccountName, htmlAttributes: new { @class = "control-label col-md-6" })
             </div>
+            <div class="col-md-3 form-horizontal">
+                @Html.LabelFor(model => model.OpeningBalances.FirstOrDefault().DebitOpeningBalance, htmlAttributes: new { @class = "control-label col-md-5" })
+            </div>
+            <div class="col-md-3 form-horizontal">
+                @Html.LabelFor(model => model.OpeningBalances.FirstOrDefault().CreditOpeningBalance, htmlAttributes: new { @class = "control-label col-md-5" })
+            </div>
+        </div>
+        for (int i = 0; i < Model.OpeningBalances.Count(); i++)
+        {
+            @Html.HiddenFor(x => x.OpeningBalances[i].OpeningBalanceId)
+            @Html.HiddenFor(model => model.OpeningBalances[i].AccountHeadId)
+            @Html.HiddenFor(model => model.OpeningBalances[i].ScheduleId)
+            @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.AccountHeadId)
+            @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.AccountName)
+            @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.AccountCode)
+            @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.ScheduleId)
+            @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.AccountTypeId)
+            <div class="col-md-12 form-horizontal">
+                <hr />
+
+                <div class="col-md-3 form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.LabelFor(model => model.OpeningBalances[i].AccountHead.AccountName, Model.OpeningBalances[i].AccountHead.AccountName)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @*@Html.LabelFor(model => model.OpeningBalances[i].DebitOpeningBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            @Html.EditorFor(model => model.OpeningBalances[i].DebitOpeningBalance, new { htmlAttributes = new { @class = "form-control" } })
+                            @*@Html.ValidationMessageFor(model => model.OpeningBalances[i].DebitOpeningBalance, "Please enter either credit or debit opening balance", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @*@Html.LabelFor(model => model[i].CreditOpeningBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            @Html.EditorFor(model => model.OpeningBalances[i].CreditOpeningBalance, new { htmlAttributes = new { @class = "form-control" } })
+                            @*@Html.ValidationMessageFor(model => model.OpeningBalances[i].CreditOpeningBalance, "Please enter either credit or debit opening balance", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+
+                            <div class="col-md-10">@Html.LabelFor(model => model.ClosingBalance, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.EditorFor(model => model.ClosingBalance, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ClosingBalance, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+                    @*<div class="form-group">
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.OpeningBalances[i].FinancialYearId, "FinancialYearId", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.DropDownList("FinancialYearId", new SelectList(ViewBag.FinancialYears, "Value", "Text", Model[i].FinancialYearId), htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model[i].FinancialYearId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        }
+
+    }
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
 }

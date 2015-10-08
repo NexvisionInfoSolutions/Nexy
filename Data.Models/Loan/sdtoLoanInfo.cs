@@ -16,6 +16,8 @@ namespace Data.Models.Accounts
         [Key]
         [Display(Name = "Loan Id")]
         public long LoanId { get; set; }
+        [Display(Name = "Code")]
+        public string LoanCode { get; set; }
         /// <summary>
         /// User Id of the member
         /// </summary>

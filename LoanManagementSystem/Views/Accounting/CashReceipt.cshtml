@@ -21,15 +21,7 @@
         BaseUrl = '@Url.Action("GetBookAccountDetails","Accounting")';
 
         var datepc = $('.date-picker');
-        datepc.datepicker({
-            format: 'yyyy.M.dd',
-            startDate: '-3d',
-            //showOn: "both",
-            buttonImageOnly: true,
-            buttonImage: "calendar.gif",
-            buttonText: "Calendar",
-            regional: ["en-US"]
-        });
+        datepc.datepicker({format: 'dd.M.yyyy'});
     });
 </script>
 
@@ -71,7 +63,7 @@
             <div class="form-group">
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.Voucher, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.Voucher, new { htmlAttributes = new { @id = "txtVoucherNo", @class = "form-control" } })
+                    @Html.LabelForModel(Model.Voucher + " ", new { @id = "txtVoucherNo", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Voucher, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -147,5 +139,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "ListCashReceiptPayment")
 </div>

@@ -183,5 +183,30 @@ namespace Business.Reports
             }
             return rptCollection;
         }
+
+        public string GenerateCode(string tableName)
+        {
+            string code = string.Empty;
+            try
+            {
+                AppDb.Database.Connection.Open();
+                SqlParameter pm = new SqlParameter("@vTableName", SqlDbType.VarChar);
+                pm.Value = tableName;
+                DbRawSqlQuery<string> result = AppDb.Database.SqlQuery<string>("usp_GenerateCode @vTableName",
+                    pm);
+
+                if (result != null)
+                    code = result.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                AppDb.Database.Connection.Close();
+            }
+            return code;
+        }
     }
 }

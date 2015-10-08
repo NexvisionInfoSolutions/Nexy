@@ -30,7 +30,7 @@ namespace Data.Models
 
         public enum DepositStatus { Inactive = 0, Active = 1, Matured, Closed, Unclaimed }
 
-        public enum RepaymentStatus { Pending = 0, Paid, Posted }
+        public enum RepaymentStatus { Pending = 0, Paid, Posted, Cancelled }
 
         public enum WithdrawalStatus { Pending = 0, Paid, Posted }
 

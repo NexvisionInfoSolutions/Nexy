@@ -32,7 +32,7 @@ body{
 }
 /*-- main --*/
 .main{
-	padding:6em 0;
+	padding:3.3em 0;
 	background:url(images/banner.jpg) 0px 0px;
 }
 .main-info,.main-info2{
@@ -265,9 +265,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5754f2', end
 }
 /*-- //sign-in --*/
 .main h1{
-	font-size: 2em;
+	font-size: 1.5em;
     color: #B6A656;
-    margin: 0 0 3em;
+    margin: 0 0 2em;
     text-align: center;
 }
 .copy-right{

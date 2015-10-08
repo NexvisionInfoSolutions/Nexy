@@ -25,7 +25,7 @@ AS
 		TransactionType { CashReceipt = 0, CashPayment = 1, LoanEntry = 2, LoanRepayment = 3, DepositEntry = 4, DepositWithdrawal = 5 }		*/
     
 Select ach.Id, ach.VoucherNo, ach.VoucherTotal, case isnull(ach.FromModule,0) when 0 then 'From Accounts' when 1 then 'From Posting' end as FromModule
-,case ach.[Transaction] when 0 then 'Cash Receipt' when 1 then 'Cash Payment' when 2 then 'Loan Entry' when 3 then 'Loan Repayment' when 4 then 'Deposit Entry' when 5 then 'Deposit Withdrawal' end as [Transaction], ach.TransDate, ach.TransId
+,ach.[Transaction] as TransactionTypeId, case ach.[Transaction] when 0 then 'Cash Receipt' when 1 then 'Cash Payment' when 2 then 'Loan Entry' when 3 then 'Loan Repayment' when 4 then 'Deposit Entry' when 5 then 'Deposit Withdrawal' end as [Transaction], ach.TransDate, ach.TransId
 ,ach.TransDate, ach.TransId
 ,acd.Narration, acd.Amount
 ,fp.PeriodName, ab.BookName, ah.AccountName, ah.AccountCode, at.AccountType
@@ -40,6 +40,7 @@ left join AccountSchedule asch on asch.ScheduleId = ah.ScheduleId
 where isnull(ach.IsDeleted, 0) = 0
 and isnull(acd.IsDeleted,0) = 0
 and isnull(ach.Cancelled,0) = 0
+and acd.Display = 1
 GO
 
 PRINT 'usp_GetCashReceiptPayment is created successfully..'

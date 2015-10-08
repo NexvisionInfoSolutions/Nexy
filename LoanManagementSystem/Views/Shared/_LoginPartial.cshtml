@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 {
-    @Html.AntiForgeryToken()
+    @*@Html.AntiForgeryToken()*@
 if (Request.IsAuthenticated)
         {
             LoanManagementSystem.Models.sdtoUser UserDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as LoanManagementSystem.Models.sdtoUser;

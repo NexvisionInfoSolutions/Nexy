@@ -18,11 +18,11 @@ namespace Business.Base
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Home/ContactUs", CreatedOn = DateTime.Now, UrlText = "Contact Us", IsMenu = false });
 
             //4
-            sdtoUrlInfo urlAccounts = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Accounts", IsMenu = true, MenuOrder = 1 };
+            sdtoUrlInfo urlAccounts = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Enquiry", IsMenu = true, MenuOrder = 1 };
             urlAccounts = context.UrlInfoCollection.Add(urlAccounts);
 
             //5
-            sdtoUrlInfo urlSettings = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Settings", IsMenu = true, MenuOrder = 4 };
+            sdtoUrlInfo urlSettings = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Settings", IsMenu = true, MenuOrder = 2 };
             urlSettings = context.UrlInfoCollection.Add(urlSettings);
 
             //6
@@ -30,7 +30,7 @@ namespace Business.Base
             urlTransactions = context.UrlInfoCollection.Add(urlTransactions);
 
             //7
-            sdtoUrlInfo urlReports = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Reports", IsMenu = true, MenuOrder = 3 };
+            sdtoUrlInfo urlReports = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Reports", IsMenu = true, MenuOrder = 4 };
             urlReports = context.UrlInfoCollection.Add(urlReports);
 
             //8 
@@ -38,7 +38,7 @@ namespace Business.Base
             urlGeneralSettings = context.UrlInfoCollection.Add(urlGeneralSettings);
 
             //9
-            sdtoUrlInfo urlMngUsers = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Manager Users", IsMenu = true, MenuOrder = 1 };//urlSettings.ParentId };
+            sdtoUrlInfo urlMngUsers = new sdtoUrlInfo() { CreatedOn = DateTime.Now, UrlText = "Manager Users", IsMenu = true, ParentId = 5, MenuOrder = 1 };//urlSettings.ParentId };
             urlMngUsers = context.UrlInfoCollection.Add(urlMngUsers);
 
             //10
@@ -112,7 +112,6 @@ namespace Business.Base
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/PLReport", CreatedOn = DateTime.Now, UrlText = "P&L", ParentId = 7, IsMenu = true, MenuOrder = 8 });//urlDeposits.ParentId });
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Reports/BalanceSheet", CreatedOn = DateTime.Now, UrlText = "BalanceSheet", ParentId = 7, IsMenu = true, MenuOrder = 9 });//urlDeposits.ParentId });
 
-
             //43
             sdtoUrlInfo exportPalm = new sdtoUrlInfo() { Url = "/Loan/ExportView", CreatedOn = DateTime.Now, UrlText = "Export", ParentId = 4, IsMenu = true, MenuOrder = 9 };//urlAccounts.ParentId };
             exportPalm = context.UrlInfoCollection.Add(exportPalm);
@@ -138,14 +137,14 @@ namespace Business.Base
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/VillageList", CreatedOn = DateTime.Now, UrlText = "List of Villages", ParentId = 5, IsMenu = true, MenuOrder = 7 });
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/StateList", CreatedOn = DateTime.Now, UrlText = "List of States", ParentId = 5, IsMenu = true, MenuOrder = 8 });
             context.UrlInfoCollection.Add(new sdtoUrlInfo() { Url = "/Settings/CountryList", CreatedOn = DateTime.Now, UrlText = "List of Country", ParentId = 5, IsMenu = true, MenuOrder = 9 });
-            
+
             /*******************************/
             /** Schedules **/
 
-            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Liability", ParentId = 0, ShortName = "LY" });
-            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Assets", ParentId = 0, ShortName = "AS" });
-            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Income", ParentId = 0, ShortName = "IC" });
-            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "Expenditure", ParentId = 0, ShortName = "EX" });
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "LIABILITY", ParentId = 0, ShortName = "LY" });
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "ASSETS", ParentId = 0, ShortName = "AS" });
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "INCOME", ParentId = 0, ShortName = "IC" });
+            context.Schedules.Add(new Data.Models.Accounts.Schedules.sdtoSchedule() { ScheduleName = "EXPENDITURE", ParentId = 0, ShortName = "EX" });
 
             /*******************************/
             /** Account Types **/
@@ -207,6 +206,24 @@ namespace Business.Base
 
             sdtoSettings sd = new sdtoSettings() { BankCharges = 10, BankInterest = 10, CompanyId = cmpObj.CompanyId, CreatedOn = DateTime.Now };
             context.GeneralSettings.Add(sd);
+
+            context.SysCodes.Add(new sdtoSysCode() { TableName = "LoanInfo", IdField = "LoanId", CodeField = "LoanCode", Prefix = "STOL/", Suffix = "" });
+            context.SysCodes.Add(new sdtoSysCode() { TableName = "LoanRepayment", IdField = "LoanRepaymentId", CodeField = "RepaymentCode", Prefix = "STOL/RP/", Suffix = "" });
+
+            context.User.Add(new sdtoUser()
+            {
+                Code = "ADMIN-01",
+                FirstName = "Admin",
+                LastName = "User",
+                UserName = "admin",
+                Password = "admin123",
+                ConfirmPassword = "admin123",
+                //UserGroupId = context.Usergroup.FirstOrDefault().UserGroupId,
+                Description = "Administrator",
+                CreatedOn = DateTime.Now,
+                CompanyId = 1,
+                UserType = Data.Models.Enumerations.UserType.User
+            });
 
             base.Seed(context);
         }

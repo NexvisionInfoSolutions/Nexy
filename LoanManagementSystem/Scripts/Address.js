@@ -1,4 +1,6 @@
 ﻿function LoadComboBox(DataUrl, ValueField, TextField, SelectedValue, ddlComboBox) {
+    //console.log(DataUrl);
+    //console.log(ddlComboBox);
     $.ajax({
         url: DataUrl,
         type: 'GET',
@@ -33,7 +35,7 @@
             if (SelectedValue != null && SelectedValue != "") {
                 selectedItem.value = SelectedValue;
             }
-            console.log(selectedItem)
+            //console.log(selectedItem)
             $("#" + ddlComboBox).jqxComboBox('selectItem', selectedItem);
         }
     });

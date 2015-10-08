@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("UserId", (SelectList)ViewBag.UserList, htmlAttributes: new {  })
+                @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.UserList, htmlAttributes: new { })
                 @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -54,6 +54,14 @@
                 @Html.ValidationMessageFor(model => model.RepaymentStartDate)
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LoanCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.LoanCode, new { htmlAttributes = new { } })                
+            </div>
+        </div>
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.TransactionDate, htmlAttributes: new { @class = "control-label col-md-2" })

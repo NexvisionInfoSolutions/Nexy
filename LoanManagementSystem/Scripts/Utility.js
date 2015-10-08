@@ -2,7 +2,7 @@
     var datepc = $('.date-picker');
     if(datepc!=null){
         datepc.datepicker({
-            format: 'yyyy.M.dd',
+            format: 'dd.M.yyyy',
             //startDate: '-3d',
             //showOn: "both",
             buttonImageOnly: true,

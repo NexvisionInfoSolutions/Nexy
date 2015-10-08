@@ -18,7 +18,7 @@
             //var datepc = $('.date-picker');
             //if (datepc != null)
             //    datepc.datepicker({
-            //        format: 'yyyy.M.dd',
+            //        format: 'dd.M.yyyy',
             //        startDate: '-3d',
             //        //showOn: "both",
             //        buttonImageOnly: true,
@@ -80,7 +80,7 @@
                 };
 
             var LinkId = function (row, column, value, rowData) {
-                var html = '<b><a target="_blank" href="/Settings/SaveDistrict?CountryId=' + $('#' + hdnUserAddressCountry).val() + '&StateId=' + $("#" + hdnUserAddressState).val() + '&DistrictId=' + rowData.DistrictId + '">' + value + '</a>';
+                var html = '<b><a href="/Settings/SaveDistrict?CountryId=' + $('#' + hdnUserAddressCountry).val() + '&StateId=' + $("#" + hdnUserAddressState).val() + '&DistrictId=' + rowData.DistrictId + '">' + value + '</a>';
                 return html;
             }
             var dataAdapter = new $.jqx.dataAdapter(source);

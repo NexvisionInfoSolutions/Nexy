@@ -12,7 +12,7 @@
             //var datepc = $('.date-picker');
             //if (datepc != null)
             //    datepc.datepicker({
-            //        format: 'yyyy.M.dd',
+            //        format: 'dd.M.yyyy',
             //        startDate: '-3d',
             //        //showOn: "both",
             //        buttonImageOnly: true,
@@ -38,6 +38,7 @@
                     { name: 'VoucherTotal', type: 'number' },
                     { name: 'FromModule', type: 'string' },
                     { name: 'Transaction', type: 'string' },
+                    { name: 'TransactionTypeId', type: 'number' },
                     { name: 'TransDate', type: 'date' },
                     { name: 'TransId', type: 'number' },
                     { name: 'Narration', type: 'string' },
@@ -52,8 +53,9 @@
                 url: '/Accounting/CashReceiptPaymentInfo'
             };
 
-            var LinkId = function (row, column, value) {
-                var html = '<b><a target="_blank" href="/LoanRepayments/Index?LoanId=' + value + '">' + value + '</a>';
+            var LinkId = function (row, column, value, data) {
+                //console.log(data);
+                var html = '<b><a target="_blank" href="/Accounting/' + (data.TransactionTypeId == 0 ? 'CashReceipt' : 'CashPayment') + '?HeaderId=' + value + '">' + value + '</a>';
                 return html;
             }
             var dataAdapter = new $.jqx.dataAdapter(source);

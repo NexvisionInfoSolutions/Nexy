@@ -17,14 +17,14 @@ using Business.Reports;
 namespace LoanManagementSystem.Controllers
 {
     [Authorize()]
-    public class AccountingController : Controller
+    public class AccountingController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login");
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: /User/
@@ -101,6 +101,9 @@ namespace LoanManagementSystem.Controllers
                 var header = db.BankDepositHeader.Find(HeaderId);
                 if (header != null)
                 {
+                    var accountBook = db.AccountBooks.Find(header.BookId);
+                    var openingBalance = db.OpeningBalance.Where(x => x.AccountHeadId == accountBook.AccountHeadId).FirstOrDefault();
+
                     obj = new sdtoViewAccDepositWithdrawal()
                     {
                         VoucherTotal = header.VoucherTotal,
@@ -108,7 +111,8 @@ namespace LoanManagementSystem.Controllers
                         Date = header.TransDate,
                         HeaderId = HeaderId.Value,
                         PreviousVoucherTotal = header.VoucherTotal,
-                        Voucher = header.VoucherNo
+                        Voucher = header.VoucherNo,
+                        Balance = openingBalance == null ? 0 : openingBalance.ClosingBalance
                     };
 
                     var headerSubList = db.BankDepositDetails.Where(x => x.IsDeleted == false && x.BankDepositId == obj.HeaderId);
@@ -144,6 +148,9 @@ namespace LoanManagementSystem.Controllers
                 var header = db.BankDepositHeader.Find(HeaderId);
                 if (header != null)
                 {
+                    var accountBook = db.AccountBooks.Find(header.BookId);
+                    var openingBalance = db.OpeningBalance.Where(x => x.AccountHeadId == accountBook.AccountHeadId).FirstOrDefault();
+
                     obj = new sdtoViewAccDepositWithdrawal()
                     {
                         VoucherTotal = header.VoucherTotal,
@@ -151,7 +158,8 @@ namespace LoanManagementSystem.Controllers
                         Date = header.TransDate,
                         HeaderId = HeaderId.Value,
                         PreviousVoucherTotal = header.VoucherTotal,
-                        Voucher = header.VoucherNo
+                        Voucher = header.VoucherNo,
+                        Balance = openingBalance == null ? 0 : openingBalance.ClosingBalance
                     };
 
                     var headerSubList = db.BankDepositDetails.Where(x => x.IsDeleted == false && x.BankDepositId == obj.HeaderId);
@@ -241,6 +249,9 @@ namespace LoanManagementSystem.Controllers
                 var header = db.ReceiptHeader.Find(HeaderId);
                 if (header != null)
                 {
+                    var accountBook = db.AccountBooks.Find(header.BookId);
+                    var openingBalance = db.OpeningBalance.Where(x => x.AccountHeadId == accountBook.AccountHeadId).FirstOrDefault();
+
                     obj = new sdtoViewAccCashReceiptPayment()
                     {
                         VoucherTotal = header.VoucherTotal,
@@ -248,7 +259,8 @@ namespace LoanManagementSystem.Controllers
                         Date = header.TransDate,
                         HeaderId = HeaderId.Value,
                         PreviousVoucherTotal = header.VoucherTotal,
-                        Voucher = header.VoucherNo
+                        Voucher = header.VoucherNo,
+                        Balance = openingBalance == null ? 0 : openingBalance.ClosingBalance
                     };
 
                     var headerSubList = db.ReceiptDetails.Where(x => x.IsDeleted == false && x.ReceiptsId == obj.HeaderId);
@@ -256,12 +268,13 @@ namespace LoanManagementSystem.Controllers
                     {
                         foreach (sdtoReceiptDetails dtl in headerSubList)
                         {
-                            obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails()
-                            {
-                                AccountHeadId = dtl.AccountId,
-                                Amount = -1 * dtl.Amount,
-                                Narration = dtl.Narration
-                            });
+                            if (dtl.Display == 1)
+                                obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails()
+                                {
+                                    AccountHeadId = dtl.AccountId,
+                                    Amount = -1 * dtl.Amount,
+                                    Narration = dtl.Narration
+                                });
                         }
                     }
                 }
@@ -283,6 +296,9 @@ namespace LoanManagementSystem.Controllers
                 var header = db.ReceiptHeader.Find(HeaderId);
                 if (header != null)
                 {
+                    var accountBook = db.AccountBooks.Find(header.BookId);
+                    var openingBalance = db.OpeningBalance.Where(x => x.AccountHeadId == accountBook.AccountHeadId).FirstOrDefault();
+
                     obj = new sdtoViewAccCashReceiptPayment()
                     {
                         VoucherTotal = header.VoucherTotal,
@@ -290,7 +306,8 @@ namespace LoanManagementSystem.Controllers
                         Date = header.TransDate,
                         HeaderId = HeaderId.Value,
                         PreviousVoucherTotal = header.VoucherTotal,
-                        Voucher = header.VoucherNo
+                        Voucher = header.VoucherNo,
+                        Balance = openingBalance == null ? 0 : openingBalance.ClosingBalance
                     };
 
                     var headerSubList = db.ReceiptDetails.Where(x => x.IsDeleted == false && x.ReceiptsId == obj.HeaderId);
@@ -298,12 +315,13 @@ namespace LoanManagementSystem.Controllers
                     {
                         foreach (sdtoReceiptDetails dtl in headerSubList)
                         {
-                            obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails()
-                            {
-                                AccountHeadId = dtl.AccountId,
-                                Amount = -1 * dtl.Amount,
-                                Narration = dtl.Narration
-                            });
+                            if (dtl.Display == 1)
+                                obj.Details.Add(new sdtoViewAccCashReceiptPaymentDetails()
+                                {
+                                    AccountHeadId = dtl.AccountId,
+                                    Amount = -1 * dtl.Amount,
+                                    Narration = dtl.Narration
+                                });
                         }
                     }
                 }
@@ -386,7 +404,7 @@ namespace LoanManagementSystem.Controllers
         public ActionResult ExpenseEntry(sdtoViewAccExpenseEntry objExpenseEntry)
         {
             if (objExpenseEntry.SourceClick == 0)
-                objExpenseEntry.Details.Add(new sdtoViewAccExpenseEntryDetails() { AccountHead = new sdtoAccountHead() { AccountHeadId = objExpenseEntry.Book.AccountHeadId }, Amount = objExpenseEntry.Amount, Narration = objExpenseEntry.Description });
+                objExpenseEntry.Details.Add(new sdtoViewAccExpenseEntryDetails() { AccountHead = new sdtoAccountHead() { AccountHeadId = objExpenseEntry.Book.AccountHeadId.Value }, Amount = objExpenseEntry.Amount, Narration = objExpenseEntry.Description });
             else
             {
                 if (ModelState.IsValid)
@@ -478,7 +496,7 @@ namespace LoanManagementSystem.Controllers
             //var accBook = db.AccountBooks.Include(x => x.AccountBookTypeId).Where(x => x.AccountBookType.UniqueName.Equals("Journal", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
             sdtoViewAccJournalEntry obj = new sdtoViewAccJournalEntry() { Date = DateTime.Now };
-            obj.Details.Add(new sdtoViewAccJournalEntryDetails() { AccountHead = new sdtoAccountHead() { } });
+            obj.Details.Add(new sdtoViewAccJournalEntryDetails() { });
 
             if (HeaderId != null && HeaderId.Value > 0)
             {
@@ -502,7 +520,7 @@ namespace LoanManagementSystem.Controllers
                         {
                             obj.Details.Add(new sdtoViewAccJournalEntryDetails()
                             {
-                                AccountHead = new sdtoAccountHead() { AccountHeadId = dtl.AccountId },
+                                AccountHeadId = dtl.AccountId,
                                 DebitAmount = -1 * dtl.DrAmount,
                                 CreditAmount = -1 * dtl.CrAmount,
                                 Narration = dtl.Narration
@@ -539,10 +557,14 @@ namespace LoanManagementSystem.Controllers
             return View(objCashReceiptPayment);
         }
 
-        public ActionResult NewOpeningBalance()
+        public ActionResult NewOpeningBalance(long? ScheduleId)
         {
             LoadSelectListOpeningBalance(0, 0, 0);
-            return View();
+            var openingBalance = db.OpeningBalance.Include(x => x.AccountHead).Include(x => x.Schedule).Include(x => x.FinancialPeriod).Where(x => x.IsDeleted == false && x.FinancialPeriod.IsCurrentYear == true && (x.ScheduleId == ((ScheduleId == null || ScheduleId.Value == 0) ? x.ScheduleId : ScheduleId))).ToList();
+
+            sdtoViewOpeningBalance openingBalances = new sdtoViewOpeningBalance() { ScheduleId = ScheduleId == null ? 0 : ScheduleId.Value, OpeningBalances = openingBalance };
+
+            return View(openingBalances);
         }
 
         //[HttpParamAction]
@@ -592,35 +614,55 @@ namespace LoanManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult NewOpeningBalance(sdtoOpeningBalance OpeningBalance)
+        public ActionResult NewOpeningBalance(sdtoViewOpeningBalance ViewOpeningBalance)
         {
             if (ModelState.IsValid)
             {
-                if (OpeningBalance.CreditOpeningBalance > 0 && OpeningBalance.DebitOpeningBalance > 0)
+                var OpeningBalances = ViewOpeningBalance.OpeningBalances;
+                if (OpeningBalances != null)
                 {
-                    ModelState.AddModelError("CreditOpeningBalance", "Please enter either credit or debit opening balance");
-                    LoadSelectListOpeningBalance(OpeningBalance.AccountHeadId, OpeningBalance.ScheduleId, OpeningBalance.FinancialYearId);
-                    return View(OpeningBalance);
+                    for (int i = 0; i < OpeningBalances.Count(); i++)
+                    {
+                        var CurrentOpeningBalance = OpeningBalances[i];
+                        var opnBalance = db.OpeningBalance.Find(CurrentOpeningBalance.OpeningBalanceId);
+
+                        var prevCreditOpeningBalance = opnBalance.CreditOpeningBalance;
+                        var prevDebitOpeningBalance = opnBalance.DebitOpeningBalance;
+
+                        opnBalance.ScheduleId = CurrentOpeningBalance.ScheduleId;
+                        opnBalance.AccountHeadId = CurrentOpeningBalance.AccountHeadId;
+                        opnBalance.CreditOpeningBalance = CurrentOpeningBalance.CreditOpeningBalance;
+                        opnBalance.DebitOpeningBalance = CurrentOpeningBalance.DebitOpeningBalance;
+                        opnBalance.ModifiedBy = CurrentUserSession.UserId;
+                        opnBalance.ModifiedOn = DateTime.Now;
+                        opnBalance.ClosingBalance = opnBalance.ClosingBalance - (prevCreditOpeningBalance + prevDebitOpeningBalance) + (opnBalance.CreditOpeningBalance + opnBalance.DebitOpeningBalance);
+
+                        if (opnBalance.CreditOpeningBalance > 0 && opnBalance.DebitOpeningBalance > 0)
+                        {
+                            ModelState.AddModelError("", "Please enter either credit or debit opening balance");
+                            LoadSelectListOpeningBalance(0, 0, 0);
+                            return View(ViewOpeningBalance);
+                        }
+
+                        opnBalance.CreatedOn = DateTime.Now;
+                        sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+                        if (session != null)
+                            opnBalance.CreatedBy = session.UserID;
+                        opnBalance.IsDeleted = false;
+
+                        db.Entry(opnBalance).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+
+                    if (User.Identity.IsAuthenticated)
+                        return RedirectToAction("OpeningBalances");
+                    else
+                        return RedirectToAction("Login", "Login");
                 }
-
-                OpeningBalance.CreatedOn = DateTime.Now;
-                sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
-                if (session != null)
-                    OpeningBalance.CreatedBy = session.UserID;
-                OpeningBalance.IsDeleted = false;
-
-                OpeningBalance.ClosingBalance = OpeningBalance.CreditOpeningBalance > 0 ? OpeningBalance.CreditOpeningBalance : OpeningBalance.DebitOpeningBalance;
-
-                db.OpeningBalance.Add(OpeningBalance);
-                db.SaveChanges();
-                if (User.Identity.IsAuthenticated)
-                    return RedirectToAction("OpeningBalances");
-                else
-                    return RedirectToAction("Login");
             }
 
-            LoadSelectListOpeningBalance(OpeningBalance.AccountHeadId, OpeningBalance.ScheduleId, OpeningBalance.FinancialYearId);
-            return View(OpeningBalance);
+            LoadSelectListOpeningBalance(0, 0, 0);
+            return View(ViewOpeningBalance);
         }
 
         public ActionResult UpdateOpeningBalance(long? OpeningBalanceId)
@@ -652,7 +694,7 @@ namespace LoanManagementSystem.Controllers
                 if (User.Identity.IsAuthenticated)
                     return RedirectToAction("Index");
                 else
-                    return RedirectToAction("Login");
+                    return RedirectToAction("Login", "Login");
             }
 
             LoadSelectListOpeningBalance(OpeningBalance.AccountHeadId, OpeningBalance.ScheduleId, OpeningBalance.FinancialYearId);
@@ -715,6 +757,18 @@ namespace LoanManagementSystem.Controllers
             bfTransaction objReport = new bfTransaction(db);
             var accDetails = objReport.GetAccountDetails(AccountBookId, TransType);
             return Json(accDetails, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult BaseSchedulesInfo()
+        {
+            var list = db.Schedules.ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ScheduleAccountInfo(long ScheduleId)
+        {
+            var list = db.AccountHeads.Include(x => x.Schedule).Where(x => x.IsDeleted == false && (x.ScheduleId == ScheduleId || x.Schedule.BaseScheduleId == ScheduleId)).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

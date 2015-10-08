@@ -27,7 +27,7 @@ AS
 Select ach.Id, ach.VoucherNo, ach.VoucherTotal, case isnull(ach.FromModule,0) when 0 then 'From Accounts' when 1 then 'From Posting' end as FromModule
 ,case ach.[Transaction] when 0 then 'Cash Receipt' when 1 then 'Cash Payment' when 2 then 'Loan Entry' when 3 then 'Loan Repayment' when 4 then 'Deposit Entry' when 5 then 'Deposit Withdrawal' end as [Transaction]
 ,ach.TransDate, ach.TransId
-,acd.Narration, acd.DrAmount, acd.CrAmount
+,acd.Narration, cast(acd.DrAmount as decimal) as DrAmount,cast(acd.CrAmount as decimal) as CrAmount
 ,fp.PeriodName, ab.BookName, ah.AccountName, ah.AccountCode, at.AccountType
 ,asch.ScheduleName
 from AccJournalHeader ach

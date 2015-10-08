@@ -34,7 +34,7 @@ namespace LoanManagementSystem.Controllers.Settings
                                     AccountBook.BankInterest,
                                     AccountBook.BookCode,
                                     AccountBook.BookName,
-                                    AccountBook.AccountHead.AccountName,
+                                    AccountName = AccountBook.AccountHead == null ? string.Empty : AccountBook.AccountHead.AccountName,
                                     AccountBooksInfo = AccountBook.AccountBookId
                                 });
             return Json(AccountBooks, JsonRequestBehavior.AllowGet);
@@ -79,6 +79,11 @@ namespace LoanManagementSystem.Controllers.Settings
             {
                 AccountBook.CreatedOn = DateTime.Now;
                 AccountBook.ModifiedOn = null;
+
+                var jrnType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Journal", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                if (jrnType != null && AccountBook.AccountBookTypeId == jrnType.AccountBookTypeId)
+                    AccountBook.AccountHeadId = null;
+
                 db.AccountBooks.Add(AccountBook);
                 db.SaveChanges();
 

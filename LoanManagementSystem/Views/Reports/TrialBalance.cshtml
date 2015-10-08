@@ -56,13 +56,15 @@
             <div class="col-md-10">
                 @Html.LabelFor(m => m.Accounts, new { @class = "control-label" })
                 <br />
-                @Html.CheckBoxListFor(model => model.Accounts.PostedItems.Ids,
+                <div style="overflow-y:scroll; height:100px;">
+                    @Html.CheckBoxListFor(model => model.Accounts.PostedItems.Ids,
                 model => model.Accounts.Items,
                 fruit => fruit.Value,
                 fruit => fruit.Text,
                 model => model.Accounts.SelectedItems,
                 MvcCheckBoxList.Model.Position.Vertical, x => new { @class = "control-label" })
-                @Html.ValidationMessageFor(m => m.Accounts)
+                    @Html.ValidationMessageFor(m => m.Accounts)
+                </div>
             </div>
         </div>
     </div>

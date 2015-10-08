@@ -1,0 +1,205 @@
+﻿@model LoanManagementSystem.Models.Accounts.sdtoViewLoanRepayments
+
+@{
+    ViewBag.Title = "Cancel Loan Repayment";
+
+}
+
+<script language="javascript" type="text/javascript">
+    function SelectLoanRepayment(id) {
+        var hdnInput = $('#hdnInputSelection');
+        if (hdnInput != null) {
+            var objJSON = new Array();
+           
+            if (hdnInput.val()!="")
+                objJSON = jQuery.parseJSON(hdnInput.val());
+
+            var check = false;
+            check = $('#' + id).is(':checked');
+            var key = $('#' + id).attr("value");
+            console.log('SelectLoanRepayment'+key)
+            objJSON[key] = check;
+            
+            hdnInput.val(JSON.stringify(objJSON));
+        }
+    }
+</script>
+
+@using (Html.BeginForm("CancelLoanRepayments", "LoanRepayments"))
+{
+    @Html.HiddenFor(x => x.LoanId)
+    @Html.HiddenFor(x => x.InputSelection, new { @id = "hdnInputSelection" })
+
+    <div class="row invoice-info"></div>
+    var Loan = ViewBag.LoanDetails as Data.Models.Accounts.sdtoLoanInfo;
+    if (Loan != null && Loan.LoanId > 0)
+    {
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                @Html.Label("Member", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label(Loan.Member.FirstName + " " + Loan.Member.LastName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Loan Start Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label(Loan.RepaymentStartDate.Value.ToString("yyyy-MMM-dd"))
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Loan Interest %", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label(Loan.InteresRate.ToString(), Loan.InteresRate.ToString())
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Loan Amount", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label(Loan.LoanAmount.ToString(), Loan.LoanAmount.ToString())
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Loan Payment Interval", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label(Loan.RePaymentInterval.ToString())
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Installment Amount", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label(Loan.InstallmentAmount.ToString(), Loan.InstallmentAmount.ToString())
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Installments", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label(Loan.TotalInstallments.ToString())
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Label("" + Loan.Notes)
+                </div>
+            </div>
+        </div>
+    }
+
+    if (Model.Repayments.Count() > 0)
+    {
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Select
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().RepaymentDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().RepaymentCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().PendingPrincipalAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().InterestAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().InterestRate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().RepaymentAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Repayments.FirstOrDefault().PaymentMode)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Repayments.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.CheckBoxFor(modelItem => modelItem.Repayments.ElementAt(i).Checked, new
+                                           {
+                                               @value = Model.Repayments.ElementAt(i).LoanRepaymentId,
+                                               @checked = Model.Repayments.ElementAt(i).Checked,
+                                               @id = "cbLoanRepaymentId" + @Model.Repayments.ElementAt(i).LoanRepaymentId,
+                                               @onclick = "return SelectLoanRepayment(this.id);"
+                                           })
+                                    @Html.HiddenFor(modelItem => Model.Repayments.ElementAt(i).LoanRepaymentId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).RepaymentDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).RepaymentCode)
+                                    @Html.EditorFor(modelItem => Model.Repayments.ElementAt(i).RepaymentCode, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).PendingPrincipalAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).InterestAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).InterestRate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).RepaymentAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.Repayments.ElementAt(i).PaymentMode)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                Total Principal Pending : <b>@ViewBag.TotalPendingPrincipal</b>
+                            </td>
+                            <td colspan="5">
+                                Total Paid : <b>@ViewBag.TotalPaid</b>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                <span>Payment records are not available</span>
+            </div>
+        </div>
+    }
+    <input type="submit" value="Save" />
+}

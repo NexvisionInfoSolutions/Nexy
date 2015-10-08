@@ -19,6 +19,7 @@ namespace Data.Models.Accounts
         public string FromModule { get; set; }
         public string TransType { get; set; }
         public DateTime TransDate { get; set; }
+        public int TransactionTypeId { get; set; }
         public string Transaction { get; set; }
         long TransId { get; set; }
         public string Narration { get; set; }

@@ -13,8 +13,11 @@ namespace LoanManagementSystem.Models
     [NotMapped]
     public class sdtoViewAccJournalEntryDetails
     {
+        //[Display(Name = "Account Head")]
+        //public sdtoAccountHead AccountHead { get; set; }
+
         [Display(Name = "Account Head")]
-        public sdtoAccountHead AccountHead { get; set; }
+        public long AccountHeadId { get; set; }
 
         [Display(Name = "Narration")]
         public string Narration { get; set; }

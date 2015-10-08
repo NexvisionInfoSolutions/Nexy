@@ -35,7 +35,7 @@ namespace LoanManagementSystem.Controllers
                              users.Designation,
                              users.Code,
                              ExecutiveInfo = users.UserID,
-                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.DistrictDetails.DistrictName, users.UserAddress.Zipcode, users.UserAddress.TalukDetails.TalukName, users.UserAddress.VillageDetails.VillageName, users.UserAddress.StateDetails.StateName, users.UserAddress.Country.CountryName),
+                             UserAddress = UtilityHelper.UtilityHelper.FormatAddress(users.UserAddress.Address1, users.UserAddress.Address2, users.UserAddress.Place, users.UserAddress.Post, users.UserAddress.DistrictDetails == null ? "" : users.UserAddress.DistrictDetails.DistrictName, users.UserAddress.Zipcode, users.UserAddress.TalukDetails == null ? "" : users.UserAddress.TalukDetails.TalukName, users.UserAddress.VillageDetails == null ? "" : users.UserAddress.VillageDetails.VillageName, users.UserAddress.StateDetails == null ? "" : users.UserAddress.StateDetails.StateName, users.UserAddress.Country == null ? "" : users.UserAddress.Country.CountryName),
                              UserContactPhone = users.Contacts.Telephone1,
                              UserContactMobile = users.Contacts.Mobile1
                          });
@@ -91,6 +91,15 @@ namespace LoanManagementSystem.Controllers
                 {
                     sdtouser.Contacts.CreatedOn = DateTime.Now;
                     sdtouser.Contacts.ModifiedOn = DateTime.Now;
+                }
+
+                if (sdtouser.UserAddress != null)
+                {
+                    sdtouser.UserAddress.CountryId = sdtouser.UserAddress.CountryId == 0 ? null : sdtouser.UserAddress.CountryId;
+                    sdtouser.UserAddress.StateId = sdtouser.UserAddress.StateId == 0 ? null : sdtouser.UserAddress.StateId;
+                    sdtouser.UserAddress.DistrictId = sdtouser.UserAddress.DistrictId == 0 ? null : sdtouser.UserAddress.DistrictId;
+                    sdtouser.UserAddress.TalukId = sdtouser.UserAddress.TalukId == 0 ? null : sdtouser.UserAddress.TalukId;
+                    sdtouser.UserAddress.VillageId = sdtouser.UserAddress.VillageId == 0 ? null : sdtouser.UserAddress.VillageId;
                 }
 
                 sdtouser.Contacts = db.Contacts.Add(sdtouser.Contacts);

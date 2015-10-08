@@ -168,7 +168,7 @@ body.nav-sm .profile {
     margin-top: 5px;
     font-size: 10px !important;
     min-width: inherit;
-    color: #C4CFDA;
+    color: #fff;
 }
 
 .active a span.fa {
@@ -786,7 +786,7 @@ li.current-page a {
 }
 
 .nav.navbar-nav>li>a {
-    color: #515356 !important;
+    color: #fff !important;
 }
 
 .nav.top_menu>li>a {

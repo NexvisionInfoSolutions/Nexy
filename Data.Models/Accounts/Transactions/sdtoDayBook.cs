@@ -21,7 +21,7 @@ namespace Data.Models.Accounts
 
         [ForeignKey("AccountHeadId")]
         public virtual sdtoAccountHead AccountHead { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime TransDate { get; set; }
         public decimal Receipt { get; set; }
         public decimal Payment { get; set; }
         public decimal ClosingBalance { get; set; }

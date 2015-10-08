@@ -16,7 +16,7 @@ namespace LoanManagementSystem.Models
         [Display(Name = "User Id")]
         public long UserID { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(150)]
         public string Code { get; set; }
 
         [Display(Name = "First Name")]
@@ -119,5 +119,9 @@ namespace LoanManagementSystem.Models
         [Display(Name = "Financial Period")]
         [Range(1, int.MaxValue, ErrorMessage = "Please select a financial period")]
         public long? FinancialYearId { get; set; }
+
+        public string NomineeAddress { get; set; }
+        public string NomineeName { get; set; }
+        public string NomineeRelationship { get; set; }
     }
 }
