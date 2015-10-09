@@ -40,7 +40,7 @@ namespace Data.Models.Accounts
         [MaxLength(1000)]
         public string InstrumentNo { get; set; }
 
-        public DateTime InstrumentDate { get; set; }
+        public DateTime? InstrumentDate { get; set; }
 
         public int Display { get; set; }//0 or 1          
     }

@@ -13,6 +13,7 @@ namespace LoanManagementSystem.Models
         public LoanDBContext()
             : base("name=LoanDBContext")
         {
+            base.Database.CommandTimeout = 180;
         }
 
         public DbSet<sdtoUserGroup> Usergroup { get; set; }

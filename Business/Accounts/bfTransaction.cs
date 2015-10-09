@@ -928,9 +928,12 @@ namespace Business.Reports
                         Display = 1,
                         IsDeleted = false,
                         Instrument = dtl.InstrumentType,
-                        InstrumentNo = dtl.InstrumentNo,
-                        InstrumentDate = dtl.InstrumentDate
+                        InstrumentNo = dtl.InstrumentNo
                     };
+
+                    if (dtl.InstrumentDate != DateTime.MinValue)
+                        bankDepositDtlCr.InstrumentDate = dtl.InstrumentDate;
+
                     UpdateClosingBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, Convert.ToDecimal(bankDepositDtlCr.Amount));
                     UpdateDayBookBalance(bankDepositDtlCr.AccountId, CurrentUser.UserSession.FinancialYearId.Value, objDepositWithdrawal.Date, Convert.ToDecimal(bankDepositDtlCr.Amount), TransactionType.BankDeposit);
                     AppDb.BankDepositDetails.Add(bankDepositDtlCr);

@@ -338,3 +338,46 @@ GO
 DROP INDEX [IX_ModifiedBy] 
 ON [dbo].[WithdrawalInfo];
 GO
+
+IF EXISTS
+      (SELECT TOP 1 1
+         FROM sys.indexes
+        WHERE     name = 'Idx_AccReceiptsHeader_IsDeleted'
+              AND object_id = OBJECT_ID ('AccReceiptsHeader'))
+   DROP INDEX dbo.AccReceiptsHeader.Idx_AccReceiptsHeader_IsDeleted
+GO
+
+CREATE NONCLUSTERED INDEX Idx_AccReceiptsHeader_IsDeleted
+   ON dbo.AccReceiptsHeader (Id, IsDeleted)
+
+PRINT 'Index is created successfully [Table:AccReceiptsHeader; Name:Idx_AccReceiptsHeader_IsDeleted]'
+GO
+
+IF EXISTS
+      (SELECT TOP 1 1
+         FROM sys.indexes
+        WHERE     name = 'Idx_AccReceiptsHeader_Cancelled'
+              AND object_id = OBJECT_ID ('AccReceiptsHeader'))
+   DROP INDEX dbo.AccReceiptsHeader.Idx_AccReceiptsHeader_Cancelled
+GO
+
+CREATE NONCLUSTERED INDEX Idx_AccReceiptsHeader_Cancelled
+   ON dbo.AccReceiptsHeader (Id, Cancelled)
+
+PRINT 'Index is created successfully [Table:AccReceiptsHeader; Name:Idx_AccReceiptsHeader_Cancelled]'
+GO
+
+IF EXISTS
+      (SELECT TOP 1 1
+         FROM sys.indexes
+        WHERE     name = 'Idx_AccReceiptsDetail_IsDeleted'
+              AND object_id = OBJECT_ID ('AccReceiptsDetail'))
+   DROP INDEX dbo.AccReceiptsDetail.Idx_AccReceiptsDetail_IsDeleted
+GO
+
+CREATE NONCLUSTERED INDEX Idx_AccReceiptsDetail_IsDeleted
+   ON dbo.AccReceiptsDetail (Id, IsDeleted)
+
+PRINT 'Index is created successfully [Table:AccReceiptsDetail; Name:Idx_AccReceiptsDetail_IsDeleted]'
+GO
+

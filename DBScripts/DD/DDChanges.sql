@@ -117,3 +117,18 @@ END
 ELSE
 	PRINT 'AccountHeadId is already altered in AccountBook'
 GO
+
+IF EXISTS (
+		SELECT *
+		FROM sys.columns
+		WHERE NAME = N'InstrumentDate'
+			AND Object_ID = Object_ID(N'dbo.AccBankDepositDetail')
+		)
+BEGIN
+	ALTER TABLE [dbo].[AccBankDepositDetail] ALTER COLUMN [InstrumentDate] DateTime NULL
+
+	PRINT 'InstrumentDate is altered in AccBankDepositDetail'
+END
+ELSE
+	PRINT 'InstrumentDate is already altered in AccBankDepositDetail'
+GO

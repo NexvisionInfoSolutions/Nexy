@@ -27,7 +27,7 @@ AS
 Select ach.Id, ach.VoucherNo, cast(ach.VoucherTotal as decimal(18,2)) as VoucherTotal, case isnull(ach.FromModule,0) when 0 then 'From Accounts' when 1 then 'From Posting' end as FromModule
 ,case ach.TransType when 0 then 'Cash Receipt' when 1 then 'Cash Payment' end as TransType
 ,ach.[Transaction] as TransactionTypeId, case ach.[Transaction] when 0 then 'Cash Receipt' when 1 then 'Cash Payment' when 2 then 'Loan Entry' when 3 then 'Loan Repayment' when 4 then 'Deposit Entry' when 5 then 'Deposit Withdrawal' end as [Transaction], ach.TransDate, ach.TransId
-,acd.Narration, cast(acd.Amount as decimal(18,2)) as Amount, case acd.Instrument when 0 then 'Cash' when 1 then 'Cheque' when 2 then 'Credit Card' end as Instrument, acd.InstrumentNo, acd.InstrumentDate
+,acd.Narration, cast(acd.Amount as decimal(18,2)) as Amount, case acd.Instrument when 0 then 'Cash' when 1 then 'Cheque' when 2 then 'Credit Card' end as Instrument, acd.InstrumentNo, isnull(acd.InstrumentDate, GetDate()) as InstrumentDate
 ,fp.PeriodName, ab.BookName, ah.AccountName, ah.AccountCode, at.AccountType
 ,asch.ScheduleName
 from AccBankDepositHeader ach

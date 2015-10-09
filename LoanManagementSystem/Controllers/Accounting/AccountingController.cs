@@ -715,7 +715,9 @@ namespace LoanManagementSystem.Controllers
 
             bfReport objReport = new bfReport(db);
             var Deposits = objReport.GetBankDepositWithdrawal(CompanyId, string.Empty);
-            return Json(Deposits, JsonRequestBehavior.AllowGet);
+            var result = Json(Deposits, JsonRequestBehavior.AllowGet);
+            result.MaxJsonLength = int.MaxValue;
+            return result;
         }
 
         public ActionResult ListCashReceiptPayment()
@@ -732,7 +734,9 @@ namespace LoanManagementSystem.Controllers
 
             bfReport objReport = new bfReport(db);
             var CashReceiptPayments = objReport.GetCashReceiptPayments(CompanyId, string.Empty);
-            return Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
+            var result =  Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
+            result.MaxJsonLength = int.MaxValue;
+            return result;
         }
 
         public ActionResult ListJournalEntry()
@@ -749,7 +753,9 @@ namespace LoanManagementSystem.Controllers
 
             bfReport objReport = new bfReport(db);
             var CashReceiptPayments = objReport.GetJournalEntries(CompanyId, string.Empty);
-            return Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
+            var result = Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
+            result.MaxJsonLength = int.MaxValue;
+            return result;
         }
 
         public JsonResult GetBookAccountDetails(long AccountBookId, string TransType)
