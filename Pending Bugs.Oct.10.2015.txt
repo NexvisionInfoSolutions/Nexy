@@ -1,0 +1,26 @@
+1) error on executive list
+2) gives error if the general settings primary key has value other than 1
+3) when we click on create new members list it goes to general settings even if there is all values are set
+4) gives more issues when general settings primary value other than 1, so please change the identity column on it...there may be situation we need to manually change these values
+5) add new field in members (Landmark)
+6) chnage address field in list of members as it grows to more than one row
+7) Loan code is not generated automatically,
+8) migrated member is not shown in list of member page
+9) newly created members are saved with isactive=false 
+10) members edit give error for migrated data (address )
+11) error in executive editing
+12) In Opening balance screen,need to search an account 
+13) account must be in ascending order in opening balance screen
+14) if we not giving the suffix in account book creation the autocode genrate will be as "CASHREC-1null"
+15) cash receipt and payment editing gives error
+16) row deletion is not there in cash receipt/payment in create screen
+17) delete option is not there in cash receipt/payment
+18) go to any cash receipt/payment edit screen, when we click on add row, account balance and code text box cleares
+19) when we open any payment edit page, amount shown is "-"
+20) change the layouts in transaction page
+21) in journal, either we enter db or cred
+it for one row..
+22) total must be equal (db and cr)
+23) saves only if dbtotal and crtotal must be equal
+24) gives error when we try to save record if didn't select any account head in journal / cash receipt/payment/ and bank deposit/withdrawal
+25) 

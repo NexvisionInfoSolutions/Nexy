@@ -93,8 +93,12 @@
                 //var format = { target: '"_blank"' };
                 //var html = $.jqx.dataFormat.formatlink(value, format);
                 var html = '<b><a href="/Loan/Edit/' + value + '">Edit</a>|<a id="lnpayment" href="/LoanRepayments/Index?LoanId=' + value + '">Details</a>'
-                          + ' | <a href="/Loan/Delete/' + value + '">Delete</a> | <a href="/Loan/LoanCancellation/' + value + '">Cancel</a>'
+                          + ' | <a href="/Loan/Delete/' + value + '">Delete</a> | <a href="/Loan/LoanCancellation/' + value + '">Cancel</a> | <a href="/LoanRepayments/CancelLoanRepayments?LoanId=' + value + '">Cancel Repayments</a>'
                           + ' | <a href="/Loan/LoanRecall/' + value + '">Recall</a></b>';
+                return html;
+            }
+            var LnkId = function (row, column, value) {
+                var html = '<b><a id="lnpayment" href="/LoanRepayments/Index?LoanId=' + value + '">' + value + '</a>';
                 return html;
             }
             var dataAdapter = new $.jqx.dataAdapter(source);
@@ -109,7 +113,7 @@
                 filterable: true,
                 pageable: true,
                 columns: [
-                  { text: 'Loan Id', dataField: 'LoanId', width: 200 },
+                  { text: 'Loan Id', dataField: 'LoanId', width: 200, cellsRenderer: LnkId },
                   { text: 'First Name', dataField: 'FirstName', width: 200 },
                   { text: 'Last Name', dataField: 'LastName', width: 160 },
                   { text: 'Loan Amount', dataField: 'LoanAmount', width: 120 },

@@ -1650,6 +1650,7 @@
     <Content Include="Views\Settings\VillageList.cshtml" />
     <Content Include="Views\Settings\SaveVillage.cshtml" />
     <Content Include="Views\LoanRepayments\CancelLoanRepayments.cshtml" />
+    <Content Include="Views\LoanRepayments\SmsLoanDefaulters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

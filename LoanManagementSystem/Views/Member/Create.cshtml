@@ -187,72 +187,72 @@
                 $("#" + hdnPermanentAddressVillage).val(item.value);
             }
         });
-        
-            LoadComboBox('@Url.Action("CountryInfo", "Settings")'
-                         , "CountryId"
-                         , "CountryName"
-                         , $('#' + hdnGuaranterAddressCountry).val()
-                         , ddlGuaranterAddressCountry);
 
-            $("#" + ddlGuaranterAddressCountry).on('change', function (event) {
-                var args = event.args;
-                if (args) {
-                    var item = args.item;
-                    $("#" + hdnGuaranterAddressCountry).val(item.value);
-                    LoadComboBox('@Url.Action("StateInfo", "Settings", new { CountryId = 0 })' + $('#' + hdnGuaranterAddressCountry).val()
-                         , "StateId"
-                         , "StateName"
-                         , $('#' + hdnGuaranterAddressState).val()
-                         , ddlGuaranterAddressState)
-                }
-            });
+        LoadComboBox('@Url.Action("CountryInfo", "Settings")'
+                     , "CountryId"
+                     , "CountryName"
+                     , $('#' + hdnGuaranterAddressCountry).val()
+                     , ddlGuaranterAddressCountry);
 
-            $("#" + ddlGuaranterAddressState).on('change', function (event) {
-                var args = event.args;
-                if (args) {
-                    var item = args.item;
-                    $("#" + hdnGuaranterAddressState).val(item.value);
-                    LoadComboBox('@Url.Action("DistrictInfo", "Settings", new { StateId = 0 })' + $('#' + hdnGuaranterAddressState).val()
-                         , "DistrictId"
-                         , "DistrictName"
-                         , $('#' + hdnGuaranterAddressDistrict).val()
-                         , ddlGuaranterAddressDistrict)
-                }
-            });
+        $("#" + ddlGuaranterAddressCountry).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnGuaranterAddressCountry).val(item.value);
+                LoadComboBox('@Url.Action("StateInfo", "Settings", new { CountryId = 0 })' + $('#' + hdnGuaranterAddressCountry).val()
+                     , "StateId"
+                     , "StateName"
+                     , $('#' + hdnGuaranterAddressState).val()
+                     , ddlGuaranterAddressState)
+            }
+        });
 
-            $("#" + ddlGuaranterAddressDistrict).on('change', function (event) {
-                var args = event.args;
-                if (args) {
-                    var item = args.item;
-                    $("#" + hdnGuaranterAddressDistrict).val(item.value);
-                    LoadComboBox('@Url.Action("TalukInfo", "Settings", new { DistrictId = 0 })' + $('#' + hdnGuaranterAddressDistrict).val()
-                         , "TalukId"
-                         , "TalukName"
-                         , $('#' + hdnGuaranterAddressTaluk).val()
-                         , ddlGuaranterAddressTaluk)
-                }
-            });
+        $("#" + ddlGuaranterAddressState).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnGuaranterAddressState).val(item.value);
+                LoadComboBox('@Url.Action("DistrictInfo", "Settings", new { StateId = 0 })' + $('#' + hdnGuaranterAddressState).val()
+                     , "DistrictId"
+                     , "DistrictName"
+                     , $('#' + hdnGuaranterAddressDistrict).val()
+                     , ddlGuaranterAddressDistrict)
+            }
+        });
 
-            $("#" + ddlGuaranterAddressTaluk).on('change', function (event) {
-                var args = event.args;
-                if (args) {
-                    var item = args.item;
-                    $("#" + hdnGuaranterAddressTaluk).val(item.value);
-                    LoadComboBox('@Url.Action("VillageInfo", "Settings", new { TalukId = 0 })' + $('#' + hdnGuaranterAddressTaluk).val()
-                         , "VillageId"
-                         , "VillageName"
-                         , $('#' + hdnGuaranterAddressVillage).val()
-                         , ddlGuaranterAddressVillage)
-                }
-            });
+        $("#" + ddlGuaranterAddressDistrict).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnGuaranterAddressDistrict).val(item.value);
+                LoadComboBox('@Url.Action("TalukInfo", "Settings", new { DistrictId = 0 })' + $('#' + hdnGuaranterAddressDistrict).val()
+                     , "TalukId"
+                     , "TalukName"
+                     , $('#' + hdnGuaranterAddressTaluk).val()
+                     , ddlGuaranterAddressTaluk)
+            }
+        });
 
-            $("#" + ddlGuaranterAddressVillage).on('change', function (event) {
-                var args = event.args;
-                if (args) {
-                    var item = args.item;
-                    $("#" + hdnGuaranterAddressVillage).val(item.value);
-                }
-            });        
+        $("#" + ddlGuaranterAddressTaluk).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnGuaranterAddressTaluk).val(item.value);
+                LoadComboBox('@Url.Action("VillageInfo", "Settings", new { TalukId = 0 })' + $('#' + hdnGuaranterAddressTaluk).val()
+                     , "VillageId"
+                     , "VillageName"
+                     , $('#' + hdnGuaranterAddressVillage).val()
+                     , ddlGuaranterAddressVillage)
+            }
+        });
+
+        $("#" + ddlGuaranterAddressVillage).on('change', function (event) {
+            var args = event.args;
+            if (args) {
+                var item = args.item;
+                $("#" + hdnGuaranterAddressVillage).val(item.value);
+            }
+        });
     });
 </script>
 
@@ -261,7 +261,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.CompanyId)
-    <div class="col-md-5">
+    <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>User Details</h4>
@@ -306,7 +306,7 @@
                 <div class="form-group">
                     <div class="col-md-10">
                         @Html.LabelFor(model => model.NomineeName, "Nominee Name", new { @class = "control-label" })
-                        @Html.TextAreaFor(model => model.NomineeName, new { @class = "form-control", @placeholder = "Enter Nominee Name" })
+                        @Html.TextBoxFor(model => model.NomineeName, new { @class = "form-control", @placeholder = "Enter Nominee Name" })
                         @Html.ValidationMessageFor(model => model.NomineeName)
                     </div>
                 </div>
@@ -320,329 +320,330 @@
                 <div class="form-group">
                     <div class="col-md-10">
                         @Html.LabelFor(model => model.NomineeRelationship, "Nominee Relationship", new { @class = "control-label" })
-                        @Html.TextAreaFor(model => model.NomineeRelationship, new { @class = "form-control", @placeholder = "Enter Nominee Relationship" })
+                        @Html.TextBoxFor(model => model.NomineeRelationship, new { @class = "form-control", @placeholder = "Enter Nominee Relationship" })
                         @Html.ValidationMessageFor(model => model.NomineeRelationship)
                     </div>
                 </div>
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.UserGroupId, "UserGroupId", new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownList("UserGroupId", String.Empty)
-                            @Html.ValidationMessageFor(model => model.UserGroupId)
-                        </div>
-                </div>
+                        @Html.LabelFor(model => model.UserGroupId, "UserGroupId", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("UserGroupId", String.Empty)
+                                @Html.ValidationMessageFor(model => model.UserGroupId)
+                            </div>
+                    </div>
                 *@
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.IsActive)
-                            @Html.ValidationMessageFor(model => model.IsActive)
-                        </div>
-                </div>
+                        @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IsActive)
+                                @Html.ValidationMessageFor(model => model.IsActive)
+                            </div>
+                    </div>
                 *@
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.Designation, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Designation)
-                            @Html.ValidationMessageFor(model => model.Designation)
-                        </div>
-                </div>
+                        @Html.LabelFor(model => model.Designation, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Designation)
+                                @Html.ValidationMessageFor(model => model.Designation)
+                            </div>
+                    </div>
 
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserType, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.UserType)
+                                @Html.ValidationMessageFor(model => model.UserType)
+                            </div>
+                    </div>
+                *@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Permanent Address</h4>
+            </div>
+            <div class="panel-body">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.UserType, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.UserType)
-                            @Html.ValidationMessageFor(model => model.UserType)
-                        </div>
-                </div>
-                *@
-            </div>
-        </div>
-    </div>
-<div class="col-md-5">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Communication Address</h4>
-        </div>
-        <div class="panel-body">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.Address1, "Address1", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.UserAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address Line 1" })
-                        @Html.ValidationMessageFor(model => model.UserAddress.Address1)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.Address2, "Address2", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.UserAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
-                        @Html.ValidationMessageFor(model => model.UserAddress.Address2)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.Place, "Place", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.UserAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
-                        @Html.ValidationMessageFor(model => model.UserAddress.Place)
-                </div>
-            </div>
-            <div class="form-group">
-
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.Post, "PO", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.UserAddress.Post, new { @class = "form-control", @placeholder = "Enter PO" })
-                        @Html.ValidationMessageFor(model => model.UserAddress.Post)
-                </div>
-            </div>   
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.CountryId, new { @class = "control-label" })
-                    <div id='ddlUserAddressCountry' class="form-control"></div>
-                    @Html.HiddenFor(model => model.UserAddress.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressCountry" })
-                    @Html.ValidationMessageFor(model => model.UserAddress.CountryId)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.StateId, new { @class = "control-label" })
-                    <div id='ddlUserAddressState' class="form-control"></div>
-                    @Html.HiddenFor(model => model.UserAddress.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressState" })
-                    @Html.ValidationMessageFor(model => model.UserAddress.StateId)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.DistrictId, new { @class = "control-label" })
-                    <div id='ddlUserAddressDistrict' class="form-control"></div>
-                    @Html.HiddenFor(model => model.UserAddress.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressDistrict" })
-                    @Html.ValidationMessageFor(model => model.UserAddress.DistrictId)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.TalukId, new { @class = "control-label" })
-                    <div id='ddlUserAddressTaluk' class="form-control"></div>
-                    @Html.HiddenFor(model => model.UserAddress.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressTaluk" })
-                    @Html.ValidationMessageFor(model => model.UserAddress.TalukId)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.UserAddress.VillageId, new { @class = "control-label" })
-                    <div id='ddlUserAddressVillage' class="form-control"></div>
-                    @Html.HiddenFor(model => model.UserAddress.VillageId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressVillage" })
-                    @Html.ValidationMessageFor(model => model.UserAddress.VillageId)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.FatherName, "Fathers Name", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.FatherName, new { @class = "form-control", @placeholder = "Enter Father's Name" })
-                        @Html.ValidationMessageFor(model => model.FatherName)
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.Contacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
-                        @Html.TextBoxFor(model => model.Contacts.Telephone1, new { @class = "form-control", @placeholder = "Enter Phone" })
-                        @Html.ValidationMessageFor(model => model.Contacts.Telephone1)
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-5">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Permanent Address</h4>
-        </div>
-        <div class="panel-body">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.Address1, "Address1", new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.Address1, "Address1", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.PermanentAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address Line 1" })
                         @Html.ValidationMessageFor(model => model.PermanentAddress.Address1)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.Address2, "Address2", new { @class = "control-label" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.Address2, "Address2", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.PermanentAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
                         @Html.ValidationMessageFor(model => model.PermanentAddress.Address2)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.Place, "Place", new { @class = "control-label" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.Place, "Place", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.PermanentAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
                         @Html.ValidationMessageFor(model => model.PermanentAddress.Place)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.Post, "PO", new { @class = "control-label" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.Post, "PO", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.PermanentAddress.Post, new { @class = "form-control", @placeholder = "Enter PO" })
                         @Html.ValidationMessageFor(model => model.PermanentAddress.Post)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.CountryId, new { @class = "control-label" })
-                    <div id='ddlPermanentAddressCountry' class="form-control"></div>
-                    @Html.HiddenFor(model => model.PermanentAddress.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressCountry" })
-                    @Html.ValidationMessageFor(model => model.PermanentAddress.CountryId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.CountryId, new { @class = "control-label" })
+                        <div id='ddlPermanentAddressCountry'></div>
+                        @Html.HiddenFor(model => model.PermanentAddress.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressCountry" })
+                        @Html.ValidationMessageFor(model => model.PermanentAddress.CountryId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.StateId, new { @class = "control-label" })
-                    <div id='ddlPermanentAddressState' class="form-control"></div>
-                    @Html.HiddenFor(model => model.PermanentAddress.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressState" })
-                    @Html.ValidationMessageFor(model => model.PermanentAddress.StateId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.StateId, new { @class = "control-label" })
+                        <div id='ddlPermanentAddressState'></div>
+                        @Html.HiddenFor(model => model.PermanentAddress.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressState" })
+                        @Html.ValidationMessageFor(model => model.PermanentAddress.StateId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.DistrictId, new { @class = "control-label" })
-                    <div id='ddlPermanentAddressDistrict' class="form-control"></div>
-                    @Html.HiddenFor(model => model.PermanentAddress.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressDistrict" })
-                    @Html.ValidationMessageFor(model => model.PermanentAddress.DistrictId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.DistrictId, new { @class = "control-label" })
+                        <div id='ddlPermanentAddressDistrict'></div>
+                        @Html.HiddenFor(model => model.PermanentAddress.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressDistrict" })
+                        @Html.ValidationMessageFor(model => model.PermanentAddress.DistrictId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.TalukId, new { @class = "control-label" })
-                    <div id='ddlPermanentAddressTaluk' class="form-control"></div>
-                    @Html.HiddenFor(model => model.PermanentAddress.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressTaluk" })
-                    @Html.ValidationMessageFor(model => model.PermanentAddress.TalukId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.TalukId, new { @class = "control-label" })
+                        <div id='ddlPermanentAddressTaluk'></div>
+                        @Html.HiddenFor(model => model.PermanentAddress.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressTaluk" })
+                        @Html.ValidationMessageFor(model => model.PermanentAddress.TalukId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentAddress.VillageId, new { @class = "control-label" })
-                    <div id='ddlPermanentAddressVillage' class="form-control"></div>
-                    @Html.HiddenFor(model => model.PermanentAddress.VillageId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressVillage" })
-                    @Html.ValidationMessageFor(model => model.PermanentAddress.VillageId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.VillageId, new { @class = "control-label" })
+                        <div id='ddlPermanentAddressVillage'></div>
+                        @Html.HiddenFor(model => model.PermanentAddress.VillageId, htmlAttributes: new { @class = "form-control", @ID = "hdnPermanentAddressVillage" })
+                        @Html.ValidationMessageFor(model => model.PermanentAddress.VillageId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.PermanentContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
                         @Html.TextBoxFor(model => model.PermanentContacts.Telephone1, new { @class = "form-control", @placeholder = "Enter Phone" })
                         @Html.ValidationMessageFor(model => model.PermanentContacts.Telephone1)
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col-md-5">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Guaranter Details</h4>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Communication Address</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.Address1, "Address1", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.UserAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address Line 1" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.Address1)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.Address2, "Address2", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.UserAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.Address2)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.Place, "Place", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.UserAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.Place)
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.Post, "PO", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.UserAddress.Post, new { @class = "form-control", @placeholder = "Enter PO" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.Post)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.CountryId, new { @class = "control-label" })
+                        <div id='ddlUserAddressCountry'></div>
+                        @Html.HiddenFor(model => model.UserAddress.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressCountry" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.CountryId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.StateId, new { @class = "control-label" })
+                        <div id='ddlUserAddressState'></div>
+                        @Html.HiddenFor(model => model.UserAddress.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressState" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.StateId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.DistrictId, new { @class = "control-label" })
+                        <div id='ddlUserAddressDistrict'></div>
+                        @Html.HiddenFor(model => model.UserAddress.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressDistrict" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.DistrictId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.TalukId, new { @class = "control-label" })
+                        <div id='ddlUserAddressTaluk'></div>
+                        @Html.HiddenFor(model => model.UserAddress.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressTaluk" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.TalukId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.VillageId, new { @class = "control-label" })
+                        <div id='ddlUserAddressVillage'></div>
+                        @Html.HiddenFor(model => model.UserAddress.VillageId, htmlAttributes: new { @class = "form-control", @ID = "hdnUserAddressVillage" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.VillageId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.FatherName, "Fathers Name", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.FatherName, new { @class = "form-control", @placeholder = "Enter Father's Name" })
+                        @Html.ValidationMessageFor(model => model.FatherName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.Contacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
+                        @Html.TextBoxFor(model => model.Contacts.Telephone1, new { @class = "form-control", @placeholder = "Enter Phone" })
+                        @Html.ValidationMessageFor(model => model.Contacts.Telephone1)
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterName, new { @class = "control-label" })
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Guaranter Details</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterName, new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.GuaranterName, new { @class = "form-control", @placeholder = "Enter Guaranter Name" })
                         @Html.ValidationMessageFor(model => model.GuaranterName)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.Address1, "Address", new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.Address1, "Address", new { @class = "control-label col-md-2" })
                         @Html.TextBoxFor(model => model.GuaranterAddress.Address1, new { @class = "form-control", @placeholder = "Enter Address" })
                         @Html.ValidationMessageFor(model => model.GuaranterAddress.Address1)
+                    </div>
                 </div>
-            </div>
-<div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.Address2, "Address2", new { @class = "control-label" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.Address2, "Address2", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.GuaranterAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
                         @Html.ValidationMessageFor(model => model.GuaranterAddress.Address2)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.Place, "Place", new { @class = "control-label" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.Place, "Place", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.GuaranterAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
                         @Html.ValidationMessageFor(model => model.GuaranterAddress.Place)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.Post, "PO", new { @class = "control-label" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.Post, "PO", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.GuaranterAddress.Post, new { @class = "form-control", @placeholder = "Enter PO" })
                         @Html.ValidationMessageFor(model => model.GuaranterAddress.Post)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.CountryId, new { @class = "control-label" })
-                    <div id='ddlGuaranterAddressCountry' class="form-control"></div>
-                    @Html.HiddenFor(model => model.GuaranterAddress.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressCountry" })
-                    @Html.ValidationMessageFor(model => model.GuaranterAddress.CountryId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.CountryId, new { @class = "control-label" })
+                        <div id='ddlGuaranterAddressCountry'></div>
+                        @Html.HiddenFor(model => model.GuaranterAddress.CountryId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressCountry" })
+                        @Html.ValidationMessageFor(model => model.GuaranterAddress.CountryId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.StateId, new { @class = "control-label" })
-                    <div id='ddlGuaranterAddressState' class="form-control"></div>
-                    @Html.HiddenFor(model => model.GuaranterAddress.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressState" })
-                    @Html.ValidationMessageFor(model => model.GuaranterAddress.StateId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.StateId, new { @class = "control-label" })
+                        <div id='ddlGuaranterAddressState'></div>
+                        @Html.HiddenFor(model => model.GuaranterAddress.StateId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressState" })
+                        @Html.ValidationMessageFor(model => model.GuaranterAddress.StateId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.DistrictId, new { @class = "control-label" })
-                    <div id='ddlGuaranterAddressDistrict' class="form-control"></div>
-                    @Html.HiddenFor(model => model.GuaranterAddress.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressDistrict" })
-                    @Html.ValidationMessageFor(model => model.GuaranterAddress.DistrictId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.DistrictId, new { @class = "control-label" })
+                        <div id='ddlGuaranterAddressDistrict'></div>
+                        @Html.HiddenFor(model => model.GuaranterAddress.DistrictId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressDistrict" })
+                        @Html.ValidationMessageFor(model => model.GuaranterAddress.DistrictId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.TalukId, new { @class = "control-label" })
-                    <div id='ddlGuaranterAddressTaluk' class="form-control"></div>
-                    @Html.HiddenFor(model => model.GuaranterAddress.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressTaluk" })
-                    @Html.ValidationMessageFor(model => model.GuaranterAddress.TalukId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.TalukId, new { @class = "control-label" })
+                        <div id='ddlGuaranterAddressTaluk'></div>
+                        @Html.HiddenFor(model => model.GuaranterAddress.TalukId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressTaluk" })
+                        @Html.ValidationMessageFor(model => model.GuaranterAddress.TalukId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterAddress.VillageId, new { @class = "control-label" })
-                    <div id='ddlGuaranterAddressVillage' class="form-control"></div>
-                    @Html.HiddenFor(model => model.GuaranterAddress.VillageId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressVillage" })
-                    @Html.ValidationMessageFor(model => model.GuaranterAddress.VillageId)
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.VillageId, new { @class = "control-label" })
+                        <div id='ddlGuaranterAddressVillage'></div>
+                        @Html.HiddenFor(model => model.GuaranterAddress.VillageId, htmlAttributes: new { @class = "form-control", @ID = "hdnGuaranterAddressVillage" })
+                        @Html.ValidationMessageFor(model => model.GuaranterAddress.VillageId)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.GuaranterContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterContacts.Telephone1, "Phone", new { @class = "control-label col-md-2" })
                         @Html.TextBoxFor(model => model.GuaranterContacts.Telephone1, new { @class = "form-control", @placeholder = "Enter Phone" })
                         @Html.ValidationMessageFor(model => model.GuaranterContacts.Telephone1)
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.LabelFor(model => model.Occupation, "Occupation", new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.Occupation, "Occupation", new { @class = "control-label col-md-2" })
                         @Html.TextBoxFor(model => model.Occupation, new { @class = "form-control", @placeholder = "Enter Occupation" })
                         @Html.ValidationMessageFor(model => model.Occupation)
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col-md-5">
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+    <div class="col-md-5">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
         </div>
     </div>
-</div>
 }
 
 <div>

@@ -33,7 +33,7 @@ namespace LoanManagementSystem.Controllers.Settings
         }
 
         [HttpPost]
-        public ActionResult SaveCountry([Bind(Include = "CountryName, CountryAbbr")] sdtoCountry country)
+        public ActionResult SaveCountry(sdtoCountry country)
         {
             sdtoUser userDetails = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser);
             if (userDetails == null)

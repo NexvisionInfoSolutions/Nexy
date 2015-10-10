@@ -13,6 +13,7 @@ namespace LoanManagementSystem.Models
     [NotMapped]
     public class sdtoViewAccCashReceiptPaymentDetails
     {
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a account")]
         [Display(Name = "Account Head")]
         public long AccountHeadId { get; set; }
 

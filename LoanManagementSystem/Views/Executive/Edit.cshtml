@@ -153,17 +153,6 @@
                     @Html.ValidationMessageFor(model => model.Designation)
                 </div>
             </div>
-        </div>
-        <div class="col-md-5">
-
-            @*<div class="form-group">
-                    @Html.LabelFor(model => model.UserType, new { @class = "control-label" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.UserType)
-                        @Html.ValidationMessageFor(model => model.UserType)
-                    </div>
-                </div>*@
-
             <div class="form-group">
 
                 <div class="col-md-10">
@@ -196,6 +185,8 @@
                     @Html.ValidationMessageFor(model => model.UserAddress.Address2)
                 </div>
             </div>
+        </div>
+        <div class="col-md-5">
             <div class="form-group">
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.UserAddress.Place, "Place", new { @class = "control-label" })

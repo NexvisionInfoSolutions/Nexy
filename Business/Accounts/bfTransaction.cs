@@ -718,44 +718,48 @@ namespace Business.Reports
 
         public bool UpdateDayBookBalance(long AccountId, long FinancialYearId, DateTime transactionDate, decimal Amount, TransactionType transType)
         {
-            var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == AccountId && x.IsDeleted == false && x.FinancialYearId == FinancialYearId).FirstOrDefault(); //x.Date.Date == transactionDate.Date &&
-            if (dayBookEntry == null)
+            if (AccountId > 0)
             {
-                dayBookEntry = new sdtoDayBook() { AccountHeadId = AccountId, CreatedBy = CurrentUser.UserID, CreatedOn = DateTime.Now, TransDate = transactionDate, FinancialYearId = FinancialYearId };
-                AppDb.DayBook.Add(dayBookEntry);
-                AppDb.SaveChanges();
-            }
-
-            if (dayBookEntry != null)
-            {
-                switch (transType)
+                var dayBookEntry = AppDb.DayBook.Where(x => x.AccountHeadId == AccountId && x.IsDeleted == false && x.FinancialYearId == FinancialYearId).FirstOrDefault(); //x.Date.Date == transactionDate.Date &&
+                if (dayBookEntry == null)
                 {
-                    case TransactionType.CashPayment:
-                        dayBookEntry.Payment += Amount;
-                        break;
-                    case TransactionType.CashReceipt:
-                        dayBookEntry.Receipt += Amount;
-                        break;
-                    case TransactionType.BankDeposit:
-                        break;
-                    case TransactionType.BankWithdrawal:
-                        break;
-                    case TransactionType.DepositEntry:
-                        dayBookEntry.Payment += Amount;
-                        break;
-                    case TransactionType.DepositWithdrawal:
-                        dayBookEntry.Receipt += Amount;
-                        break;
-                    case TransactionType.LoanEntry:
-                        dayBookEntry.Receipt += Amount;
-                        break;
-                    case TransactionType.LoanRepayment:
-                        dayBookEntry.Payment += Amount;
-                        break;
+                    dayBookEntry = new sdtoDayBook() { AccountHeadId = AccountId, CreatedBy = CurrentUser.UserID, CreatedOn = DateTime.Now, TransDate = transactionDate, FinancialYearId = FinancialYearId };
+                    AppDb.DayBook.Add(dayBookEntry);
+                    AppDb.SaveChanges();
                 }
-                dayBookEntry.ClosingBalance += Amount;
-                AppDb.Entry(dayBookEntry).State = EntityState.Modified;
-                return true;
+
+                if (dayBookEntry != null)
+                {
+                    switch (transType)
+                    {
+                        case TransactionType.CashPayment:
+                            dayBookEntry.Payment += Amount;
+                            break;
+                        case TransactionType.CashReceipt:
+                            dayBookEntry.Receipt += Amount;
+                            break;
+                        case TransactionType.BankDeposit:
+                            break;
+                        case TransactionType.BankWithdrawal:
+                            break;
+                        case TransactionType.DepositEntry:
+                            dayBookEntry.Payment += Amount;
+                            break;
+                        case TransactionType.DepositWithdrawal:
+                            dayBookEntry.Receipt += Amount;
+                            break;
+                        case TransactionType.LoanEntry:
+                            dayBookEntry.Receipt += Amount;
+                            break;
+                        case TransactionType.LoanRepayment:
+                            dayBookEntry.Payment += Amount;
+                            break;
+                    }
+                    dayBookEntry.ClosingBalance += Amount;
+                    AppDb.Entry(dayBookEntry).State = EntityState.Modified;
+                    return true;
+                }
+                else return false;
             }
             else
                 return false;

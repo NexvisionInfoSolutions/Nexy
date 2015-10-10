@@ -41,8 +41,9 @@
                 hdnLastRepaymentDate = txtRepaymentDate;
             var hdnPreviousPaymentDueAmount = parseFloat($('#hdnPreviousPaymentDueAmount').val());
             var diffDays = (txtRepaymentDate - hdnLastRepaymentDate) / (3600 * 1000 * 24);
-            //if (diffDays == 0)
-                //diffDays = 1;
+            diffDays = diffDays == 0 ? 1 : diffDays;
+            if (diffDays < 0)
+                diffDays = 0;
             var InterestAmount = (pendingPrincipal * (hdnInterestRate / 100) * diffDays) / 365;
             var InstallmentAmount = @ViewBag.InstallmentAmount;
             var repayAmount = (InstallmentAmount * diffDays) + InterestAmount + hdnPreviousPaymentDueAmount;
@@ -68,7 +69,7 @@
         @Html.HiddenFor(x => x.PrincipalAmount)
         @Html.HiddenFor(x => x.InterestRate, new { @ID = "hdnInterestRate" })
         @Html.HiddenFor(x => x.PendingInstallments)
-        @Html.HiddenFor(x => x.RepaymentDate, new { @ID = "hdnLastRepaymentDate" })
+        @Html.Hidden("ddRepaymentDate", Model.RepaymentDate, new { @ID = "hdnLastRepaymentDate" })
         @Html.HiddenFor(x => x.PreviousPaymentDueAmount, new { @ID = "hdnPreviousPaymentDueAmount" })
 
         <div class="form-group">

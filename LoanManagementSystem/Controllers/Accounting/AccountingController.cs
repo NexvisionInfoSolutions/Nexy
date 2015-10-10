@@ -543,6 +543,7 @@ namespace LoanManagementSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
                     bfTransaction objTransaction = new bfTransaction(db);
                     if (objCashReceiptPayment.HeaderId > 0)
                         objTransaction.CancelJournalAccountHeader(objCashReceiptPayment.HeaderId);

@@ -1,5 +1,6 @@
 ﻿using Business.Base;
 using Data.Models.Accounts;
+using LoanManagementSystem.Models.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,7 +24,7 @@ namespace Business.Reports
             {
                 AppDb.Database.Connection.Open();
                 SqlParameter pm = new SqlParameter("@vFilterValue", SqlDbType.VarChar);
-                pm.Value = FilterValue;                
+                pm.Value = FilterValue;
                 DbRawSqlQuery<sdtoBankDepositWithdrawal> result = AppDb.Database.SqlQuery<sdtoBankDepositWithdrawal>("usp_GetBankDepositWithdrawal @vFilterValue, @vCompanyId",
                     pm,
                     new SqlParameter("@vCompanyId", CompanyId));
@@ -169,6 +170,32 @@ namespace Business.Reports
                 //pm.TypeName = "dbo.RptParameter";
                 DbRawSqlQuery<sdtoLedgerReport> result = AppDb.Database.SqlQuery<sdtoLedgerReport>("sp_Acc_rptLedger @OperationId,@FromDate,@ToDate,@AccountsIds",
                    pm, fromdate, todate, accountids);
+
+                if (result != null)
+                    rptCollection = result.ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                AppDb.Database.Connection.Close();
+            }
+            return rptCollection;
+        }
+
+        public List<sdtoViewLoanDefaulterDetails> GetLoanDefaulters(long Interval)
+        {
+            List<sdtoViewLoanDefaulterDetails> rptCollection = new List<sdtoViewLoanDefaulterDetails>();
+            try
+            {
+                AppDb.Database.Connection.Open();
+                SqlParameter pm = new SqlParameter("@vDefaultInterval", SqlDbType.Int);
+                pm.Value = Interval;
+                DbRawSqlQuery<sdtoViewLoanDefaulterDetails> result = AppDb.Database.SqlQuery<sdtoViewLoanDefaulterDetails>("usp_GetLoanDefaulters @vDefaultInterval, @vSessionKey",
+                    pm,
+                    new SqlParameter("@vSessionKey", CurrentUser.UserSession.SessionKey));
 
                 if (result != null)
                     rptCollection = result.ToList();

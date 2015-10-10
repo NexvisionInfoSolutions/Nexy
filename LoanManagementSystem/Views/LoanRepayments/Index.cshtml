@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Loan Repayment List";
-    
+
 }
 
 <section class="invoice">
@@ -19,7 +19,7 @@
     <div class="row invoice-info"></div>
     <div class="form-group">
         <div class="col-md-10">
-            @Html.DropDownList("LoanId", (SelectList)ViewBag.LoanList, htmlAttributes: new {  @ID = "ddlLoan", onchange = "document.location.href = '/LoanRepayments/Index?LoanId=' + this.options[this.selectedIndex].value;" })
+            @Html.DropDownList("LoanId", (SelectList)ViewBag.LoanList, htmlAttributes: new { @ID = "ddlLoan", onchange = "document.location.href = '/LoanRepayments/Index?LoanId=' + this.options[this.selectedIndex].value;" })
         </div>
     </div>
     @{
@@ -94,6 +94,8 @@
                     @Html.ActionLink("Add a New Loan", "Create", "Loan")
                     |
                     @Html.ActionLink("Back to List of Loans", "Index", "Loan")
+                    |
+                    @Html.ActionLink("Cancel Repayments", "CancelLoanRepayments", "LoanRepayments", new { LoanId = Loan.LoanId }, new { })
                 </div>
             </div>
         }
@@ -107,9 +109,9 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-<th>
-@Html.DisplayNameFor(model => model.RepaymentDate)
-</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RepaymentDate)
+                            </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.RepaymentCode)
                             </th>
@@ -142,9 +144,9 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-<td>
-@Html.DisplayFor(modelItem => item.RepaymentDate)
-</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RepaymentDate)
+                                </td>
 
                                 <td>
                                     @Html.DisplayFor(modelItem => item.RepaymentCode)

@@ -15,7 +15,7 @@ using Data.Models.Accounts;
 namespace LoanManagementSystem.Controllers.Loan
 {
     [Authorize()]
-    public class LoanRepaymentsController : Controller
+    public class LoanRepaymentsController : ControllerBase
     {
         private LoanDBContext db = new LoanDBContext();
 
@@ -106,25 +106,31 @@ namespace LoanManagementSystem.Controllers.Loan
         {
             List<sdtoLoanRepayment> RepaymentCancelList = new List<sdtoLoanRepayment>();
             string[] selectionRepayments = Repayments.InputSelection.Trim(" []".ToCharArray()).Split(',');
-            for (int iLoanRepaymentId = 0; iLoanRepaymentId < selectionRepayments.Length; iLoanRepaymentId++)
+            if (selectionRepayments != null && selectionRepayments.Length > 0)
             {
-                if (selectionRepayments[iLoanRepaymentId].Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                for (int iLoanRepaymentId = 0; iLoanRepaymentId < selectionRepayments.Length; iLoanRepaymentId++)
                 {
-                    var repayment = db.sdtoLoanRepayments.Find(iLoanRepaymentId);
-                    RepaymentCancelList.Add(repayment);
+                    if (selectionRepayments[iLoanRepaymentId].Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var repayment = db.sdtoLoanRepayments.Find(iLoanRepaymentId);
+                        RepaymentCancelList.Add(repayment);
+                    }
                 }
+
+                bfTransaction objTransaction = new bfTransaction(db);
+                foreach (var repayment in RepaymentCancelList)
+                {
+                    repayment.Status = RepaymentStatus.Cancelled;
+                    db.Entry(repayment).State = EntityState.Modified;
+
+                    objTransaction.CancelPostedLoanRepayment(repayment);
+                }
+                db.SaveChanges();
+
+                SetDisplayMessage("Loan repayments are cancelled successfully");
+
+                return RedirectToAction("Index", "LoanRepayments", new { LoanId = Repayments.LoanId });
             }
-
-            bfTransaction objTransaction = new bfTransaction(db);
-            foreach (var repayment in RepaymentCancelList)
-            {
-                repayment.Status = RepaymentStatus.Cancelled;
-                db.Entry(repayment).State = EntityState.Modified;
-
-                objTransaction.CancelPostedLoanRepayment(repayment);
-            }
-            db.SaveChanges();
-
             return View(Repayments);
         }
 
@@ -177,15 +183,20 @@ namespace LoanManagementSystem.Controllers.Loan
                 var loanRepayment = db.sdtoLoanRepayments.Where(x => x.LoanId == LoanId && x.IsDeleted == false && x.Status != RepaymentStatus.Cancelled).OrderByDescending(x => x.LoanRepaymentId).FirstOrDefault();
                 var repaymentInterest = loanInterest;
                 var days = (DateTime.Now.Date - loandetails.RepaymentStartDate.Value).Days;
-                //days = days == 0 ? 1 : days;
+                days = days == 0 ? 1 : days;
+                if (days < 0)
+                    days = 0;
                 var repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100) * days) / 365;
                 var lastRepaymentDate = loandetails.RepaymentStartDate.Value;
 
                 if (loanRepayment != null && loanRepayment.LoanRepaymentId > 0)
                 {
-                    lastRepaymentDate = loanRepayment.RepaymentDate.Value;
+                    if (loanRepayment.RepaymentDate != null)
+                        lastRepaymentDate = loanRepayment.RepaymentDate.Value;
                     days = (DateTime.Now.Date - lastRepaymentDate).Days;
-                    //days = days == 0 ? 1 : days;
+                    days = days == 0 ? 1 : days;
+                    if (days < 0)
+                        days = 0;
 
                     loanPendingAmt = loanRepayment.PendingPrincipalAmount;
                     loanPendingInstallments = loanRepayment.PendingInstallments;
@@ -193,9 +204,9 @@ namespace LoanManagementSystem.Controllers.Loan
 
                     repaymentInterestAmt = (loanPendingAmt * Convert.ToDecimal(repaymentInterest / 100) * days) / 365;
                     repay.RepaymentCode = loanRepayment.RepaymentCode;
-                    repay.RepaymentDate = lastRepaymentDate;
                 }
 
+                repay.RepaymentDate = lastRepaymentDate.AddDays(1);
                 repay.InterestRate = repaymentInterest;
                 repay.InterestAmount = Math.Round(repaymentInterestAmt, 2);
                 repay.PendingPrincipalAmount = loanPendingAmt;
@@ -242,9 +253,12 @@ namespace LoanManagementSystem.Controllers.Loan
 
                     if (loanRepayment != null && loanRepayment.LoanRepaymentId > 0)
                     {
-                        lastRepaymentDate = loanRepayment.RepaymentDate.Value;
+                        if (loanRepayment.RepaymentDate != null)
+                            lastRepaymentDate = loanRepayment.RepaymentDate.Value;
                         days = (sdtoLoanRepayment.RepaymentDate.Value - lastRepaymentDate).Days;
-                        //days = days == 0 ? 1 : days;
+                        days = days == 0 ? 1 : days;
+                        if (days < 0)
+                            days = 0;
 
                         loanPendingAmt = loanRepayment.PendingPrincipalAmount;
                         loanPendingInstallments = loanRepayment.PendingInstallments;
@@ -387,6 +401,68 @@ namespace LoanManagementSystem.Controllers.Loan
             db.sdtoLoanRepayments.Remove(sdtoLoanRepayment);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SmsLoanDefaulters(int? LoanDefaultDays)
+        {
+            sdtoViewLoanDefaulters defaulters = new sdtoViewLoanDefaulters();
+
+            if (LoanDefaultDays == null)
+                LoanDefaultDays = 3;
+
+            bfReport objReport = new bfReport(db);
+            defaulters.Defaulters = objReport.GetLoanDefaulters(LoanDefaultDays.Value);
+            defaulters.LoanDefaultInterval = LoanDefaultDays.Value;
+            return View(defaulters);
+        }
+
+        [HttpPost]
+        public ActionResult SmsLoanDefaulters(sdtoViewLoanDefaulters Defaulters)
+        {
+            string senderID = "Pallikunnel";
+            string baseMessage = "Please pay the loan due amount for the loan {0} at the earliest";
+            bfReport objReport = new bfReport(db);
+            List<sdtoViewLoanDefaulterDetails> DefaulterList = objReport.GetLoanDefaulters(Defaulters.LoanDefaultInterval);
+
+            string[] selectionLoans = Defaulters.InputSelection.Trim(" []".ToCharArray()).Split(',');
+            if (selectionLoans != null && selectionLoans.Length > 0)
+            {
+                string apiKey = "6209qu7258jl67i8on8";
+                WebClient wc = null;
+                for (int iLoanId = 0; iLoanId < selectionLoans.Length; iLoanId++)
+                {
+                    if (selectionLoans[iLoanId].Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var defaulter = DefaulterList.Find(x => x.LoanId == iLoanId);
+
+                        wc = new WebClient();
+                        wc.DownloadStringCompleted += HttpsCompleted;
+                        wc.DownloadString(new Uri("http://sms.iconinfoware.com/api/web2sms.php?workingkey=" + apiKey + "&to=" + defaulter.Mobile1.Trim() + "&sender=" + senderID + "&message=" + string.Format(baseMessage, defaulter.LoanCode).Trim()));
+                    }
+                }
+
+                SetDisplayMessage("Sms notification is send to the selected recipients");
+                RedirectToAction("Index");
+            }
+            return View(Defaulters);
+        }
+
+        private void HttpsCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                string sentStatus = e.Result.ToString();
+                bool isSent = true;
+
+                if (sentStatus.StartsWith("Wrong") || sentStatus.StartsWith("Sorry"))
+                    isSent = false;
+
+                //UpdateSendStatus(isSent, sentStatus, sentStatus);
+            }
+            else
+            {
+                //MessageBox.Show("Send Failed ! ");
+            }
         }
 
         protected override void Dispose(bool disposing)
