@@ -58,7 +58,7 @@ namespace LoanManagementSystem.Controllers.Settings
         public ActionResult Create()
         {
             sdtoAccountBook objAccBook = new sdtoAccountBook();
-            sdtoSettings settings = db.GeneralSettings.Where(x => x.CompanyId == 1).FirstOrDefault();
+            sdtoSettings settings = db.GeneralSettings.FirstOrDefault();
             ViewBag.AccountBookTypeId = new SelectList(db.AccountBookTypes, "AccountBookTypeId", "AccountBookType");
             ViewBag.AccountHeadId = new SelectList(db.AccountHeads, "AccountHeadId", "AccountCode");
             ViewBag.BankInterest = settings.BankInterest;

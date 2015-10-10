@@ -20,6 +20,9 @@ namespace LoanManagementSystem.Models
         [MaxLength(150)]
         public string Address2 { get; set; }
 
+        [MaxLength(150)]
+        public string LandMark { get; set; }
+
         [MaxLength(100)]
         public string City { get; set; }
 

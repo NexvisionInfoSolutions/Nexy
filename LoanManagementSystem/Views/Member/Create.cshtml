@@ -384,6 +384,13 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-10">
+                        @Html.LabelFor(model => model.PermanentAddress.LandMark, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.PermanentAddress.LandMark, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
+                        @Html.ValidationMessageFor(model => model.PermanentAddress.LandMark)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
                         @Html.LabelFor(model => model.PermanentAddress.Place, "Place", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.PermanentAddress.Place, new { @class = "form-control", @placeholder = "Enter Place" })
                         @Html.ValidationMessageFor(model => model.PermanentAddress.Place)
@@ -464,6 +471,13 @@
                         @Html.LabelFor(model => model.UserAddress.Address2, "Address2", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.UserAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
                         @Html.ValidationMessageFor(model => model.UserAddress.Address2)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.UserAddress.LandMark, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.UserAddress.LandMark, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
+                        @Html.ValidationMessageFor(model => model.UserAddress.LandMark)
                     </div>
                 </div>
                 <div class="form-group">
@@ -564,6 +578,13 @@
                         @Html.LabelFor(model => model.GuaranterAddress.Address2, "Address2", new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.GuaranterAddress.Address2, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
                         @Html.ValidationMessageFor(model => model.GuaranterAddress.Address2)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.GuaranterAddress.LandMark, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.GuaranterAddress.LandMark, new { @class = "form-control", @placeholder = "Enter Address Line 2" })
+                        @Html.ValidationMessageFor(model => model.GuaranterAddress.LandMark)
                     </div>
                 </div>
                 <div class="form-group">

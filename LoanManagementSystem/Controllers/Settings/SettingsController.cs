@@ -451,7 +451,8 @@ namespace LoanManagementSystem.Controllers.Settings
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            sdtoSettings sdtoSettings = db.GeneralSettings.Find(id);
+            sdtoSettings sdtoSettings = db.GeneralSettings.FirstOrDefault();
+            id = sdtoSettings.SettingsId;
             ViewBag.CompanyList = new SelectList(db.Companies, "CompanyId", "CompanyName");
 
             var assetSchedule = db.Schedules.Where(x => x.ShortName == "AS").FirstOrDefault();

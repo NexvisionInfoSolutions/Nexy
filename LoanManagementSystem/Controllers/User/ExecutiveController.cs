@@ -102,6 +102,11 @@ namespace LoanManagementSystem.Controllers
                     sdtouser.UserAddress.VillageId = sdtouser.UserAddress.VillageId == 0 ? null : sdtouser.UserAddress.VillageId;
                 }
 
+                sdtouser.GuaranterAddress = null;
+                sdtouser.PermanentAddress = null;
+                sdtouser.PermanentAddressId = null;
+                sdtouser.GuaranterAddressId = null;
+
                 sdtouser.Contacts = db.Contacts.Add(sdtouser.Contacts);
                 sdtouser.UserAddress = db.Address.Add(sdtouser.UserAddress);
                 sdtouser.UserType = UserType.Executive;
@@ -161,6 +166,21 @@ namespace LoanManagementSystem.Controllers
                 {
                     sdtouser.Contacts.ModifiedOn = DateTime.Now;
                 }
+
+                if (sdtouser.UserAddress != null)
+                {
+                    sdtouser.UserAddress.CountryId = sdtouser.UserAddress.CountryId == 0 ? null : sdtouser.UserAddress.CountryId;
+                    sdtouser.UserAddress.StateId = sdtouser.UserAddress.StateId == 0 ? null : sdtouser.UserAddress.StateId;
+                    sdtouser.UserAddress.DistrictId = sdtouser.UserAddress.DistrictId == 0 ? null : sdtouser.UserAddress.DistrictId;
+                    sdtouser.UserAddress.TalukId = sdtouser.UserAddress.TalukId == 0 ? null : sdtouser.UserAddress.TalukId;
+                    sdtouser.UserAddress.VillageId = sdtouser.UserAddress.VillageId == 0 ? null : sdtouser.UserAddress.VillageId;
+                }
+
+                sdtouser.GuaranterAddress = null;
+                sdtouser.PermanentAddress = null;
+                sdtouser.PermanentAddressId = null;
+                sdtouser.GuaranterAddressId = null;
+
                 db.User.Attach(sdtouser);
                 db.Entry(sdtouser).State = EntityState.Modified;
                 db.Entry(sdtouser.UserAddress).State = EntityState.Modified;

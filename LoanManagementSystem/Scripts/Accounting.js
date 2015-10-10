@@ -19,11 +19,27 @@ function LoanAccountDetails(bookIdVal) {
         type: 'GET',
         //data: { someValue: value },
         success: function (result) {
+            var receiptPrefix = "";
+            if (result.ReceiptVoucherPrefix != null)
+                receiptPrefix = result.ReceiptVoucherPrefix;
+
+            var receiptSuffix = "";
+            if (result.ReceiptVoucherSuffix != null)
+                receiptSuffix = result.ReceiptVoucherSuffix;
+
+            var PaymentVoucherPrefix = "";
+            if (result.PaymentVoucherPrefix != null)
+                PaymentVoucherPrefix = result.PaymentVoucherPrefix;
+
+            var PaymentVoucherSuffix = "";
+            if (result.PaymentVoucherSuffix != null)
+                PaymentVoucherSuffix = result.PaymentVoucherSuffix;
+
             $('#lblBookBalance').html(result.ClosingBalance)
             if (TransactionType == "DEBIT")
-                $('#txtVoucherNo').html(result.ReceiptVoucherPrefix + result.VoucherNo + result.ReceiptVoucherSuffix)
+                $('#txtVoucherNo').html(receiptPrefix + result.VoucherNo + receiptSuffix)
             else
-                $('#txtVoucherNo').html(result.PaymentVoucherPrefix + result.VoucherNo + result.PaymentVoucherSuffix)
+                $('#txtVoucherNo').html(PaymentVoucherPrefix + result.VoucherNo + PaymentVoucherSuffix)
         }
     });
 
@@ -34,4 +50,6 @@ $(document).ready(function () {
     $('#ddlAccountBookId').change(function () {
         LoanAccountDetails($(this).val());
     });
+
+    LoanAccountDetails($('#ddlAccountBookId').val());
 });

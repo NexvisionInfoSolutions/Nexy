@@ -155,6 +155,41 @@ namespace LoanManagementSystem.Controllers
                         user.Contacts = db.Contacts.Add(user.Contacts);
                     user.CreatedOn = DateTime.Now;
                     user.IsActive = true;
+
+                    user.GuaranterAddressId = null;
+                    user.PermanentAddressId = null;
+                    user.UserAddressId = null;
+                    user.UserAddress = null;
+                    user.PermanentAddress = null;
+                    user.GuaranterAddress = null;
+
+                    if (user.UserAddress != null)
+                    {
+                        user.UserAddress.CountryId = user.UserAddress.CountryId == 0 ? null : user.UserAddress.CountryId;
+                        user.UserAddress.StateId = user.UserAddress.StateId == 0 ? null : user.UserAddress.StateId;
+                        user.UserAddress.DistrictId = user.UserAddress.DistrictId == 0 ? null : user.UserAddress.DistrictId;
+                        user.UserAddress.TalukId = user.UserAddress.TalukId == 0 ? null : user.UserAddress.TalukId;
+                        user.UserAddress.VillageId = user.UserAddress.VillageId == 0 ? null : user.UserAddress.VillageId;
+                    }
+
+                    if (user.PermanentAddress != null)
+                    {
+                        user.PermanentAddress.CountryId = user.PermanentAddress.CountryId == 0 ? null : user.PermanentAddress.CountryId;
+                        user.PermanentAddress.StateId = user.PermanentAddress.StateId == 0 ? null : user.PermanentAddress.StateId;
+                        user.PermanentAddress.DistrictId = user.PermanentAddress.DistrictId == 0 ? null : user.PermanentAddress.DistrictId;
+                        user.PermanentAddress.TalukId = user.PermanentAddress.TalukId == 0 ? null : user.PermanentAddress.TalukId;
+                        user.PermanentAddress.VillageId = user.PermanentAddress.VillageId == 0 ? null : user.PermanentAddress.VillageId;
+                    }
+
+                    if (user.GuaranterAddress != null)
+                    {
+                        user.GuaranterAddress.CountryId = user.GuaranterAddress.CountryId == 0 ? null : user.GuaranterAddress.CountryId;
+                        user.GuaranterAddress.StateId = user.GuaranterAddress.StateId == 0 ? null : user.GuaranterAddress.StateId;
+                        user.GuaranterAddress.DistrictId = user.GuaranterAddress.DistrictId == 0 ? null : user.GuaranterAddress.DistrictId;
+                        user.GuaranterAddress.TalukId = user.GuaranterAddress.TalukId == 0 ? null : user.GuaranterAddress.TalukId;
+                        user.GuaranterAddress.VillageId = user.GuaranterAddress.VillageId == 0 ? null : user.GuaranterAddress.VillageId;
+                    }
+
                     db.User.Add(user);
                     db.SaveChanges();
                     if (ProfileImage != null)
@@ -218,6 +253,41 @@ namespace LoanManagementSystem.Controllers
                 user.UserType = UserType.User;
                 user.ModifiedBy = CurrentUserSession.UserId;
                 user.ModifiedOn = DateTime.Now;
+
+                user.GuaranterAddressId = null;
+                user.PermanentAddressId = null;
+                user.UserAddressId = null;
+                user.UserAddress = null;
+                user.PermanentAddress = null;
+                user.GuaranterAddress = null;
+
+                if (user.UserAddress != null)
+                {
+                    user.UserAddress.CountryId = user.UserAddress.CountryId == 0 ? null : user.UserAddress.CountryId;
+                    user.UserAddress.StateId = user.UserAddress.StateId == 0 ? null : user.UserAddress.StateId;
+                    user.UserAddress.DistrictId = user.UserAddress.DistrictId == 0 ? null : user.UserAddress.DistrictId;
+                    user.UserAddress.TalukId = user.UserAddress.TalukId == 0 ? null : user.UserAddress.TalukId;
+                    user.UserAddress.VillageId = user.UserAddress.VillageId == 0 ? null : user.UserAddress.VillageId;
+                }
+
+                if (user.PermanentAddress != null)
+                {
+                    user.PermanentAddress.CountryId = user.PermanentAddress.CountryId == 0 ? null : user.PermanentAddress.CountryId;
+                    user.PermanentAddress.StateId = user.PermanentAddress.StateId == 0 ? null : user.PermanentAddress.StateId;
+                    user.PermanentAddress.DistrictId = user.PermanentAddress.DistrictId == 0 ? null : user.PermanentAddress.DistrictId;
+                    user.PermanentAddress.TalukId = user.PermanentAddress.TalukId == 0 ? null : user.PermanentAddress.TalukId;
+                    user.PermanentAddress.VillageId = user.PermanentAddress.VillageId == 0 ? null : user.PermanentAddress.VillageId;
+                }
+
+                if (user.GuaranterAddress != null)
+                {
+                    user.GuaranterAddress.CountryId = user.GuaranterAddress.CountryId == 0 ? null : user.GuaranterAddress.CountryId;
+                    user.GuaranterAddress.StateId = user.GuaranterAddress.StateId == 0 ? null : user.GuaranterAddress.StateId;
+                    user.GuaranterAddress.DistrictId = user.GuaranterAddress.DistrictId == 0 ? null : user.GuaranterAddress.DistrictId;
+                    user.GuaranterAddress.TalukId = user.GuaranterAddress.TalukId == 0 ? null : user.GuaranterAddress.TalukId;
+                    user.GuaranterAddress.VillageId = user.GuaranterAddress.VillageId == 0 ? null : user.GuaranterAddress.VillageId;
+                }
+
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
 

@@ -99,7 +99,7 @@ namespace LoanManagementSystem.Controllers
             ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", 0);
             ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
 
-            sdtoSettings settings = db.GeneralSettings.Where(x => x.SettingsId == 1).FirstOrDefault();
+            sdtoSettings settings = db.GeneralSettings.FirstOrDefault();
             if (settings == null || settings.AssetScheduleId == null)
             {
                 TempData["ShowHeaderInfo"] = true;
@@ -152,6 +152,7 @@ namespace LoanManagementSystem.Controllers
                 else
                 {
                     sdtouser.UserType = UserType.Member;
+                    sdtouser.IsActive = true;                    
                     if (sdtouser.UserAddress != null)
                     {
                         sdtouser.UserAddress.CreatedOn = DateTime.Now;
@@ -293,9 +294,9 @@ namespace LoanManagementSystem.Controllers
             ViewBag.UserGroupId = new SelectList(db.Usergroup, "UserGroupId", "Name", sdtouser.UserGroupId);
             var countries = db.Countries.ToList();
             countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
-            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.UserAddress.CountryId);
-            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.GuaranterAddress.CountryId);
-            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.PermanentAddress.CountryId);
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.UserAddress != null ? sdtouser.UserAddress.CountryId : 0);
+            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.GuaranterAddress == null ? 0 : sdtouser.GuaranterAddress.CountryId);
+            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.PermanentAddress == null ? 0 : sdtouser.PermanentAddress.CountryId);
             ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View(sdtouser);
         }
@@ -336,6 +337,7 @@ namespace LoanManagementSystem.Controllers
                 if (sdtouser.Contacts != null)
                 {
                     sdtouser.Contacts.ModifiedOn = DateTime.Now;
+                    sdtouser.Contacts.ContactId = sdtouser.UserContactId == null ? 0 : sdtouser.UserContactId.Value;
                 }
                 if (sdtouser.PermanentAddress != null)
                 {
@@ -345,6 +347,7 @@ namespace LoanManagementSystem.Controllers
                 if (sdtouser.PermanentContacts != null)
                 {
                     sdtouser.PermanentContacts.ModifiedOn = DateTime.Now;
+                    sdtouser.PermanentContacts.ContactId = sdtouser.PermanentContactId == null ? 0 : sdtouser.PermanentContactId.Value;
                 }
                 if (sdtouser.GuaranterAddress != null)
                 {
@@ -354,6 +357,7 @@ namespace LoanManagementSystem.Controllers
                 if (sdtouser.GuaranterContacts != null)
                 {
                     sdtouser.GuaranterContacts.ModifiedOn = DateTime.Now;
+                    sdtouser.GuaranterContacts.ContactId = sdtouser.GuaranterContactId == null ? 0 : sdtouser.GuaranterContactId.Value;
                 }
 
                 if (sdtouser.UserAddress != null)
@@ -396,12 +400,49 @@ namespace LoanManagementSystem.Controllers
 
                 sdtouser.ModifiedBy = CurrentUserSession.UserId;
                 sdtouser.ModifiedOn = DateTime.Now;
-                db.Entry(sdtouser.PermanentAddress).State = EntityState.Modified;
-                db.Entry(sdtouser.UserAddress).State = EntityState.Modified;
-                db.Entry(sdtouser.GuaranterAddress).State = EntityState.Modified;
-                db.Entry(sdtouser.Contacts).State = EntityState.Modified;
-                db.Entry(sdtouser.GuaranterContacts).State = EntityState.Modified;
-                db.Entry(sdtouser.PermanentContacts).State = EntityState.Modified;
+
+                if (sdtouser.PermanentAddress != null && sdtouser.PermanentAddressId == null)
+                {
+                    db.Address.Add(sdtouser.PermanentAddress);
+                    sdtouser.PermanentAddressId = sdtouser.PermanentAddress.AddressId;
+                }
+                else
+                    db.Entry(sdtouser.PermanentAddress).State = EntityState.Modified;
+                if (sdtouser.UserAddress != null && sdtouser.UserAddressId == null)
+                {
+                    db.Address.Add(sdtouser.UserAddress);
+                    sdtouser.UserAddressId = sdtouser.UserAddress.AddressId;
+                }
+                else
+                    db.Entry(sdtouser.UserAddress).State = EntityState.Modified;
+                if (sdtouser.GuaranterAddress != null && sdtouser.GuaranterAddressId == null)
+                {
+                    db.Address.Add(sdtouser.GuaranterAddress);
+                    sdtouser.GuaranterAddressId = sdtouser.GuaranterAddress.AddressId;
+                }
+                else
+                    db.Entry(sdtouser.GuaranterAddress).State = EntityState.Modified;
+                if (sdtouser.Contacts != null && sdtouser.UserContactId == null)
+                {
+                    db.Contacts.Add(sdtouser.Contacts);
+                    sdtouser.UserContactId = sdtouser.Contacts.ContactId;
+                }
+                else
+                    db.Entry(sdtouser.Contacts).State = EntityState.Modified;
+                if (sdtouser.GuaranterContacts != null && sdtouser.GuaranterContactId == null)
+                {
+                    db.Contacts.Add(sdtouser.GuaranterContacts);
+                    sdtouser.GuaranterContactId = sdtouser.GuaranterContacts.ContactId;
+                }
+                else
+                    db.Entry(sdtouser.GuaranterContacts).State = EntityState.Modified;
+                if (sdtouser.PermanentContacts != null && sdtouser.PermanentContactId == null)
+                {
+                    db.Contacts.Add(sdtouser.PermanentContacts);
+                    sdtouser.PermanentContactId = sdtouser.PermanentContacts.ContactId;
+                }
+                else
+                    db.Entry(sdtouser.PermanentContacts).State = EntityState.Modified;
                 db.Entry(sdtouser).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -425,9 +466,9 @@ namespace LoanManagementSystem.Controllers
             ViewBag.PermanentContactId = new SelectList(db.Contacts, "ContactId", "ContactName", sdtouser.PermanentContactId);
             var countries = db.Countries.ToList();
             countries.Insert(0, new sdtoCountry() { CountryId = 0, CountryName = "Select Country" });
-            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.UserAddress.CountryId);
-            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.GuaranterAddress.CountryId);
-            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.PermanentAddress.CountryId);
+            ViewBag.UserAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.UserAddress != null ? sdtouser.UserAddress.CountryId : 0);
+            ViewBag.GuaranterAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.GuaranterAddress == null ? 0 : sdtouser.GuaranterAddress.CountryId);
+            ViewBag.PermanentAddressCountryList = new SelectList(countries, "CountryId", "CountryName", sdtouser.PermanentAddress == null ? 0 : sdtouser.PermanentAddress.CountryId);
             ViewBag.StateList = new SelectList(db.States, "StateId", "StateName", 0);
             return View(sdtouser);
         }

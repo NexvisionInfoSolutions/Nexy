@@ -22,7 +22,7 @@ namespace Business.Reports
         {
             try
             {
-                sdtoSettings settings = AppDb.GeneralSettings.Where(x => x.SettingsId == 1).FirstOrDefault();
+                sdtoSettings settings = AppDb.GeneralSettings.FirstOrDefault();
                 sdtoAccountType accTypeDebiter = AppDb.AccountTypes.Where(x => x.UniqueName.Equals("Debiter", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
                 var accHead = new sdtoAccountHead()
                 {

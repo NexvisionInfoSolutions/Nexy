@@ -11,7 +11,7 @@ namespace UtilityHelper
     {
         public static string FormatAddress(string addrLine1, string addrLine2, string addrPlace, string addrPost, string addrDistrict, string addrPin, string Taluk, string Village, string State, string Country)
         {
-            string NewLine = "<br/>";
+            string NewLine = "  ";
             //string comma = ",";
             return addrLine1 + NewLine + addrLine2 + NewLine + addrPlace + NewLine + addrPost + NewLine + addrDistrict + NewLine + addrPin + NewLine + State + "," + Country;
         }

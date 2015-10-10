@@ -67,7 +67,7 @@ namespace LoanManagementSystem.Controllers
 
         private void LoadAccountHeadList(long AccHeadId)
         {
-            var accHeads = db.AccountHeads.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).ToList();
+            var accHeads = db.AccountHeads.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).OrderBy(x => x.Text).ToList();
             accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Account Name" });
             ViewBag.AccountHeads = new SelectList(accHeads, "Value", "Text", AccHeadId);
         }
@@ -543,13 +543,21 @@ namespace LoanManagementSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var cr = objCashReceiptPayment.Details.Sum(x => x.CreditAmount);
+                    var dr = objCashReceiptPayment.Details.Sum(x => x.CreditAmount);
 
-                    bfTransaction objTransaction = new bfTransaction(db);
-                    if (objCashReceiptPayment.HeaderId > 0)
-                        objTransaction.CancelJournalAccountHeader(objCashReceiptPayment.HeaderId);
+                    if (dr + (-1 * cr) > 0)
+                        ModelState.AddModelError("", "The voucher credit total and debit total does not balance.");
+                    else
+                    {
 
-                    objTransaction.AddJournalEntry(objCashReceiptPayment);
-                    return RedirectToAction("ListJournalEntry");
+                        bfTransaction objTransaction = new bfTransaction(db);
+                        if (objCashReceiptPayment.HeaderId > 0)
+                            objTransaction.CancelJournalAccountHeader(objCashReceiptPayment.HeaderId);
+
+                        objTransaction.AddJournalEntry(objCashReceiptPayment);
+                        return RedirectToAction("ListJournalEntry");
+                    }
                 }
             }
             LoadAccountHeadList(0);
@@ -735,7 +743,7 @@ namespace LoanManagementSystem.Controllers
 
             bfReport objReport = new bfReport(db);
             var CashReceiptPayments = objReport.GetCashReceiptPayments(CompanyId, string.Empty);
-            var result =  Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
+            var result = Json(CashReceiptPayments, JsonRequestBehavior.AllowGet);
             result.MaxJsonLength = int.MaxValue;
             return result;
         }
