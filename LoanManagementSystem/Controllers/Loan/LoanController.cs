@@ -234,7 +234,8 @@ namespace LoanManagementSystem.Controllers.Loan
 
             loan.LoanCode = objReport.GenerateCode("LoanInfo");
 
-            var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
+            var userList = listUsers.OrderBy(x => x.FirstName).ToList();
+            var users = userList.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
             ViewBag.UserList = new SelectList(users, "Value", "Text");
             return View(loan);
