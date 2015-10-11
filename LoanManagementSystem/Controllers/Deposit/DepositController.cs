@@ -218,7 +218,8 @@ namespace LoanManagementSystem.Controllers.Deposit
             deposit.CreatedBy = sessionUser != null ? sessionUser.UserID : 0;
             deposit.CreatedOn = DateTime.Now;
 
-            var listUsers = db.User.Where(x => x.UserType == UserType.Member && (UserId == null || UserId.Value == 0 || x.UserID == UserId));
+            
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && (UserId == null || UserId.Value == 0 || x.UserID == UserId)).OrderBy(x=>x.FirstName);
 
             if (listUsers == null || listUsers.Count(x => x.UserID > 0) == 0)
                 return RedirectToAction("Create", "Member");
@@ -270,7 +271,7 @@ namespace LoanManagementSystem.Controllers.Deposit
             {
                 return HttpNotFound();
             }
-            var listUsers = db.User.Where(x => x.UserType == UserType.Member);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member).OrderBy(x=> x.FirstName);
             ViewBag.UserList = new SelectList(listUsers.Select(x => new { UserID = x.UserID, Name = x.FirstName + " " + x.LastName }), "UserID", "Name");
             return View(sdtoDepositInfo);
         }
