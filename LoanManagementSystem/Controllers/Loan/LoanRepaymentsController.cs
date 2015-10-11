@@ -273,7 +273,7 @@ namespace LoanManagementSystem.Controllers.Loan
                     }
 
                     sdtoLoanRepayment.InterestAmount = Math.Round(repaymentInterestAmt, 2);
-                    sdtoLoanRepayment.PendingPrincipalAmount = loanPendingAmt - (loandetails.InstallmentAmount * days); //(sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt);                    
+                    sdtoLoanRepayment.PendingPrincipalAmount = loanPendingAmt - (loandetails.InstallmentAmount * days) + sdtoLoanRepayment.PreviousPaymentDueAmount; //(sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt);                    
                     sdtoLoanRepayment.PendingInstallments -= Convert.ToInt32(Math.Floor(sdtoLoanRepayment.PendingPrincipalAmount / loandetails.InstallmentAmount));
                     sdtoLoanRepayment.PrincipalAmount = loandetails.LoanAmount;
 
@@ -355,7 +355,7 @@ namespace LoanManagementSystem.Controllers.Loan
                     decimal paymentBalance = sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt - loandetails.InstallmentAmount;
                     sdtoLoanRepayment.PreviousPaymentDueAmount = paymentBalance > 0 ? (previousDue - paymentBalance) : (previousDue + paymentBalance);
 
-                    sdtoLoanRepayment.PendingPrincipalAmount = pendingPrincipalAmount - loandetails.InstallmentAmount; //(sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt);                    
+                    sdtoLoanRepayment.PendingPrincipalAmount = pendingPrincipalAmount - loandetails.InstallmentAmount + sdtoLoanRepayment.PreviousPaymentDueAmount; //(sdtoLoanRepayment.RepaymentAmount - repaymentInterestAmt);                    
                     sdtoLoanRepayment.PendingInstallments -= Convert.ToInt32(Math.Floor(sdtoLoanRepayment.PendingPrincipalAmount / loandetails.InstallmentAmount));
                     sdtoLoanRepayment.PrincipalAmount = loandetails.LoanAmount;
                 }

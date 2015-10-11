@@ -67,22 +67,22 @@ namespace LoanManagementSystem.Controllers
 
         private void LoadAccountHeadList(long AccHeadId)
         {
-            var accHeads = db.AccountHeads.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).OrderBy(x => x.Text).ToList().OrderBy(x => x.Text);
+            var accHeads = db.AccountHeads.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).OrderBy(x => x.Text).OrderBy(x => x.Text).ToList();
             accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Account Name" });
             ViewBag.AccountHeads = new SelectList(accHeads, "Value", "Text", AccHeadId);
         }
 
         private void LoadAccountBookList(long AccBookId, long AccBookTypeId)
         {
-            var accHeads = db.AccountBooks.Where(x => x.IsDeleted == false && (AccBookTypeId == 0 || AccBookTypeId == x.AccountBookTypeId)).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList().OrderBy(x=>x.Text);
-            accHeads.(0, new SelectListItem() { Value = "0", Text = "Select a Account Book" });
+            var accHeads = db.AccountBooks.Where(x => x.IsDeleted == false && (AccBookTypeId == 0 || AccBookTypeId == x.AccountBookTypeId)).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).OrderBy(x=>x.Text).ToList();
+            accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Account Book" });
             ViewBag.AccountBookList = new SelectList(accHeads, "Value", "Text", AccBookId);
         }
 
         private void LoadJournalBookList(long AccBookId)
         {
             var journalBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Journal", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-            var accHeads = db.AccountBooks.Where(x => x.AccountBookTypeId == journalBookType.AccountBookTypeId && x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList().OrderBy(x => x.Text);
+            var accHeads = db.AccountBooks.Where(x => x.AccountBookTypeId == journalBookType.AccountBookTypeId && x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).OrderBy(x => x.Text).ToList();
             accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Journal Book" });
             ViewBag.AccountBookList = new SelectList(accHeads, "Value", "Text", AccBookId);
         }
