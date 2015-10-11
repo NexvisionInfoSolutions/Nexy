@@ -287,7 +287,7 @@ namespace LoanManagementSystem.Controllers.Loan
                 return HttpNotFound();
             }
 
-            var listUsers = db.User.Where(x => x.UserType == UserType.Member && x.IsDeleted == false);
+            var listUsers = db.User.Where(x => x.UserType == UserType.Member && x.IsDeleted == false).OrderBy(x=>x.FirstName);
             var users = listUsers.Select(x => new SelectListItem() { Value = x.UserID.ToString(), Text = x.FirstName + " " + x.LastName }).ToList();
             users.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Member" });
             //ViewBag.UserList = new SelectList(users, "Value", "Text");
