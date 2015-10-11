@@ -35,5 +35,10 @@ namespace Data.Models.Accounts
 
         [ForeignKey("FinancialYearId")]
         public virtual sdtoFinancialPeriod FinancialPeriod { get; set; }
+
+        [NotMapped]
+        public decimal PrevCreditOpeningBalance { get; set; }
+        [NotMapped]
+        public decimal PrevDebitOpeningBalance { get; set; }
     }
 }

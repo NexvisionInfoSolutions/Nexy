@@ -4,7 +4,7 @@
     ViewBag.Title = "Opening Balance";
 }
 
-<script src="~/Scripts/Address.js"></script>
+@*<script src="~/scripts/address.js"></script>*@
 <script language="javascript" type="text/javascript">
     var ddlSchedule = "ddlSchedule";
     var hdnSchedule = "hdnSchedule";
@@ -13,30 +13,15 @@
     var hdnAccount = "hdnAccount"
 
     $(document).ready(function () {
-        for(i=0;i<@Model.OpeningBalances.Count();i++){
-            LoadComboBox('@Url.Action("BaseSchedulesInfo", "Accounting")'
-                         , "ScheduleId"
-                         , "ScheduleName"
-                         , $('#' + hdnSchedule + i).val()
-                         , ddlSchedule+i);
 
-            $("#" + ddlSchedule + i).on('change', function (event) {
 
-                var hdnschedule = $(this).attr("data-hdn-schedule-id");
-                var ddlaccount = $(this).attr("data-ddl-account-id");
-                var hdnaccount = $(this).attr("data-hdn-account-id");
-                var args = event.args;
-                if (args) {
-                    var item = args.item;
-                    $("#" + hdnSchedule + i).val(item.value);
-                    LoadComboBox('@Url.Action("ScheduleAccountInfo", "Accounting", new { ScheduleId = 0 })' + $('#' + hdnschedule).val()
-                         , "AccountHeadId"
-                         , "AccountName"
-                         , $('#' + hdnaccount).val()
-                         , ddlaccount)
-                }
-            });
-        }
+        $('#ddlSchedule').change(function () {
+            //document.location.href = '/Accounting/NewOpeningBalance?ScheduleId=' + this.options[this.selectedIndex].value;
+            document.location.href = '/Accounting/NewOpeningBalance?ScheduleId=' + $(this).val();
+        });
+        $('#txtFilterAccountName').keyup(function () {
+            $('#hnlkFilter').attr("href", '@Url.Action("NewOpeningBalance", "Accounting", new { ScheduleId = Model.ScheduleId })&AccountName=' + $(this).val())
+        });
     });
 </script>
 
@@ -50,8 +35,19 @@
             <div class="form-group">
                 <div class="col-md-3">
                     @Html.Label("ScheduleId", "Schedule", htmlAttributes: new { @class = "control-label col-md-2" })
-                    @Html.DropDownListFor(x => x.ScheduleId, new SelectList(ViewBag.AccountSchedules, "Value", "Text"), htmlAttributes: new { @id = "ddlSchedule", @class = "form-control", onchange = "document.location.href = '/Accounting/NewOpeningBalance?ScheduleId=' + this.options[this.selectedIndex].value;" })
+                    @Html.DropDownListFor(x => x.ScheduleId, new SelectList(ViewBag.AccountSchedules, "Value", "Text"), htmlAttributes: new { @id = "ddlSchedule", @class = "form-control" })
                     @Html.ValidationMessage("ScheduleId", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    @Html.Label("FilterAccountHead", "Account", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.FilterAccountHead, new { htmlAttributes = new { @class = "form-control", @id = "txtFilterAccountName" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    @Html.ActionLink("Filter", "NewOpeningBalance", new { AccountName = Model.FilterAccountHead, ScheduleId = Model.ScheduleId }, new { @id = "hnlkFilter" })
                 </div>
             </div>
         </div>
@@ -77,6 +73,8 @@
             @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.AccountCode)
             @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.ScheduleId)
             @Html.HiddenFor(model => model.OpeningBalances[i].AccountHead.AccountTypeId)
+            @Html.HiddenFor(model => model.OpeningBalances[i].PrevCreditOpeningBalance)
+            @Html.HiddenFor(model => model.OpeningBalances[i].PrevDebitOpeningBalance)
             <div class="col-md-12 form-horizontal">
                 <hr />
 

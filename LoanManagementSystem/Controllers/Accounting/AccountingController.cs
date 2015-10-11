@@ -55,7 +55,7 @@ namespace LoanManagementSystem.Controllers
         {
             LoadAccountHeadList(AccHeadId);
 
-            var accSch = db.Schedules.ToList().Select(x => new SelectListItem() { Value = x.ScheduleId.ToString(), Text = x.ScheduleName }).ToList();
+            var accSch = db.Schedules.ToList().Select(x => new SelectListItem() { Value = x.ScheduleId.ToString(), Text = x.ScheduleName }).OrderBy(x=>x.Text).ToList();
             var accFY = db.FinancialPeriod.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.FinancialPeriodId.ToString(), Text = x.PeriodName }).ToList();
 
             accSch.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Schedule Name" });
@@ -67,22 +67,22 @@ namespace LoanManagementSystem.Controllers
 
         private void LoadAccountHeadList(long AccHeadId)
         {
-            var accHeads = db.AccountHeads.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).OrderBy(x => x.Text).ToList();
+            var accHeads = db.AccountHeads.Where(x => x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountHeadId.ToString(), Text = x.AccountName }).OrderBy(x => x.Text).ToList().OrderBy(x => x.Text);
             accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Account Name" });
             ViewBag.AccountHeads = new SelectList(accHeads, "Value", "Text", AccHeadId);
         }
 
         private void LoadAccountBookList(long AccBookId, long AccBookTypeId)
         {
-            var accHeads = db.AccountBooks.Where(x => x.IsDeleted == false && (AccBookTypeId == 0 || AccBookTypeId == x.AccountBookTypeId)).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList();
-            accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Account Book" });
+            var accHeads = db.AccountBooks.Where(x => x.IsDeleted == false && (AccBookTypeId == 0 || AccBookTypeId == x.AccountBookTypeId)).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList().OrderBy(x=>x.Text);
+            accHeads.(0, new SelectListItem() { Value = "0", Text = "Select a Account Book" });
             ViewBag.AccountBookList = new SelectList(accHeads, "Value", "Text", AccBookId);
         }
 
         private void LoadJournalBookList(long AccBookId)
         {
             var journalBookType = db.AccountBookTypes.Where(x => x.UniqueName.Equals("Journal", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-            var accHeads = db.AccountBooks.Where(x => x.AccountBookTypeId == journalBookType.AccountBookTypeId && x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList();
+            var accHeads = db.AccountBooks.Where(x => x.AccountBookTypeId == journalBookType.AccountBookTypeId && x.IsDeleted == false).ToList().Select(x => new SelectListItem() { Value = x.AccountBookId.ToString(), Text = x.BookName }).ToList().OrderBy(x => x.Text);
             accHeads.Insert(0, new SelectListItem() { Value = "0", Text = "Select a Journal Book" });
             ViewBag.AccountBookList = new SelectList(accHeads, "Value", "Text", AccBookId);
         }
@@ -566,12 +566,12 @@ namespace LoanManagementSystem.Controllers
             return View(objCashReceiptPayment);
         }
 
-        public ActionResult NewOpeningBalance(long? ScheduleId)
+        public ActionResult NewOpeningBalance(long? ScheduleId, string AccountName)
         {
             LoadSelectListOpeningBalance(0, 0, 0);
-            var openingBalance = db.OpeningBalance.Include(x => x.AccountHead).Include(x => x.Schedule).Include(x => x.FinancialPeriod).Where(x => x.IsDeleted == false && x.FinancialPeriod.IsCurrentYear == true && (x.ScheduleId == ((ScheduleId == null || ScheduleId.Value == 0) ? x.ScheduleId : ScheduleId))).ToList();
+            var openingBalance = db.OpeningBalance.Include(x => x.AccountHead).Include(x => x.Schedule).Include(x => x.FinancialPeriod).Where(x => x.IsDeleted == false && x.FinancialPeriod.IsCurrentYear == true && (x.ScheduleId == ((ScheduleId == null || ScheduleId.Value == 0) ? x.ScheduleId : ScheduleId)) && x.AccountHead.AccountName.Contains(AccountName + "")).Select(x => new sdtoOpeningBalance() { OpeningBalanceId = x.OpeningBalanceId, ClosingBalance = x.ClosingBalance, CreditOpeningBalance = x.CreditOpeningBalance, DebitOpeningBalance = x.DebitOpeningBalance, AccountHeadId = x.AccountHeadId, ScheduleId = x.ScheduleId, PrevCreditOpeningBalance = x.CreditOpeningBalance, PrevDebitOpeningBalance = x.DebitOpeningBalance, FinancialYearId = x.FinancialYearId }).ToList();
 
-            sdtoViewOpeningBalance openingBalances = new sdtoViewOpeningBalance() { ScheduleId = ScheduleId == null ? 0 : ScheduleId.Value, OpeningBalances = openingBalance };
+            sdtoViewOpeningBalance openingBalances = new sdtoViewOpeningBalance() { ScheduleId = ScheduleId == null ? 0 : ScheduleId.Value, FilterAccountHead = AccountName, OpeningBalances = openingBalance };
 
             return View(openingBalances);
         }
@@ -633,33 +633,41 @@ namespace LoanManagementSystem.Controllers
                     for (int i = 0; i < OpeningBalances.Count(); i++)
                     {
                         var CurrentOpeningBalance = OpeningBalances[i];
-                        var opnBalance = db.OpeningBalance.Find(CurrentOpeningBalance.OpeningBalanceId);
+                        //var prevCreditOpeningBalance = opnBalance.CreditOpeningBalance;
+                        //var prevDebitOpeningBalance = opnBalance.DebitOpeningBalance;
 
-                        var prevCreditOpeningBalance = opnBalance.CreditOpeningBalance;
-                        var prevDebitOpeningBalance = opnBalance.DebitOpeningBalance;
+                        //var opnBalance = db.OpeningBalance.Find(CurrentOpeningBalance.OpeningBalanceId);
 
-                        opnBalance.ScheduleId = CurrentOpeningBalance.ScheduleId;
-                        opnBalance.AccountHeadId = CurrentOpeningBalance.AccountHeadId;
-                        opnBalance.CreditOpeningBalance = CurrentOpeningBalance.CreditOpeningBalance;
-                        opnBalance.DebitOpeningBalance = CurrentOpeningBalance.DebitOpeningBalance;
-                        opnBalance.ModifiedBy = CurrentUserSession.UserId;
-                        opnBalance.ModifiedOn = DateTime.Now;
-                        opnBalance.ClosingBalance = opnBalance.ClosingBalance - (prevCreditOpeningBalance + prevDebitOpeningBalance) + (opnBalance.CreditOpeningBalance + opnBalance.DebitOpeningBalance);
+                        //opnBalance.ScheduleId = CurrentOpeningBalance.ScheduleId;
+                        //opnBalance.AccountHeadId = CurrentOpeningBalance.AccountHeadId;
+                        //opnBalance.CreditOpeningBalance = CurrentOpeningBalance.CreditOpeningBalance;
+                        //opnBalance.DebitOpeningBalance = CurrentOpeningBalance.DebitOpeningBalance;
+                        //opnBalance.ModifiedBy = CurrentUserSession.UserId;
+                        //opnBalance.ModifiedOn = DateTime.Now;
+                        CurrentOpeningBalance.ClosingBalance = CurrentOpeningBalance.ClosingBalance - (CurrentOpeningBalance.PrevCreditOpeningBalance + CurrentOpeningBalance.PrevDebitOpeningBalance) + (CurrentOpeningBalance.CreditOpeningBalance + CurrentOpeningBalance.DebitOpeningBalance);
 
-                        if (opnBalance.CreditOpeningBalance > 0 && opnBalance.DebitOpeningBalance > 0)
+                        if (CurrentOpeningBalance.CreditOpeningBalance > 0 && CurrentOpeningBalance.DebitOpeningBalance > 0)
                         {
                             ModelState.AddModelError("", "Please enter either credit or debit opening balance");
                             LoadSelectListOpeningBalance(0, 0, 0);
                             return View(ViewOpeningBalance);
                         }
 
-                        opnBalance.CreatedOn = DateTime.Now;
-                        sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
-                        if (session != null)
-                            opnBalance.CreatedBy = session.UserID;
-                        opnBalance.IsDeleted = false;
+                        //opnBalance.CreatedOn = DateTime.Now;
+                        //sdtoUser session = UtilityHelper.UserSession.GetSession(UtilityHelper.UserSession.LoggedInUser) as sdtoUser;
+                        //if (session != null)
+                        //    opnBalance.CreatedBy = session.UserID;
+                        //opnBalance.IsDeleted = false;
 
-                        db.Entry(opnBalance).State = EntityState.Modified;
+                        //db.Entry(opnBalance).State = EntityState.Modified;
+
+                        db.Database.ExecuteSqlCommand("Update OpeningBalance set CreditOpeningBalance = @CreditOpeningBalance, DebitOpeningBalance = @DebitOpeningBalance, ClosingBalance = @ClosingBalance, ModifiedBy = @ModifiedBy, ModifiedOn = GetDate() where OpeningBalanceId = @OpeningBalanceId"
+                            , new System.Data.SqlClient.SqlParameter("@OpeningBalanceId", CurrentOpeningBalance.OpeningBalanceId)
+                            , new System.Data.SqlClient.SqlParameter("@CreditOpeningBalance", CurrentOpeningBalance.CreditOpeningBalance)
+                            , new System.Data.SqlClient.SqlParameter("@DebitOpeningBalance", CurrentOpeningBalance.DebitOpeningBalance)
+                            , new System.Data.SqlClient.SqlParameter("@ClosingBalance", CurrentOpeningBalance.ClosingBalance)
+                            , new System.Data.SqlClient.SqlParameter("@ModifiedBy", CurrentUserSession.UserId)
+                            );
                     }
                     db.SaveChanges();
 

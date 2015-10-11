@@ -14,6 +14,8 @@ namespace LoanManagementSystem.Models
     public class sdtoViewOpeningBalance
     {
         public long ScheduleId { get; set; }
+
+        public string FilterAccountHead { get; set; }
         public List<sdtoOpeningBalance> OpeningBalances { get; set; }
         public sdtoViewOpeningBalance()
         {
